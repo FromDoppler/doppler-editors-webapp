@@ -1,0 +1,10 @@
+[general]
+# Ignore certain rules (comma-separated list), you can reference them by
+# their id or by their full name
+ignore=body-is-missing,body-max-line-length
+contrib=contrib-title-conventional-commits
+
+# Configure title-max-length rule, set title length to 20 (72 = default)
+[title-max-length]
+line-length=100
+# DEFAULT: line-length=72

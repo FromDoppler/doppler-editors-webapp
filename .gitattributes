@@ -1,0 +1,16 @@
+# All files as text by default
+* text eol=lf
+
+# Generated encrypted secret files (SOPS)
+*.[eE]ncrypted.[sS]ecret.* text eol=lf
+**/[eE]ncrypted.[sS]ecret.* text eol=lf
+
+# Binary files
+*.dll   binary
+*.jpg   binary
+*.png   binary
+*.gif   binary
+
+# JS generated files
+yarn.lock linguist-generated=true
+package-lock.json linguist-generated=true
