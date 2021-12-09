@@ -13,3 +13,8 @@ On the other hand, we will use our _Manifest Loader_ <!-- TODO: add the link to 
 in order to take advantage of the cache and simplify the release process. CI/CD process will be very
 similar to our API microservices (for example [Hello Microservice](https://github.com/FromDoppler/hello-microservice#context)),
 but based on manifest files in our CDN in place of Docker images.
+
+## Usage of the released packages
+
+Since we are using the _Manifest Loader_, the packages are independent from the hosting service,
+you can see an example of how to use it in [demo.html](./demo/demo.html).
