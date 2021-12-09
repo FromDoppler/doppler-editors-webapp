@@ -1,0 +1,27 @@
+root = true
+
+[*]
+indent_style = space
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+end_of_line = lf
+indent_size = 2
+max_line_length = 100
+
+[*.{js,ts}]
+block_comment_start = /*
+block_comment_end = */
+
+[{en.js,es.js,*.sh,*.md,Dockerfile,.editorconfig,package.json}]
+max_line_length = 220
+
+# Unset for binary and generated files
+[{**.png,**/obj/**,**/bin/**,.vscode/**,**/Properties/launchSettings.json,*.[sS]ecret.*,yarn.lock,.doppler-ci}]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+indent_style = unset
+indent_size = unset
+max_line_length = unset

@@ -1,0 +1,18 @@
+{
+  "name": "editors-ufe",
+  "private": true,
+  "devDependencies": {
+    "eclint": "^2.8.1",
+    "prettier": "^2.5.1"
+  },
+  "scripts": {
+    "verify-format": "yarn prettier-check && yarn eclint-check",
+    "fix-format": "yarn prettier-fix && yarn eclint-fix",
+    "eclint-fix": "eclint fix",
+    "eclint-check": "eclint check",
+    "prettier-fix": "prettier --write \"**/**\"",
+    "prettier-check": "prettier --check \"**/**\"",
+    "test": "echo TODO: test",
+    "build": "echo \"TODO build\" && mkdir -p ./build/static && echo \"TODO\" > \"./build/static/TODO.txt\" && echo \"{}\" > \"./build/asset-manifest.json\""
+  }
+}
