@@ -41,12 +41,12 @@ pipeline {
                         changeRequest target: 'main'
                     }
                     steps {
-                        sh ''''
+                        sh '''
                           sh build-n-publish.sh \
                             --package=${PKG_NAME} \
                             --commit=${GIT_COMMIT} \
                             --name=pr-${CHANGE_ID}
-                        '''
+                          '''
                     }
                 }
                 stage('Publish pre-release packages from main') {
