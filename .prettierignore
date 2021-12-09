@@ -12,6 +12,8 @@
 **/*.sh
 **/*.txt
 **/*.xml
+*.png
+*.svg
 Dockerfile
 Jenkinsfile
 .doppler-ci
