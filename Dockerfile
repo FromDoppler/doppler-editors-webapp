@@ -17,7 +17,8 @@ ENV CI=true
 RUN yarn test
 
 FROM restore AS build
-ENV PUBLIC_URL="https://cdn.fromdoppler.com/editors-ufe/"
+ARG public_url="."
+ENV PUBLIC_URL="${public_url}"
 RUN yarn build
 
 # Using specific digest (f7f7607...) to avoid unwanted changes in the non-oficial image

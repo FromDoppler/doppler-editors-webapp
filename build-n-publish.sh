@@ -1,6 +1,7 @@
 #!/bin/sh
 
 pkgName="editors-ufe"
+cdnBaseUrl="https://cdn.fromdoppler.com"
 commit=""
 name=""
 version=""
@@ -14,6 +15,7 @@ print_help () {
     echo ""
     echo "Options:"
     echo "  -p, --package, package name (optional, default: ${pkgName})"
+    echo "  -b, --cdn-base-url, CDN base URL (optional, default: ${cdnBaseUrl})"
     echo "  -c, --commit (mandatory)"
     echo "  -n, --name, version name"
     echo "  -v, --version, version number"
@@ -33,6 +35,9 @@ for i in "$@" ; do
 case $i in
     -p=*|--package=*)
     pkgName="${i#*=}"
+    ;;
+    -b=*|--cdn-base-url=*)
+    cdnBaseUrl="${i#*=}"
     ;;
     -c=*|--commit=*)
     commit="${i#*=}"
@@ -56,6 +61,13 @@ done
 if [ -z "${pkgName}" ]
 then
   echo "Error: package parameter is mandatory"
+  print_help
+  exit 1
+fi
+
+if [ -z "${cdnBaseUrl}" ]
+then
+  echo "Error: CDN base URL parameter is mandatory"
   print_help
   exit 1
 fi
@@ -108,7 +120,9 @@ export MSYS2_ARG_CONV_EXCL="*"
 
 tag="${pkgName}-${commit}"
 
-docker build . --tag "${tag}"
+docker build . \
+  --tag "${tag}" \
+  --build-arg public_url="${cdnBaseUrl}/${pkgName}/" \
 
 docker run --rm \
   -v /var/lib/jenkins/.ssh:/root/.ssh:ro \
