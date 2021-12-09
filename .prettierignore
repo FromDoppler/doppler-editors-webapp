@@ -22,3 +22,4 @@ package-lock.json
 [eE]ncrypted.[sS]ecret.*
 *.key
 .doppler-ci
+/build
