@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Web site created using create-react-app" />
+    <title>Demo</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script src="https://cdn.fromdoppler.com/loader/v1/loader.js"></script>
+    <script type="text/javascript">
+      const versions = {
+        // Build of a random pull request
+        pr: "pr-2",
+        // Build of the INT branch
+        int: "INT",
+        // Build of the main branch
+        main: "main",
+        // Build of a final version
+        v1: "v1",
+      };
+
+      const version = versions.pr; // 👈 choose a version
+      const avoidCache = true; // 👈 modify
+      const commitId = ""; // 👈 define commit ID to a hard cache invalidation
+
+      const cdnBaseUrl = "https://cdn.fromdoppler.com";
+      const pkgName = "editors-ufe";
+      const scriptUrl = `${cdnBaseUrl}/${pkgName}/asset-manifest-${version}${
+        !commitId ? "" : `-${commitId}`
+      }.json${!avoidCache ? "" : `?s=${Date.now()}`}`;
+
+      console.log(`Script URL: ${scriptUrl}`);
+
+      new AssetServices().load(scriptUrl);
+    </script>
+  </body>
+</html>
