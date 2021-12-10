@@ -17,6 +17,8 @@ ENV CI=true
 RUN yarn test
 
 FROM restore AS build
+ARG public_url="."
+ENV PUBLIC_URL="${public_url}"
 RUN yarn build
 
 # Using specific digest (f7f7607...) to avoid unwanted changes in the non-oficial image
