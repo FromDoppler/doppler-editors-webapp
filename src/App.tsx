@@ -1,4 +1,5 @@
 import React from "react";
+import { Link, Outlet } from "react-router-dom";
 import logo from "./logo.svg";
 import "./App.css";
 
@@ -19,6 +20,20 @@ function App() {
           Learn React
         </a>
       </header>
+      <div>
+        <h1>Bookkeeper</h1>
+        <nav
+          style={{
+            borderBottom: "solid 1px",
+            paddingBottom: "1rem",
+          }}
+        >
+          {/* Links to this own app (using history API) */}
+          <Link to="/invoices">Invoices</Link> |{" "}
+          <Link to="/expenses">Expenses</Link> | <Link to="/wrong">Wrong</Link>
+          <Outlet />
+        </nav>
+      </div>
     </div>
   );
 }
