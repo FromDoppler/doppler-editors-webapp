@@ -7,9 +7,12 @@ import reportWebVitals from "./reportWebVitals";
 import Expenses from "./routes/expenses";
 import Invoices from "./routes/invoices";
 
+// Ugly patch to try to override the basename from outside
+const basename = (window as any).basename || undefined;
+
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <Routes>
         <Route path="/" element={<App />}>
           <Route path="expenses" element={<Expenses />} />
