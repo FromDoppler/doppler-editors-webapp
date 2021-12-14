@@ -31,7 +31,7 @@
       const commitId = ""; // 👈 define commit ID to a hard cache invalidation
 
       const cdnBaseUrl = "https://cdn.fromdoppler.com";
-      const pkgName = "editors-ufe";
+      const pkgName = "editors-webapp";
       const scriptUrl = `${cdnBaseUrl}/${pkgName}/asset-manifest-${version}${
         !commitId ? "" : `-${commitId}`
       }.json${!avoidCache ? "" : `?s=${Date.now()}`}`;
