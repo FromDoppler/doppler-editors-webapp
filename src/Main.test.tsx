@@ -1,12 +1,12 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import App from "./App";
 import { BrowserRouter } from "react-router-dom";
+import Main from "./Main";
 
 test("renders learn react link", () => {
   render(
     <BrowserRouter>
-      <App />
+      <Main />
     </BrowserRouter>
   );
   const linkElement = screen.getByText(/learn react/i);
