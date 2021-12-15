@@ -1,26 +1,22 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import Main from "./Main";
+import Expenses from "./routes/expenses";
+import Invoices from "./routes/invoices";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App;
+export default () => (
+  <Routes>
+    <Route path="/" element={<Main />}>
+      <Route path="expenses" element={<Expenses />} />
+      <Route path="invoices" element={<Invoices />} />
+      <Route
+        path="*"
+        element={
+          <main style={{ padding: "1rem" }}>
+            <p>There's nothing here!</p>
+          </main>
+        }
+      />
+    </Route>
+  </Routes>
+);

@@ -1,12 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+// Ugly patch to try to override the basename from outside
+const basename = (window as any).basename || undefined;
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter basename={basename}>
+      <App />
+    </BrowserRouter>
+    ,
   </React.StrictMode>,
   document.getElementById("root")
 );
