@@ -1,6 +1,6 @@
 #!/bin/sh
 
-pkgName="editors-ufe"
+pkgName="editors-webapp"
 cdnBaseUrl="https://cdn.fromdoppler.com"
 commit=""
 name=""

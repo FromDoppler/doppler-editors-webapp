@@ -33,7 +33,7 @@ pipeline {
         }
         stage('Publish in our CDN') {
             environment {
-                PKG_NAME = "editors-ufe"
+                PKG_NAME = "editors-webapp"
             }
             stages {
                 stage('Publish pre-release packages from pull request') {
