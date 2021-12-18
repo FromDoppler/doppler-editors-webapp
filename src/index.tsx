@@ -13,7 +13,6 @@ render(
     <BrowserRouter basename={basename}>
       <App />
     </BrowserRouter>
-    ,
   </StrictMode>,
   document.getElementById("root")
 );
