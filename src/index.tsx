@@ -5,12 +5,15 @@ import "./index.css";
 import { App } from "./App";
 import { reportWebVitals } from "./reportWebVitals";
 
-// Ugly patch to try to override the basename from outside
-const basename = (window as any).basename || undefined;
+const configuration = {
+  // TODO: remove this after update the HTMLs:
+  ...{ basename: (window as any).basename || undefined },
+  ...((window as any)["editors-webapp-configuration"] || {}),
+};
 
 render(
   <StrictMode>
-    <BrowserRouter basename={basename}>
+    <BrowserRouter basename={configuration.basename}>
       <App />
     </BrowserRouter>
   </StrictMode>,
