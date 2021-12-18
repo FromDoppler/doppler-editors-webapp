@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import Main from "./Main";
+import { Main } from "./Main";
 
 test("renders learn react link", () => {
   render(

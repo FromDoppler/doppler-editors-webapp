@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import App from "./App";
+import { App } from "./App";
 import { MemoryRouter } from "react-router-dom";
 
 const rootURL = "/";

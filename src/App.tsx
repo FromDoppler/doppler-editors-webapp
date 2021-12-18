@@ -1,9 +1,9 @@
 import { Routes, Route } from "react-router-dom";
-import Main from "./Main";
-import Expenses from "./routes/expenses";
-import Invoices from "./routes/invoices";
+import { Main } from "./Main";
+import { Expenses } from "./routes/expenses";
+import { Invoices } from "./routes/invoices";
 
-export default () => (
+export const App = () => (
   <Routes>
     <Route path="/" element={<Main />}>
       <Route path="expenses" element={<Expenses />} />
