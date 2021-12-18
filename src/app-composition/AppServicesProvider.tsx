@@ -18,3 +18,28 @@ export const AppServicesProvider = ({
     {children}
   </AppServicesContext.Provider>
 );
+
+export const InjectAppServices = (
+  // TODO: fix types
+  Component: /* () => ReactElement<React.Attributes & { appServices: AppServices }> */ any
+) => {
+  return ({
+    appServices: explicitAppServices,
+    ...props
+  }: {
+    appServices: Partial<AppServices>;
+  }) => (
+    <AppServicesContext.Consumer>
+      {(injectedAppServices) => (
+        // TODO: test if it keep the laziness in not used services
+        // WebApp makes it different: https://github.com/FromDoppler/doppler-webapp/blob/master/src/services/pure-di.tsx#L451
+        <Component
+          {...{
+            appServices: { ...injectedAppServices, ...explicitAppServices },
+            ...props,
+          }}
+        />
+      )}
+    </AppServicesContext.Consumer>
+  );
+};

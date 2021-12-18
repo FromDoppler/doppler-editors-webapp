@@ -1,2 +1,2 @@
 export { configureApp } from "./startup";
-export { AppServicesProvider } from "./AppServicesProvider";
+export { AppServicesProvider, InjectAppServices } from "./AppServicesProvider";
