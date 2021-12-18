@@ -2,8 +2,8 @@ import { StrictMode } from "react";
 import { render } from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
+import { App } from "./App";
+import { reportWebVitals } from "./reportWebVitals";
 
 // Ugly patch to try to override the basename from outside
 const basename = (window as any).basename || undefined;

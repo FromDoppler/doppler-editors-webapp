@@ -2,7 +2,7 @@ import { Link, Outlet } from "react-router-dom";
 import logo from "./logo.svg";
 import "./Main.css";
 
-function Main() {
+export function Main() {
   return (
     <div className="App">
       <header className="App-header">
@@ -51,5 +51,3 @@ function Main() {
     </div>
   );
 }
-
-export default Main;
