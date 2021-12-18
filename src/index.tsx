@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import { App } from "./App";
 import { reportWebVitals } from "./reportWebVitals";
-import { configureApp } from "./app-composition";
+import { AppServicesProvider, configureApp } from "./app-composition";
 
 const configuration = {
   // TODO: remove this after update the HTMLs:
@@ -15,9 +15,11 @@ const appServices = configureApp(configuration);
 
 render(
   <StrictMode>
-    <BrowserRouter basename={appServices.appConfiguration.basename}>
-      <App />
-    </BrowserRouter>
+    <AppServicesProvider appServices={appServices}>
+      <BrowserRouter basename={appServices.appConfiguration.basename}>
+        <App />
+      </BrowserRouter>
+    </AppServicesProvider>
   </StrictMode>,
   document.getElementById("root")
 );
