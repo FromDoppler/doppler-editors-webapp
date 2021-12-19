@@ -1,4 +1,8 @@
 import { AppConfiguration, AppServices } from "./abstractions";
+import {
+  ServicesFactories,
+  SingletonLazyAppServicesContainer,
+} from "./implementations/SingletonLazyAppServicesContainer";
 import { defaultAppConfiguration } from "./default-configuration";
 
 export const configureApp = (
@@ -9,9 +13,11 @@ export const configureApp = (
     ...customConfiguration,
   };
 
-  const appServices = {
-    appConfiguration: appConfiguration,
+  const factories: ServicesFactories = {
+    appConfigurationFactory: () => appConfiguration,
   };
+
+  const appServices = new SingletonLazyAppServicesContainer(factories);
 
   return appServices;
 };
