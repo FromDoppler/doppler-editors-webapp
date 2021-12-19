@@ -1,4 +1,5 @@
 import { AppConfiguration, AppServices } from "./abstractions";
+import { AppConfigurationRendererImplementation } from "./implementations/app-configuration-renderer";
 import {
   ServicesFactories,
   SingletonLazyAppServicesContainer,
@@ -16,6 +17,8 @@ export const configureApp = (
   const factories: ServicesFactories = {
     windowFactory: () => window,
     appConfigurationFactory: () => appConfiguration,
+    appConfigurationRendererFactory: (appServices: AppServices) =>
+      new AppConfigurationRendererImplementation(appServices),
   };
 
   const appServices = new SingletonLazyAppServicesContainer(factories);

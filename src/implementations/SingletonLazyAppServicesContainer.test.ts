@@ -1,4 +1,5 @@
 import { AppConfiguration, AppServices } from "../abstractions";
+import { AppConfigurationRendererImplementation } from "./app-configuration-renderer";
 import {
   ServicesFactories,
   SingletonLazyAppServicesContainer,
@@ -61,6 +62,33 @@ describe(SingletonLazyAppServicesContainer.name, () => {
 
     // Assert
     expect(windowFactory).not.toHaveBeenCalled();
+  });
+
+  it("should call other factories when a service required requires it", () => {
+    // Arrange
+    const appConfigurationResult = {} as unknown as AppConfiguration;
+    const appConfigurationFactory = jest.fn((_) => appConfigurationResult);
+
+    const appConfigurationRendererFactory = (appServices: AppServices) =>
+      new AppConfigurationRendererImplementation(appServices);
+
+    const windowResult = {} as unknown as Window;
+    const windowFactory = jest.fn((_) => windowResult);
+
+    const factories = {
+      appConfigurationFactory,
+      appConfigurationRendererFactory,
+      windowFactory,
+    } as unknown as ServicesFactories;
+
+    const appServices = new SingletonLazyAppServicesContainer(factories);
+
+    // Act
+    const { appConfigurationRenderer } = appServices;
+
+    // Assert
+    expect(windowFactory).not.toHaveBeenCalled();
+    expect(appConfigurationFactory).toHaveBeenCalled();
   });
 
   it("should call the factory once when the service is required multiple times", () => {

@@ -31,4 +31,8 @@ export class SingletonLazyAppServicesContainer implements AppServices {
   get appConfiguration() {
     return this.singleton("appConfiguration");
   }
+
+  get appConfigurationRenderer() {
+    return this.singleton("appConfigurationRenderer");
+  }
 }
