@@ -4,5 +4,6 @@ import { AppConfiguration } from ".";
 // for example based on this type:
 // type AppServicesTuple = [ Window, AppConfiguration ]
 export type AppServices = {
+  window: Window;
   appConfiguration: AppConfiguration;
 };

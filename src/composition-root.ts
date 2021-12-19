@@ -14,6 +14,7 @@ export const configureApp = (
   };
 
   const factories: ServicesFactories = {
+    windowFactory: () => window,
     appConfigurationFactory: () => appConfiguration,
   };
 

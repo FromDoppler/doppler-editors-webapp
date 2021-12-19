@@ -24,6 +24,10 @@ export class SingletonLazyAppServicesContainer implements AppServices {
   }
 
   // TODO: generate these properties automatically
+  get window() {
+    return this.singleton("window");
+  }
+
   get appConfiguration() {
     return this.singleton("appConfiguration");
   }
