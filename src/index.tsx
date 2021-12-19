@@ -5,14 +5,15 @@ import "./index.css";
 import { App } from "./components/App";
 import { reportWebVitals } from "./reportWebVitals";
 
-const basename =
-  (window as any)["editors-webapp-configuration"]?.basename ||
-  (window as any).basename || // TODO: remove this option
-  undefined;
+const customConfiguration = {
+  // TODO: remove this after update the HTMLs:
+  ...{ basename: (window as any).basename || undefined },
+  ...((window as any)["editors-webapp-configuration"] || {}),
+};
 
 render(
   <StrictMode>
-    <BrowserRouter basename={basename}>
+    <BrowserRouter basename={customConfiguration.basename}>
       <App />
     </BrowserRouter>
   </StrictMode>,

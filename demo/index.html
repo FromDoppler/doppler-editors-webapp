@@ -38,7 +38,10 @@
 
       console.log(`Script URL: ${scriptUrl}`);
 
-      window.basename = "editors";
+      window["editors-webapp-configuration"] = {
+        basename: "editors",
+      };
+
       new AssetServices().load(scriptUrl);
     </script>
   </body>
