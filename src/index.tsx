@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { render } from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
-import { App } from "./App";
+import { App } from "./components/App";
 import { reportWebVitals } from "./reportWebVitals";
 
 // Ugly patch to try to override the basename from outside
