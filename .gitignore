@@ -30,3 +30,6 @@ yarn-error.log*
 # OS files (OSX, Windows)
 .DS_Store
 Thumbs.db
+
+#InteliJ
+.idea
