@@ -6,27 +6,11 @@ export function Main() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/Main.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <div>
-        <h1>Bookkeeper</h1>
-        <nav
-          style={{
-            borderBottom: "solid 1px",
-            paddingBottom: "1rem",
-          }}
-        >
+        <div className="flex-row-center h-full">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h1>Bookkeeper</h1>
+        </div>
+        <nav className="flex-row-center">
           <div>
             {/* Links to this own app (using history API) */}
             <Link to="/invoices">Invoices</Link> |{" "}
@@ -45,9 +29,9 @@ export function Main() {
             <a href="/login">Login</a> | <a href="/signup">Sign Up</a> |{" "}
             <a href="/dashboard">Dashboard</a> | <a href="/wrong">Wrong</a>
           </div>
-          <Outlet />
         </nav>
-      </div>
+      </header>
+      <Outlet />
     </div>
   );
 }
