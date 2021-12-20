@@ -26,7 +26,7 @@
         v1: "v1",
       };
 
-      const version = versions.pr; // 👈 choose a version
+      const version = versions.main; // 👈 choose a version
       const avoidCache = true; // 👈 modify
       const commitId = ""; // 👈 define commit ID to a hard cache invalidation
 
@@ -38,6 +38,7 @@
 
       console.log(`Script URL: ${scriptUrl}`);
 
+      window.basename = "editors";
       new AssetServices().load(scriptUrl);
     </script>
   </body>
