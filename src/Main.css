@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  height: 100%;
 }
 
 .App-logo {
@@ -16,12 +17,12 @@
 .App-header {
   padding-right: 15px;
   height: 70px;
-  border-bottom: 1px solid #E5E5E5;
+  border-bottom: 1px solid #e5e5e5;
   padding-left: 70px;
   line-height: 70px;
   vertical-align: middle;
   color: #525252;
-  background: #FFF;
+  background: #fff;
   position: relative;
   z-index: 9;
   box-shadow: 0 5px 10px 0 #0000000d;
@@ -29,13 +30,13 @@
   display: flex;
 }
 
-.flex-row-center{
+.flex-row-center {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.h-full{
+.h-full {
   height: 100%;
 }
 
