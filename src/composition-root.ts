@@ -1,5 +1,6 @@
 import { AppConfiguration, AppServices } from "./abstractions";
 import { AppConfigurationRendererImplementation } from "./implementations/app-configuration-renderer";
+import { DummyDopplerLegacyClient } from "./implementations/dummies/doppler-legacy-client";
 import {
   ServicesFactories,
   SingletonLazyAppServicesContainer,
@@ -19,6 +20,7 @@ export const configureApp = (
     appConfigurationFactory: () => appConfiguration,
     appConfigurationRendererFactory: (appServices: AppServices) =>
       new AppConfigurationRendererImplementation(appServices),
+    dopplerLegacyClientFactory: () => new DummyDopplerLegacyClient(),
   };
 
   const appServices = new SingletonLazyAppServicesContainer(factories);

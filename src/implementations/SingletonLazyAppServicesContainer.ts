@@ -35,4 +35,8 @@ export class SingletonLazyAppServicesContainer implements AppServices {
   get appConfigurationRenderer() {
     return this.singleton("appConfigurationRenderer");
   }
+
+  get dopplerLegacyClient() {
+    return this.singleton("dopplerLegacyClient");
+  }
 }
