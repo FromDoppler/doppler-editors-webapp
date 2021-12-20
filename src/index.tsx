@@ -5,6 +5,7 @@ import "./index.css";
 import { App } from "./components/App";
 import { reportWebVitals } from "./reportWebVitals";
 import { configureApp } from "./composition-root";
+import { AppServicesProvider } from "./components/AppServicesContext";
 
 const customConfiguration = {
   // TODO: remove this after update the HTMLs:
@@ -15,9 +16,11 @@ const appServices = configureApp(customConfiguration);
 
 render(
   <StrictMode>
-    <BrowserRouter basename={appServices.appConfiguration.basename}>
-      <App />
-    </BrowserRouter>
+    <AppServicesProvider appServices={appServices}>
+      <BrowserRouter basename={appServices.appConfiguration.basename}>
+        <App />
+      </BrowserRouter>
+    </AppServicesProvider>
   </StrictMode>,
   document.getElementById("root")
 );
