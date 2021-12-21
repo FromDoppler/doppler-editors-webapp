@@ -1,4 +1,4 @@
-const mergeTags = [
+export const mergeTags = [
   {
     name: "Nombre",
     value: "[[[first_name]]]",
@@ -32,5 +32,3 @@ const mergeTags = [
     value: "[[[score]]]",
   },
 ];
-
-export default mergeTags;

@@ -23,3 +23,5 @@ package-lock.json
 *.key
 .doppler-ci
 /build
+*.env
+*.env.*

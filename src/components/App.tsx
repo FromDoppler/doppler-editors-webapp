@@ -1,9 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 import { Main } from "./Main";
-import { Expenses } from "./routes/expenses";
-import { Invoices } from "./routes/invoices";
-import Campaigns from "./routes/campaigns";
-import Templates from "./routes/templates";
+import { Expenses } from "./expenses";
+import { Invoices } from "./invoices";
+import { Campaigns } from "./campaigns";
+import { Templates } from "./templates";
 
 export const App = () => (
   <Routes>
