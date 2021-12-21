@@ -12,3 +12,5 @@ export type AppSessionState =
 export const defaultAppSessionState: AppSessionState = {
   status: "unknown",
 };
+
+export type AppSessionStateStatus = AppSessionState["status"];

@@ -6,6 +6,7 @@ import { App } from "./components/App";
 import { reportWebVitals } from "./reportWebVitals";
 import { configureApp } from "./composition-root";
 import { AppServicesProvider } from "./components/AppServicesContext";
+import { AppSessionStateProvider } from "./components/AppSessionStateContext";
 
 const customConfiguration =
   (window as any)["editors-webapp-configuration"] || {};
@@ -23,9 +24,11 @@ appSessionStateMonitor.start();
 render(
   <StrictMode>
     <AppServicesProvider appServices={appServices}>
-      <BrowserRouter basename={appServices.appConfiguration.basename}>
-        <App />
-      </BrowserRouter>
+      <AppSessionStateProvider appSessionStateMonitor={appSessionStateMonitor}>
+        <BrowserRouter basename={appServices.appConfiguration.basename}>
+          <App />
+        </BrowserRouter>
+      </AppSessionStateProvider>
     </AppServicesProvider>
   </StrictMode>,
   document.getElementById("root")
