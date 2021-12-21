@@ -17,6 +17,9 @@ if ((window as any).basename) {
 
 const appServices = configureApp(customConfiguration);
 
+const appSessionStateMonitor = appServices.appSessionStateMonitor;
+appSessionStateMonitor.start();
+
 render(
   <StrictMode>
     <AppServicesProvider appServices={appServices}>

@@ -43,4 +43,8 @@ export class SingletonLazyAppServicesContainer implements AppServices {
   get appSessionStateAccessor() {
     return this.singleton("appSessionStateAccessor");
   }
+
+  get appSessionStateMonitor() {
+    return this.singleton("appSessionStateMonitor");
+  }
 }
