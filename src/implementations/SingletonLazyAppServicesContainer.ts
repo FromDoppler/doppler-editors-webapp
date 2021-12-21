@@ -39,4 +39,8 @@ export class SingletonLazyAppServicesContainer implements AppServices {
   get dopplerLegacyClient() {
     return this.singleton("dopplerLegacyClient");
   }
+
+  get appSessionStateAccessor() {
+    return this.singleton("appSessionStateAccessor");
+  }
 }
