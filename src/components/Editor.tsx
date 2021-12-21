@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import EmailEditor, { Design, UnlayerOptions, User } from "react-email-editor";
-import mergeTags from "../external/merge.tags";
+import { mergeTags } from "../external/merge.tags";
 
 interface EditorProps {
   design?: Design;
