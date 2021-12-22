@@ -4,17 +4,23 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import { App } from "./components/App";
 import { reportWebVitals } from "./reportWebVitals";
+import { configureApp } from "./composition-root";
+import { AppServicesProvider } from "./components/AppServicesContext";
 
-const basename =
-  (window as any)["editors-webapp-configuration"]?.basename ||
-  (window as any).basename || // TODO: remove this option
-  undefined;
+const customConfiguration = {
+  // TODO: remove this after update the HTMLs:
+  ...{ basename: (window as any).basename || undefined },
+  ...((window as any)["editors-webapp-configuration"] || {}),
+};
+const appServices = configureApp(customConfiguration);
 
 render(
   <StrictMode>
-    <BrowserRouter basename={basename}>
-      <App />
-    </BrowserRouter>
+    <AppServicesProvider appServices={appServices}>
+      <BrowserRouter basename={appServices.appConfiguration.basename}>
+        <App />
+      </BrowserRouter>
+    </AppServicesProvider>
   </StrictMode>,
   document.getElementById("root")
 );

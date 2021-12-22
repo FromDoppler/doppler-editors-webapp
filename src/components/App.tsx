@@ -4,6 +4,7 @@ import { Expenses } from "./expenses";
 import { Invoices } from "./invoices";
 import { Campaigns } from "./campaigns";
 import { Templates } from "./templates";
+import { ConfigurationDemo } from "./ConfigurationDemo";
 
 export const App = () => (
   <Routes>
@@ -12,6 +13,7 @@ export const App = () => (
       <Route path="templates/:idTemplate" element={<Templates />} />
       <Route path="expenses" element={<Expenses />} />
       <Route path="invoices" element={<Invoices />} />
+      <Route path="configuration-demo" element={<ConfigurationDemo />} />
       <Route
         path="*"
         element={
