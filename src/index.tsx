@@ -7,11 +7,14 @@ import { reportWebVitals } from "./reportWebVitals";
 import { configureApp } from "./composition-root";
 import { AppServicesProvider } from "./components/AppServicesContext";
 
-const customConfiguration = {
-  // TODO: remove this after update the HTMLs:
-  ...{ basename: (window as any).basename || undefined },
-  ...((window as any)["editors-webapp-configuration"] || {}),
-};
+const customConfiguration =
+  (window as any)["editors-webapp-configuration"] || {};
+
+// TODO: remove this after update the HTMLs:
+if ((window as any).basename) {
+  customConfiguration.basename = (window as any).basename;
+}
+
 const appServices = configureApp(customConfiguration);
 
 render(
