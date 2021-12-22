@@ -6,10 +6,10 @@ import {
 } from "../abstractions/app-session";
 import { AppSessionStateStatus } from "../abstractions/app-session/app-session-state";
 
-const AppSessionStateContext = createContext<AppSessionState>(
+export const AppSessionStateContext = createContext<AppSessionState>(
   defaultAppSessionState
 );
-const AppSessionStateStatusContext = createContext<string>(
+export const AppSessionStateStatusContext = createContext<string>(
   defaultAppSessionState.status
 );
 
