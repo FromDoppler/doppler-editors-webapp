@@ -3,4 +3,6 @@ export type AppConfiguration = {
   readonly keepAliveMilliseconds: number;
   readonly loginPageUrl: string;
   readonly unlayerProjectId: number;
+  readonly unlayerEditorManifestUrl: string;
+  readonly loaderUrl: string;
 };

@@ -15,7 +15,11 @@ interface ExtendedUnlayerUser extends User {
 export const Editor = InjectAppServices(
   ({
     appServices: {
-      appConfiguration: { unlayerProjectId },
+      appConfiguration: {
+        unlayerProjectId,
+        unlayerEditorManifestUrl,
+        loaderUrl,
+      },
       appSessionStateAccessor,
     },
     design,
@@ -52,8 +56,8 @@ export const Editor = InjectAppServices(
       mergeTags: mergeTags,
       user: user,
       customJS: [
-        `${process.env.PUBLIC_URL}/customJs/index.js`,
-        `window.setCompanyTitle("Making Sense");`,
+        loaderUrl,
+        `(new AssetServices()).load('${unlayerEditorManifestUrl}', []);`,
       ],
     };
 
