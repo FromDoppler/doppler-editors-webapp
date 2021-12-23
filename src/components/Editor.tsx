@@ -16,12 +16,17 @@ export const Editor = InjectAppServices(
   ({
     appServices: {
       appConfiguration: { unlayerProjectId },
+      appSessionStateAccessor,
     },
     design,
   }: {
     appServices: AppServices;
     design?: Design;
   }) => {
+    if (appSessionStateAccessor.current.status !== "authenticated") {
+      return <p>This component requires an authenticated session</p>;
+    }
+
     const emailEditorRef = useRef<EmailEditor>();
 
     useEffect(() => {
@@ -30,16 +35,16 @@ export const Editor = InjectAppServices(
       }
     });
 
-    const userId: number = parseInt(
-      process.env.REACT_APP_USER_ID as string,
-      10
-    );
-    const userSignature: string = process.env
-      .REACT_APP_USER_SIGNATURE as string;
+    const { id, email, signature } =
+      appSessionStateAccessor.current.unlayerUser;
+
     const user: ExtendedUnlayerUser = {
-      id: userId,
-      signature: userSignature,
+      // Ugly patch because Unlayer types does not accept string as id
+      id: id as unknown as number,
+      email,
+      signature,
     };
+
     const unlayerOptions: ExtendedUnlayerOptions = {
       mergeTagsConfig: {
         sort: false,
