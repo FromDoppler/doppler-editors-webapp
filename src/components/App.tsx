@@ -5,14 +5,31 @@ import { Invoices } from "./invoices";
 import { Campaigns } from "./campaigns";
 import { Templates } from "./templates";
 import { ConfigurationDemo } from "./ConfigurationDemo";
+import { RequireAuth } from "./RequireAuth";
+import { SessionDemo } from "./SessionDemo";
 
 export const App = () => (
   <Routes>
     <Route path="/" element={<Main />}>
-      <Route path="campaigns/:idCampaign" element={<Campaigns />} />
-      <Route path="templates/:idTemplate" element={<Templates />} />
+      <Route
+        path="campaigns/:idCampaign"
+        element={
+          <RequireAuth>
+            <Campaigns />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="templates/:idTemplate"
+        element={
+          <RequireAuth>
+            <Templates />
+          </RequireAuth>
+        }
+      />
       <Route path="expenses" element={<Expenses />} />
       <Route path="invoices" element={<Invoices />} />
+      <Route path="session-demo" element={<SessionDemo />} />
       <Route path="configuration-demo" element={<ConfigurationDemo />} />
       <Route
         path="*"

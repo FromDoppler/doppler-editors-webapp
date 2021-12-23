@@ -1,5 +1,7 @@
 import { AppConfiguration } from ".";
 import { AppConfigurationRenderer } from "./app-configuration-renderer";
+import { AppSessionStateAccessor, AppSessionStateMonitor } from "./app-session";
+import { DopplerLegacyClient } from "./doppler-legacy-client";
 
 // TODO: Determine if defining this type based on a list of types possible,
 // for example based on this type:
@@ -8,4 +10,7 @@ export type AppServices = {
   window: Window;
   appConfiguration: AppConfiguration;
   appConfigurationRenderer: AppConfigurationRenderer;
+  dopplerLegacyClient: DopplerLegacyClient;
+  appSessionStateAccessor: AppSessionStateAccessor;
+  appSessionStateMonitor: AppSessionStateMonitor;
 };

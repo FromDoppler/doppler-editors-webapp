@@ -1,5 +1,11 @@
 import { AppConfiguration, AppServices } from "./abstractions";
+import { defaultAppSessionState } from "./abstractions/app-session/app-session-state";
 import { AppConfigurationRendererImplementation } from "./implementations/app-configuration-renderer";
+import {
+  //
+  PullingAppSessionStateMonitor,
+} from "./implementations/app-session/pulling-app-session-state-monitor";
+import { DummyDopplerLegacyClient } from "./implementations/dummies/doppler-legacy-client";
 import {
   ServicesFactories,
   SingletonLazyAppServicesContainer,
@@ -14,11 +20,22 @@ export const configureApp = (
     ...customConfiguration,
   };
 
+  const appSessionStateWrapper = {
+    current: defaultAppSessionState,
+  };
+
   const factories: ServicesFactories = {
     windowFactory: () => window,
     appConfigurationFactory: () => appConfiguration,
     appConfigurationRendererFactory: (appServices: AppServices) =>
       new AppConfigurationRendererImplementation(appServices),
+    dopplerLegacyClientFactory: () => new DummyDopplerLegacyClient(),
+    appSessionStateAccessorFactory: () => appSessionStateWrapper,
+    appSessionStateMonitorFactory: (appServices: AppServices) =>
+      new PullingAppSessionStateMonitor({
+        appSessionStateWrapper,
+        appServices,
+      }),
   };
 
   const appServices = new SingletonLazyAppServicesContainer(factories);
