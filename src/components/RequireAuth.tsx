@@ -8,6 +8,7 @@ export const RequireAuth = InjectAppServices(
     children,
     appServices: {
       appConfiguration: { loginPageUrl },
+      window: { location },
     },
   }: {
     children: JSX.Element;
@@ -18,7 +19,8 @@ export const RequireAuth = InjectAppServices(
     return appSessionStateStatus === "unknown" ? (
       <div>Loading...</div>
     ) : appSessionStateStatus !== "authenticated" ? (
-      <NavigateToExternalUrl to={loginPageUrl} />
+      // Important: redirect value should not be encoded
+      <NavigateToExternalUrl to={`${loginPageUrl}?redirect=${location.href}`} />
     ) : (
       children
     );
