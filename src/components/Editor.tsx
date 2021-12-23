@@ -16,14 +16,14 @@ interface EditorProps {
 
 export const Editor = (props: EditorProps) => {
   const { design } = props;
-  const emailEditorRef = useRef() as React.MutableRefObject<EmailEditor>;
+  const emailEditorRef = useRef<EmailEditor>();
   const projectId: number = parseInt(
     process.env.REACT_APP_PROJECT_ID as string,
     10
   );
 
   useEffect(() => {
-    if (design && emailEditorRef) {
+    if (design && emailEditorRef.current) {
       emailEditorRef.current.loadDesign(design);
     }
   });
@@ -52,7 +52,7 @@ export const Editor = (props: EditorProps) => {
         style={{ minHeight: "100%" }}
         projectId={projectId}
         key="email-editor-test"
-        ref={emailEditorRef}
+        ref={emailEditorRef as React.MutableRefObject<EmailEditor>}
         options={unlayerOptions}
       />
     </div>
