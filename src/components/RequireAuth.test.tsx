@@ -15,11 +15,13 @@ describe(RequireAuth.name, () => {
 
     // Act
     render(
-      <AppSessionStateStatusContext.Provider value="unknown">
-        <RequireAuth appServices={appServices}>
-          <p>{privateText}</p>
-        </RequireAuth>
-      </AppSessionStateStatusContext.Provider>
+      <AppServicesProvider appServices={appServices}>
+        <AppSessionStateStatusContext.Provider value="unknown">
+          <RequireAuth>
+            <p>{privateText}</p>
+          </RequireAuth>
+        </AppSessionStateStatusContext.Provider>
+      </AppServicesProvider>
     );
     // Assert
     const expectedTextEl = screen.queryByText(expectedText);
@@ -37,11 +39,13 @@ describe(RequireAuth.name, () => {
 
     // Act
     render(
-      <AppSessionStateStatusContext.Provider value="authenticated">
-        <RequireAuth appServices={appServices}>
-          <p>{expectedText}</p>
-        </RequireAuth>
-      </AppSessionStateStatusContext.Provider>
+      <AppServicesProvider appServices={appServices}>
+        <AppSessionStateStatusContext.Provider value="authenticated">
+          <RequireAuth>
+            <p>{expectedText}</p>
+          </RequireAuth>
+        </AppSessionStateStatusContext.Provider>
+      </AppServicesProvider>
     );
 
     // Assert
