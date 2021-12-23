@@ -11,11 +11,6 @@ import { AppSessionStateProvider } from "./components/AppSessionStateContext";
 const customConfiguration =
   (window as any)["editors-webapp-configuration"] || {};
 
-// TODO: remove this after update the HTMLs:
-if ((window as any).basename) {
-  customConfiguration.basename = (window as any).basename;
-}
-
 const appServices = configureApp(customConfiguration);
 
 const appSessionStateMonitor = appServices.appSessionStateMonitor;
