@@ -62,7 +62,7 @@ Context.
 ```
 
 Then, [`AppServices`](./src/abstractions/services.ts) will be injected in the desired components using
-`InjectAppServices` HOC:
+`InjectAppServices` HOC or `useAppServices` hook:
 
 ![resolve app-services sequence diagram](./docs/resolve-app-services.png)
 
@@ -75,7 +75,7 @@ Then, [`AppServices`](./src/abstractions/services.ts) will be injected in the de
     participant implementations
 
     index_tsx->>+components: render
-    components->>+AppServicesProvider: InjectAppServices
+    components->>+AppServicesProvider: InjectAppServices / useAppServices
     AppServicesProvider->>+AppServicesContext: AppServicesContext.Consumer
     AppServicesContext-->>-AppServicesProvider: appServices
     AppServicesProvider-->>-components: appServices

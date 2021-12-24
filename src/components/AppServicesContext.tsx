@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React, { createContext, useContext } from "react";
 
 import { AppServices } from "../abstractions";
 
@@ -34,3 +34,5 @@ export function InjectAppServices<
       </AppServicesContext.Consumer>
     );
 }
+
+export const useAppServices = () => useContext(AppServicesContext);
