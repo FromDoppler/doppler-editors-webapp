@@ -1,20 +1,12 @@
 import { useLayoutEffect } from "react";
-import { AppServices } from "../abstractions";
-import { InjectAppServices } from "./AppServicesContext";
+import { useAppServices } from "./AppServicesContext";
 
-export const NavigateToExternalUrl = InjectAppServices(
-  ({
-    to,
-    appServices: {
-      window: { location },
-    },
-  }: {
-    to: string;
-    appServices: AppServices;
-  }) => {
-    useLayoutEffect(() => {
-      location.href = to;
-    }, [to, location]);
-    return <></>;
-  }
-);
+export const NavigateToExternalUrl = ({ to }: { to: string }) => {
+  const {
+    window: { location },
+  } = useAppServices();
+  useLayoutEffect(() => {
+    location.href = to;
+  }, [to, location]);
+  return <></>;
+};
