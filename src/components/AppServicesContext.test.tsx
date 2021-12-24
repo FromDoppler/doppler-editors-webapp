@@ -7,117 +7,112 @@ import {
   SingletonLazyAppServicesContainer,
 } from "../implementations/SingletonLazyAppServicesContainer";
 
-const testId = "result";
-const DemoComponent = ({
-  appServices: { appConfigurationRenderer },
-}: {
-  appServices: AppServices;
-}) => (
-  <code>
-    <pre data-testid={testId}>{appConfigurationRenderer?.render()}</pre>
-  </code>
-);
+const resultElementTestId = "result";
 
-describe("Dependency injection", () => {
+const buildTestScenario = () => {
+  const configurationAsJson = '{"testProperty":"test value"}';
+  const appConfigurationResult = {
+    testProperty: "test value",
+  } as unknown as AppConfiguration;
+  const appConfigurationFactory = jest.fn((_) => appConfigurationResult);
+
+  const appConfigurationRendererFactory = (appServices: AppServices) =>
+    new AppConfigurationRendererImplementation(appServices);
+
+  const windowResult = {} as unknown as Window;
+  const windowFactory = jest.fn((_) => windowResult);
+
+  const factories = {
+    appConfigurationFactory,
+    appConfigurationRendererFactory,
+    windowFactory,
+  } as unknown as ServicesFactories;
+
+  const appServices = new SingletonLazyAppServicesContainer(factories);
+
+  return {
+    resultElementTestId,
+    appServices,
+    configurationAsJson,
+    windowFactory,
+    appConfigurationFactory,
+  };
+};
+
+describe(InjectAppServices.name, () => {
+  const HocInjectedDemoComponent = InjectAppServices(
+    ({
+      appServices: { appConfigurationRenderer },
+    }: {
+      appServices: AppServices;
+    }) => (
+      <code>
+        <pre data-testid={resultElementTestId}>
+          {appConfigurationRenderer?.render()}
+        </pre>
+      </code>
+    )
+  );
+
   it("should inject service with dependencies into a component and do not create other services", () => {
     // Arrange
-    const expectedTextResult = '{"testProperty":"test value"}';
-
-    const appConfigurationResult = {
-      testProperty: "test value",
-    } as unknown as AppConfiguration;
-    const appConfigurationFactory = jest.fn((_) => appConfigurationResult);
-
-    const appConfigurationRendererFactory = (appServices: AppServices) =>
-      new AppConfigurationRendererImplementation(appServices);
-
-    const windowResult = {} as unknown as Window;
-    const windowFactory = jest.fn((_) => windowResult);
-
-    const factories = {
-      appConfigurationFactory,
-      appConfigurationRendererFactory,
+    const {
+      appServices,
+      configurationAsJson,
       windowFactory,
-    } as unknown as ServicesFactories;
+      appConfigurationFactory,
+    } = buildTestScenario();
 
-    const appServices = new SingletonLazyAppServicesContainer(factories);
-
-    const RenderConfiguration = InjectAppServices(DemoComponent);
-
+    // Act
     render(
       <AppServicesProvider appServices={appServices}>
-        <RenderConfiguration />
+        <HocInjectedDemoComponent />
       </AppServicesProvider>
     );
 
-    const renderResult = screen.getByTestId(testId);
-    expect(renderResult.textContent).toBe(expectedTextResult);
+    // Assert
+    const renderResult = screen.getByTestId(resultElementTestId);
+    expect(renderResult.textContent).toBe(configurationAsJson);
     expect(windowFactory).not.toHaveBeenCalled();
     expect(appConfigurationFactory).toHaveBeenCalled();
   });
 
   it("should not inject service defined in a different context", () => {
     // Arrange
-    const appConfigurationResult = {
-      testProperty: "test value",
-    } as unknown as AppConfiguration;
-    const appConfigurationFactory = jest.fn((_) => appConfigurationResult);
+    const { appServices, appConfigurationFactory } = buildTestScenario();
 
-    const appConfigurationRendererFactory = (appServices: AppServices) =>
-      new AppConfigurationRendererImplementation(appServices);
-
-    const factories = {
-      appConfigurationFactory,
-      appConfigurationRendererFactory,
-    } as unknown as ServicesFactories;
-
-    const appServices = new SingletonLazyAppServicesContainer(factories);
-
-    const RenderConfiguration = InjectAppServices(DemoComponent);
-
+    // Act
     render(
       <div>
         <AppServicesProvider appServices={appServices}>
           <div></div>
         </AppServicesProvider>
-        <RenderConfiguration />
+        <HocInjectedDemoComponent />
       </div>
     );
 
-    const renderResult = screen.getByTestId(testId);
+    // Assert
+    const renderResult = screen.getByTestId(resultElementTestId);
     expect(renderResult).toBeEmptyDOMElement();
     expect(appConfigurationFactory).not.toHaveBeenCalled();
   });
 
-  it("should not inject services when appService is explicit", () => {
+  it("should NOT inject services when appServices is explicit", () => {
     // Arrange
-    const appConfigurationResult = {
-      testProperty: "test value",
-    } as unknown as AppConfiguration;
-    const appConfigurationFactory = jest.fn((_) => appConfigurationResult);
+    const { appServices, appConfigurationFactory } = buildTestScenario();
 
-    const appConfigurationRendererFactory = (appServices: AppServices) =>
-      new AppConfigurationRendererImplementation(appServices);
-
-    const factories = {
-      appConfigurationFactory,
-      appConfigurationRendererFactory,
-    } as unknown as ServicesFactories;
-
-    const appServices = new SingletonLazyAppServicesContainer(factories);
-
-    const RenderConfiguration = InjectAppServices(DemoComponent);
-
+    // Act
     render(
       <div>
         <AppServicesProvider appServices={appServices}>
-          <RenderConfiguration appServices={{} as AppServices} />
+          <HocInjectedDemoComponent appServices={{} as AppServices} />
         </AppServicesProvider>
       </div>
     );
 
+    // Assert
     expect(appConfigurationFactory).not.toHaveBeenCalled();
-    const renderResult = screen.getByTestId(testId);
+    const renderResult = screen.getByTestId(resultElementTestId);
     expect(renderResult).toBeEmptyDOMElement();
   });
 });
