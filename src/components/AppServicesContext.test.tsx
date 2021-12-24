@@ -1,5 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import { AppServicesProvider, InjectAppServices } from "./AppServicesContext";
+import {
+  AppServicesProvider,
+  InjectAppServices,
+  useAppServices,
+} from "./AppServicesContext";
 import { AppConfiguration, AppServices } from "../abstractions";
 import { AppConfigurationRendererImplementation } from "../implementations/app-configuration-renderer";
 import {
@@ -114,5 +118,80 @@ describe(InjectAppServices.name, () => {
     expect(appConfigurationFactory).not.toHaveBeenCalled();
     const renderResult = screen.getByTestId(resultElementTestId);
     expect(renderResult).toBeEmptyDOMElement();
+  });
+});
+
+describe(useAppServices.name, () => {
+  const HookInjectedDemoComponent = () => {
+    const { appConfigurationRenderer } = useAppServices();
+    return (
+      <code>
+        <pre data-testid={resultElementTestId}>
+          {appConfigurationRenderer?.render()}
+        </pre>
+      </code>
+    );
+  };
+
+  it("should inject service with dependencies into a component and do not create other services", () => {
+    // Arrange
+    const {
+      appServices,
+      configurationAsJson,
+      windowFactory,
+      appConfigurationFactory,
+    } = buildTestScenario();
+
+    // Act
+    render(
+      <AppServicesProvider appServices={appServices}>
+        <HookInjectedDemoComponent />
+      </AppServicesProvider>
+    );
+
+    // Assert
+    const renderResult = screen.getByTestId(resultElementTestId);
+    expect(renderResult.textContent).toBe(configurationAsJson);
+    expect(windowFactory).not.toHaveBeenCalled();
+    expect(appConfigurationFactory).toHaveBeenCalled();
+  });
+
+  it("should not inject service defined in a different context", () => {
+    // Arrange
+    const { appServices, appConfigurationFactory } = buildTestScenario();
+
+    // Act
+    render(
+      <div>
+        <AppServicesProvider appServices={appServices}>
+          <div></div>
+        </AppServicesProvider>
+        <HookInjectedDemoComponent />
+      </div>
+    );
+
+    // Assert
+    const renderResult = screen.getByTestId(resultElementTestId);
+    expect(renderResult).toBeEmptyDOMElement();
+    expect(appConfigurationFactory).not.toHaveBeenCalled();
+  });
+
+  it("should NOT make honor to explicit injected appServices", () => {
+    // Arrange
+    const { appServices, appConfigurationFactory } = buildTestScenario();
+
+    // Act
+    render(
+      <div>
+        <AppServicesProvider appServices={appServices}>
+          <HookInjectedDemoComponent
+            {...({ appServices: {} as AppServices } as any)}
+          />
+        </AppServicesProvider>
+      </div>
+    );
+
+    // Assert
+    expect(appConfigurationFactory).toHaveBeenCalled();
   });
 });
