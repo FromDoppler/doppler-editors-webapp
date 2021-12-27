@@ -29,12 +29,11 @@ export const Editor = ({ design }: { design?: Design }) => {
     return <p>This component requires an authenticated session</p>;
   }
 
-  const { id, email, signature } = appSessionStateAccessor.current.unlayerUser;
+  const { id, signature } = appSessionStateAccessor.current.unlayerUser;
 
   const user: ExtendedUnlayerUser = {
     // Ugly patch because Unlayer types does not accept string as id
     id: id as unknown as number,
-    email,
     signature,
   };
 
