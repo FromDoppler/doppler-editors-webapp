@@ -10,6 +10,7 @@ RUN yarn
 COPY . .
 
 FROM restore AS verify-format
+ENV CI=true
 RUN yarn verify-format
 
 FROM restore AS test
@@ -17,6 +18,7 @@ ENV CI=true
 RUN yarn test
 
 FROM restore AS build
+ENV CI=true
 ARG public_url="."
 ENV PUBLIC_URL="${public_url}"
 RUN yarn build
