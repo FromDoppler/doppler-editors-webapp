@@ -15,20 +15,28 @@
     <div id="root"></div>
     <script src="https://cdn.fromdoppler.com/loader/v1/loader.js"></script>
     <script type="text/javascript">
-      const versions = {
-        // Build of a random pull request
-        pr: "pr-2",
-        // Build of the INT branch
-        int: "INT",
-        // Build of the main branch
-        main: "main",
-        // Build of a final version
-        v1: "v1",
-      };
+      const versionParamRegex = new RegExp(
+        "\\?(?:.+&)*" +
+          "ew_version=((?:(?:main)|(?:INT)|(?:pr-\\d+)|(?:v\\d+(?:\\.\\d+){0,2})))" +
+          "(?:-([a-f\\d]{40}))?" +
+          "(?:&.*)?$"
+      );
+      const versionParamRegexResult = location.href.match(versionParamRegex);
+      const defaultVersion = "main";
+      const version = versionParamRegexResult
+        ? versionParamRegexResult[1]
+        : defaultVersion;
+      const commitId =
+        (versionParamRegexResult && versionParamRegexResult[2]) || "";
 
-      const version = versions.main; // 👈 choose a version
-      const avoidCache = true; // 👈 modify
-      const commitId = ""; // 👈 define commit ID to a hard cache invalidation
+      const avoidCacheParamRegex =
+        /\?(?:.+&)*ew_nocache=((?:true)|(?:false))(?:&.*)?$/;
+      const avoidCacheParamRegexResult =
+        location.href.match(avoidCacheParamRegex);
+      const avoidCacheDefault = true;
+      const avoidCache = avoidCacheParamRegexResult
+        ? avoidCacheParamRegexResult[1] == "true"
+        : avoidCacheDefault;
 
       const cdnBaseUrl = "https://cdn.fromdoppler.com";
       const pkgName = "editors-webapp";
