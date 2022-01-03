@@ -32,7 +32,7 @@ export const AppSessionStateProvider = ({
       setAppSessionState(newValue);
       setAppSessionStateStatus(newValue.status);
     });
-  }, []);
+  }, [appSessionStateMonitor]);
 
   return (
     <AppSessionStateContext.Provider value={appSessionState}>
