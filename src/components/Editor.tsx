@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import EmailEditor, { Design, UnlayerOptions, User } from "react-email-editor";
 import { mergeTags } from "../external/merge.tags";
 import { useAppServices } from "./AppServicesContext";
@@ -17,13 +17,13 @@ export const Editor = ({ design }: { design?: Design }) => {
     appSessionStateAccessor,
   } = useAppServices();
 
-  const emailEditorRef = useRef<EmailEditor>();
+  const emailEditorRef = useRef<EmailEditor>(null);
 
-  useEffect(() => {
+  const onLoad = () => {
     if (design && emailEditorRef.current) {
       emailEditorRef.current.loadDesign(design);
     }
-  });
+  };
 
   if (appSessionStateAccessor.current.status !== "authenticated") {
     return <p>This component requires an authenticated session</p>;
@@ -55,7 +55,8 @@ export const Editor = ({ design }: { design?: Design }) => {
         style={{ minHeight: "100%" }}
         projectId={unlayerProjectId}
         key="email-editor-test"
-        ref={emailEditorRef as React.MutableRefObject<EmailEditor>}
+        ref={emailEditorRef}
+        onLoad={onLoad}
         options={unlayerOptions}
       />
     </div>
