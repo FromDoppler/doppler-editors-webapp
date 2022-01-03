@@ -1,3 +1,4 @@
+import axios from "axios";
 import { AppConfiguration, AppServices } from "./abstractions";
 import { defaultAppSessionState } from "./abstractions/app-session/app-session-state";
 import { AppConfigurationRendererImplementation } from "./implementations/app-configuration-renderer";
@@ -26,6 +27,7 @@ export const configureApp = (
 
   const factories: ServicesFactories = {
     windowFactory: () => window,
+    axiosStaticFactory: () => axios,
     appConfigurationFactory: () => appConfiguration,
     appConfigurationRendererFactory: (appServices: AppServices) =>
       new AppConfigurationRendererImplementation(appServices),
