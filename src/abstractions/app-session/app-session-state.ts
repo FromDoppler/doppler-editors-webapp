@@ -1,7 +1,7 @@
 export type AuthenticatedAppSessionState = {
   status: "authenticated";
   jwtToken: string;
-  unlayerUser: { id: string; email: string; signature: string };
+  unlayerUser: { id: string; signature: string };
 };
 
 export type AppSessionState =
