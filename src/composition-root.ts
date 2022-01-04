@@ -12,6 +12,7 @@ import {
 } from "./implementations/SingletonLazyAppServicesContainer";
 import { defaultAppConfiguration } from "./default-configuration";
 import { DopplerLegacyClientImpl } from "./implementations/DopplerLegacyClientImpl";
+import { DummyDopplerLegacyClient } from "./implementations/dummies/doppler-legacy-client";
 
 export const configureApp = (
   customConfiguration: Partial<AppConfiguration>
@@ -25,7 +26,7 @@ export const configureApp = (
     current: defaultAppSessionState,
   };
 
-  const factories: ServicesFactories = {
+  const realFactories: ServicesFactories = {
     windowFactory: () => window,
     axiosStaticFactory: () => axios,
     appConfigurationFactory: () => appConfiguration,
@@ -43,6 +44,14 @@ export const configureApp = (
         appServices,
       }),
   };
+
+  const dummyFactories: Partial<ServicesFactories> = {
+    dopplerLegacyClientFactory: () => new DummyDopplerLegacyClient(),
+  };
+
+  const factories = appConfiguration.useDummies
+    ? { ...realFactories, ...dummyFactories }
+    : realFactories;
 
   const appServices = new SingletonLazyAppServicesContainer(factories);
 

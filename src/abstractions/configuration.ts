@@ -6,4 +6,5 @@ export type AppConfiguration = {
   readonly unlayerEditorManifestUrl: string;
   readonly loaderUrl: string;
   readonly dopplerLegacyBaseUrl: string;
+  readonly useDummies: boolean;
 };
