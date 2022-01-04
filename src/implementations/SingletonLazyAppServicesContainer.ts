@@ -51,4 +51,8 @@ export class SingletonLazyAppServicesContainer implements AppServices {
   get axiosStatic() {
     return this.singleton("axiosStatic");
   }
+
+  get htmlEditorApiClient() {
+    return this.singleton("htmlEditorApiClient");
+  }
 }
