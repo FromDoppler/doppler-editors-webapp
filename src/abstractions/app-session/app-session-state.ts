@@ -1,6 +1,7 @@
 export type AuthenticatedAppSessionState = {
   status: "authenticated";
   jwtToken: string;
+  dopplerAccountName: string;
   unlayerUser: { id: string; signature: string };
 };
 
