@@ -29,7 +29,6 @@ describe(DopplerLegacyClientImpl.name, () => {
             url: string,
             config?: AxiosRequestConfig
           ): Promise<AxiosResponse<DopplerLegacyUserData | any>> {
-            await setTimeout(() => {}, 1000);
             return {
               data: {
                 ...dopplerUserDataMock,
@@ -71,7 +70,6 @@ describe(DopplerLegacyClientImpl.name, () => {
             url: string,
             config?: AxiosRequestConfig
           ): Promise<AxiosResponse<DopplerLegacyUserData | any>> {
-            await setTimeout(() => {}, 1000);
             throw errorMock;
           },
         };
