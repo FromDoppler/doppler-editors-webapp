@@ -40,6 +40,15 @@
         ? avoidCacheParamRegexResult[1] == "true"
         : avoidCacheDefault;
 
+      const useDummiesParamRegex =
+        /\?(?:.+&)*ew_dummy=((?:true)|(?:false))(?:&.*)?$/;
+      const useDummiesParamRegexResult =
+        location.href.match(useDummiesParamRegex);
+      const useDummiesDefault = false;
+      const useDummies = useDummiesParamRegexResult
+        ? useDummiesParamRegexResult[1] == "true"
+        : useDummiesDefault;
+
       const cdnBaseUrl = "https://cdn.fromdoppler.com";
       const pkgName = "editors-webapp";
       const scriptUrl = `${cdnBaseUrl}/${pkgName}/asset-manifest-${version}${
@@ -50,6 +59,7 @@
 
       window["editors-webapp-configuration"] = {
         basename: "editors",
+        useDummies,
       };
 
       new AssetServices().load(scriptUrl);
