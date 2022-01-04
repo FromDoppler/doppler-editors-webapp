@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import { Main } from "./Main";
 import { Expenses } from "./expenses";
 import { Invoices } from "./invoices";
-import { Campaigns } from "./campaigns";
-import { Templates } from "./templates";
+import { Campaign } from "./Campaign";
+import { Template } from "./Template";
 import { ConfigurationDemo } from "./ConfigurationDemo";
 import { RequireAuth } from "./RequireAuth";
 import { SessionDemo } from "./SessionDemo";
@@ -15,7 +15,7 @@ export const App = () => (
         path="campaigns/:idCampaign"
         element={
           <RequireAuth>
-            <Campaigns />
+            <Campaign />
           </RequireAuth>
         }
       />
@@ -23,7 +23,7 @@ export const App = () => (
         path="templates/:idTemplate"
         element={
           <RequireAuth>
-            <Templates />
+            <Template />
           </RequireAuth>
         }
       />
