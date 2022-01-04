@@ -1,4 +1,5 @@
 import { AppConfiguration } from ".";
+import { AxiosStatic } from "axios";
 import { AppConfigurationRenderer } from "./app-configuration-renderer";
 import { AppSessionStateAccessor, AppSessionStateMonitor } from "./app-session";
 import { DopplerLegacyClient } from "./doppler-legacy-client";
@@ -8,6 +9,7 @@ import { DopplerLegacyClient } from "./doppler-legacy-client";
 // type AppServicesTuple = [ Window, AppConfiguration ]
 export type AppServices = {
   window: Window;
+  axiosStatic: AxiosStatic;
   appConfiguration: AppConfiguration;
   appConfigurationRenderer: AppConfigurationRenderer;
   dopplerLegacyClient: DopplerLegacyClient;

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { AppConfiguration, AppServices } from "./abstractions";
 import { defaultAppSessionState } from "./abstractions/app-session/app-session-state";
 import { AppConfigurationRendererImplementation } from "./implementations/app-configuration-renderer";
@@ -5,12 +6,12 @@ import {
   //
   PullingAppSessionStateMonitor,
 } from "./implementations/app-session/pulling-app-session-state-monitor";
-import { DummyDopplerLegacyClient } from "./implementations/dummies/doppler-legacy-client";
 import {
   ServicesFactories,
   SingletonLazyAppServicesContainer,
 } from "./implementations/SingletonLazyAppServicesContainer";
 import { defaultAppConfiguration } from "./default-configuration";
+import { DopplerLegacyClientImpl } from "./implementations/DopplerLegacyClientImpl";
 
 export const configureApp = (
   customConfiguration: Partial<AppConfiguration>
@@ -26,10 +27,15 @@ export const configureApp = (
 
   const factories: ServicesFactories = {
     windowFactory: () => window,
+    axiosStaticFactory: () => axios,
     appConfigurationFactory: () => appConfiguration,
     appConfigurationRendererFactory: (appServices: AppServices) =>
       new AppConfigurationRendererImplementation(appServices),
-    dopplerLegacyClientFactory: () => new DummyDopplerLegacyClient(),
+    dopplerLegacyClientFactory: (appServices: AppServices) =>
+      new DopplerLegacyClientImpl({
+        axiosStatic: appServices.axiosStatic,
+        appConfiguration: appServices.appConfiguration,
+      }),
     appSessionStateAccessorFactory: () => appSessionStateWrapper,
     appSessionStateMonitorFactory: (appServices: AppServices) =>
       new PullingAppSessionStateMonitor({
