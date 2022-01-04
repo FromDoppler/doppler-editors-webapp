@@ -28,11 +28,20 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     try {
       const axiosResponse: AxiosResponse<DopplerLegacyUserData> =
         await this.axios.get("/WebApp/GetUserData");
-      const { jwtToken, unlayerUser } = axiosResponse.data;
+      const { jwtToken, user, lang, avatar, unlayerUser } = axiosResponse.data;
       return {
         success: true,
         value: {
           jwtToken,
+          user: {
+            email: user.email,
+            fullname: user.fullname,
+          },
+          lang,
+          avatar: {
+            text: avatar.text,
+            color: avatar.color,
+          },
           unlayerUser: {
             id: unlayerUser.id,
             signature: unlayerUser.signature,

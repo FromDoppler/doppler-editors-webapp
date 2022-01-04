@@ -18,6 +18,15 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
         success: true,
         value: {
           jwtToken: `jwtToken-${counter++}`,
+          user: {
+            email: "test@test.com",
+            fullname: "Juan Perez",
+          },
+          lang: "es",
+          avatar: {
+            text: "JP",
+            color: "#99CFB8",
+          },
           unlayerUser: {
             id: "local_105690",
             signature:
