@@ -49,6 +49,7 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
         },
       };
     } catch (error) {
+      console.error("Error loading GetUserData", error);
       return {
         success: false,
         unexpectedError: error,
