@@ -11,11 +11,11 @@ describe(DopplerLegacyClientImpl.name, () => {
       user: {
         email: "user@email",
         fullname: "user.fullname",
-      },
-      lang: "es",
-      avatar: {
-        text: "NN",
-        color: "#99CFB8",
+        lang: "es",
+        avatar: {
+          text: "NN",
+          color: "#99CFB8",
+        },
       },
       unlayerUser: {
         id: "user_id",
