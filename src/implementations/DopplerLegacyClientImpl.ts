@@ -28,7 +28,7 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     try {
       const axiosResponse: AxiosResponse<DopplerLegacyUserData> =
         await this.axios.get("/WebApp/GetUserData");
-      const { jwtToken, user, lang, avatar, unlayerUser } = axiosResponse.data;
+      const { jwtToken, user, unlayerUser } = axiosResponse.data;
       return {
         success: true,
         value: {
@@ -36,11 +36,11 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
           user: {
             email: user.email,
             fullname: user.fullname,
-          },
-          lang,
-          avatar: {
-            text: avatar.text,
-            color: avatar.color,
+            lang: user.lang,
+            avatar: {
+              text: user.avatar.text,
+              color: user.avatar.color,
+            },
           },
           unlayerUser: {
             id: unlayerUser.id,
@@ -49,6 +49,7 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
         },
       };
     } catch (error) {
+      console.error("Error loading GetUserData", error);
       return {
         success: false,
         unexpectedError: error,

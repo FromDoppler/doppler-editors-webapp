@@ -5,11 +5,11 @@ export type DopplerLegacyUserData = {
   user: {
     email: string;
     fullname: string;
-  };
-  lang: string;
-  avatar: {
-    text: string;
-    color: string;
+    lang: string;
+    avatar: {
+      text: string;
+      color: string;
+    };
   };
   unlayerUser: { id: string; signature: string };
 };
