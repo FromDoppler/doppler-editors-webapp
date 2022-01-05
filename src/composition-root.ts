@@ -13,6 +13,7 @@ import {
 import { defaultAppConfiguration } from "./default-configuration";
 import { DopplerLegacyClientImpl } from "./implementations/DopplerLegacyClientImpl";
 import { DummyDopplerLegacyClient } from "./implementations/dummies/doppler-legacy-client";
+import { DummyHtmlEditorApiClient } from "./implementations/dummies/html-editor-api-client";
 
 export const configureApp = (
   customConfiguration: Partial<AppConfiguration>
@@ -37,6 +38,8 @@ export const configureApp = (
         axiosStatic: appServices.axiosStatic,
         appConfiguration: appServices.appConfiguration,
       }),
+    // TODO: create a real implementation of this service
+    htmlEditorApiClientFactory: () => new DummyHtmlEditorApiClient(),
     appSessionStateAccessorFactory: () => appSessionStateWrapper,
     appSessionStateMonitorFactory: (appServices: AppServices) =>
       new PullingAppSessionStateMonitor({
@@ -47,6 +50,7 @@ export const configureApp = (
 
   const dummyFactories: Partial<ServicesFactories> = {
     dopplerLegacyClientFactory: () => new DummyDopplerLegacyClient(),
+    htmlEditorApiClientFactory: () => new DummyHtmlEditorApiClient(),
   };
 
   const factories = appConfiguration.useDummies
