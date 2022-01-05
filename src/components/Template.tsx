@@ -1,5 +1,5 @@
 import { Editor } from "./Editor";
 
 export const Template = () => {
-  return <Editor></Editor>;
+  return <Editor design={null}></Editor>;
 };
