@@ -50,7 +50,7 @@ export const Campaign = () => {
   if (!state.loading && !state.design) {
     return (
       <div data-testid={errorMessageTestId}>
-        Unexpected Error: {state.error}
+        Unexpected Error: <pre>{JSON.stringify(state.error)}</pre>
       </div>
     );
   }
