@@ -1,6 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { App } from "./App";
 import { MemoryRouter } from "react-router-dom";
+import { AppServicesProvider } from "./AppServicesContext";
+import { AppServices } from "../abstractions";
 
 const rootURL = "/";
 const expensesURL = "/expenses";
@@ -14,9 +16,11 @@ test("root URL should not render invoices or expenses content", async () => {
   // Arrange & Act
   const initialURL = rootURL;
   render(
-    <MemoryRouter initialEntries={[initialURL]}>
-      <App />
-    </MemoryRouter>
+    <AppServicesProvider appServices={{ appConfiguration: {} } as AppServices}>
+      <MemoryRouter initialEntries={[initialURL]}>
+        <App />
+      </MemoryRouter>
+    </AppServicesProvider>
   );
 
   // Assert
@@ -33,9 +37,11 @@ test("Wrong URL should render expected content", async () => {
   const initialURL = wrongURL;
   const expectedContent = notFoundContent;
   render(
-    <MemoryRouter initialEntries={[initialURL]}>
-      <App />
-    </MemoryRouter>
+    <AppServicesProvider appServices={{ appConfiguration: {} } as AppServices}>
+      <MemoryRouter initialEntries={[initialURL]}>
+        <App />
+      </MemoryRouter>
+    </AppServicesProvider>
   );
 
   // Assert
@@ -47,9 +53,11 @@ test("expenses URL should render expected content", async () => {
   const initialURL = expensesURL;
   const expectedContent = "Expenses content";
   render(
-    <MemoryRouter initialEntries={[initialURL]}>
-      <App />
-    </MemoryRouter>
+    <AppServicesProvider appServices={{ appConfiguration: {} } as AppServices}>
+      <MemoryRouter initialEntries={[initialURL]}>
+        <App />
+      </MemoryRouter>
+    </AppServicesProvider>
   );
 
   // Assert
@@ -61,9 +69,11 @@ test("invoices URL should render expected content", async () => {
   const initialURL = invoicesURL;
   const expectedContent = "Invoices content";
   render(
-    <MemoryRouter initialEntries={[initialURL]}>
-      <App />
-    </MemoryRouter>
+    <AppServicesProvider appServices={{ appConfiguration: {} } as AppServices}>
+      <MemoryRouter initialEntries={[initialURL]}>
+        <App />
+      </MemoryRouter>
+    </AppServicesProvider>
   );
 
   // Assert
@@ -74,9 +84,11 @@ test("Click in first 'Expenses' link should should show expenses title", async (
   // Arrange
   const initialURL = invoicesURL;
   render(
-    <MemoryRouter initialEntries={[initialURL]}>
-      <App />
-    </MemoryRouter>
+    <AppServicesProvider appServices={{ appConfiguration: {} } as AppServices}>
+      <MemoryRouter initialEntries={[initialURL]}>
+        <App />
+      </MemoryRouter>
+    </AppServicesProvider>
   );
   const linkElement = screen.getAllByText(/Expenses/i)[0];
 

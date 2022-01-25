@@ -1,8 +1,13 @@
 import { Link, Outlet } from "react-router-dom";
+import { useAppServices } from "./AppServicesContext";
 import logo from "./logo.svg";
 import "./Main.css";
 
 export function Main() {
+  const {
+    appConfiguration: { loginPageUrl },
+  } = useAppServices();
+
   return (
     <div className="App">
       <header className="App-header">
@@ -18,7 +23,7 @@ export function Main() {
             <Link to="/campaigns/456">campaigns/456</Link> |{" "}
             <Link to="/campaigns/789">campaigns/789</Link> |{" "}
             <Link to="/templates/1">/templates/1</Link> |{" "}
-            <a href="/login">Login</a>
+            <a href={loginPageUrl}>Login</a>
           </div>
         </nav>
       </header>
