@@ -1,4 +1,4 @@
-import { ResultWithoutExpectedErrors } from "../abstractions/common/result-types";
+import { Result } from "../abstractions/common/result-types";
 import { AppConfiguration } from "../abstractions";
 import { HtmlEditorApiClient } from "../abstractions/html-editor-api-client";
 import { Design } from "react-email-editor";
@@ -44,9 +44,7 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
     });
   }
 
-  async getCampaignContent(
-    campaignId: string
-  ): Promise<ResultWithoutExpectedErrors<Design>> {
+  async getCampaignContent(campaignId: string): Promise<Result<Design>> {
     try {
       const response = await this.GET<any>(
         `/campaigns/${campaignId}/content/design`
