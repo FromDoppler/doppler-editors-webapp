@@ -8,7 +8,7 @@ export function Main() {
       <header className="App-header">
         <div className="flex-row-center h-full">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1>Bookkeeper</h1>
+          <h1>Editors WebApp</h1>
         </div>
         <nav className="flex-row-center">
           <div>

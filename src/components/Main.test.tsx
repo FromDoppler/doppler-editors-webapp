@@ -8,6 +8,6 @@ test("renders learn react link", () => {
       <Main />
     </BrowserRouter>
   );
-  const linkElement = screen.getByText(/Bookkeeper/i);
+  const linkElement = screen.getByText(/Editors WebApp/i);
   expect(linkElement).toBeInTheDocument();
 });
