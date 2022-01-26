@@ -11,7 +11,7 @@ interface ExtendedUnlayerUser extends User {
   signature?: string;
 }
 
-export const Editor = ({ design }: { design: Design | null }) => {
+export const Editor = ({ design }: { design: Design | undefined }) => {
   const {
     appConfiguration: { unlayerProjectId, unlayerEditorManifestUrl, loaderUrl },
     appSessionStateAccessor,

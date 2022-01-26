@@ -5,9 +5,9 @@ import { Editor } from "../components/Editor";
 import { useAppServices } from "./AppServicesContext";
 
 type LoadingDesignState =
-  | { loading: true; error: null; design: null }
-  | { error: any; loading: false; design: null }
-  | { design: Design; loading: false; error: null };
+  | { loading: true; error?: undefined; design?: undefined }
+  | { error: any; loading: false; design?: undefined }
+  | { design: Design; loading: false; error?: undefined };
 
 export const loadingMessageTestId = "loading-message";
 export const errorMessageTestId = "error-message";
@@ -18,8 +18,6 @@ export const Campaign = () => {
 
   const [state, setState] = useState<LoadingDesignState>({
     loading: true,
-    error: null,
-    design: null,
   });
 
   useEffect(() => {
@@ -28,17 +26,15 @@ export const Campaign = () => {
         setState({
           error: "Missing idCampaign",
           loading: false,
-          design: null,
         });
       } else {
         const result = await htmlEditorApiClient.getCampaignContent(idCampaign);
         if (result.success) {
-          setState({ design: result.value, loading: false, error: null });
+          setState({ design: result.value, loading: false });
         } else {
           setState({
             error: result.unexpectedError,
             loading: false,
-            design: null,
           });
         }
       }
