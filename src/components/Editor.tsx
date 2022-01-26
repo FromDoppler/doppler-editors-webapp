@@ -11,7 +11,13 @@ interface ExtendedUnlayerUser extends User {
   signature?: string;
 }
 
-export const Editor = ({ design }: { design: Design | null }) => {
+const emptyDesign = {
+  body: {
+    rows: [],
+  },
+};
+
+export const Editor = ({ design }: { design: Design | undefined }) => {
   const {
     appConfiguration: { unlayerProjectId, unlayerEditorManifestUrl, loaderUrl },
     appSessionStateAccessor,
@@ -21,8 +27,8 @@ export const Editor = ({ design }: { design: Design | null }) => {
   const [emailEditorLoaded, setEmailEditorLoaded] = useState(false);
 
   useEffect(() => {
-    if (design && emailEditorLoaded) {
-      emailEditorRef?.current?.loadDesign(design);
+    if (emailEditorLoaded) {
+      emailEditorRef?.current?.loadDesign(design || emptyDesign);
     }
   }, [design, emailEditorLoaded]);
 
