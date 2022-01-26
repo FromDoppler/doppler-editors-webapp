@@ -2,7 +2,7 @@ import {
   DopplerLegacyClient,
   DopplerLegacyUserData,
 } from "../abstractions/doppler-legacy-client";
-import { ResultWithoutExpectedErrors } from "../abstractions/common/result-types";
+import { Result } from "../abstractions/common/result-types";
 import { AxiosInstance, AxiosResponse, AxiosStatic } from "axios";
 import { AppConfiguration } from "../abstractions";
 
@@ -22,9 +22,7 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     });
   }
 
-  async getDopplerUserData(): Promise<
-    ResultWithoutExpectedErrors<DopplerLegacyUserData>
-  > {
+  async getDopplerUserData(): Promise<Result<DopplerLegacyUserData>> {
     try {
       const axiosResponse: AxiosResponse<DopplerLegacyUserData> =
         await this.axios.get("/WebApp/GetUserData");

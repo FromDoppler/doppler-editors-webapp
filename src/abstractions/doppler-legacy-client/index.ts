@@ -1,4 +1,4 @@
-import { ResultWithoutExpectedErrors } from "../common/result-types";
+import { Result } from "../common/result-types";
 
 export type DopplerLegacyUserData = {
   jwtToken: string;
@@ -15,7 +15,5 @@ export type DopplerLegacyUserData = {
 };
 
 export interface DopplerLegacyClient {
-  getDopplerUserData: () => Promise<
-    ResultWithoutExpectedErrors<DopplerLegacyUserData>
-  >;
+  getDopplerUserData: () => Promise<Result<DopplerLegacyUserData>>;
 }
