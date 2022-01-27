@@ -1,6 +1,6 @@
 import { Result } from "../common/result-types";
 
-export type DopplerLegacyUserData = {
+type DopplerLegacyUserData = {
   jwtToken: string;
   user: {
     email: string;
@@ -14,6 +14,16 @@ export type DopplerLegacyUserData = {
   unlayerUser: { id: string; signature: string };
 };
 
+type DopplerUserDataNotAvailableError = {
+  userDataNotAvailable: true;
+  innerError: unknown;
+};
+
+export type GetDopplerUserDataResult = Result<
+  DopplerLegacyUserData,
+  DopplerUserDataNotAvailableError
+>;
+
 export interface DopplerLegacyClient {
-  getDopplerUserData: () => Promise<Result<DopplerLegacyUserData>>;
+  getDopplerUserData: () => Promise<GetDopplerUserDataResult>;
 }
