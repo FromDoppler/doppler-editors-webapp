@@ -27,9 +27,17 @@ export const Editor = ({ design }: { design: Design | undefined }) => {
   const [emailEditorLoaded, setEmailEditorLoaded] = useState(false);
 
   useEffect(() => {
+    const unlayer = emailEditorRef?.current;
+
     if (emailEditorLoaded) {
-      emailEditorRef?.current?.loadDesign(design || emptyDesign);
+      unlayer?.loadDesign(design || emptyDesign);
     }
+
+    return () => {
+      if (emailEditorLoaded) {
+        unlayer?.loadDesign(emptyDesign);
+      }
+    };
   }, [design, emailEditorLoaded]);
 
   if (appSessionStateAccessor.current.status !== "authenticated") {
