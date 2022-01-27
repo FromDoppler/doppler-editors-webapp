@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import {
+  AppSessionState,
   AppSessionStateMonitor,
   defaultAppSessionState,
 } from "../abstractions/app-session";
@@ -21,7 +22,7 @@ export const AppSessionStateProvider = ({
   );
 
   useEffect(() => {
-    appSessionStateMonitor.onSessionUpdate((newValue) => {
+    appSessionStateMonitor.onSessionUpdate((newValue: AppSessionState) => {
       setAppSessionStateStatus(newValue.status);
     });
   }, [appSessionStateMonitor]);
