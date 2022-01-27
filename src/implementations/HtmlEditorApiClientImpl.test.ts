@@ -22,7 +22,16 @@ describe(HtmlEditorApiClientImpl.name, () => {
         current: authenticatedSession,
       } as AppSessionStateAccessor;
 
-      const apiResponse = {};
+      const meta = {
+        body: {
+          rows: [],
+        },
+      };
+
+      const apiResponse = {
+        htmlContent: "<html></html>",
+        meta,
+      };
 
       const appConfiguration = {
         htmlEditorApiBaseUrl,
@@ -58,12 +67,12 @@ describe(HtmlEditorApiClientImpl.name, () => {
       expect(request).toBeCalledWith({
         headers: { Authorization: `Bearer ${jwtToken}` },
         method: "GET",
-        url: `/accounts/${dopplerAccountName}/campaigns/${campaignId}/content/design`,
+        url: `/accounts/${dopplerAccountName}/campaigns/${campaignId}/content`,
       });
 
       expect(result).toEqual({
         success: true,
-        value: apiResponse, // if we sanitize the input this behavior will change
+        value: meta, // if we sanitize the input this behavior will change
       });
     });
 
