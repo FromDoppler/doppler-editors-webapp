@@ -1,5 +1,3 @@
-import { Editor } from "./Editor";
-
 export const Template = () => {
-  return <Editor design={undefined}></Editor>;
+  return <div>Not available! Pending for implementation</div>;
 };
