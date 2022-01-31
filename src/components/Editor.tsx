@@ -17,7 +17,11 @@ export interface EditorProps {
   hidden: boolean;
 }
 
-export const Editor = ({ setEditorState, hidden }: EditorProps) => {
+export const Editor = ({
+  setEditorState,
+  hidden,
+  ...otherProps
+}: EditorProps) => {
   const {
     appConfiguration: { unlayerProjectId, unlayerEditorManifestUrl, loaderUrl },
     appSessionStateAccessor,
@@ -65,7 +69,7 @@ export const Editor = ({ setEditorState, hidden }: EditorProps) => {
   };
 
   return (
-    <div style={containerStyle}>
+    <div style={containerStyle} {...otherProps}>
       <EmailEditor
         style={{ minHeight: "100%" }}
         projectId={unlayerProjectId}
