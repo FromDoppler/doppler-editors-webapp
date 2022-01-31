@@ -69,7 +69,9 @@ export const Campaign = () => {
     <>
       {state.loading ? (
         <div data-testid={loadingMessageTestId}>Loading...</div>
-      ) : null}
+      ) : (
+        <EditorTopBar onSave={onSave} title={"Campaign " + idCampaign} />
+      )}
     </>
   );
 };

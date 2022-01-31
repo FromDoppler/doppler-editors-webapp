@@ -1,0 +1,23 @@
+.editor-top-bar {
+  padding-right: 15px;
+  height: 70px;
+  border-bottom: 1px solid #e5e5e5;
+  padding-left: 70px;
+  line-height: 70px;
+  vertical-align: middle;
+  color: #525252;
+  background: #fff;
+  position: relative;
+  z-index: 9;
+  box-shadow: 0 5px 10px 0 #0000000d;
+  justify-content: space-between;
+  display: flex;
+}
+
+.vertical-center {
+  align-items: center;
+}
+
+.editor-top-bar button {
+  min-height: 40px;
+}
