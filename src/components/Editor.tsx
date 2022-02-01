@@ -39,8 +39,17 @@ export const Editor = ({
     }
   }, [emailEditorLoaded, setEditorState]);
 
+  const containerStyle = {
+    height: "calc(100% - 70px)",
+    display: hidden ? "none" : "flex",
+  };
+
   if (appSessionStateAccessor.current.status !== "authenticated") {
-    return <p>This component requires an authenticated session</p>;
+    return (
+      <div style={containerStyle} {...otherProps}>
+        <p>This component requires an authenticated session</p>;
+      </div>
+    );
   }
 
   const { id, signature } = appSessionStateAccessor.current.unlayerUser;
@@ -61,11 +70,6 @@ export const Editor = ({
       loaderUrl,
       `(new AssetServices()).load('${unlayerEditorManifestUrl}', []);`,
     ],
-  };
-
-  const containerStyle = {
-    height: "calc(100% - 70px)",
-    display: hidden ? "none" : "flex",
   };
 
   return (
