@@ -9,6 +9,7 @@ export type EditorState =
 export interface ISingletonDesignContext {
   hidden: boolean;
   setDesign: (d: Design | undefined) => void;
+  unsetDesign: () => void;
   setEditorState: (state: EditorState) => void;
   getDesign: () => Promise<Design>;
 }
@@ -22,6 +23,7 @@ export const emptyDesign = {
 export const SingletonDesignContext = createContext<ISingletonDesignContext>({
   hidden: true,
   setDesign: () => {},
+  unsetDesign: () => {},
   setEditorState: () => {},
   // TODO: Return empty design
   getDesign: () => Promise.resolve(emptyDesign),

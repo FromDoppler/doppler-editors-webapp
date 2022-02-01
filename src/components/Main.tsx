@@ -44,6 +44,7 @@ export function Main() {
   const defaultContext: ISingletonDesignContext = {
     hidden,
     setDesign,
+    unsetDesign: () => setDesign(undefined),
     setEditorState,
     getDesign,
   };
