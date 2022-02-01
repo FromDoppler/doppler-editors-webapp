@@ -11,12 +11,18 @@ const wrongURL = "/wrong/url";
 const expensesContent = "Expenses content";
 const invoicesContent = "Invoices content";
 const notFoundContent = "There's nothing here!";
+const baseAppServices = {
+  appSessionStateAccessor: {
+    current: {},
+  },
+  appConfiguration: {},
+} as AppServices;
 
 test("root URL should not render invoices or expenses content", async () => {
   // Arrange & Act
   const initialURL = rootURL;
   render(
-    <AppServicesProvider appServices={{ appConfiguration: {} } as AppServices}>
+    <AppServicesProvider appServices={baseAppServices}>
       <MemoryRouter initialEntries={[initialURL]}>
         <App />
       </MemoryRouter>
@@ -37,7 +43,7 @@ test("Wrong URL should render expected content", async () => {
   const initialURL = wrongURL;
   const expectedContent = notFoundContent;
   render(
-    <AppServicesProvider appServices={{ appConfiguration: {} } as AppServices}>
+    <AppServicesProvider appServices={baseAppServices}>
       <MemoryRouter initialEntries={[initialURL]}>
         <App />
       </MemoryRouter>
@@ -53,7 +59,7 @@ test("expenses URL should render expected content", async () => {
   const initialURL = expensesURL;
   const expectedContent = "Expenses content";
   render(
-    <AppServicesProvider appServices={{ appConfiguration: {} } as AppServices}>
+    <AppServicesProvider appServices={baseAppServices}>
       <MemoryRouter initialEntries={[initialURL]}>
         <App />
       </MemoryRouter>
@@ -69,7 +75,7 @@ test("invoices URL should render expected content", async () => {
   const initialURL = invoicesURL;
   const expectedContent = "Invoices content";
   render(
-    <AppServicesProvider appServices={{ appConfiguration: {} } as AppServices}>
+    <AppServicesProvider appServices={baseAppServices}>
       <MemoryRouter initialEntries={[initialURL]}>
         <App />
       </MemoryRouter>
@@ -84,7 +90,7 @@ test("Click in first 'Expenses' link should should show expenses title", async (
   // Arrange
   const initialURL = invoicesURL;
   render(
-    <AppServicesProvider appServices={{ appConfiguration: {} } as AppServices}>
+    <AppServicesProvider appServices={baseAppServices}>
       <MemoryRouter initialEntries={[initialURL]}>
         <App />
       </MemoryRouter>

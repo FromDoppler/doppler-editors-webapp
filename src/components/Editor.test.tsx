@@ -3,6 +3,7 @@ import { Design } from "react-email-editor";
 import { AppServices } from "../abstractions";
 import { AppServicesProvider } from "./AppServicesContext";
 import { Editor } from "./Editor";
+import { EditorState } from "./SingletonEditor";
 
 const emailEditorPropsTestId = "EmailEditor_props";
 
@@ -44,7 +45,7 @@ describe(Editor.name, () => {
     // Act
     render(
       <AppServicesProvider appServices={appServices}>
-        <Editor design={sampleDesign} />
+        <Editor setEditorState={jest.fn()} hidden={true} />
       </AppServicesProvider>
     );
 
@@ -95,7 +96,7 @@ describe(Editor.name, () => {
       // Act
       render(
         <AppServicesProvider appServices={appServices}>
-          <Editor design={sampleDesign} />
+          <Editor setEditorState={jest.fn()} hidden={true} />
         </AppServicesProvider>
       );
 

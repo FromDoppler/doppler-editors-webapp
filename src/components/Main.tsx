@@ -2,11 +2,51 @@ import { Link, Outlet } from "react-router-dom";
 import { useAppServices } from "./AppServicesContext";
 import logo from "./logo.svg";
 import "./Main.css";
+import {
+  EditorState,
+  emptyDesign,
+  ISingletonDesignContext,
+  SingletonDesignContext,
+  SingletonEditor,
+} from "./SingletonEditor";
+import { Design } from "react-email-editor";
+import { useEffect, useState } from "react";
 
 export function Main() {
   const {
     appConfiguration: { loginPageUrl },
   } = useAppServices();
+
+  const [design, setDesign] = useState<Design | undefined>();
+  const hidden = !design;
+  const [editorState, setEditorState] = useState<EditorState>({
+    unlayer: undefined,
+    isLoaded: false,
+  });
+
+  const getDesign = () => {
+    if (!editorState.isLoaded) {
+      return Promise.resolve(emptyDesign);
+    }
+    return new Promise<Design>((resolve) => {
+      editorState.unlayer.saveDesign((d: Design) => {
+        resolve(d);
+      });
+    });
+  };
+
+  useEffect(() => {
+    if (editorState.isLoaded) {
+      editorState.unlayer.loadDesign(design || emptyDesign);
+    }
+  }, [design, editorState]);
+
+  const defaultContext: ISingletonDesignContext = {
+    hidden,
+    setDesign,
+    setEditorState,
+    getDesign,
+  };
 
   return (
     <div className="App">
@@ -27,7 +67,10 @@ export function Main() {
           </div>
         </nav>
       </header>
-      <Outlet />
+      <SingletonDesignContext.Provider value={defaultContext}>
+        <Outlet />
+        <SingletonEditor />
+      </SingletonDesignContext.Provider>
     </div>
   );
 }

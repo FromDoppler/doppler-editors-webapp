@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import EmailEditor, { Design, UnlayerOptions, User } from "react-email-editor";
+import EmailEditor, { UnlayerOptions, User } from "react-email-editor";
 import { mergeTags } from "../external/merge.tags";
 import { useAppServices } from "./AppServicesContext";
+import { EditorState } from "./SingletonEditor";
 
 interface ExtendedUnlayerOptions extends UnlayerOptions {
   mergeTagsConfig: { sort: boolean };
@@ -11,13 +12,16 @@ interface ExtendedUnlayerUser extends User {
   signature?: string;
 }
 
-const emptyDesign = {
-  body: {
-    rows: [],
-  },
-};
+export interface EditorProps {
+  setEditorState: (state: EditorState) => void;
+  hidden: boolean;
+}
 
-export const Editor = ({ design }: { design: Design | undefined }) => {
+export const Editor = ({
+  setEditorState,
+  hidden,
+  ...otherProps
+}: EditorProps) => {
   const {
     appConfiguration: { unlayerProjectId, unlayerEditorManifestUrl, loaderUrl },
     appSessionStateAccessor,
@@ -27,18 +31,13 @@ export const Editor = ({ design }: { design: Design | undefined }) => {
   const [emailEditorLoaded, setEmailEditorLoaded] = useState(false);
 
   useEffect(() => {
-    const unlayer = emailEditorRef?.current;
-
     if (emailEditorLoaded) {
-      unlayer?.loadDesign(design || emptyDesign);
+      setEditorState({
+        unlayer: emailEditorRef.current as EmailEditor,
+        isLoaded: true,
+      });
     }
-
-    return () => {
-      if (emailEditorLoaded) {
-        unlayer?.loadDesign(emptyDesign);
-      }
-    };
-  }, [design, emailEditorLoaded]);
+  }, [emailEditorLoaded, setEditorState]);
 
   if (appSessionStateAccessor.current.status !== "authenticated") {
     return <p>This component requires an authenticated session</p>;
@@ -64,8 +63,13 @@ export const Editor = ({ design }: { design: Design | undefined }) => {
     ],
   };
 
+  const containerStyle = {
+    height: "calc(100% - 70px)",
+    display: hidden ? "none" : "flex",
+  };
+
   return (
-    <div style={{ height: "calc(100% - 70px)", display: "flex" }}>
+    <div style={containerStyle} {...otherProps}>
       <EmailEditor
         style={{ minHeight: "100%" }}
         projectId={unlayerProjectId}

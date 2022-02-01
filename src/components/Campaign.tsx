@@ -1,48 +1,59 @@
-import { useEffect, useState } from "react";
-import { Design } from "react-email-editor";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Editor } from "../components/Editor";
+import { useSingletonEditor } from "./SingletonEditor";
 import { useAppServices } from "./AppServicesContext";
+import { EditorTopBar } from "./EditorTopBar";
 
 type LoadingDesignState =
-  | { loading: true; error?: undefined; design?: undefined }
-  | { error: any; loading: false; design?: undefined }
-  | { design: Design; loading: false; error?: undefined };
+  | { loading: true; error?: undefined }
+  | { error: any; loading: false }
+  | { loading: false; error?: undefined };
 
 export const loadingMessageTestId = "loading-message";
 export const errorMessageTestId = "error-message";
+export const editorTopBarTestId = "editor-top-bar-message";
 
 export const Campaign = () => {
   const { htmlEditorApiClient } = useAppServices();
   const { idCampaign } = useParams();
+  const { getDesign, setDesign } = useSingletonEditor();
 
   const [state, setState] = useState<LoadingDesignState>({
     loading: true,
   });
 
-  useEffect(() => {
-    const loadDesign = async () => {
-      if (!idCampaign) {
+  const loadDesign = useCallback(async () => {
+    if (!idCampaign) {
+      setState({
+        error: "Missing idCampaign",
+        loading: false,
+      });
+    } else {
+      // TODO: Implement ReactQuery
+      const result = await htmlEditorApiClient.getCampaignContent(idCampaign);
+      if (result.success) {
+        setDesign(result.value);
+        setState({ loading: false });
+      } else {
         setState({
-          error: "Missing idCampaign",
+          error: result.unexpectedError,
           loading: false,
         });
-      } else {
-        const result = await htmlEditorApiClient.getCampaignContent(idCampaign);
-        if (result.success) {
-          setState({ design: result.value, loading: false });
-        } else {
-          setState({
-            error: result.unexpectedError,
-            loading: false,
-          });
-        }
       }
-    };
-    loadDesign();
-  }, [idCampaign, htmlEditorApiClient]);
+    }
+  }, [idCampaign, htmlEditorApiClient, setDesign]);
 
-  if (!state.loading && !state.design) {
+  const unMount = useCallback(() => {
+    setDesign(undefined);
+  }, [setDesign]);
+
+  useEffect(() => {
+    loadDesign();
+
+    return unMount;
+  }, [loadDesign, unMount]);
+
+  if (state.error) {
     return (
       <div data-testid={errorMessageTestId}>
         Unexpected Error: <pre>{JSON.stringify(state.error)}</pre>
@@ -50,12 +61,22 @@ export const Campaign = () => {
     );
   }
 
+  const onSave = async () => {
+    const design = await getDesign();
+    console.log("Saving design", design);
+  };
+
   return (
     <>
       {state.loading ? (
         <div data-testid={loadingMessageTestId}>Loading...</div>
-      ) : null}
-      <Editor design={state.design}></Editor>;
+      ) : (
+        <EditorTopBar
+          data-testid={editorTopBarTestId}
+          onSave={onSave}
+          title={"Campaign " + idCampaign}
+        />
+      )}
     </>
   );
 };

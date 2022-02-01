@@ -4,12 +4,17 @@ import { AppServices } from "../abstractions";
 import { AppServicesProvider } from "./AppServicesContext";
 import { Main } from "./Main";
 
-describe(Main.name, () => {
+const baseAppServices = {
+  appSessionStateAccessor: {
+    current: {},
+  },
+  appConfiguration: {},
+} as AppServices;
+
+describe("Main.name", () => {
   it("renders learn react link", () => {
     render(
-      <AppServicesProvider
-        appServices={{ appConfiguration: {} } as AppServices}
-      >
+      <AppServicesProvider appServices={baseAppServices}>
         <BrowserRouter>
           <Main />
         </BrowserRouter>
@@ -21,11 +26,11 @@ describe(Main.name, () => {
 
   it("renders login link with the right URL", () => {
     // Arrange
-    const loginUrl = "https://test.fromdoppler.net/login";
+    const loginPageUrl = "https://test.fromdoppler.net/login";
     const appServices = {
-      appConfiguration: { loginPageUrl: loginUrl },
+      ...baseAppServices,
+      appConfiguration: { loginPageUrl },
     } as AppServices;
-
     // Act
     render(
       <AppServicesProvider appServices={appServices}>
@@ -38,6 +43,6 @@ describe(Main.name, () => {
     // Assert
     const linkElement = screen.getByText(/Login/i);
     expect(linkElement).toBeInTheDocument();
-    expect(linkElement).toHaveAttribute("href", loginUrl);
+    expect(linkElement).toHaveAttribute("href", loginPageUrl);
   });
 });
