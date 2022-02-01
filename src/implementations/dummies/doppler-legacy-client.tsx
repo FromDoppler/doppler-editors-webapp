@@ -1,20 +1,19 @@
 import { timeout } from "../../utils";
 import {
   DopplerLegacyClient,
-  DopplerLegacyUserData,
+  GetDopplerUserDataResult,
 } from "../../abstractions/doppler-legacy-client";
-import { Result } from "../../abstractions/common/result-types";
 
 let counter = 0;
 
 export class DummyDopplerLegacyClient implements DopplerLegacyClient {
-  public getDopplerUserData: () => Promise<Result<DopplerLegacyUserData>> =
+  public getDopplerUserData: () => Promise<GetDopplerUserDataResult> =
     async () => {
       try {
         console.log("Begin getDopplerUserData...");
         await timeout(3000);
-        const result: Result<DopplerLegacyUserData> = {
-          success: true,
+        const result = {
+          success: true as const,
           value: {
             jwtToken: `jwtToken-${counter++}`,
             user: {
@@ -38,7 +37,10 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
       } catch (e) {
         return {
           success: false,
-          unexpectedError: e,
+          error: {
+            userDataNotAvailable: true,
+            innerError: e,
+          },
         };
       }
     };

@@ -30,13 +30,13 @@ export const Campaign = () => {
       });
     } else {
       // TODO: Implement ReactQuery
-      const result = await htmlEditorApiClient.getCampaignContent(idCampaign);
-      if (result.success) {
+      try {
+        const result = await htmlEditorApiClient.getCampaignContent(idCampaign);
         setDesign(result.value);
         setState({ loading: false });
-      } else {
+      } catch (error) {
         setState({
-          error: result.unexpectedError,
+          error: error,
           loading: false,
         });
       }

@@ -1,12 +1,11 @@
 import { AppConfiguration } from "../abstractions";
 import { DopplerLegacyClientImpl } from "./DopplerLegacyClientImpl";
 import { AxiosRequestConfig, AxiosResponse, AxiosStatic } from "axios";
-import { DopplerLegacyUserData } from "../abstractions/doppler-legacy-client";
 
 describe(DopplerLegacyClientImpl.name, () => {
   it("should be return a legacy user data successfully", async () => {
     // Arrange
-    const dopplerUserDataMock: DopplerLegacyUserData = {
+    const dopplerUserDataMock = {
       jwtToken: "session_token",
       user: {
         email: "user@email",
@@ -25,10 +24,7 @@ describe(DopplerLegacyClientImpl.name, () => {
     const axiosInstanceMock = {
       create() {
         return {
-          async get(
-            url: string,
-            config?: AxiosRequestConfig
-          ): Promise<AxiosResponse<DopplerLegacyUserData | any>> {
+          async get(url: string, config?: AxiosRequestConfig) {
             return {
               data: {
                 ...dopplerUserDataMock,
@@ -69,7 +65,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           async get(
             url: string,
             config?: AxiosRequestConfig
-          ): Promise<AxiosResponse<DopplerLegacyUserData | any>> {
+          ): Promise<AxiosResponse<any>> {
             throw errorMock;
           },
         };
@@ -87,7 +83,10 @@ describe(DopplerLegacyClientImpl.name, () => {
     // Assert
     expect(result).toEqual({
       success: false,
-      unexpectedError: errorMock,
+      error: {
+        userDataNotAvailable: true,
+        innerError: errorMock,
+      },
     });
   });
 });

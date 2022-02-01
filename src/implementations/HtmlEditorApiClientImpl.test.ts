@@ -76,7 +76,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
       });
     });
 
-    it("should return error result when there is an exception", async () => {
+    it("should throw error result when an unexpected error occurs", async () => {
       // Arrange
       const error = new Error("Network error");
       const appSessionStateAccessor = {
@@ -103,14 +103,11 @@ describe(HtmlEditorApiClientImpl.name, () => {
         appConfiguration,
       });
 
-      // Act
-      const result = await sut.getCampaignContent("12345");
-
       // Assert
-      expect(result).toEqual({
-        success: false,
-        unexpectedError: error,
-      });
+      await expect(async () => {
+        // Act
+        await sut.getCampaignContent("12345");
+      }).rejects.toThrowError(error);
     });
 
     it.each([
@@ -118,7 +115,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
       { sessionStatus: "unknown" },
       { sessionStatus: "weird inexistent status" },
     ])(
-      "should return error result when the session is not authenticated ($sessionStatus)",
+      "should throw error result when the session is not authenticated ($sessionStatus)",
       async ({ sessionStatus }) => {
         // Arrange
         const appSessionStateAccessor = {
@@ -145,15 +142,14 @@ describe(HtmlEditorApiClientImpl.name, () => {
           appConfiguration,
         });
 
-        // Act
-        const result = await sut.getCampaignContent("12345");
+        // Assert
+        await expect(async () => {
+          // Act
+          await sut.getCampaignContent("12345");
+        }).rejects.toThrowError(new Error("Authenticated session required"));
 
         // Assert
         expect(request).not.toBeCalled();
-        expect(result).toEqual({
-          success: false,
-          unexpectedError: new Error("Authenticated session required"),
-        });
       }
     );
   });

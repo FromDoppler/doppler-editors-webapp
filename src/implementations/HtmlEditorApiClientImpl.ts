@@ -45,18 +45,11 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
   }
 
   async getCampaignContent(campaignId: string): Promise<Result<Design>> {
-    try {
-      const response = await this.GET<any>(`/campaigns/${campaignId}/content`);
-      return {
-        success: true,
-        // TODO: consider to sanitize and validate this response
-        value: response.data.meta,
-      };
-    } catch (error) {
-      return {
-        success: false,
-        unexpectedError: error,
-      };
-    }
+    const response = await this.GET<any>(`/campaigns/${campaignId}/content`);
+    return {
+      success: true,
+      // TODO: consider to sanitize and validate this response
+      value: response.data.meta,
+    };
   }
 }
