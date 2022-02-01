@@ -5,7 +5,7 @@ import {
   HtmlEditorApiClient,
 } from "../abstractions/html-editor-api-client";
 import { Design } from "react-email-editor";
-import { AxiosStatic } from "axios";
+import { AxiosStatic, Method } from "axios";
 import { AppSessionStateAccessor } from "../abstractions/app-session";
 
 export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
@@ -38,23 +38,22 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
     };
   }
 
-  private GET<T>(url: string) {
+  private request<T>(method: Method, url: string, data: unknown = undefined) {
     const { accountName, jwtToken } = this.getConnectionData();
     return this.axios.request<T>({
-      method: "GET",
-      url: `/accounts/${accountName}${url}`,
-      headers: { Authorization: `Bearer ${jwtToken}` },
-    });
-  }
-
-  private PUT(url: string, data: unknown) {
-    const { accountName, jwtToken } = this.getConnectionData();
-    return this.axios.request({
-      method: "PUT",
+      method,
       url: `/accounts/${accountName}${url}`,
       headers: { Authorization: `Bearer ${jwtToken}` },
       data,
     });
+  }
+
+  private GET<T>(url: string) {
+    return this.request<T>("GET", url);
+  }
+
+  private PUT(url: string, data: unknown) {
+    return this.request<any>("PUT", url, data);
   }
 
   async getCampaignContent(campaignId: string): Promise<Result<Design>> {
