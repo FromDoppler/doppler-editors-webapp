@@ -12,9 +12,14 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
       });
       await timeout(1000);
 
+      const text = `SOY CampaignDesign #${campaignId} ${new Date().getMinutes()}`;
+      const value = JSON.parse(JSON.stringify(sampleUnlayerDesign)) as any;
+      value.body.rows[0].columns[0].contents[0].values.text = text;
+      value.idCampaign = campaignId;
+
       const result: Result<Design> = {
         success: true,
-        value: sampleUnlayerDesign,
+        value,
       };
       console.log("End getCampaignContent", { result });
       return result;
