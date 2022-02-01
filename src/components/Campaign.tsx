@@ -16,7 +16,7 @@ export const editorTopBarTestId = "editor-top-bar-message";
 export const Campaign = () => {
   const { htmlEditorApiClient } = useAppServices();
   const { idCampaign } = useParams();
-  const { getDesign, setDesign } = useSingletonEditor();
+  const { getDesign, setDesign, unsetDesign } = useSingletonEditor();
 
   const [state, setState] = useState<LoadingDesignState>({
     loading: true,
@@ -44,8 +44,8 @@ export const Campaign = () => {
   }, [idCampaign, htmlEditorApiClient, setDesign]);
 
   const unMount = useCallback(() => {
-    setDesign(undefined);
-  }, [setDesign]);
+    unsetDesign();
+  }, [unsetDesign]);
 
   useEffect(() => {
     loadDesign();

@@ -88,6 +88,7 @@ describe(Editor.name, () => {
     const defaultContext = {
       hidden: true,
       setDesign: jest.fn(),
+      unsetDesign: jest.fn(),
       setEditorState: jest.fn(),
       getDesign: () => Promise.resolve(emptyDesign),
     };
