@@ -43,15 +43,10 @@ export const Campaign = () => {
     }
   }, [idCampaign, htmlEditorApiClient, setDesign]);
 
-  const unMount = useCallback(() => {
-    unsetDesign();
-  }, [unsetDesign]);
-
   useEffect(() => {
     loadDesign();
-
-    return unMount;
-  }, [loadDesign, unMount]);
+    return () => unsetDesign();
+  }, [loadDesign, unsetDesign]);
 
   if (state.error) {
     return (
