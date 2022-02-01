@@ -3,9 +3,12 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { AppServices } from "../abstractions";
 import { HtmlEditorApiClient } from "../abstractions/html-editor-api-client";
 import { AppServicesProvider } from "./AppServicesContext";
-import { Campaign, errorMessageTestId, loadingMessageTestId } from "./Campaign";
-
-const emailEditorPropsTestId = "EmailEditor_props";
+import {
+  Campaign,
+  editorTopBarTestId,
+  errorMessageTestId,
+  loadingMessageTestId,
+} from "./Campaign";
 
 const baseAppServices = {
   appSessionStateAccessor: {
@@ -60,13 +63,15 @@ describe(Campaign.name, () => {
     expect(getCampaignContent).toHaveBeenCalledWith(idCampaign);
 
     screen.getByTestId(loadingMessageTestId);
-    screen.getByTestId(emailEditorPropsTestId);
+
+    const topBarMustBeNull = screen.queryByTestId(editorTopBarTestId);
+    expect(topBarMustBeNull).toBeNull();
 
     const errorMessageEl = screen.queryByTestId(errorMessageTestId);
     expect(errorMessageEl).toBeNull();
 
     // Act
-    resolveGetCampaignContentPromise({ success: false });
+    resolveGetCampaignContentPromise({ success: false, unexpectedError: true });
 
     // Assert
     await screen.findByTestId(errorMessageTestId);
@@ -74,8 +79,8 @@ describe(Campaign.name, () => {
     const loadingMessageEl = screen.queryByTestId(loadingMessageTestId);
     expect(loadingMessageEl).toBeNull();
 
-    const emailEditorEl = screen.queryByTestId(emailEditorPropsTestId);
-    expect(emailEditorEl).toBeNull();
+    const editorTobBarEl = screen.queryByTestId(editorTopBarTestId);
+    expect(editorTobBarEl).toBeNull();
   });
 
   it("should show EmailEditor when the getCampaignContent is successful", async () => {
@@ -109,7 +114,6 @@ describe(Campaign.name, () => {
 
     // Assert
     screen.getByTestId(loadingMessageTestId);
-    screen.getByTestId(emailEditorPropsTestId);
 
     const errorMessageEl = screen.queryByTestId(errorMessageTestId);
     expect(errorMessageEl).toBeNull();
@@ -120,12 +124,14 @@ describe(Campaign.name, () => {
     resolveGetCampaignContentPromise({ success: true, value: {} });
 
     // Assert
-    await screen.findByTestId(emailEditorPropsTestId);
+    await screen.findByTestId(editorTopBarTestId);
 
     const loadingMessageEl = screen.queryByTestId(loadingMessageTestId);
     expect(loadingMessageEl).toBeNull();
 
     const errorMessageEl2 = screen.queryByTestId(errorMessageTestId);
     expect(errorMessageEl2).toBeNull();
+
+    screen.getByTestId(editorTopBarTestId);
   });
 });

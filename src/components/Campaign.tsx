@@ -11,6 +11,7 @@ type LoadingDesignState =
 
 export const loadingMessageTestId = "loading-message";
 export const errorMessageTestId = "error-message";
+export const editorTopBarTestId = "editor-top-bar-message";
 
 export const Campaign = () => {
   const { htmlEditorApiClient } = useAppServices();
@@ -70,7 +71,11 @@ export const Campaign = () => {
       {state.loading ? (
         <div data-testid={loadingMessageTestId}>Loading...</div>
       ) : (
-        <EditorTopBar onSave={onSave} title={"Campaign " + idCampaign} />
+        <EditorTopBar
+          data-testid={editorTopBarTestId}
+          onSave={onSave}
+          title={"Campaign " + idCampaign}
+        />
       )}
     </>
   );

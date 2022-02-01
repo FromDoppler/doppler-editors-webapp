@@ -5,9 +5,13 @@ interface EditorTopBarProps {
   title?: string;
 }
 
-export const EditorTopBar = ({ onSave, title }: EditorTopBarProps) => {
+export const EditorTopBar = ({
+  onSave,
+  title,
+  ...otherProps
+}: EditorTopBarProps) => {
   return (
-    <div className="editor-top-bar vertical-center">
+    <div className="editor-top-bar vertical-center" {...otherProps}>
       <h2>{title}</h2>
       <button onClick={onSave}>Guardar</button>
     </div>
