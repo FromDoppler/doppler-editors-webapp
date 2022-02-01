@@ -1,34 +1,18 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSingletonEditor } from "./SingletonEditor";
-import { useAppServices } from "./AppServicesContext";
 import { EditorTopBar } from "./EditorTopBar";
-import { useQuery } from "react-query";
+import { useGetCampaignContent } from "../queries/campaign-content-queries";
 
 export const loadingMessageTestId = "loading-message";
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
 
 export const Campaign = () => {
-  const { htmlEditorApiClient } = useAppServices();
   const { idCampaign } = useParams() as Readonly<{ idCampaign: string }>;
   const { getDesign, setDesign, unsetDesign, getHtml } = useSingletonEditor();
 
-  const campaignContentQuery = useQuery({
-    queryKey: [
-      {
-        scope: "campaign-contents",
-        idCampaign,
-      },
-    ],
-    queryFn: async () => {
-      const result = await htmlEditorApiClient.getCampaignContent(idCampaign);
-      return result.value;
-    },
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+  const campaignContentQuery = useGetCampaignContent(idCampaign);
 
   useEffect(() => {
     setDesign(campaignContentQuery.data);
