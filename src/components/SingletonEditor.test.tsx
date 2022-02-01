@@ -90,6 +90,7 @@ describe(Editor.name, () => {
       setDesign: jest.fn(),
       unsetDesign: jest.fn(),
       setEditorState: jest.fn(),
+      getHtml: () => Promise.resolve(""),
       getDesign: () => Promise.resolve(emptyDesign),
     };
 

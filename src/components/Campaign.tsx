@@ -16,7 +16,7 @@ export const editorTopBarTestId = "editor-top-bar-message";
 export const Campaign = () => {
   const { htmlEditorApiClient } = useAppServices();
   const { idCampaign } = useParams() as Readonly<{ idCampaign: string }>;
-  const { getDesign, setDesign, unsetDesign } = useSingletonEditor();
+  const { getDesign, setDesign, unsetDesign, getHtml } = useSingletonEditor();
 
   const [state, setState] = useState<LoadingDesignState>({
     loading: true,
@@ -51,7 +51,9 @@ export const Campaign = () => {
 
   const onSave = async () => {
     const design = await getDesign();
+    const html = await getHtml();
     console.log("Saving design", design);
+    console.log("Saving html", html);
   };
 
   return (

@@ -9,7 +9,7 @@ import {
   SingletonDesignContext,
   SingletonEditor,
 } from "./SingletonEditor";
-import { Design } from "react-email-editor";
+import { Design, HtmlExport } from "react-email-editor";
 import { useEffect, useState } from "react";
 
 export function Main() {
@@ -24,13 +24,24 @@ export function Main() {
     isLoaded: false,
   });
 
+  const getHtml = () => {
+    if (!editorState.isLoaded) {
+      return Promise.resolve("");
+    }
+    return new Promise<string>((resolve) => {
+      editorState.unlayer.exportHtml((htmlExport: HtmlExport) => {
+        resolve(htmlExport.html);
+      });
+    });
+  };
+
   const getDesign = () => {
     if (!editorState.isLoaded) {
       return Promise.resolve(emptyDesign);
     }
     return new Promise<Design>((resolve) => {
-      editorState.unlayer.saveDesign((d: Design) => {
-        resolve(d);
+      editorState.unlayer.exportHtml((htmlExport: HtmlExport) => {
+        resolve(htmlExport.design);
       });
     });
   };
@@ -47,6 +58,7 @@ export function Main() {
     unsetDesign: () => setDesign(undefined),
     setEditorState,
     getDesign,
+    getHtml,
   };
 
   return (
