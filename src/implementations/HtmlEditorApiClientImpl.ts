@@ -1,6 +1,9 @@
 import { Result } from "../abstractions/common/result-types";
 import { AppConfiguration } from "../abstractions";
-import { HtmlEditorApiClient } from "../abstractions/html-editor-api-client";
+import {
+  CampaignContent,
+  HtmlEditorApiClient,
+} from "../abstractions/html-editor-api-client";
 import { Design } from "react-email-editor";
 import { AxiosStatic } from "axios";
 import { AppSessionStateAccessor } from "../abstractions/app-session";
@@ -44,6 +47,16 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
     });
   }
 
+  private PUT(url: string, data: unknown) {
+    const { accountName, jwtToken } = this.getConnectionData();
+    return this.axios.request({
+      method: "PUT",
+      url: `/accounts/${accountName}${url}`,
+      headers: { Authorization: `Bearer ${jwtToken}` },
+      data,
+    });
+  }
+
   async getCampaignContent(campaignId: string): Promise<Result<Design>> {
     const response = await this.GET<any>(`/campaigns/${campaignId}/content`);
     return {
@@ -51,5 +64,13 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
       // TODO: consider to sanitize and validate this response
       value: response.data.meta,
     };
+  }
+
+  async updateCampaignContent(
+    campaignId: string,
+    content: CampaignContent
+  ): Promise<Result> {
+    await this.PUT(`/campaigns/${campaignId}/content`, content);
+    return { success: true };
   }
 }
