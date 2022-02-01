@@ -31,15 +31,11 @@ export const SingletonDesignContext = createContext<ISingletonDesignContext>({
   getDesign: () => Promise.resolve(emptyDesign),
 });
 
-export const SingletonEditor = (props: any) => {
-  const { setEditorState, hidden } = useSingletonEditor();
-  return <Editor setEditorState={setEditorState} hidden={hidden} {...props} />;
-};
-
 export const useSingletonEditor = () => useContext(SingletonDesignContext);
 
 export const SingletonEditorProvider = ({
   children,
+  ...props
 }: {
   children: React.ReactNode;
 }) => {
@@ -90,7 +86,7 @@ export const SingletonEditorProvider = ({
   return (
     <SingletonDesignContext.Provider value={defaultContext}>
       {children}
-      <SingletonEditor />
+      <Editor setEditorState={setEditorState} hidden={hidden} {...props} />
     </SingletonDesignContext.Provider>
   );
 };
