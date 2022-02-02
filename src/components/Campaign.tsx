@@ -13,7 +13,7 @@ export const editorTopBarTestId = "editor-top-bar-message";
 
 export const Campaign = () => {
   const { idCampaign } = useParams() as Readonly<{ idCampaign: string }>;
-  const { getDesign, setDesign, unsetDesign, getHtml } = useSingletonEditor();
+  const { setDesign, unsetDesign, getUnlayerData } = useSingletonEditor();
 
   const campaignContentQuery = useGetCampaignContent(idCampaign);
   const campaignContentMutation = useUpdateCampaignContent();
@@ -33,9 +33,8 @@ export const Campaign = () => {
   }
 
   const onSave = async () => {
-    const design = await getDesign();
-    const htmlContent = await getHtml();
-    campaignContentMutation.mutate({ idCampaign, design, htmlContent });
+    const { design, html } = await getUnlayerData();
+    campaignContentMutation.mutate({ idCampaign, design, htmlContent: html });
   };
 
   return (

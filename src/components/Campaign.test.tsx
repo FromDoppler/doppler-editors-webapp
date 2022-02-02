@@ -174,8 +174,7 @@ describe(Campaign.name, () => {
       hidden: false,
       setDesign: () => {},
       unsetDesign: () => {},
-      getDesign: () => Promise.resolve(design),
-      getHtml: () => Promise.resolve(htmlContent),
+      getUnlayerData: () => Promise.resolve({ design, html: htmlContent }),
     };
 
     const htmlEditorApiClient = {
