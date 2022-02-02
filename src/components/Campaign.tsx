@@ -23,23 +23,16 @@ export const Campaign = () => {
   });
 
   const loadDesign = useCallback(async () => {
-    if (!idCampaign) {
+    // TODO: Implement ReactQuery
+    try {
+      const result = await htmlEditorApiClient.getCampaignContent(idCampaign);
+      setDesign(result.value);
+      setState({ loading: false });
+    } catch (error) {
       setState({
-        error: "Missing idCampaign",
+        error: error,
         loading: false,
       });
-    } else {
-      // TODO: Implement ReactQuery
-      try {
-        const result = await htmlEditorApiClient.getCampaignContent(idCampaign);
-        setDesign(result.value);
-        setState({ loading: false });
-      } catch (error) {
-        setState({
-          error: error,
-          loading: false,
-        });
-      }
     }
   }, [idCampaign, htmlEditorApiClient, setDesign]);
 
