@@ -1,5 +1,5 @@
 import { Design } from "react-email-editor";
-import { QueryFunction, useQuery } from "react-query";
+import { QueryFunction, useMutation, useQuery } from "react-query";
 import { useAppServices } from "../components/AppServicesContext";
 
 type getCampaignContentQueryKey = {
@@ -34,4 +34,24 @@ export const useGetCampaignContent = (idCampaign: string) => {
   });
 
   return query;
+};
+
+export const useUpdateCampaignContent = () => {
+  const { htmlEditorApiClient } = useAppServices();
+
+  const updateCampaignContent = ({
+    idCampaign,
+    design,
+    htmlContent,
+  }: {
+    idCampaign: string;
+    design: Design;
+    htmlContent: string;
+  }) =>
+    htmlEditorApiClient.updateCampaignContent(idCampaign, {
+      design,
+      htmlContent,
+    });
+
+  return useMutation(updateCampaignContent);
 };

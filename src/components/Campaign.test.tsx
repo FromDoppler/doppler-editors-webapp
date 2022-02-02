@@ -1,8 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { Design } from "react-email-editor";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { AppServices } from "../abstractions";
 import { HtmlEditorApiClient } from "../abstractions/html-editor-api-client";
+import { timeout } from "../utils";
 import { AppServicesProvider } from "./AppServicesContext";
 import {
   Campaign,
@@ -10,6 +13,10 @@ import {
   errorMessageTestId,
   loadingMessageTestId,
 } from "./Campaign";
+import {
+  ISingletonDesignContext,
+  SingletonDesignContext,
+} from "./SingletonEditor";
 
 const baseAppServices = {
   appSessionStateAccessor: {
@@ -147,5 +154,63 @@ describe(Campaign.name, () => {
     expect(errorMessageEl2).toBeNull();
 
     screen.getByTestId(editorTopBarTestId);
+  });
+
+  it("should call API client to store the editor data when the user clicks on save", async () => {
+    // Arrange
+    const idCampaign = "1234";
+
+    // TODO: mock SingletonEditor to inject these values as result
+    const design = { test: "Demo data" } as unknown as Design;
+    const htmlContent = "<html><p></p></html>";
+
+    const getCampaignContent = () =>
+      Promise.resolve({ success: true, value: {} });
+    const updateCampaignContent = jest.fn(() =>
+      Promise.resolve({ success: true, value: {} })
+    );
+
+    const singletonEditorContext: ISingletonDesignContext = {
+      hidden: false,
+      setDesign: () => {},
+      unsetDesign: () => {},
+      setEditorState: () => {},
+      getDesign: () => Promise.resolve(design),
+      getHtml: () => Promise.resolve(htmlContent),
+    };
+
+    const htmlEditorApiClient = {
+      getCampaignContent,
+      updateCampaignContent,
+    } as unknown as HtmlEditorApiClient;
+
+    // Act
+    render(
+      <QueryClientProvider client={queryClient}>
+        <AppServicesProvider
+          appServices={{ ...baseAppServices, htmlEditorApiClient }}
+        >
+          <SingletonDesignContext.Provider value={singletonEditorContext}>
+            <MemoryRouter initialEntries={[`/${idCampaign}`]}>
+              <Routes>
+                <Route path="/:idCampaign" element={<Campaign />} />
+              </Routes>
+            </MemoryRouter>
+          </SingletonDesignContext.Provider>
+        </AppServicesProvider>
+      </QueryClientProvider>
+    );
+
+    // Assert
+    const saveBtn = await screen.findByText("Guardar");
+
+    userEvent.click(saveBtn);
+
+    await waitFor(() => {
+      expect(updateCampaignContent).toHaveBeenCalledWith(idCampaign, {
+        design,
+        htmlContent,
+      });
+    });
   });
 });

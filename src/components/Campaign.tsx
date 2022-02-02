@@ -2,7 +2,10 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSingletonEditor } from "./SingletonEditor";
 import { EditorTopBar } from "./EditorTopBar";
-import { useGetCampaignContent } from "../queries/campaign-content-queries";
+import {
+  useGetCampaignContent,
+  useUpdateCampaignContent,
+} from "../queries/campaign-content-queries";
 
 export const loadingMessageTestId = "loading-message";
 export const errorMessageTestId = "error-message";
@@ -13,6 +16,7 @@ export const Campaign = () => {
   const { getDesign, setDesign, unsetDesign, getHtml } = useSingletonEditor();
 
   const campaignContentQuery = useGetCampaignContent(idCampaign);
+  const campaignContentMutation = useUpdateCampaignContent();
 
   useEffect(() => {
     setDesign(campaignContentQuery.data);
@@ -30,9 +34,8 @@ export const Campaign = () => {
 
   const onSave = async () => {
     const design = await getDesign();
-    const html = await getHtml();
-    console.log("Saving design", design);
-    console.log("Saving html", html);
+    const htmlContent = await getHtml();
+    campaignContentMutation.mutate({ idCampaign, design, htmlContent });
   };
 
   return (

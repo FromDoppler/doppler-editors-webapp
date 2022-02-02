@@ -1,5 +1,8 @@
 import { timeout } from "../../utils";
-import { HtmlEditorApiClient } from "../../abstractions/html-editor-api-client";
+import {
+  CampaignContent,
+  HtmlEditorApiClient,
+} from "../../abstractions/html-editor-api-client";
 import { Result } from "../../abstractions/common/result-types";
 import { Design } from "react-email-editor";
 import sampleUnlayerDesign from "./sample-unlayer-design.json";
@@ -24,4 +27,18 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
       console.log("End getCampaignContent", { result });
       return result;
     };
+
+  async updateCampaignContent(
+    campaignId: string,
+    content: CampaignContent
+  ): Promise<Result> {
+    console.log("Begin updateCampaignContent...", {
+      campaignId,
+      content,
+    });
+    await timeout(1000);
+
+    console.log("End updateCampaignContent");
+    return { success: true };
+  }
 }
