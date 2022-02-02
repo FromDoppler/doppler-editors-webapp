@@ -69,7 +69,11 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
     campaignId: string,
     content: CampaignContent
   ): Promise<Result> {
-    await this.PUT(`/campaigns/${campaignId}/content`, content);
+    const body = {
+      meta: content.design,
+      htmlContent: content.htmlContent,
+    };
+    await this.PUT(`/campaigns/${campaignId}/content`, body);
     return { success: true };
   }
 }
