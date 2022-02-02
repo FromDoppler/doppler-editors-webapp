@@ -1,50 +1,29 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSingletonEditor } from "./SingletonEditor";
-import { useAppServices } from "./AppServicesContext";
 import { EditorTopBar } from "./EditorTopBar";
-
-type LoadingDesignState =
-  | { loading: true; error?: undefined }
-  | { error: any; loading: false }
-  | { loading: false; error?: undefined };
+import { useGetCampaignContent } from "../queries/campaign-content-queries";
 
 export const loadingMessageTestId = "loading-message";
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
 
 export const Campaign = () => {
-  const { htmlEditorApiClient } = useAppServices();
   const { idCampaign } = useParams() as Readonly<{ idCampaign: string }>;
   const { getDesign, setDesign, unsetDesign, getHtml } = useSingletonEditor();
 
-  const [state, setState] = useState<LoadingDesignState>({
-    loading: true,
-  });
-
-  const loadDesign = useCallback(async () => {
-    // TODO: Implement ReactQuery
-    try {
-      const result = await htmlEditorApiClient.getCampaignContent(idCampaign);
-      setDesign(result.value);
-      setState({ loading: false });
-    } catch (error) {
-      setState({
-        error: error,
-        loading: false,
-      });
-    }
-  }, [idCampaign, htmlEditorApiClient, setDesign]);
+  const campaignContentQuery = useGetCampaignContent(idCampaign);
 
   useEffect(() => {
-    loadDesign();
+    setDesign(campaignContentQuery.data);
     return () => unsetDesign();
-  }, [loadDesign, unsetDesign]);
+  }, [campaignContentQuery.data, unsetDesign, setDesign]);
 
-  if (state.error) {
+  if (campaignContentQuery.error) {
     return (
       <div data-testid={errorMessageTestId}>
-        Unexpected Error: <pre>{JSON.stringify(state.error)}</pre>
+        Unexpected Error:{" "}
+        <pre>{JSON.stringify(campaignContentQuery.error)}</pre>
       </div>
     );
   }
@@ -58,7 +37,7 @@ export const Campaign = () => {
 
   return (
     <>
-      {state.loading ? (
+      {campaignContentQuery.isLoading ? (
         <div data-testid={loadingMessageTestId}>Loading...</div>
       ) : (
         <EditorTopBar
