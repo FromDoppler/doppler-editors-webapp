@@ -11,7 +11,6 @@ export interface ISingletonDesignContext {
   setDesign: (d: Design | undefined) => void;
   getHtml: () => Promise<string>;
   unsetDesign: () => void;
-  setEditorState: (state: EditorState) => void;
   getDesign: () => Promise<Design>;
 }
 
@@ -26,8 +25,6 @@ export const SingletonDesignContext = createContext<ISingletonDesignContext>({
   setDesign: () => {},
   getHtml: () => Promise.resolve(""),
   unsetDesign: () => {},
-  setEditorState: () => {},
-  // TODO: Return empty design
   getDesign: () => Promise.resolve(emptyDesign),
 });
 
@@ -78,7 +75,6 @@ export const SingletonEditorProvider = ({
     hidden,
     setDesign,
     unsetDesign: () => setDesign(undefined),
-    setEditorState,
     getDesign,
     getHtml,
   };
