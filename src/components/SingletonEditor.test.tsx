@@ -1,12 +1,10 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { AppServices } from "../abstractions";
 import { Editor } from "./Editor";
-import {
-  emptyDesign,
-  SingletonDesignContext,
-  SingletonEditor,
-} from "./SingletonEditor";
+import { SingletonEditorProvider, useSingletonEditor } from "./SingletonEditor";
 import { AppServicesProvider } from "./AppServicesContext";
+import { Design } from "react-email-editor";
 
 const singletonEditorTestId = "singleton-editor-test";
 
@@ -29,84 +27,45 @@ const defaultAppServices = {
 const noop = () => {};
 
 describe(Editor.name, () => {
-  it("should hide EmailEditor using the default Context", () => {
+  it("should show and hide EmailEditor when design is set and unset", () => {
     // Arrange
     const appServices = defaultAppServices as AppServices;
 
-    // Act
-    render(
-      <AppServicesProvider appServices={appServices}>
-        <SingletonEditor data-testid="singleton-editor-test"></SingletonEditor>
-      </AppServicesProvider>
-    );
-
-    // Assert
-    expect(screen.getByTestId(singletonEditorTestId).style.display).toEqual(
-      "none"
-    );
-  });
-
-  it("should hide/show EmailEditor changing Context.hidden", () => {
-    // Arrange
-    const appServices = defaultAppServices as AppServices;
-    const defaultContext = {
-      hidden: true,
-      setDesign: noop,
-      setEditorState: noop,
-      getDesign: () => Promise.resolve(emptyDesign),
-    };
-    const contextShowEditor = { ...defaultContext, hidden: false };
-    const contextHiddenEditor = { ...defaultContext, hidden: true };
-    const DynamicWrapper = ({ context }: any) => {
+    const DemoComponent = () => {
+      const { setDesign, unsetDesign } = useSingletonEditor();
       return (
-        <AppServicesProvider appServices={appServices}>
-          <SingletonDesignContext.Provider value={context}>
-            <SingletonEditor data-testid="singleton-editor-test"></SingletonEditor>
-          </SingletonDesignContext.Provider>
-        </AppServicesProvider>
+        <>
+          <button onClick={() => setDesign({} as Design)}>LoadDesign</button>
+          <button onClick={() => unsetDesign()}>UnloadDesign</button>
+        </>
       );
     };
 
     // Act
-    const { rerender } = render(<DynamicWrapper context={defaultContext} />);
-    const hideEditorByDefault = screen.getByTestId(singletonEditorTestId).style
-      .display;
-    rerender(<DynamicWrapper context={contextShowEditor} />);
-    const showEditor = screen.getByTestId(singletonEditorTestId).style.display;
-    rerender(<DynamicWrapper context={contextHiddenEditor} />);
-    const hideEditor = screen.getByTestId(singletonEditorTestId).style.display;
-
-    // Assert
-    expect(hideEditorByDefault).toBe("none");
-    expect(showEditor).toBe("flex");
-    expect(hideEditor).toBe("none");
-  });
-
-  it("should fire Context behavior", () => {
-    // Arrange
-    const appServices = defaultAppServices as AppServices;
-    const defaultContext = {
-      hidden: true,
-      setDesign: jest.fn(),
-      unsetDesign: jest.fn(),
-      setEditorState: jest.fn(),
-      getHtml: () => Promise.resolve(""),
-      getDesign: () => Promise.resolve(emptyDesign),
-    };
-
-    // Act
     render(
       <AppServicesProvider appServices={appServices}>
-        <SingletonDesignContext.Provider value={defaultContext}>
-          <SingletonEditor data-testid="singleton-editor-test"></SingletonEditor>
-        </SingletonDesignContext.Provider>
+        <SingletonEditorProvider data-testid="singleton-editor-test">
+          <DemoComponent></DemoComponent>
+        </SingletonEditorProvider>
       </AppServicesProvider>
     );
-    defaultContext.setDesign();
-    defaultContext.setEditorState();
 
+    const editorEl = screen.getByTestId(singletonEditorTestId);
+
+    // Hidden by default
     // Assert
-    expect(defaultContext.setDesign).toHaveBeenCalledTimes(1);
-    expect(defaultContext.setEditorState).toHaveBeenCalledTimes(1);
+    expect(editorEl.style.display).toBe("none");
+
+    // Shown when a design is loaded
+    // Act
+    userEvent.click(screen.getByText("LoadDesign"));
+    // Assert
+    expect(editorEl.style.display).toBe("flex");
+
+    // Hidden when the design is unloaded
+    // Act
+    userEvent.click(screen.getByText("UnloadDesign"));
+    // Assert
+    expect(editorEl.style.display).toBe("none");
   });
 });

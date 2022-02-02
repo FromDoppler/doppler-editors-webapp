@@ -174,7 +174,6 @@ describe(Campaign.name, () => {
       hidden: false,
       setDesign: () => {},
       unsetDesign: () => {},
-      setEditorState: () => {},
       getDesign: () => Promise.resolve(design),
       getHtml: () => Promise.resolve(htmlContent),
     };
