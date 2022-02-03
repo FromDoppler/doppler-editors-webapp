@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import EmailEditor, { UnlayerOptions, User } from "react-email-editor";
 import { mergeTags } from "../external/merge.tags";
 import { useAppServices } from "./AppServicesContext";
+import { useAppSessionStateStatus } from './AppSessionStateContext';
 import { EditorState } from "./SingletonEditor";
 
 interface ExtendedUnlayerOptions extends UnlayerOptions {
@@ -27,6 +28,7 @@ export const Editor = ({
     appSessionStateAccessor,
   } = useAppServices();
 
+  const appSessionStateStatus = useAppSessionStateStatus();
   const emailEditorRef = useRef<EmailEditor>(null);
   const [emailEditorLoaded, setEmailEditorLoaded] = useState(false);
 
@@ -44,7 +46,7 @@ export const Editor = ({
     display: hidden ? "none" : "flex",
   };
 
-  if (appSessionStateAccessor.current.status !== "authenticated") {
+  if (appSessionStateStatus !== "authenticated" || appSessionStateAccessor.current.status !== "authenticated") {
     return (
       <div style={containerStyle} {...otherProps}>
         <p>This component requires an authenticated session</p>;
