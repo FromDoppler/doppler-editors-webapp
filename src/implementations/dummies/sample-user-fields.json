@@ -1,0 +1,62 @@
+[
+  {
+    "name": "textField",
+    "predefined": false,
+    "type": "string"
+  },
+  {
+    "name": "booleanField",
+    "predefined": false,
+    "type": "boolean"
+  },
+  {
+    "name": "numericField",
+    "predefined": false,
+    "type": "number"
+  },
+  {
+    "name": "dateField",
+    "predefined": false,
+    "type": "date"
+  },
+  {
+    "name": "T",
+    "predefined": false,
+    "type": "phone"
+  },
+  {
+    "name": "FIRSTNAME",
+    "predefined": true,
+    "type": "string"
+  },
+  {
+    "name": "LASTNAME",
+    "predefined": true,
+    "type": "string"
+  },
+  {
+    "name": "EMAIL",
+    "predefined": true,
+    "type": "email"
+  },
+  {
+    "name": "GENDER",
+    "predefined": true,
+    "type": "gender"
+  },
+  {
+    "name": "BIRTHDAY",
+    "predefined": true,
+    "type": "date"
+  },
+  {
+    "name": "COUNTRY",
+    "predefined": true,
+    "type": "country"
+  },
+  {
+    "name": "CONSENT",
+    "predefined": true,
+    "type": "consent"
+  }
+]
