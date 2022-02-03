@@ -6,18 +6,34 @@ import { useAppServices } from "../components/AppServicesContext";
 
 type GetUserFieldsQueryKey = {
   scope: string;
+  dopplerAccountName: string | null;
 }[];
 
 export const useGetUserFields = () => {
-  const { dopplerRestApiClient } = useAppServices();
+  const {
+    dopplerRestApiClient,
+    appSessionStateAccessor: { current },
+  } = useAppServices();
+
+  const dopplerAccountName =
+    current.status === "authenticated" ? current.dopplerAccountName : null;
 
   const queryKey: GetUserFieldsQueryKey = [
     {
       scope: "user-fields",
+      dopplerAccountName,
     },
   ];
 
-  const queryFn: QueryFunction<Field[], GetUserFieldsQueryKey> = async () => {
+  const queryFn: QueryFunction<Field[], GetUserFieldsQueryKey> = async (
+    context
+  ) => {
+    const [{ dopplerAccountName }] = context.queryKey;
+
+    if (!dopplerAccountName) {
+      return [];
+    }
+
     const result = await dopplerRestApiClient.getFields();
     return result.value;
   };
