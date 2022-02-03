@@ -25,7 +25,6 @@ export const Editor = ({
 }: EditorProps) => {
   const {
     appConfiguration: { unlayerProjectId, unlayerEditorManifestUrl, loaderUrl },
-    appSessionStateAccessor,
   } = useAppServices();
 
   const appSessionState = useAppSessionState();
@@ -46,10 +45,7 @@ export const Editor = ({
     display: hidden ? "none" : "flex",
   };
 
-  if (
-    appSessionState.status !== "authenticated" ||
-    appSessionStateAccessor.current.status !== "authenticated"
-  ) {
+  if (appSessionState.status !== "authenticated") {
     return (
       <div style={containerStyle} {...otherProps}>
         <p>This component requires an authenticated session</p>;
@@ -57,7 +53,7 @@ export const Editor = ({
     );
   }
 
-  const { id, signature } = appSessionStateAccessor.current.unlayerUser;
+  const { id, signature } = appSessionState.unlayerUser;
 
   const user: ExtendedUnlayerUser = {
     // Ugly patch because Unlayer types does not accept string as id
