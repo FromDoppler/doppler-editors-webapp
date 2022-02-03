@@ -1,14 +1,16 @@
 import { useAppServices } from "./AppServicesContext";
-import { useAppSessionStateStatus } from "./AppSessionStateContext";
+import { useAppSessionState } from "./AppSessionStateContext";
 
 export const SessionDemo = () => {
   const { appSessionStateAccessor } = useAppServices();
-  const sessionStateStatus = useAppSessionStateStatus();
+  const sessionState = useAppSessionState();
   return (
     <>
       <code>
         <pre>
-          SessionStateStatus from context: {sessionStateStatus}
+          SessionStateStatus from context: {sessionState.status}
+          <br />
+          SimplifiedSessionState from context: {JSON.stringify(sessionState)}
           <br />
           SessionState from AppServices:{" "}
           {JSON.stringify(appSessionStateAccessor.current)}

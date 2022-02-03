@@ -1,5 +1,5 @@
 import { useAppServices } from "./AppServicesContext";
-import { useAppSessionStateStatus } from "./AppSessionStateContext";
+import { useAppSessionState } from "./AppSessionStateContext";
 import { NavigateToExternalUrl } from "./NavigateToExternalUrl";
 
 export const RequireAuth = ({ children }: { children: JSX.Element }) => {
@@ -7,11 +7,11 @@ export const RequireAuth = ({ children }: { children: JSX.Element }) => {
     appConfiguration: { loginPageUrl },
     window: { location },
   } = useAppServices();
-  const appSessionStateStatus = useAppSessionStateStatus();
+  const appSessionState = useAppSessionState();
 
-  return appSessionStateStatus === "unknown" ? (
+  return appSessionState.status === "unknown" ? (
     <div>Loading...</div>
-  ) : appSessionStateStatus !== "authenticated" ? (
+  ) : appSessionState.status !== "authenticated" ? (
     // Important: redirect value should not be encoded
     <NavigateToExternalUrl to={`${loginPageUrl}?redirect=${location.href}`} />
   ) : (

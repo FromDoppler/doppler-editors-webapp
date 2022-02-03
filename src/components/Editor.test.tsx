@@ -1,7 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { Design } from "react-email-editor";
 import { AppServices } from "../abstractions";
+import { AuthenticatedAppSessionState } from "../abstractions/app-session/app-session-state";
 import { AppServicesProvider } from "./AppServicesContext";
+import {
+  AppSessionStateContext,
+  AppSessionStateProvider,
+} from "./AppSessionStateContext";
 import { Editor } from "./Editor";
 import { EditorState } from "./SingletonEditor";
 
@@ -20,8 +25,10 @@ const loaderUrl = "loaderUrl";
 const unlayerUserId = "unlayerUserId";
 const unlayerUserSignature = "unlayerUserSignature";
 
-const authenticatedSession = {
+const authenticatedSession: AuthenticatedAppSessionState = {
   status: "authenticated",
+  dopplerAccountName: "me@me.com",
+  jwtToken: "jwtToken",
   unlayerUser: {
     id: unlayerUserId,
     signature: unlayerUserSignature,
@@ -45,7 +52,9 @@ describe(Editor.name, () => {
     // Act
     render(
       <AppServicesProvider appServices={appServices}>
-        <Editor setEditorState={jest.fn()} hidden={true} />
+        <AppSessionStateContext.Provider value={authenticatedSession}>
+          <Editor setEditorState={jest.fn()} hidden={true} />
+        </AppSessionStateContext.Provider>
       </AppServicesProvider>
     );
 
