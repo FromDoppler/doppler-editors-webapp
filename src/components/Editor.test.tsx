@@ -76,7 +76,9 @@ describe(Editor.name, () => {
     );
 
     // Assert
-    const propsEl = screen.getByTestId(emailEditorPropsTestId);
+    const propsEl = await waitFor(() =>
+      screen.getByTestId(emailEditorPropsTestId)
+    );
     const propsStr = propsEl.textContent;
     expect(propsStr).toBeTruthy();
     const props = JSON.parse(propsStr as string);
