@@ -3,6 +3,8 @@ import { App } from "./App";
 import { MemoryRouter } from "react-router-dom";
 import { AppServicesProvider } from "./AppServicesContext";
 import { AppServices } from "../abstractions";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { Field } from "../abstractions/doppler-rest-api-client";
 
 const rootURL = "/";
 const expensesURL = "/expenses";
@@ -11,22 +13,37 @@ const wrongURL = "/wrong/url";
 const expensesContent = "Expenses content";
 const invoicesContent = "Invoices content";
 const notFoundContent = "There's nothing here!";
+
 const baseAppServices = {
   appSessionStateAccessor: {
     current: {},
   },
   appConfiguration: {},
+  dopplerRestApiClient: {
+    getFields: () => Promise.resolve({ success: true, value: [] as Field[] }),
+  },
 } as AppServices;
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      cacheTime: 0,
+    },
+  },
+});
 
 test("root URL should not render invoices or expenses content", async () => {
   // Arrange & Act
   const initialURL = rootURL;
   render(
-    <AppServicesProvider appServices={baseAppServices}>
-      <MemoryRouter initialEntries={[initialURL]}>
-        <App />
-      </MemoryRouter>
-    </AppServicesProvider>
+    <QueryClientProvider client={queryClient}>
+      <AppServicesProvider appServices={baseAppServices}>
+        <MemoryRouter initialEntries={[initialURL]}>
+          <App />
+        </MemoryRouter>
+      </AppServicesProvider>
+    </QueryClientProvider>
   );
 
   // Assert
@@ -43,11 +60,13 @@ test("Wrong URL should render expected content", async () => {
   const initialURL = wrongURL;
   const expectedContent = notFoundContent;
   render(
-    <AppServicesProvider appServices={baseAppServices}>
-      <MemoryRouter initialEntries={[initialURL]}>
-        <App />
-      </MemoryRouter>
-    </AppServicesProvider>
+    <QueryClientProvider client={queryClient}>
+      <AppServicesProvider appServices={baseAppServices}>
+        <MemoryRouter initialEntries={[initialURL]}>
+          <App />
+        </MemoryRouter>
+      </AppServicesProvider>
+    </QueryClientProvider>
   );
 
   // Assert
@@ -59,11 +78,13 @@ test("expenses URL should render expected content", async () => {
   const initialURL = expensesURL;
   const expectedContent = "Expenses content";
   render(
-    <AppServicesProvider appServices={baseAppServices}>
-      <MemoryRouter initialEntries={[initialURL]}>
-        <App />
-      </MemoryRouter>
-    </AppServicesProvider>
+    <QueryClientProvider client={queryClient}>
+      <AppServicesProvider appServices={baseAppServices}>
+        <MemoryRouter initialEntries={[initialURL]}>
+          <App />
+        </MemoryRouter>
+      </AppServicesProvider>
+    </QueryClientProvider>
   );
 
   // Assert
@@ -75,11 +96,13 @@ test("invoices URL should render expected content", async () => {
   const initialURL = invoicesURL;
   const expectedContent = "Invoices content";
   render(
-    <AppServicesProvider appServices={baseAppServices}>
-      <MemoryRouter initialEntries={[initialURL]}>
-        <App />
-      </MemoryRouter>
-    </AppServicesProvider>
+    <QueryClientProvider client={queryClient}>
+      <AppServicesProvider appServices={baseAppServices}>
+        <MemoryRouter initialEntries={[initialURL]}>
+          <App />
+        </MemoryRouter>
+      </AppServicesProvider>
+    </QueryClientProvider>
   );
 
   // Assert
@@ -90,11 +113,13 @@ test("Click in first 'Expenses' link should should show expenses title", async (
   // Arrange
   const initialURL = invoicesURL;
   render(
-    <AppServicesProvider appServices={baseAppServices}>
-      <MemoryRouter initialEntries={[initialURL]}>
-        <App />
-      </MemoryRouter>
-    </AppServicesProvider>
+    <QueryClientProvider client={queryClient}>
+      <AppServicesProvider appServices={baseAppServices}>
+        <MemoryRouter initialEntries={[initialURL]}>
+          <App />
+        </MemoryRouter>
+      </AppServicesProvider>
+    </QueryClientProvider>
   );
   const linkElement = screen.getAllByText(/Expenses/i)[0];
 
