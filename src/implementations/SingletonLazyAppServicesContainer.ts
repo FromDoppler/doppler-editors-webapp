@@ -55,4 +55,8 @@ export class SingletonLazyAppServicesContainer implements AppServices {
   get htmlEditorApiClient() {
     return this.singleton("htmlEditorApiClient");
   }
+
+  get dopplerRestApiClient() {
+    return this.singleton("dopplerRestApiClient");
+  }
 }
