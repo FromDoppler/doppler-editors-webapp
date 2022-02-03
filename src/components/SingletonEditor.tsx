@@ -9,9 +9,8 @@ export type EditorState =
 export interface ISingletonDesignContext {
   hidden: boolean;
   setDesign: (d: Design | undefined) => void;
-  getHtml: () => Promise<string>;
+  getUnlayerData: () => Promise<HtmlExport>;
   unsetDesign: () => void;
-  getDesign: () => Promise<Design>;
 }
 
 export const emptyDesign = {
@@ -23,9 +22,8 @@ export const emptyDesign = {
 export const SingletonDesignContext = createContext<ISingletonDesignContext>({
   hidden: true,
   setDesign: () => {},
-  getHtml: () => Promise.resolve(""),
+  getUnlayerData: () => Promise.resolve({ design: {}, html: "" } as HtmlExport),
   unsetDesign: () => {},
-  getDesign: () => Promise.resolve(emptyDesign),
 });
 
 export const useSingletonEditor = () => useContext(SingletonDesignContext);
@@ -43,24 +41,16 @@ export const SingletonEditorProvider = ({
     isLoaded: false,
   });
 
-  const getHtml = () => {
+  const getUnlayerData = () => {
     if (!editorState.isLoaded) {
-      return Promise.resolve("");
+      return Promise.resolve({
+        design: {},
+        html: "",
+      } as HtmlExport);
     }
-    return new Promise<string>((resolve) => {
+    return new Promise<HtmlExport>((resolve) => {
       editorState.unlayer.exportHtml((htmlExport: HtmlExport) => {
-        resolve(htmlExport.html);
-      });
-    });
-  };
-
-  const getDesign = () => {
-    if (!editorState.isLoaded) {
-      return Promise.resolve(emptyDesign);
-    }
-    return new Promise<Design>((resolve) => {
-      editorState.unlayer.exportHtml((htmlExport: HtmlExport) => {
-        resolve(htmlExport.design);
+        resolve(htmlExport);
       });
     });
   };
@@ -75,8 +65,7 @@ export const SingletonEditorProvider = ({
     hidden,
     setDesign,
     unsetDesign: () => setDesign(undefined),
-    getDesign,
-    getHtml,
+    getUnlayerData,
   };
 
   return (
