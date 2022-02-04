@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import EmailEditor, { UnlayerOptions, User } from "react-email-editor";
 import { mergeTags } from "../external/merge.tags";
 import { useAppServices } from "./AppServicesContext";
+import { useAppSessionState } from "./AppSessionStateContext";
 import { EditorState } from "./SingletonEditor";
 
 interface ExtendedUnlayerOptions extends UnlayerOptions {
@@ -24,9 +25,9 @@ export const Editor = ({
 }: EditorProps) => {
   const {
     appConfiguration: { unlayerProjectId, unlayerEditorManifestUrl, loaderUrl },
-    appSessionStateAccessor,
   } = useAppServices();
 
+  const appSessionState = useAppSessionState();
   const emailEditorRef = useRef<EmailEditor>(null);
   const [emailEditorLoaded, setEmailEditorLoaded] = useState(false);
 
@@ -44,7 +45,7 @@ export const Editor = ({
     display: hidden ? "none" : "flex",
   };
 
-  if (appSessionStateAccessor.current.status !== "authenticated") {
+  if (appSessionState.status !== "authenticated") {
     return (
       <div style={containerStyle} {...otherProps}>
         <p>This component requires an authenticated session</p>;
@@ -52,7 +53,7 @@ export const Editor = ({
     );
   }
 
-  const { id, signature } = appSessionStateAccessor.current.unlayerUser;
+  const { id, signature } = appSessionState.unlayerUser;
 
   const user: ExtendedUnlayerUser = {
     // Ugly patch because Unlayer types does not accept string as id

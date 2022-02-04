@@ -1,13 +1,27 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import {
   AppSessionState,
   AppSessionStateMonitor,
   defaultAppSessionState,
 } from "../abstractions/app-session";
-import { AppSessionStateStatus } from "../abstractions/app-session/app-session-state";
 
-export const AppSessionStateStatusContext = createContext<string>(
-  defaultAppSessionState.status
+type SimplifiedAppSessionState =
+  | { status: "unknown" }
+  | { status: "non-authenticated" }
+  | {
+      status: "authenticated";
+      dopplerAccountName: string;
+      unlayerUser: { id: string; signature: string };
+    };
+
+export const AppSessionStateContext = createContext<SimplifiedAppSessionState>(
+  defaultAppSessionState
 );
 
 export const AppSessionStateProvider = ({
@@ -17,22 +31,44 @@ export const AppSessionStateProvider = ({
   children: React.ReactNode;
   appSessionStateMonitor: AppSessionStateMonitor;
 }) => {
-  const [appSessionStateStatus, setAppSessionStateStatus] = useState(
-    defaultAppSessionState.status
+  const [appSessionState, setAppSessionState] =
+    useState<SimplifiedAppSessionState>(defaultAppSessionState);
+
+  const onSessionUpdate = useCallback(
+    (newValue: AppSessionState) => {
+      if (newValue.status === appSessionState.status) {
+        // When the status does not change, we could assume that the values does not change
+        return;
+      }
+
+      if (newValue.status === "authenticated") {
+        const {
+          status,
+          dopplerAccountName,
+          unlayerUser: { id, signature },
+        } = newValue;
+        setAppSessionState({
+          status,
+          dopplerAccountName,
+          unlayerUser: { id, signature },
+        });
+      } else {
+        const { status } = newValue;
+        setAppSessionState({ status });
+      }
+    },
+    [appSessionState.status]
   );
 
   useEffect(() => {
-    appSessionStateMonitor.onSessionUpdate((newValue: AppSessionState) => {
-      setAppSessionStateStatus(newValue.status);
-    });
-  }, [appSessionStateMonitor]);
+    appSessionStateMonitor.onSessionUpdate(onSessionUpdate);
+  }, [appSessionStateMonitor, onSessionUpdate]);
 
   return (
-    <AppSessionStateStatusContext.Provider value={appSessionStateStatus}>
+    <AppSessionStateContext.Provider value={appSessionState}>
       {children}
-    </AppSessionStateStatusContext.Provider>
+    </AppSessionStateContext.Provider>
   );
 };
 
-export const useAppSessionStateStatus = () =>
-  useContext(AppSessionStateStatusContext) as AppSessionStateStatus;
+export const useAppSessionState = () => useContext(AppSessionStateContext);

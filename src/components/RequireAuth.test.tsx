@@ -1,7 +1,7 @@
 import { screen, render } from "@testing-library/react";
 import { AppServices } from "../abstractions";
 import { AppServicesProvider } from "./AppServicesContext";
-import { AppSessionStateStatusContext } from "./AppSessionStateContext";
+import { AppSessionStateContext } from "./AppSessionStateContext";
 import { RequireAuth } from "./RequireAuth";
 
 describe(RequireAuth.name, () => {
@@ -17,11 +17,11 @@ describe(RequireAuth.name, () => {
     // Act
     render(
       <AppServicesProvider appServices={appServices}>
-        <AppSessionStateStatusContext.Provider value="unknown">
+        <AppSessionStateContext.Provider value={{ status: "unknown" }}>
           <RequireAuth>
             <p>{privateText}</p>
           </RequireAuth>
-        </AppSessionStateStatusContext.Provider>
+        </AppSessionStateContext.Provider>
       </AppServicesProvider>
     );
     // Assert
@@ -42,11 +42,17 @@ describe(RequireAuth.name, () => {
     // Act
     render(
       <AppServicesProvider appServices={appServices}>
-        <AppSessionStateStatusContext.Provider value="authenticated">
+        <AppSessionStateContext.Provider
+          value={{
+            status: "authenticated",
+            dopplerAccountName: "me@me.com",
+            unlayerUser: { id: "id", signature: "signature" },
+          }}
+        >
           <RequireAuth>
             <p>{expectedText}</p>
           </RequireAuth>
-        </AppSessionStateStatusContext.Provider>
+        </AppSessionStateContext.Provider>
       </AppServicesProvider>
     );
 
@@ -73,11 +79,13 @@ describe(RequireAuth.name, () => {
     // Act
     render(
       <AppServicesProvider appServices={appServices}>
-        <AppSessionStateStatusContext.Provider value="non-authenticated">
+        <AppSessionStateContext.Provider
+          value={{ status: "non-authenticated" }}
+        >
           <RequireAuth>
             <p>{privateText}</p>
           </RequireAuth>
-        </AppSessionStateStatusContext.Provider>
+        </AppSessionStateContext.Provider>
       </AppServicesProvider>
     );
 
