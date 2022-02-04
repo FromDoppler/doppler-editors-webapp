@@ -8,6 +8,7 @@ import { configureApp } from "./composition-root";
 import { AppServicesProvider } from "./components/AppServicesContext";
 import { AppSessionStateProvider } from "./components/AppSessionStateContext";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { SingletonEditorProvider } from "./components/SingletonEditor";
 
 const customConfiguration =
   (window as any)["editors-webapp-configuration"] || {};
@@ -22,15 +23,17 @@ const queryClient = new QueryClient();
 render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <AppServicesProvider appServices={appServices}>
-        <AppSessionStateProvider
-          appSessionStateMonitor={appSessionStateMonitor}
-        >
-          <BrowserRouter basename={appServices.appConfiguration.basename}>
-            <App />
-          </BrowserRouter>
-        </AppSessionStateProvider>
-      </AppServicesProvider>
+      <BrowserRouter basename={appServices.appConfiguration.basename}>
+        <AppServicesProvider appServices={appServices}>
+          <AppSessionStateProvider
+            appSessionStateMonitor={appSessionStateMonitor}
+          >
+            <SingletonEditorProvider>
+              <App />
+            </SingletonEditorProvider>
+          </AppSessionStateProvider>
+        </AppServicesProvider>
+      </BrowserRouter>
     </QueryClientProvider>
   </StrictMode>,
   document.getElementById("root")
