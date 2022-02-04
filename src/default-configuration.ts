@@ -12,5 +12,6 @@ export const defaultAppConfiguration: AppConfiguration = {
   unlayerProjectId: 32092,
   dopplerLegacyBaseUrl: "https://appint.fromdoppler.net",
   htmlEditorApiBaseUrl: "https://apisint.fromdoppler.net/html-editor",
+  dopplerRestApiBaseUrl: "https://restapi.fromdoppler.net",
   useDummies: true,
 };
