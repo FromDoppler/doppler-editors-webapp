@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
 import { AppServices } from "../abstractions";
+import { Field } from "../abstractions/doppler-rest-api-client";
 import { AppServicesProvider } from "./AppServicesContext";
 import { Main } from "./Main";
 
@@ -9,16 +11,30 @@ const baseAppServices = {
     current: {},
   },
   appConfiguration: {},
+  dopplerRestApiClient: {
+    getFields: () => Promise.resolve({ success: true, value: [] as Field[] }),
+  },
 } as AppServices;
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      cacheTime: 0,
+    },
+  },
+});
 
 describe("Main.name", () => {
   it("renders learn react link", () => {
     render(
-      <AppServicesProvider appServices={baseAppServices}>
-        <BrowserRouter>
-          <Main />
-        </BrowserRouter>
-      </AppServicesProvider>
+      <QueryClientProvider client={queryClient}>
+        <AppServicesProvider appServices={baseAppServices}>
+          <BrowserRouter>
+            <Main />
+          </BrowserRouter>
+        </AppServicesProvider>
+      </QueryClientProvider>
     );
     const linkElement = screen.getByText(/Editors WebApp/i);
     expect(linkElement).toBeInTheDocument();
@@ -33,11 +49,13 @@ describe("Main.name", () => {
     } as AppServices;
     // Act
     render(
-      <AppServicesProvider appServices={appServices}>
-        <BrowserRouter>
-          <Main />
-        </BrowserRouter>
-      </AppServicesProvider>
+      <QueryClientProvider client={queryClient}>
+        <AppServicesProvider appServices={appServices}>
+          <BrowserRouter>
+            <Main />
+          </BrowserRouter>
+        </AppServicesProvider>
+      </QueryClientProvider>
     );
 
     // Assert

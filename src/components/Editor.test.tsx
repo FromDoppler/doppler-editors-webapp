@@ -1,7 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { Design } from "react-email-editor";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { AppServices } from "../abstractions";
 import { AuthenticatedAppSessionState } from "../abstractions/app-session/app-session-state";
+import { Field } from "../abstractions/doppler-rest-api-client";
 import { AppServicesProvider } from "./AppServicesContext";
 import {
   AppSessionStateContext,
@@ -35,8 +37,17 @@ const authenticatedSession: AuthenticatedAppSessionState = {
   },
 };
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      cacheTime: 0,
+    },
+  },
+});
+
 describe(Editor.name, () => {
-  it("should render EmailEditor with the right props when the session is authenticated", () => {
+  it("should render EmailEditor with the right props when the session is authenticated", async () => {
     // Arrange
     const appServices = {
       appConfiguration: {
@@ -47,19 +58,27 @@ describe(Editor.name, () => {
       appSessionStateAccessor: {
         current: authenticatedSession,
       },
+      dopplerRestApiClient: {
+        getFields: () =>
+          Promise.resolve({ success: true, value: [] as Field[] }),
+      },
     } as AppServices;
 
     // Act
     render(
-      <AppServicesProvider appServices={appServices}>
-        <AppSessionStateContext.Provider value={authenticatedSession}>
-          <Editor setEditorState={jest.fn()} hidden={true} />
-        </AppSessionStateContext.Provider>
-      </AppServicesProvider>
+      <QueryClientProvider client={queryClient}>
+        <AppServicesProvider appServices={appServices}>
+          <AppSessionStateContext.Provider value={authenticatedSession}>
+            <Editor setEditorState={jest.fn()} hidden={true} />
+          </AppSessionStateContext.Provider>
+        </AppServicesProvider>
+      </QueryClientProvider>
     );
 
     // Assert
-    const propsEl = screen.getByTestId(emailEditorPropsTestId);
+    const propsEl = await waitFor(() =>
+      screen.getByTestId(emailEditorPropsTestId)
+    );
     const propsStr = propsEl.textContent;
     expect(propsStr).toBeTruthy();
     const props = JSON.parse(propsStr as string);
@@ -100,13 +119,19 @@ describe(Editor.name, () => {
             status: sessionStatus,
           },
         },
+        dopplerRestApiClient: {
+          getFields: () =>
+            Promise.resolve({ success: true, value: [] as Field[] }),
+        },
       } as AppServices;
 
       // Act
       render(
-        <AppServicesProvider appServices={appServices}>
-          <Editor setEditorState={jest.fn()} hidden={true} />
-        </AppServicesProvider>
+        <QueryClientProvider client={queryClient}>
+          <AppServicesProvider appServices={appServices}>
+            <Editor setEditorState={jest.fn()} hidden={true} />
+          </AppServicesProvider>
+        </QueryClientProvider>
       );
 
       // Assert

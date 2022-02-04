@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import EmailEditor, { UnlayerOptions, User } from "react-email-editor";
-import { mergeTags } from "../external/merge.tags";
+import { useGetUserFields } from "../queries/user-fields-queries";
 import { useAppServices } from "./AppServicesContext";
 import { useAppSessionState } from "./AppSessionStateContext";
 import { EditorState } from "./SingletonEditor";
@@ -28,6 +28,7 @@ export const Editor = ({
   } = useAppServices();
 
   const appSessionState = useAppSessionState();
+  const userFieldsQuery = useGetUserFields();
   const emailEditorRef = useRef<EmailEditor>(null);
   const [emailEditorLoaded, setEmailEditorLoaded] = useState(false);
 
@@ -53,6 +54,22 @@ export const Editor = ({
     );
   }
 
+  if (userFieldsQuery.isLoading) {
+    return (
+      <div style={containerStyle} {...otherProps}>
+        <p>Loading user's fields...</p>
+      </div>
+    );
+  }
+
+  if (!userFieldsQuery.isSuccess) {
+    return (
+      <div style={containerStyle} {...otherProps}>
+        <p>Error loading user's fields...</p>
+      </div>
+    );
+  }
+
   const { id, signature } = appSessionState.unlayerUser;
 
   const user: ExtendedUnlayerUser = {
@@ -60,6 +77,15 @@ export const Editor = ({
     id: id as unknown as number,
     signature,
   };
+
+  // TODO: consider translating the name for predefined fields
+  // TODO: consider sorting fields (for example predefined first)
+  // TODO: consider hiding some types of fields
+  // TODO: consider doing all of these transformations in `useGetUserFields` queryFn or in select
+  const mergeTags = userFieldsQuery.data.map((x) => ({
+    name: x.name,
+    value: `[[[${x.name}]]]`,
+  }));
 
   const unlayerOptions: ExtendedUnlayerOptions = {
     mergeTagsConfig: {

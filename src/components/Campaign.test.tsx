@@ -4,6 +4,7 @@ import { Design } from "react-email-editor";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { AppServices } from "../abstractions";
+import { Field } from "../abstractions/doppler-rest-api-client";
 import { HtmlEditorApiClient } from "../abstractions/html-editor-api-client";
 import { timeout } from "../utils";
 import { AppServicesProvider } from "./AppServicesContext";
@@ -34,6 +35,9 @@ const baseAppServices = {
     unlayerProjectId: 12345,
     unlayerEditorManifestUrl: "unlayerEditorManifestUrl",
     loaderUrl: "loaderUrl",
+  },
+  dopplerRestApiClient: {
+    getFields: () => Promise.resolve({ success: true, value: [] as Field[] }),
   },
 } as AppServices;
 

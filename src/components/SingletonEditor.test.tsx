@@ -5,6 +5,8 @@ import { Editor } from "./Editor";
 import { SingletonEditorProvider, useSingletonEditor } from "./SingletonEditor";
 import { AppServicesProvider } from "./AppServicesContext";
 import { Design } from "react-email-editor";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { Field } from "../abstractions/doppler-rest-api-client";
 
 const singletonEditorTestId = "singleton-editor-test";
 
@@ -23,7 +25,20 @@ const defaultAppServices = {
       },
     },
   },
+  dopplerRestApiClient: {
+    getFields: () => Promise.resolve({ success: true, value: [] as Field[] }),
+  },
 };
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      cacheTime: 0,
+    },
+  },
+});
+
 const noop = () => {};
 
 describe(Editor.name, () => {
@@ -43,11 +58,13 @@ describe(Editor.name, () => {
 
     // Act
     render(
-      <AppServicesProvider appServices={appServices}>
-        <SingletonEditorProvider data-testid="singleton-editor-test">
-          <DemoComponent></DemoComponent>
-        </SingletonEditorProvider>
-      </AppServicesProvider>
+      <QueryClientProvider client={queryClient}>
+        <AppServicesProvider appServices={appServices}>
+          <SingletonEditorProvider data-testid="singleton-editor-test">
+            <DemoComponent></DemoComponent>
+          </SingletonEditorProvider>
+        </AppServicesProvider>
+      </QueryClientProvider>
     );
 
     const editorEl = screen.getByTestId(singletonEditorTestId);
