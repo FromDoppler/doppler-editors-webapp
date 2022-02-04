@@ -23,17 +23,17 @@ const queryClient = new QueryClient();
 render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <AppServicesProvider appServices={appServices}>
-        <AppSessionStateProvider
-          appSessionStateMonitor={appSessionStateMonitor}
-        >
-          <BrowserRouter basename={appServices.appConfiguration.basename}>
+      <BrowserRouter basename={appServices.appConfiguration.basename}>
+        <AppServicesProvider appServices={appServices}>
+          <AppSessionStateProvider
+            appSessionStateMonitor={appSessionStateMonitor}
+          >
             <SingletonEditorProvider>
               <App />
             </SingletonEditorProvider>
-          </BrowserRouter>
-        </AppSessionStateProvider>
-      </AppServicesProvider>
+          </AppSessionStateProvider>
+        </AppServicesProvider>
+      </BrowserRouter>
     </QueryClientProvider>
   </StrictMode>,
   document.getElementById("root")
