@@ -16,6 +16,7 @@ import { DummyDopplerLegacyClient } from "./implementations/dummies/doppler-lega
 import { DummyHtmlEditorApiClient } from "./implementations/dummies/html-editor-api-client";
 import { HtmlEditorApiClientImpl } from "./implementations/HtmlEditorApiClientImpl";
 import { DummyDopplerRestApiClient } from "./implementations/dummies/doppler-rest-api-client";
+import { DopplerRestApiClientImpl } from "./implementations/DopplerRestApiClientImpl";
 
 export const configureApp = (
   customConfiguration: Partial<AppConfiguration>
@@ -46,7 +47,16 @@ export const configureApp = (
         appSessionStateAccessor: appServices.appSessionStateAccessor,
         appConfiguration: appServices.appConfiguration,
       }),
-    dopplerRestApiClientFactory: () => new DummyDopplerRestApiClient(),
+    dopplerRestApiClientFactory: ({
+      axiosStatic,
+      appSessionStateAccessor,
+      appConfiguration,
+    }) =>
+      new DopplerRestApiClientImpl({
+        axiosStatic,
+        appSessionStateAccessor,
+        appConfiguration,
+      }),
     appSessionStateAccessorFactory: () => appSessionStateWrapper,
     appSessionStateMonitorFactory: (appServices: AppServices) =>
       new PullingAppSessionStateMonitor({
