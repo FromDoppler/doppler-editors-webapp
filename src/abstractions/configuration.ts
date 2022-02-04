@@ -7,5 +7,6 @@ export type AppConfiguration = {
   readonly loaderUrl: string;
   readonly dopplerLegacyBaseUrl: string;
   readonly htmlEditorApiBaseUrl: string;
+  readonly dopplerRestApiBaseUrl: string;
   readonly useDummies: boolean;
 };
