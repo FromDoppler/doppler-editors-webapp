@@ -2,7 +2,6 @@ import { Link, Outlet } from "react-router-dom";
 import { useAppServices } from "./AppServicesContext";
 import logo from "./logo.svg";
 import "./Main.css";
-import { SingletonEditorProvider } from "./SingletonEditor";
 
 export function Main() {
   const {
@@ -28,9 +27,7 @@ export function Main() {
           </div>
         </nav>
       </header>
-      <SingletonEditorProvider>
-        <Outlet />
-      </SingletonEditorProvider>
+      <Outlet />
     </div>
   );
 }
