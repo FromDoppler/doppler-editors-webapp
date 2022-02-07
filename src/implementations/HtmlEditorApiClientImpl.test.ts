@@ -82,6 +82,76 @@ describe(HtmlEditorApiClientImpl.name, () => {
       });
     });
 
+    it("should accept html content responses", async () => {
+      // Arrange
+      const campaignId = "123";
+      const jwtToken = "jwtToken";
+      const dopplerAccountName = "dopplerAccountName";
+      const htmlEditorApiBaseUrl = "htmlEditorApiBaseUrl";
+
+      const authenticatedSession = {
+        status: "authenticated",
+        jwtToken,
+        dopplerAccountName,
+      };
+
+      const appSessionStateAccessor = {
+        current: authenticatedSession,
+      } as AppSessionStateAccessor;
+
+      const htmlContent = "<html></html>";
+
+      const apiResponse = {
+        htmlContent,
+        type: "html",
+      };
+
+      const appConfiguration = {
+        htmlEditorApiBaseUrl,
+      } as AppConfiguration;
+
+      const request = jest.fn(() =>
+        Promise.resolve({
+          data: apiResponse,
+        })
+      );
+
+      const create = jest.fn(() => ({
+        request,
+      }));
+
+      const axiosStatic = {
+        create,
+      } as unknown as AxiosStatic;
+
+      const sut = new HtmlEditorApiClientImpl({
+        axiosStatic,
+        appSessionStateAccessor,
+        appConfiguration,
+      });
+
+      // Act
+      const result = await sut.getCampaignContent(campaignId);
+
+      // Assert
+      expect(create).toBeCalledWith({
+        baseURL: "htmlEditorApiBaseUrl",
+      });
+      expect(request).toBeCalledWith({
+        headers: { Authorization: `Bearer ${jwtToken}` },
+        method: "GET",
+        url: `/accounts/${dopplerAccountName}/campaigns/${campaignId}/content`,
+      });
+
+      expect(result).toEqual({
+        success: true,
+        value: {
+          htmlContent,
+          type: "html",
+        },
+      });
+    });
+
     it("should throw error result when an unexpected error occurs", async () => {
       // Arrange
       const error = new Error("Network error");

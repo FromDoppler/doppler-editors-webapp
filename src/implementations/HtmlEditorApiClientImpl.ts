@@ -56,11 +56,17 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
   async getCampaignContent(campaignId: string): Promise<Result<Content>> {
     const response = await this.GET<any>(`/campaigns/${campaignId}/content`);
 
-    if (!response.data.meta) {
-      throw new Error(
-        `Not implemented: Content responses without 'meta' property are not supported yet.`
-      );
+    if (response.data.type === "html") {
+      return {
+        success: true,
+        value: {
+          htmlContent: response.data.htmlContent,
+          type: "html",
+        },
+      };
     }
+
+    // TODO: validate the type for unlayer design responses
 
     return {
       success: true,
