@@ -19,6 +19,8 @@ export function Main() {
           <div>
             <Link to="/invoices">Invoices</Link> |{" "}
             <Link to="/expenses">Expenses</Link> |{" "}
+            <Link to="/campaigns/html123">campaigns/html123</Link> |{" "}
+            <Link to="/campaigns/html456">campaigns/html456</Link> |{" "}
             <Link to="/campaigns/123">campaigns/123</Link> |{" "}
             <Link to="/campaigns/456">campaigns/456</Link> |{" "}
             <Link to="/campaigns/789">campaigns/789</Link> |{" "}
