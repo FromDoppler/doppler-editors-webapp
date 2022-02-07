@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { Editor } from "./Editor";
-import EmailEditor, { Design, HtmlExport } from "react-email-editor";
+import EmailEditor, { HtmlExport } from "react-email-editor";
+import { Content } from "../abstractions/domain/content";
 
 export type EditorState =
   | { isLoaded: false; unlayer: undefined }
@@ -8,9 +9,9 @@ export type EditorState =
 
 export interface ISingletonDesignContext {
   hidden: boolean;
-  setDesign: (d: Design | undefined) => void;
-  getUnlayerData: () => Promise<HtmlExport>;
-  unsetDesign: () => void;
+  setContent: (c: Content | undefined) => void;
+  getContent: () => Promise<Content>;
+  unsetContent: () => void;
 }
 
 export const emptyDesign = {
@@ -21,9 +22,14 @@ export const emptyDesign = {
 
 export const SingletonDesignContext = createContext<ISingletonDesignContext>({
   hidden: true,
-  setDesign: () => {},
-  getUnlayerData: () => Promise.resolve({ design: {}, html: "" } as HtmlExport),
-  unsetDesign: () => {},
+  setContent: () => {},
+  getContent: () =>
+    Promise.resolve({
+      design: emptyDesign,
+      htmlContent: "",
+      type: "unlayer",
+    } as Content),
+  unsetContent: () => {},
 });
 
 export const useSingletonEditor = () => useContext(SingletonDesignContext);
@@ -34,38 +40,61 @@ export const SingletonEditorProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [design, setDesign] = useState<Design | undefined>();
-  const hidden = !design;
+  const [content, setContent] = useState<Content | undefined>();
+  const hidden = !content;
   const [editorState, setEditorState] = useState<EditorState>({
     unlayer: undefined,
     isLoaded: false,
   });
 
-  const getUnlayerData = () => {
+  const getContent = () => {
     if (!editorState.isLoaded) {
-      return Promise.resolve({
-        design: {},
-        html: "",
-      } as HtmlExport);
+      const fallbackResult: Content = {
+        design: emptyDesign,
+        htmlContent: "",
+        type: "unlayer",
+      };
+      return Promise.resolve(fallbackResult);
     }
-    return new Promise<HtmlExport>((resolve) => {
+    return new Promise<Content>((resolve) => {
       editorState.unlayer.exportHtml((htmlExport: HtmlExport) => {
-        resolve(htmlExport);
+        if (!htmlExport.design) {
+          throw new Error(
+            `Not implemented: Export results without 'design' property are not supported yet.`
+          );
+        }
+        resolve({
+          design: htmlExport.design,
+          htmlContent: htmlExport.html,
+          type: "unlayer",
+        });
       });
     });
   };
 
   useEffect(() => {
     if (editorState.isLoaded) {
-      editorState.unlayer.loadDesign(design || emptyDesign);
+      if (!content) {
+        editorState.unlayer.loadDesign(emptyDesign);
+        return;
+      }
+
+      if (content.type === "unlayer") {
+        editorState.unlayer.loadDesign(content.design);
+        return;
+      }
+
+      throw new Error(
+        `Not implemented: Content type '${content.type}' is not supported yet.`
+      );
     }
-  }, [design, editorState]);
+  }, [content, editorState]);
 
   const defaultContext: ISingletonDesignContext = {
     hidden,
-    setDesign,
-    unsetDesign: () => setDesign(undefined),
-    getUnlayerData,
+    setContent,
+    unsetContent: () => setContent(undefined),
+    getContent,
   };
 
   return (

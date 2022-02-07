@@ -1,12 +1,10 @@
-import { Design } from "react-email-editor";
 import { Result } from "../common/result-types";
-
-export type CampaignContent = { htmlContent: string; design: Design };
+import { Content } from "../domain/content";
 
 export interface HtmlEditorApiClient {
-  getCampaignContent: (campaignId: string) => Promise<Result<Design>>;
+  getCampaignContent: (campaignId: string) => Promise<Result<Content>>;
   updateCampaignContent: (
     campaignId: string,
-    content: CampaignContent
+    content: Content
   ) => Promise<Result>;
 }

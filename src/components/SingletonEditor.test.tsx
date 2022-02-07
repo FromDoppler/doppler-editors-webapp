@@ -39,19 +39,27 @@ const queryClient = new QueryClient({
   },
 });
 
-const noop = () => {};
-
 describe(Editor.name, () => {
   it("should show and hide EmailEditor when design is set and unset", () => {
     // Arrange
     const appServices = defaultAppServices as AppServices;
 
     const DemoComponent = () => {
-      const { setDesign, unsetDesign } = useSingletonEditor();
+      const { setContent, unsetContent } = useSingletonEditor();
       return (
         <>
-          <button onClick={() => setDesign({} as Design)}>LoadDesign</button>
-          <button onClick={() => unsetDesign()}>UnloadDesign</button>
+          <button
+            onClick={() =>
+              setContent({
+                design: {} as Design,
+                htmlContent: "",
+                type: "unlayer",
+              })
+            }
+          >
+            LoadDesign
+          </button>
+          <button onClick={() => unsetContent()}>UnloadDesign</button>
         </>
       );
     };

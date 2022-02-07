@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Design } from "react-email-editor";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -6,7 +6,6 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { AppServices } from "../abstractions";
 import { Field } from "../abstractions/doppler-rest-api-client";
 import { HtmlEditorApiClient } from "../abstractions/html-editor-api-client";
-import { timeout } from "../utils";
 import { AppServicesProvider } from "./AppServicesContext";
 import {
   Campaign,
@@ -176,9 +175,10 @@ describe(Campaign.name, () => {
 
     const singletonEditorContext: ISingletonDesignContext = {
       hidden: false,
-      setDesign: () => {},
-      unsetDesign: () => {},
-      getUnlayerData: () => Promise.resolve({ design, html: htmlContent }),
+      setContent: () => {},
+      unsetContent: () => {},
+      getContent: () =>
+        Promise.resolve({ design, htmlContent, type: "unlayer" }),
     };
 
     const htmlEditorApiClient = {
@@ -212,6 +212,7 @@ describe(Campaign.name, () => {
       expect(updateCampaignContent).toHaveBeenCalledWith(idCampaign, {
         design,
         htmlContent,
+        type: "unlayer",
       });
     });
   });

@@ -22,6 +22,8 @@ describe(HtmlEditorApiClientImpl.name, () => {
         current: authenticatedSession,
       } as AppSessionStateAccessor;
 
+      const htmlContent = "<html></html>";
+
       const meta = {
         body: {
           rows: [],
@@ -29,7 +31,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
       };
 
       const apiResponse = {
-        htmlContent: "<html></html>",
+        htmlContent,
         meta,
       };
 
@@ -72,7 +74,11 @@ describe(HtmlEditorApiClientImpl.name, () => {
 
       expect(result).toEqual({
         success: true,
-        value: meta, // if we sanitize the input this behavior will change
+        value: {
+          design: meta,
+          htmlContent,
+          type: "unlayer",
+        },
       });
     });
 
