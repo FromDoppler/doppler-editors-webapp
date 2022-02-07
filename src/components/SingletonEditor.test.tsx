@@ -39,8 +39,6 @@ const queryClient = new QueryClient({
   },
 });
 
-const noop = () => {};
-
 describe(Editor.name, () => {
   it("should show and hide EmailEditor when design is set and unset", () => {
     // Arrange
