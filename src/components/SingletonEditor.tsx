@@ -58,6 +58,11 @@ export const SingletonEditorProvider = ({
     }
     return new Promise<Content>((resolve) => {
       editorState.unlayer.exportHtml((htmlExport: HtmlExport) => {
+        if (!htmlExport.design) {
+          throw new Error(
+            `Not implemented: Export results without 'design' property are not supported yet.`
+          );
+        }
         resolve({
           design: htmlExport.design,
           htmlContent: htmlExport.html,
@@ -78,6 +83,10 @@ export const SingletonEditorProvider = ({
         editorState.unlayer.loadDesign(content.design);
         return;
       }
+
+      throw new Error(
+        `Not implemented: Content type '${content.type}' is not supported yet.`
+      );
     }
   }, [content, editorState]);
 
