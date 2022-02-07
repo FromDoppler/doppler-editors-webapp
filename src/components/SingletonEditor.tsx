@@ -85,6 +85,11 @@ export const SingletonEditorProvider = ({
       }
 
       if (content.type === "html") {
+        // Ugly patch because of:
+        // * https://github.com/unlayer/react-email-editor/issues/212
+        // * https://unlayer.canny.io/bug-reports/p/loaddesign-doesnt-reload-for-legacy-templates
+        editorState.unlayer.loadDesign(emptyDesign);
+
         // See https://examples.unlayer.com/web/legacy-template
         editorState.unlayer.loadDesign({
           html: content.htmlContent,
