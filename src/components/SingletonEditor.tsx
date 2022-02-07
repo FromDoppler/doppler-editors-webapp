@@ -59,15 +59,18 @@ export const SingletonEditorProvider = ({
     return new Promise<Content>((resolve) => {
       editorState.unlayer.exportHtml((htmlExport: HtmlExport) => {
         if (!htmlExport.design) {
-          throw new Error(
-            `Not implemented: Export results without 'design' property are not supported yet.`
-          );
+          // It is a legacy template: https://examples.unlayer.com/web/legacy-template
+          resolve({
+            htmlContent: htmlExport.html,
+            type: "html",
+          });
+        } else {
+          resolve({
+            design: htmlExport.design,
+            htmlContent: htmlExport.html,
+            type: "unlayer",
+          });
         }
-        resolve({
-          design: htmlExport.design,
-          htmlContent: htmlExport.html,
-          type: "unlayer",
-        });
       });
     });
   };
@@ -84,8 +87,24 @@ export const SingletonEditorProvider = ({
         return;
       }
 
+      if (content.type === "html") {
+        // Ugly patch because of:
+        // * https://github.com/unlayer/react-email-editor/issues/212
+        // * https://unlayer.canny.io/bug-reports/p/loaddesign-doesnt-reload-for-legacy-templates
+        editorState.unlayer.loadDesign(emptyDesign);
+
+        // See https://examples.unlayer.com/web/legacy-template
+        editorState.unlayer.loadDesign({
+          html: content.htmlContent,
+          classic: true,
+        } as any);
+        return;
+      }
+
       throw new Error(
-        `Not implemented: Content type '${content.type}' is not supported yet.`
+        `Not implemented: Content type '${
+          (content as any).type
+        }' is not supported yet.`
       );
     }
   }, [content, editorState]);

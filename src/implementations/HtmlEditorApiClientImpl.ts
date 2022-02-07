@@ -56,11 +56,17 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
   async getCampaignContent(campaignId: string): Promise<Result<Content>> {
     const response = await this.GET<any>(`/campaigns/${campaignId}/content`);
 
-    if (!response.data.meta) {
-      throw new Error(
-        `Not implemented: Content responses without 'meta' property are not supported yet.`
-      );
+    if (response.data.type === "html") {
+      return {
+        success: true,
+        value: {
+          htmlContent: response.data.htmlContent,
+          type: "html",
+        },
+      };
     }
+
+    // TODO: validate the type for unlayer design responses
 
     return {
       success: true,
@@ -77,15 +83,18 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
     campaignId: string,
     content: Content
   ): Promise<Result> {
-    if (content.type !== "unlayer") {
-      throw new Error(
-        `Not implemented: Content type '${content.type}' is not supported yet.`
-      );
-    }
-    const body = {
-      meta: content.design,
-      htmlContent: content.htmlContent,
-    };
+    const body =
+      content.type === "html"
+        ? {
+            htmlContent: content.htmlContent,
+            type: "html",
+          }
+        : {
+            meta: content.design,
+            htmlContent: content.htmlContent,
+            type: "unlayer",
+          };
+
     await this.PUT(`/campaigns/${campaignId}/content`, body);
     return { success: true };
   }

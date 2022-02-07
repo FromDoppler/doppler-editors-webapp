@@ -12,12 +12,15 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
       });
       await timeout(1000);
 
-      const value = createUnlayerContent(campaignId);
+      const value: Content = campaignId.startsWith("html")
+        ? createHtmlContent(campaignId)
+        : createUnlayerContent(campaignId);
 
-      const result: Result<Content> = {
+      const result = {
         success: true,
         value,
-      };
+      } as Result<Content>;
+
       console.log("End getCampaignContent", { result });
       return result;
     };
@@ -47,5 +50,13 @@ function createUnlayerContent(campaignId: string): Content {
     design: design,
     htmlContent: "<html></html>",
     type: "unlayer",
+  };
+}
+
+function createHtmlContent(campaignId: string): Content {
+  const text = `SOY CampaignDesign #${campaignId} ${new Date().getMinutes()}.`;
+  return {
+    htmlContent: `<html><body><div>${text}</div></body></html>`,
+    type: "html",
   };
 }
