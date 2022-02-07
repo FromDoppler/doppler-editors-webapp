@@ -12,16 +12,7 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
       });
       await timeout(1000);
 
-      const text = `SOY CampaignDesign #${campaignId} ${new Date().getMinutes()}`;
-      const design = JSON.parse(JSON.stringify(sampleUnlayerDesign)) as any;
-      design.body.rows[0].columns[0].contents[0].values.text = text;
-      design.idCampaign = campaignId;
-
-      const value: Content = {
-        design: design,
-        htmlContent: "<html></html>",
-        type: "unlayer",
-      };
+      const value = createUnlayerContent(campaignId);
 
       const result: Result<Content> = {
         success: true,
@@ -44,4 +35,17 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
     console.log("End updateCampaignContent");
     return { success: true };
   }
+}
+
+function createUnlayerContent(campaignId: string): Content {
+  const text = `SOY CampaignDesign #${campaignId} ${new Date().getMinutes()}`;
+  const design = JSON.parse(JSON.stringify(sampleUnlayerDesign)) as any;
+  design.body.rows[0].columns[0].contents[0].values.text = text;
+  design.idCampaign = campaignId;
+
+  return {
+    design: design,
+    htmlContent: "<html></html>",
+    type: "unlayer",
+  };
 }
