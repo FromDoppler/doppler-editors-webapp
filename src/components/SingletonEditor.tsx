@@ -84,8 +84,19 @@ export const SingletonEditorProvider = ({
         return;
       }
 
+      if (content.type === "html") {
+        // See https://examples.unlayer.com/web/legacy-template
+        editorState.unlayer.loadDesign({
+          html: content.htmlContent,
+          classic: true,
+        } as any);
+        return;
+      }
+
       throw new Error(
-        `Not implemented: Content type '${content.type}' is not supported yet.`
+        `Not implemented: Content type '${
+          (content as any).type
+        }' is not supported yet.`
       );
     }
   }, [content, editorState]);
