@@ -83,15 +83,18 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
     campaignId: string,
     content: Content
   ): Promise<Result> {
-    if (content.type !== "unlayer") {
-      throw new Error(
-        `Not implemented: Content type '${content.type}' is not supported yet.`
-      );
-    }
-    const body = {
-      meta: content.design,
-      htmlContent: content.htmlContent,
-    };
+    const body =
+      content.type === "html"
+        ? {
+            htmlContent: content.htmlContent,
+            type: "html",
+          }
+        : {
+            meta: content.design,
+            htmlContent: content.htmlContent,
+            type: "unlayer",
+          };
+
     await this.PUT(`/campaigns/${campaignId}/content`, body);
     return { success: true };
   }
