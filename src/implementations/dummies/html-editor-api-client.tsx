@@ -1,14 +1,11 @@
 import { timeout } from "../../utils";
-import {
-  CampaignContent,
-  HtmlEditorApiClient,
-} from "../../abstractions/html-editor-api-client";
+import { HtmlEditorApiClient } from "../../abstractions/html-editor-api-client";
 import { Result } from "../../abstractions/common/result-types";
-import { Design } from "react-email-editor";
 import sampleUnlayerDesign from "./sample-unlayer-design.json";
+import { Content } from "../../abstractions/domain/content";
 
 export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
-  public getCampaignContent: (campaignId: string) => Promise<Result<Design>> =
+  public getCampaignContent: (campaignId: string) => Promise<Result<Content>> =
     async (campaignId: string) => {
       console.log("Begin getCampaignContent...", {
         campaignId,
@@ -16,11 +13,17 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
       await timeout(1000);
 
       const text = `SOY CampaignDesign #${campaignId} ${new Date().getMinutes()}`;
-      const value = JSON.parse(JSON.stringify(sampleUnlayerDesign)) as any;
-      value.body.rows[0].columns[0].contents[0].values.text = text;
-      value.idCampaign = campaignId;
+      const design = JSON.parse(JSON.stringify(sampleUnlayerDesign)) as any;
+      design.body.rows[0].columns[0].contents[0].values.text = text;
+      design.idCampaign = campaignId;
 
-      const result: Result<Design> = {
+      const value: Content = {
+        design: design,
+        htmlContent: "<html></html>",
+        type: "unlayer",
+      };
+
+      const result: Result<Content> = {
         success: true,
         value,
       };
@@ -30,7 +33,7 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
 
   async updateCampaignContent(
     campaignId: string,
-    content: CampaignContent
+    content: Content
   ): Promise<Result> {
     console.log("Begin updateCampaignContent...", {
       campaignId,

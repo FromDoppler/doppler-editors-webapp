@@ -175,9 +175,10 @@ describe(Campaign.name, () => {
 
     const singletonEditorContext: ISingletonDesignContext = {
       hidden: false,
-      setDesign: () => {},
-      unsetDesign: () => {},
-      getUnlayerData: () => Promise.resolve({ design, html: htmlContent }),
+      setContent: () => {},
+      unsetContent: () => {},
+      getContent: () =>
+        Promise.resolve({ design, htmlContent, type: "unlayer" }),
     };
 
     const htmlEditorApiClient = {
@@ -211,6 +212,7 @@ describe(Campaign.name, () => {
       expect(updateCampaignContent).toHaveBeenCalledWith(idCampaign, {
         design,
         htmlContent,
+        type: "unlayer",
       });
     });
   });

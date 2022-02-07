@@ -1,5 +1,5 @@
-import { Design } from "react-email-editor";
 import { QueryFunction, useMutation, useQuery } from "react-query";
+import { Content } from "../abstractions/domain/content";
 import { useAppServices } from "../components/AppServicesContext";
 
 type getCampaignContentQueryKey = {
@@ -17,7 +17,7 @@ export const useGetCampaignContent = (idCampaign: string) => {
     },
   ];
 
-  const queryFn: QueryFunction<Design, getCampaignContentQueryKey> = async (
+  const queryFn: QueryFunction<Content, getCampaignContentQueryKey> = async (
     context
   ) => {
     const [{ idCampaign }] = context.queryKey;
@@ -41,17 +41,11 @@ export const useUpdateCampaignContent = () => {
 
   const updateCampaignContent = ({
     idCampaign,
-    design,
-    htmlContent,
+    content,
   }: {
     idCampaign: string;
-    design: Design;
-    htmlContent: string;
-  }) =>
-    htmlEditorApiClient.updateCampaignContent(idCampaign, {
-      design,
-      htmlContent,
-    });
+    content: Content;
+  }) => htmlEditorApiClient.updateCampaignContent(idCampaign, content);
 
   return useMutation(updateCampaignContent);
 };

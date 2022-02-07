@@ -1,12 +1,9 @@
 import { Result } from "../abstractions/common/result-types";
 import { AppConfiguration } from "../abstractions";
-import {
-  CampaignContent,
-  HtmlEditorApiClient,
-} from "../abstractions/html-editor-api-client";
-import { Design } from "react-email-editor";
+import { HtmlEditorApiClient } from "../abstractions/html-editor-api-client";
 import { AxiosStatic, Method } from "axios";
 import { AppSessionStateAccessor } from "../abstractions/app-session";
+import { Content } from "../abstractions/domain/content";
 
 export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
   private axios;
@@ -56,18 +53,23 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
     return this.request<any>("PUT", url, data);
   }
 
-  async getCampaignContent(campaignId: string): Promise<Result<Design>> {
+  async getCampaignContent(campaignId: string): Promise<Result<Content>> {
     const response = await this.GET<any>(`/campaigns/${campaignId}/content`);
+
     return {
       success: true,
-      // TODO: consider to sanitize and validate this response
-      value: response.data.meta,
+      value: {
+        // TODO: consider to sanitize and validate this response
+        design: response.data.meta,
+        htmlContent: response.data.htmlContent,
+        type: "unlayer",
+      },
     };
   }
 
   async updateCampaignContent(
     campaignId: string,
-    content: CampaignContent
+    content: Content
   ): Promise<Result> {
     const body = {
       meta: content.design,
