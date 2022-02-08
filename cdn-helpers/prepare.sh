@@ -179,6 +179,8 @@ cp -R "${build}/static/." "${ready}/static"
 echo "${canonicalTag}" > "${ready}/asset-manifest-${canonicalTag}.txt"
 cp "${build}/asset-manifest.json" "${ready}/asset-manifest-${canonicalTag}.json"
 
+sed -r -i "s/^\\{/\\{\\n  \"canonicalVersion\": \"${canonicalTag}\",/g" "${ready}/asset-manifest-${canonicalTag}.json"
+
 if [ -n "${version}" ]
 then
   echo "${canonicalTag}" > "${ready}/asset-manifest-${versionMayor}.txt"
