@@ -32,6 +32,9 @@
         // basename: "editors",
       };
     </script>
+    <!-- AssetServices -->
+    <script src="https://cdn.fromdoppler.com/loader/v1/loader.js"></script>
+    <!-- End AssetServices -->
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -47,4 +50,11 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+  <!-- Use AssetServices to load asset-manifest.json -->
+  <script type="text/javascript">
+    new AssetServices().load(
+      "https://cdn.fromdoppler.com/doppler-style-guide/asset-manifest-main.json"
+    );
+  </script>
+  <!-- End Use AssetServices -->
 </html>
