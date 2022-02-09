@@ -182,13 +182,13 @@ sed -r -i "s/^\\{/\\{\\n  \"canonicalVersion\": \"${canonicalTag}\",/g" "${ready
 
 if [ -n "${version}" ]
 then
-  cp "${build}/asset-manifest.json" "${ready}/asset-manifest-${versionMayor}.json"
-  cp "${build}/asset-manifest.json" "${ready}/asset-manifest-${versionMayorMinor}.json"
-  cp "${build}/asset-manifest.json" "${ready}/asset-manifest-${versionMayorMinorPatch}.json"
-  cp "${build}/asset-manifest.json" "${ready}/asset-manifest-${versionMayorMinorPatchPre}.json"
+  cp "${ready}/asset-manifest-${canonicalTag}.json" "${ready}/asset-manifest-${versionMayor}.json"
+  cp "${ready}/asset-manifest-${canonicalTag}.json" "${ready}/asset-manifest-${versionMayorMinor}.json"
+  cp "${ready}/asset-manifest-${canonicalTag}.json" "${ready}/asset-manifest-${versionMayorMinorPatch}.json"
+  cp "${ready}/asset-manifest-${canonicalTag}.json" "${ready}/asset-manifest-${versionMayorMinorPatchPre}.json"
 fi
 
 if [ -n "${name}" ]
 then
-  cp "${build}/asset-manifest.json" "${ready}/asset-manifest-${name}.json"
+  cp "${ready}/asset-manifest-${canonicalTag}.json" "${ready}/asset-manifest-${name}.json"
 fi
