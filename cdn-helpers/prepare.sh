@@ -176,25 +176,19 @@ mkdir "${ready}" -p
 
 cp -R "${build}/static/." "${ready}/static"
 
-echo "${canonicalTag}" > "${ready}/asset-manifest-${canonicalTag}.txt"
 cp "${build}/asset-manifest.json" "${ready}/asset-manifest-${canonicalTag}.json"
 
 sed -r -i "s/^\\{/\\{\\n  \"canonicalVersion\": \"${canonicalTag}\",/g" "${ready}/asset-manifest-${canonicalTag}.json"
 
 if [ -n "${version}" ]
 then
-  echo "${canonicalTag}" > "${ready}/asset-manifest-${versionMayor}.txt"
   cp "${build}/asset-manifest.json" "${ready}/asset-manifest-${versionMayor}.json"
-  echo "${canonicalTag}" > "${ready}/versiasset-manifeston-${versionMayorMinor}.txt"
   cp "${build}/asset-manifest.json" "${ready}/asset-manifest-${versionMayorMinor}.json"
-  echo "${canonicalTag}" > "${ready}/asset-manifest-${versionMayorMinorPatch}.txt"
   cp "${build}/asset-manifest.json" "${ready}/asset-manifest-${versionMayorMinorPatch}.json"
-  echo "${canonicalTag}" > "${ready}/asset-manifest-${versionMayorMinorPatchPre}.txt"
   cp "${build}/asset-manifest.json" "${ready}/asset-manifest-${versionMayorMinorPatchPre}.json"
 fi
 
 if [ -n "${name}" ]
 then
-  echo "${canonicalTag}" > "${ready}/asset-manifest-${name}.txt"
   cp "${build}/asset-manifest.json" "${ready}/asset-manifest-${name}.json"
 fi
