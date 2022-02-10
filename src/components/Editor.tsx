@@ -1,12 +1,21 @@
 import { useEffect, useRef, useState } from "react";
-import EmailEditor, { UnlayerOptions, User } from "react-email-editor";
+import EmailEditor, {
+  Features,
+  UnlayerOptions,
+  User,
+} from "react-email-editor";
 import { useGetUserFields } from "../queries/user-fields-queries";
 import { useAppServices } from "./AppServicesContext";
 import { useAppSessionState } from "./AppSessionStateContext";
 import { EditorState } from "./SingletonEditor";
 
 interface ExtendedUnlayerOptions extends UnlayerOptions {
+  features: ExtendedFeatures;
   mergeTagsConfig: { sort: boolean };
+}
+
+interface ExtendedFeatures extends Features {
+  preheaderText?: boolean;
 }
 
 interface ExtendedUnlayerUser extends User {
