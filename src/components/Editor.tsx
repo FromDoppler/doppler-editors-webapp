@@ -100,6 +100,10 @@ export const Editor = ({
     mergeTagsConfig: {
       sort: false,
     },
+    displayMode: "email",
+    features: {
+      preheaderText: false,
+    },
     mergeTags: mergeTags,
     user: user,
     customJS: [
