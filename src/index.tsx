@@ -28,9 +28,7 @@ render(
           <AppSessionStateProvider
             appSessionStateMonitor={appSessionStateMonitor}
           >
-            <SingletonEditorProvider>
-              <App />
-            </SingletonEditorProvider>
+            <App />
           </AppSessionStateProvider>
         </AppServicesProvider>
       </BrowserRouter>
