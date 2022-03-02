@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "@types/react-email-editor": "^1.1.2",
+    "@types/react-email-editor": "^1.1.4",
     "eclint": "^2.8.1",
     "prettier": "^2.5.1"
   },
