@@ -11,7 +11,7 @@ export function Main() {
   return (
     <div className="App dp-library dp-wrapper">
       <header>
-        <nav className="flex-row-center">
+        <nav className="flex-row-center" role="navigation">
           <div>
             <Link to="/invoices">Invoices</Link> |{" "}
             <Link to="/expenses">Expenses</Link> |{" "}

@@ -36,8 +36,8 @@ describe("Main.name", () => {
         </AppServicesProvider>
       </QueryClientProvider>
     );
-    const linkElement = screen.getByText(/Editors WebApp/i);
-    expect(linkElement).toBeInTheDocument();
+    const navigationElement = screen.getByRole("navigation");
+    expect(navigationElement).toBeInTheDocument();
   });
 
   it("renders login link with the right URL", () => {
