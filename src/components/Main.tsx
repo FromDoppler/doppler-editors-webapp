@@ -1,6 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
 import { useAppServices } from "./AppServicesContext";
-import logo from "./logo.svg";
 import "./Main.css";
 import { SingletonEditorProvider } from "./SingletonEditor";
 
@@ -11,28 +10,26 @@ export function Main() {
 
   return (
     <div className="App dp-library dp-wrapper">
-      <header>header</header>
+      <header>
+        <nav className="flex-row-center">
+          <div>
+            <Link to="/invoices">Invoices</Link> |{" "}
+            <Link to="/expenses">Expenses</Link> |{" "}
+            <Link to="/campaigns/html123">campaigns/html123</Link> |{" "}
+            <Link to="/campaigns/html456">campaigns/html456</Link> |{" "}
+            <Link to="/campaigns/123">campaigns/123</Link> |{" "}
+            <Link to="/campaigns/456">campaigns/456</Link> |{" "}
+            <Link to="/campaigns/789">campaigns/789</Link> |{" "}
+            <Link to="/templates/1">/templates/1</Link> |{" "}
+            <a href={loginPageUrl}>Login</a>
+          </div>
+        </nav>
+      </header>
       <main>
         <SingletonEditorProvider>
           <Outlet />
         </SingletonEditorProvider>
       </main>
-      <footer>
-        <div className="ed-cta-footer">
-          <button
-            type="button"
-            className="dp-button button-medium secondary-green"
-          >
-            Salir y editar luego
-          </button>
-          <button
-            type="button"
-            className="dp-button button-medium primary-green"
-          >
-            Continuar
-          </button>
-        </div>
-      </footer>
     </div>
   );
 }
