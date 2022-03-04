@@ -6,6 +6,8 @@ import {
   useGetCampaignContent,
   useUpdateCampaignContent,
 } from "../queries/campaign-content-queries";
+import { Footer } from "./Footer";
+import { Header } from "./Header";
 
 export const loadingMessageTestId = "loading-message";
 export const errorMessageTestId = "error-message";
@@ -42,11 +44,16 @@ export const Campaign = () => {
       {campaignContentQuery.isLoading ? (
         <div data-testid={loadingMessageTestId}>Loading...</div>
       ) : (
-        <EditorTopBar
-          data-testid={editorTopBarTestId}
-          onSave={onSave}
-          title={"Campaign " + idCampaign}
-        />
+        <>
+          <Header>
+            <EditorTopBar
+              data-testid={editorTopBarTestId}
+              onSave={onSave}
+              title={"Campaign " + idCampaign}
+            />
+          </Header>
+          <Footer>Campaign bottom bar</Footer>
+        </>
       )}
     </>
   );
