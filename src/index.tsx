@@ -8,7 +8,6 @@ import { configureApp } from "./composition-root";
 import { AppServicesProvider } from "./components/AppServicesContext";
 import { AppSessionStateProvider } from "./components/AppSessionStateContext";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { SingletonEditorProvider } from "./components/SingletonEditor";
 
 const customConfiguration =
   (window as any)["editors-webapp-configuration"] || {};
@@ -28,9 +27,7 @@ render(
           <AppSessionStateProvider
             appSessionStateMonitor={appSessionStateMonitor}
           >
-            <SingletonEditorProvider>
-              <App />
-            </SingletonEditorProvider>
+            <App />
           </AppSessionStateProvider>
         </AppServicesProvider>
       </BrowserRouter>

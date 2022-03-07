@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AppServices } from "../abstractions";
 import { Field } from "../abstractions/doppler-rest-api-client";
 import { AppServicesProvider } from "./AppServicesContext";
-import { Main } from "./Main";
+import { Main, mainTestId } from "./Main";
 
 const baseAppServices = {
   appSessionStateAccessor: {
@@ -36,31 +36,7 @@ describe("Main.name", () => {
         </AppServicesProvider>
       </QueryClientProvider>
     );
-    const linkElement = screen.getByText(/Editors WebApp/i);
-    expect(linkElement).toBeInTheDocument();
-  });
-
-  it("renders login link with the right URL", () => {
-    // Arrange
-    const loginPageUrl = "https://test.fromdoppler.net/login";
-    const appServices = {
-      ...baseAppServices,
-      appConfiguration: { loginPageUrl },
-    } as AppServices;
-    // Act
-    render(
-      <QueryClientProvider client={queryClient}>
-        <AppServicesProvider appServices={appServices}>
-          <BrowserRouter>
-            <Main />
-          </BrowserRouter>
-        </AppServicesProvider>
-      </QueryClientProvider>
-    );
-
-    // Assert
-    const linkElement = screen.getByText(/Login/i);
-    expect(linkElement).toBeInTheDocument();
-    expect(linkElement).toHaveAttribute("href", loginPageUrl);
+    const outletElement = screen.queryByTestId(mainTestId);
+    expect(outletElement).toBeInTheDocument();
   });
 });

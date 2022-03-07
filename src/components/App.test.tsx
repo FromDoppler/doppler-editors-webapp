@@ -108,24 +108,3 @@ test("invoices URL should render expected content", async () => {
   // Assert
   screen.getByText(expectedContent);
 });
-
-test("Click in first 'Expenses' link should should show expenses title", async () => {
-  // Arrange
-  const initialURL = invoicesURL;
-  render(
-    <QueryClientProvider client={queryClient}>
-      <AppServicesProvider appServices={baseAppServices}>
-        <MemoryRouter initialEntries={[initialURL]}>
-          <App />
-        </MemoryRouter>
-      </AppServicesProvider>
-    </QueryClientProvider>
-  );
-  const linkElement = screen.getAllByText(/Expenses/i)[0];
-
-  // Act
-  linkElement.click();
-
-  // Assert
-  await waitFor(() => screen.getByText(expensesContent));
-});

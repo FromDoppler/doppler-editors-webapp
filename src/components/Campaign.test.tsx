@@ -13,10 +13,6 @@ import {
   errorMessageTestId,
   loadingMessageTestId,
 } from "./Campaign";
-import {
-  ISingletonDesignContext,
-  SingletonDesignContext,
-} from "./SingletonEditor";
 
 const baseAppServices = {
   appSessionStateAccessor: {

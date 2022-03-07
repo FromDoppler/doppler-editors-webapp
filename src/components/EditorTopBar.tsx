@@ -13,7 +13,12 @@ export const EditorTopBar = ({
   return (
     <div className="editor-top-bar vertical-center" {...otherProps}>
       <h2>{title}</h2>
-      <button onClick={onSave}>Guardar</button>
+      <button
+        onClick={onSave}
+        className="dp-button button-medium primary-green"
+      >
+        Guardar
+      </button>
     </div>
   );
 };
