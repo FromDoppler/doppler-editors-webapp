@@ -121,7 +121,7 @@ export const SingletonEditorProvider = ({
     <SingletonDesignContext.Provider value={defaultContext}>
       {children}
       <Editor setEditorState={setEditorState} hidden={hidden} {...props} />
-      <EditorBottomBar />
+      
     </SingletonDesignContext.Provider>
   );
 };

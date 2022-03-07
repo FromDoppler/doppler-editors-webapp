@@ -8,6 +8,7 @@ import {
 } from "../queries/campaign-content-queries";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
+import { EditorBottomBar } from "./EditorBottomBar";
 
 export const loadingMessageTestId = "loading-message";
 export const errorMessageTestId = "error-message";
@@ -52,7 +53,9 @@ export const Campaign = () => {
               title={"Campaign " + idCampaign}
             />
           </Header>
-          <Footer>Campaign bottom bar</Footer>
+          <Footer>
+            <EditorBottomBar></EditorBottomBar>
+          </Footer>
         </>
       )}
     </>
