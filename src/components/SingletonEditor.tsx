@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { Editor } from "./Editor";
 import EmailEditor, { HtmlExport } from "react-email-editor";
 import { Content } from "../abstractions/domain/content";
-import { EditorBottomBar } from "./EditorBottomBar";
 
 export type EditorState =
   | { isLoaded: false; unlayer: undefined }
