@@ -51,7 +51,7 @@ export const Editor = ({
   }, [emailEditorLoaded, setEditorState]);
 
   const containerStyle = {
-    height: "calc(100% - 70px)",
+    height: "100%",
     display: hidden ? "none" : "flex",
   };
 

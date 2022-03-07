@@ -37,3 +37,13 @@ nav {
   grid-column: 1;
   overflow: hidden;
 }
+
+/* These lines are needed to override the fixed heights of Unlayer that generate unnecessary scrolling. */
+
+#root main > div {
+  min-height: calc(90vh - 80px);
+}
+
+#root main > div > div {
+  min-height: 100% !important;
+}
