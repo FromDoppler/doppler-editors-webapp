@@ -9,8 +9,8 @@ export function Main() {
   } = useAppServices();
 
   return (
-    <div className="App dp-library dp-wrapper">
-      <header>
+    <div className="App">
+      {/* <header>
         <nav className="flex-row-center" role="navigation">
           <div>
             <Link to="/invoices">Invoices</Link> |{" "}
@@ -24,7 +24,7 @@ export function Main() {
             <a href={loginPageUrl}>Login</a>
           </div>
         </nav>
-      </header>
+      </header> */}
       <main>
         <SingletonEditorProvider>
           <Outlet />
