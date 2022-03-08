@@ -18,7 +18,9 @@ export class SingletonLazyAppServicesContainer implements AppServices {
     name: N
   ): T {
     if (!this._instances[name]) {
-      this._instances[name] = this._factories[`${name}Factory`](this) as T;
+      this._instances[name] = this._factories[`${name}Factory`](
+        this
+      ) as unknown as T;
     }
     return this._instances[name] as T;
   }
