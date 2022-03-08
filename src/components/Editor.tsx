@@ -119,7 +119,7 @@ export const Editor = ({
         projectId={unlayerProjectId}
         key="email-editor-test"
         ref={emailEditorRef}
-        onLoad={() => setEmailEditorLoaded(true)}
+        onReady={() => setEmailEditorLoaded(true)}
         options={unlayerOptions}
       />
     </div>
