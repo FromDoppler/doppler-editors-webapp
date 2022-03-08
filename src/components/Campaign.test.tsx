@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "../utils/testUtils";
 import userEvent from "@testing-library/user-event";
 import { Design } from "react-email-editor";
 import { QueryClient, QueryClientProvider } from "react-query";
