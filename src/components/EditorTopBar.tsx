@@ -26,24 +26,24 @@ export const EditorTopBar = ({
               <div className="dp-content-menu">
                 <ul className="dp-list-exit" id="dp-exit-editor">
                   <li role="none">
-                    <a role="menuitem" href="#">
+                    <button type="button" role="menuitem">
                       Inicio
-                    </a>
+                    </button>
                   </li>
                   <li role="none">
-                    <a role="menuitem" href="#">
+                    <button type="button" role="menuitem">
                       Campañas
-                    </a>
+                    </button>
                   </li>
                   <li role="none">
-                    <a role="menuitem" href="#">
+                    <button type="button" role="menuitem">
                       Listas
-                    </a>
+                    </button>
                   </li>
                   <li role="none">
-                    <a role="menuitem" href="#">
+                    <button type="button" role="menuitem">
                       Panel de Control
-                    </a>
+                    </button>
                   </li>
                 </ul>
               </div>
