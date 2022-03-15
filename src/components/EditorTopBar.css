@@ -1,13 +1,20 @@
 .editor-top-bar {
-  justify-content: space-between;
-  display: flex;
-  padding: 18px 12px 12px 18px;
+  padding: 12px;
 }
-
-.vertical-center {
+.ed-header-list {
+  display: flex;
   align-items: center;
 }
 
-.editor-top-bar button {
-  min-height: 40px;
+.ed-header-list li {
+  margin-right: 12px;
+}
+
+.dp-library .ed-header-list h2 {
+  padding-bottom: 0;
+}
+
+.ed-header-list li:last-child {
+  margin-left: auto;
+  margin-right: 0;
 }

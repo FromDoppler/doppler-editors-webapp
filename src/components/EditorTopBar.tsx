@@ -11,14 +11,57 @@ export const EditorTopBar = ({
   ...otherProps
 }: EditorTopBarProps) => {
   return (
-    <div className="editor-top-bar vertical-center" {...otherProps}>
-      <h2>{title}</h2>
-      <button
-        onClick={onSave}
-        className="dp-button button-medium primary-green"
-      >
-        Guardar
-      </button>
+    <div className="editor-top-bar" {...otherProps}>
+      <ul className="ed-header-list">
+        <li>
+          <div className="dp-button-editor-wrap">
+            <div className="dp-button-box">
+              <button
+                type="button"
+                className="dp-button button-medium dp-button-exit"
+                aria-controls="dp-exit-editor"
+              >
+                Salir del Editor
+              </button>
+              <div className="dp-content-menu">
+                <ul className="dp-list-exit" id="dp-exit-editor">
+                  <li role="none">
+                    <a role="menuitem" href="#">
+                      Inicio
+                    </a>
+                  </li>
+                  <li role="none">
+                    <a role="menuitem" href="#">
+                      Campañas
+                    </a>
+                  </li>
+                  <li role="none">
+                    <a role="menuitem" href="#">
+                      Listas
+                    </a>
+                  </li>
+                  <li role="none">
+                    <a role="menuitem" href="#">
+                      Panel de Control
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <h2>{title}</h2>
+        </li>
+        <li>
+          <button
+            onClick={onSave}
+            className="dp-button button-medium primary-green"
+          >
+            Guardar
+          </button>
+        </li>
+      </ul>
     </div>
   );
 };
