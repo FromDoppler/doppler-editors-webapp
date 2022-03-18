@@ -1,3 +1,4 @@
+import { useAppServices } from "./AppServicesContext";
 import "./EditorTopBar.css";
 
 interface EditorTopBarProps {
@@ -10,6 +11,9 @@ export const EditorTopBar = ({
   title,
   ...otherProps
 }: EditorTopBarProps) => {
+  const {
+    appConfiguration: { loginPageUrl },
+  } = useAppServices();
   return (
     <div className="editor-top-bar" {...otherProps}>
       <ul className="ed-header-list">
@@ -26,24 +30,24 @@ export const EditorTopBar = ({
               <div className="dp-content-menu">
                 <ul className="dp-list-exit" id="dp-exit-editor">
                   <li role="none">
-                    <button type="button" role="menuitem">
+                    <a href={loginPageUrl} role="menuitem">
                       Inicio
-                    </button>
+                    </a>
                   </li>
                   <li role="none">
-                    <button type="button" role="menuitem">
+                    <a href={loginPageUrl} role="menuitem">
                       Campañas
-                    </button>
+                    </a>
                   </li>
                   <li role="none">
-                    <button type="button" role="menuitem">
+                    <a href={loginPageUrl} role="menuitem">
                       Listas
-                    </button>
+                    </a>
                   </li>
                   <li role="none">
-                    <button type="button" role="menuitem">
+                    <a href={loginPageUrl} role="menuitem">
                       Panel de Control
-                    </button>
+                    </a>
                   </li>
                 </ul>
               </div>
