@@ -14,4 +14,10 @@ export const defaultAppConfiguration: AppConfiguration = {
   htmlEditorApiBaseUrl: "https://apisint.fromdoppler.net/html-editor",
   dopplerRestApiBaseUrl: "https://restapi.fromdoppler.net",
   useDummies: true,
+  exitMenuItemsUrls: {
+    home: "https://app.fromdoppler.com/dashboard",
+    campaigns: "https://app2.fromdoppler.com/Campaigns/Draft",
+    lists: "https://app2.fromdoppler.com/Lists/SubscribersList",
+    controlPanel: "https://app2.fromdoppler.com/ControlPanel/ControlPanel",
+  },
 };

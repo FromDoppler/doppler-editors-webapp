@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useAppServices } from "./AppServicesContext";
 import "./EditorTopBar.css";
 
@@ -12,8 +13,10 @@ export const EditorTopBar = ({
   ...otherProps
 }: EditorTopBarProps) => {
   const {
-    appConfiguration: { loginPageUrl },
+    appConfiguration: { exitMenuItemsUrls },
   } = useAppServices();
+  const [isActive, setActive] = useState(false);
+  const toggleActive = () => setActive(!isActive);
   return (
     <div className="editor-top-bar" {...otherProps}>
       <ul className="ed-header-list">
@@ -22,30 +25,38 @@ export const EditorTopBar = ({
             <div className="dp-button-box">
               <button
                 type="button"
-                className="dp-button button-medium dp-button-exit"
+                className={
+                  "dp-button button-medium dp-button-exit" +
+                  (isActive ? " active" : "")
+                }
                 aria-controls="dp-exit-editor"
+                onClick={toggleActive}
+                onBlur={toggleActive}
               >
                 Salir del Editor
               </button>
-              <div className="dp-content-menu">
+              <div
+                className="dp-content-menu"
+                style={isActive ? { display: "block" } : { display: "none" }}
+              >
                 <ul className="dp-list-exit" id="dp-exit-editor">
                   <li role="none">
-                    <a href={loginPageUrl} role="menuitem">
+                    <a href={exitMenuItemsUrls.home} role="menuitem">
                       Inicio
                     </a>
                   </li>
                   <li role="none">
-                    <a href={loginPageUrl} role="menuitem">
+                    <a href={exitMenuItemsUrls.campaigns} role="menuitem">
                       Campañas
                     </a>
                   </li>
                   <li role="none">
-                    <a href={loginPageUrl} role="menuitem">
+                    <a href={exitMenuItemsUrls.lists} role="menuitem">
                       Listas
                     </a>
                   </li>
                   <li role="none">
-                    <a href={loginPageUrl} role="menuitem">
+                    <a href={exitMenuItemsUrls.controlPanel} role="menuitem">
                       Panel de Control
                     </a>
                   </li>
