@@ -13,7 +13,7 @@ export const EditorTopBar = ({
   ...otherProps
 }: EditorTopBarProps) => {
   const {
-    appConfiguration: { exitMenuItemsUrls },
+    appConfiguration: { dopplerExternalUrls },
   } = useAppServices();
   const [isActive, setActive] = useState(false);
   const toggleActive = () => setActive(!isActive);
@@ -41,22 +41,22 @@ export const EditorTopBar = ({
               >
                 <ul className="dp-list-exit" id="dp-exit-editor">
                   <li role="none">
-                    <a href={exitMenuItemsUrls.home} role="menuitem">
+                    <a href={dopplerExternalUrls.home} role="menuitem">
                       Inicio
                     </a>
                   </li>
                   <li role="none">
-                    <a href={exitMenuItemsUrls.campaigns} role="menuitem">
+                    <a href={dopplerExternalUrls.campaigns} role="menuitem">
                       Campañas
                     </a>
                   </li>
                   <li role="none">
-                    <a href={exitMenuItemsUrls.lists} role="menuitem">
+                    <a href={dopplerExternalUrls.lists} role="menuitem">
                       Listas
                     </a>
                   </li>
                   <li role="none">
-                    <a href={exitMenuItemsUrls.controlPanel} role="menuitem">
+                    <a href={dopplerExternalUrls.controlPanel} role="menuitem">
                       Panel de Control
                     </a>
                   </li>
