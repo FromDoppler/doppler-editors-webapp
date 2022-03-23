@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useAppServices } from "./AppServicesContext";
+import { DropdownButton } from "./DropdownButton";
 import "./EditorTopBar.css";
+import { useAppServices } from "./AppServicesContext";
 
 interface EditorTopBarProps {
   onSave: () => void;
@@ -15,55 +15,25 @@ export const EditorTopBar = ({
   const {
     appConfiguration: { dopplerExternalUrls },
   } = useAppServices();
-  const [isActive, setActive] = useState(false);
-  const toggleActive = () => setActive(!isActive);
+
   return (
     <div className="editor-top-bar" {...otherProps}>
       <ul className="ed-header-list">
         <li>
-          <div className="dp-button-editor-wrap">
-            <div className="dp-button-box">
-              <button
-                type="button"
-                className={
-                  "dp-button button-medium dp-button-exit" +
-                  (isActive ? " active" : "")
-                }
-                aria-controls="dp-exit-editor"
-                onClick={toggleActive}
-                onBlur={toggleActive}
-              >
-                Salir del Editor
-              </button>
-              <div
-                className="dp-content-menu"
-                style={isActive ? { display: "block" } : { display: "none" }}
-              >
-                <ul className="dp-list-exit" id="dp-exit-editor">
-                  <li role="none">
-                    <a href={dopplerExternalUrls.home} role="menuitem">
-                      Inicio
-                    </a>
-                  </li>
-                  <li role="none">
-                    <a href={dopplerExternalUrls.campaigns} role="menuitem">
-                      Campañas
-                    </a>
-                  </li>
-                  <li role="none">
-                    <a href={dopplerExternalUrls.lists} role="menuitem">
-                      Listas
-                    </a>
-                  </li>
-                  <li role="none">
-                    <a href={dopplerExternalUrls.controlPanel} role="menuitem">
-                      Panel de Control
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          <DropdownButton buttonText="Salir del editor">
+            <a href={dopplerExternalUrls.home.url} role="menuitem">
+              {dopplerExternalUrls.home.name}
+            </a>
+            <a href={dopplerExternalUrls.campaigns.url} role="menuitem">
+              {dopplerExternalUrls.campaigns.name}
+            </a>
+            <a href={dopplerExternalUrls.lists.url} role="menuitem">
+              {dopplerExternalUrls.lists.name}
+            </a>
+            <a href={dopplerExternalUrls.controlPanel.url} role="menuitem">
+              {dopplerExternalUrls.controlPanel.name}
+            </a>
+          </DropdownButton>
         </li>
         <li>
           <h2>{title}</h2>
