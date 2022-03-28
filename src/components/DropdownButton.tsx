@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import useOnclickOutside from "react-cool-onclickoutside";
 
 interface DropdownButtonProps {
   buttonText: string;
@@ -7,10 +8,10 @@ interface DropdownButtonProps {
 
 export const DropdownButton = (props: DropdownButtonProps) => {
   const [isActive, setActive] = useState(false);
-  const toggleActive = () => setActive(!isActive);
+  const exitButtonWrap = useOnclickOutside(() => setActive(false));
 
   return (
-    <div className="dp-button-editor-wrap">
+    <div className="dp-button-editor-wrap" ref={exitButtonWrap}>
       <div className="dp-button-box">
         <button
           type="button"
@@ -19,8 +20,7 @@ export const DropdownButton = (props: DropdownButtonProps) => {
             (isActive ? " active" : "")
           }
           aria-controls="dp-exit-editor"
-          onClick={toggleActive}
-          onBlur={toggleActive}
+          onClick={() => setActive(!isActive)}
         >
           {props.buttonText}
         </button>
@@ -30,7 +30,7 @@ export const DropdownButton = (props: DropdownButtonProps) => {
         >
           <ul className="dp-list-exit" id="dp-exit-editor">
             {React.Children.map(props.children, (child) => (
-              <li role="none">{child}</li>
+              <li role="menuitem">{child}</li>
             ))}
           </ul>
         </div>
