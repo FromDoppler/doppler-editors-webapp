@@ -40,7 +40,7 @@ const queryClient = new QueryClient({
 });
 
 describe(Editor.name, () => {
-  it("should show and hide EmailEditor when design is set and unset", () => {
+  it("should show and hide EmailEditor when design is set and unset", async () => {
     // Arrange
     const appServices = defaultAppServices as AppServices;
 
@@ -83,13 +83,13 @@ describe(Editor.name, () => {
 
     // Shown when a design is loaded
     // Act
-    userEvent.click(screen.getByText("LoadDesign"));
+    await userEvent.click(screen.getByText("LoadDesign"));
     // Assert
     expect(editorEl.style.display).toBe("flex");
 
     // Hidden when the design is unloaded
     // Act
-    userEvent.click(screen.getByText("UnloadDesign"));
+    await userEvent.click(screen.getByText("UnloadDesign"));
     // Assert
     expect(editorEl.style.display).toBe("none");
   });

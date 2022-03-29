@@ -204,7 +204,7 @@ describe(Campaign.name, () => {
     // Assert
     const saveBtn = await screen.findByText("Guardar");
 
-    userEvent.click(saveBtn);
+    await userEvent.click(saveBtn);
 
     await waitFor(() => {
       expect(updateCampaignContent).toHaveBeenCalledWith(idCampaign, {
