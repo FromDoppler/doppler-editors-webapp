@@ -5,10 +5,22 @@ import { EditorTopBar } from "./EditorTopBar";
 
 const appConfiguration = {
   dopplerExternalUrls: {
-    home: "homeUrl",
-    campaigns: "campaignsUrl",
-    lists: "listsUrl",
-    controlPanel: "controlPanelUrl",
+    home: {
+      name: "Inicio",
+      url: "homeUrl",
+    },
+    campaigns: {
+      name: "Campañas",
+      url: "campaignUrl",
+    },
+    lists: {
+      name: "Listas",
+      url: "listsUrl",
+    },
+    controlPanel: {
+      name: "Panel de Control",
+      url: "controlPanelUrl",
+    },
   },
 };
 
@@ -68,22 +80,22 @@ describe(EditorTopBar.name, () => {
     // Assert
     expect(homeOption.closest("a")).toHaveAttribute(
       "href",
-      appConfiguration.dopplerExternalUrls.home
+      appConfiguration.dopplerExternalUrls.home.url
     );
 
     expect(campaignsOption.closest("a")).toHaveAttribute(
       "href",
-      appConfiguration.dopplerExternalUrls.campaigns
+      appConfiguration.dopplerExternalUrls.campaigns.url
     );
 
     expect(listsOption.closest("a")).toHaveAttribute(
       "href",
-      appConfiguration.dopplerExternalUrls.lists
+      appConfiguration.dopplerExternalUrls.lists.url
     );
 
     expect(controlPanelOption.closest("a")).toHaveAttribute(
       "href",
-      appConfiguration.dopplerExternalUrls.controlPanel
+      appConfiguration.dopplerExternalUrls.controlPanel.url
     );
   });
 });

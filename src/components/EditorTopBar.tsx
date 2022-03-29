@@ -20,7 +20,7 @@ export const EditorTopBar = ({
     <div className="editor-top-bar" {...otherProps}>
       <ul className="ed-header-list">
         <li>
-          <DropdownButton buttonText="Salir del editor">
+          <DropdownButton buttonText="Salir del Editor">
             <a href={dopplerExternalUrls.home.url}>
               {dopplerExternalUrls.home.name}
             </a>
