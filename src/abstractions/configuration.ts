@@ -9,4 +9,12 @@ export type AppConfiguration = {
   readonly htmlEditorApiBaseUrl: string;
   readonly dopplerRestApiBaseUrl: string;
   readonly useDummies: boolean;
+  readonly dopplerExternalUrls: dopplerExternalUrls;
+};
+
+export type dopplerExternalUrls = {
+  readonly home: string;
+  readonly campaigns: string;
+  readonly lists: string;
+  readonly controlPanel: string;
 };
