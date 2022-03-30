@@ -21,18 +21,10 @@ export const EditorTopBar = ({
       <ul className="ed-header-list">
         <li>
           <DropdownButton buttonText="Salir del Editor">
-            <a href={dopplerExternalUrls.home.url}>
-              {dopplerExternalUrls.home.name}
-            </a>
-            <a href={dopplerExternalUrls.campaigns.url}>
-              {dopplerExternalUrls.campaigns.name}
-            </a>
-            <a href={dopplerExternalUrls.lists.url}>
-              {dopplerExternalUrls.lists.name}
-            </a>
-            <a href={dopplerExternalUrls.controlPanel.url}>
-              {dopplerExternalUrls.controlPanel.name}
-            </a>
+            <a href={dopplerExternalUrls.home}>Inicio</a>
+            <a href={dopplerExternalUrls.campaigns}>Campañas</a>
+            <a href={dopplerExternalUrls.lists}>Listas</a>
+            <a href={dopplerExternalUrls.controlPanel}>Panel de Control</a>
           </DropdownButton>
         </li>
         <li>

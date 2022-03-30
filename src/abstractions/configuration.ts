@@ -13,13 +13,8 @@ export type AppConfiguration = {
 };
 
 export type dopplerExternalUrls = {
-  readonly home: itemDopplerExternalUrls;
-  readonly campaigns: itemDopplerExternalUrls;
-  readonly lists: itemDopplerExternalUrls;
-  readonly controlPanel: itemDopplerExternalUrls;
-};
-
-export type itemDopplerExternalUrls = {
-  readonly name: string;
-  readonly url: string;
+  readonly home: string;
+  readonly campaigns: string;
+  readonly lists: string;
+  readonly controlPanel: string;
 };

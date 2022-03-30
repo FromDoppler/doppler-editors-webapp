@@ -15,21 +15,9 @@ export const defaultAppConfiguration: AppConfiguration = {
   dopplerRestApiBaseUrl: "https://restapi.fromdoppler.net",
   useDummies: true,
   dopplerExternalUrls: {
-    home: {
-      name: "Inicio",
-      url: "https://app.fromdoppler.com/dashboard",
-    },
-    campaigns: {
-      name: "Campañas",
-      url: "https://app2.fromdoppler.com/Campaigns/Draft",
-    },
-    lists: {
-      name: "Listas",
-      url: "https://app2.fromdoppler.com/Lists/SubscribersList",
-    },
-    controlPanel: {
-      name: "Panel de Control",
-      url: "https://app2.fromdoppler.com/ControlPanel/ControlPanel",
-    },
+    home: "https://app.fromdoppler.com/dashboard",
+    campaigns: "https://app2.fromdoppler.com/Campaigns/Draft",
+    lists: "https://app2.fromdoppler.com/Lists/SubscribersList",
+    controlPanel: "https://app2.fromdoppler.com/ControlPanel/ControlPanel",
   },
 };
