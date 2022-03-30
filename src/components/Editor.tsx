@@ -106,6 +106,9 @@ export const Editor = ({
     },
     mergeTags: mergeTags,
     user: user,
+    designTagsConfig: {
+      delimiter: ["[[{", "}]]"],
+    },
     customJS: [
       loaderUrl,
       `(new AssetServices()).load('${unlayerEditorManifestUrl}', []);`,
