@@ -113,6 +113,13 @@ export const Editor = ({
       loaderUrl,
       `(new AssetServices()).load('${unlayerEditorManifestUrl}', []);`,
     ],
+    appearance: {
+      panels: {
+        tools: {
+          dock: "left",
+        },
+      },
+    },
   };
 
   return (
