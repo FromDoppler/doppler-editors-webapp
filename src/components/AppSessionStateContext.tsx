@@ -53,6 +53,9 @@ export const AppSessionStateProvider = ({
           ? prevState // When the status does not change, we could assume that the values does not change
           : mapAppSessionStateToSimplifiedAppSessionState(newValue)
       );
+    return () => {
+      appSessionStateMonitor.onSessionUpdate = () => {};
+    };
   }, [appSessionStateMonitor]);
 
   return (
