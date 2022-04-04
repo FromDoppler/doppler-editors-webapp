@@ -8,7 +8,7 @@ import {
 
 const SESSION_STATE_UPDATE = Symbol("SESSION_STATE_UPDATE");
 
-export class PullingAppSessionStateMonitor implements AppSessionStateMonitor {
+export class PollingAppSessionStateMonitor implements AppSessionStateMonitor {
   private readonly _appSessionStateWrapper;
   private readonly _window;
   private readonly _dopplerLegacyClient;
