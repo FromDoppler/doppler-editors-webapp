@@ -17,13 +17,13 @@ const defaultAppServices = {
     loaderUrl: "loaderUrl",
   },
   appSessionStateAccessor: {
-    current: {
+    getCurrentSessionState: () => ({
       status: "authenticated",
       unlayerUser: {
         id: "unlayerUserId",
         signature: "unlayerUserSignature",
       },
-    },
+    }),
   },
   dopplerRestApiClient: {
     getFields: () => Promise.resolve({ success: true, value: [] as Field[] }),

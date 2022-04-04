@@ -5,6 +5,7 @@ import { AppConfigurationRendererImplementation } from "./implementations/app-co
 import {
   //
   PollingAppSessionStateMonitor,
+  WrapperAppSessionStateAccessor,
 } from "./implementations/app-session/polling-app-session-state-monitor";
 import {
   ServicesFactories,
@@ -57,7 +58,8 @@ export const configureApp = (
         appSessionStateAccessor,
         appConfiguration,
       }),
-    appSessionStateAccessorFactory: () => appSessionStateWrapper,
+    appSessionStateAccessorFactory: () =>
+      new WrapperAppSessionStateAccessor({ appSessionStateWrapper }),
     appSessionStateMonitorFactory: (appServices: AppServices) =>
       new PollingAppSessionStateMonitor({
         appSessionStateWrapper,

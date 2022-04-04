@@ -13,7 +13,7 @@ export const SessionDemo = () => {
           SimplifiedSessionState from context: {JSON.stringify(sessionState)}
           <br />
           SessionState from AppServices:{" "}
-          {JSON.stringify(appSessionStateAccessor.current)}
+          {JSON.stringify(appSessionStateAccessor.getCurrentSessionState())}
         </pre>
       </code>
       <p>

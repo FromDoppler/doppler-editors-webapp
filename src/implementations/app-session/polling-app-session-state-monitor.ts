@@ -1,9 +1,30 @@
 import { AppServices } from "../../abstractions";
 import {
   AppSessionState,
+  AppSessionStateAccessor,
   AppSessionStateMonitor,
   defaultAppSessionState,
 } from "../../abstractions/app-session";
+
+interface AppSessionStateWrapper {
+  current: AppSessionState;
+}
+
+export class WrapperAppSessionStateAccessor implements AppSessionStateAccessor {
+  private readonly _appSessionStateWrapper;
+
+  constructor({
+    appSessionStateWrapper,
+  }: {
+    appSessionStateWrapper: AppSessionStateWrapper;
+  }) {
+    this._appSessionStateWrapper = appSessionStateWrapper;
+  }
+
+  getCurrentSessionState(): AppSessionState {
+    return this._appSessionStateWrapper.current;
+  }
+}
 
 export class PollingAppSessionStateMonitor implements AppSessionStateMonitor {
   private readonly _appSessionStateWrapper;
@@ -21,7 +42,7 @@ export class PollingAppSessionStateMonitor implements AppSessionStateMonitor {
       appConfiguration: { keepAliveMilliseconds },
     },
   }: {
-    appSessionStateWrapper: { current: AppSessionState };
+    appSessionStateWrapper: AppSessionStateWrapper;
     appServices: AppServices;
   }) {
     this._appSessionStateWrapper = appSessionStateWrapper;

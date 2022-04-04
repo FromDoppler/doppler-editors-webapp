@@ -25,7 +25,8 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
   }
 
   private getConnectionData() {
-    const connectionData = this.appSessionStateAccessor.current;
+    const connectionData =
+      this.appSessionStateAccessor.getCurrentSessionState();
     if (connectionData.status !== "authenticated") {
       throw new Error("Authenticated session required");
     }

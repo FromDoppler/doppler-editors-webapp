@@ -8,7 +8,7 @@ import { Main, mainTestId } from "./Main";
 
 const baseAppServices = {
   appSessionStateAccessor: {
-    current: {},
+    getCurrentSessionState: () => ({}),
   },
   appConfiguration: {},
   dopplerRestApiClient: {
