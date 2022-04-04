@@ -7,9 +7,9 @@ import React, {
 } from "react";
 import {
   AppSessionState,
-  AppSessionStateMonitor,
   defaultAppSessionState,
 } from "../abstractions/app-session";
+import { useAppServices } from "./AppServicesContext";
 
 type SimplifiedAppSessionState =
   | { status: "unknown" }
@@ -26,11 +26,11 @@ export const AppSessionStateContext = createContext<SimplifiedAppSessionState>(
 
 export const AppSessionStateProvider = ({
   children,
-  appSessionStateMonitor,
 }: {
   children: React.ReactNode;
-  appSessionStateMonitor: AppSessionStateMonitor;
 }) => {
+  const { appSessionStateMonitor } = useAppServices();
+
   const [appSessionState, setAppSessionState] =
     useState<SimplifiedAppSessionState>(defaultAppSessionState);
 
