@@ -55,10 +55,12 @@ export const AppSessionStateProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { appSessionStateMonitor } = useAppServices();
+  const { appSessionStateMonitor, appSessionStateAccessor } = useAppServices();
 
   const [appSessionState, setAppSessionState] =
-    useState<SimplifiedAppSessionState>(defaultAppSessionState);
+    useState<SimplifiedAppSessionState>(
+      appSessionStateAccessor.getCurrentSessionState()
+    );
 
   useEffect(() => {
     appSessionStateMonitor.onSessionUpdate = (newValue) =>
