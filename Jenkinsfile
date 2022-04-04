@@ -2,6 +2,11 @@ pipeline {
     agent any
     stages {
         stage('Verify git commit conventions') {
+            when {
+                not {
+                    branch 'INT'
+                }
+            }
             steps {
                 sh 'sh ./gitlint.sh'
             }
