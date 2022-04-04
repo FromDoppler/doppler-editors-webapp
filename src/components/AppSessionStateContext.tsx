@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import {
   AppSessionState,
   defaultAppSessionState,
@@ -52,23 +46,15 @@ export const AppSessionStateProvider = ({
   const [appSessionState, setAppSessionState] =
     useState<SimplifiedAppSessionState>(defaultAppSessionState);
 
-  const onSessionUpdate = useCallback(
-    (newValue: AppSessionState) => {
-      if (newValue.status === appSessionState.status) {
-        // When the status does not change, we could assume that the values does not change
-        return;
-      }
-
-      setAppSessionState(
-        mapAppSessionStateToSimplifiedAppSessionState(newValue)
-      );
-    },
-    [appSessionState.status]
-  );
-
   useEffect(() => {
-    appSessionStateMonitor.onSessionUpdate(onSessionUpdate);
-  }, [appSessionStateMonitor, onSessionUpdate]);
+    appSessionStateMonitor.onSessionUpdate((newValue) =>
+      setAppSessionState((prevState) =>
+        prevState.status === newValue.status
+          ? prevState // When the status does not change, we could assume that the values does not change
+          : mapAppSessionStateToSimplifiedAppSessionState(newValue)
+      )
+    );
+  }, [appSessionStateMonitor]);
 
   return (
     <AppSessionStateContext.Provider value={appSessionState}>
