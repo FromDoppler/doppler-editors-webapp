@@ -5,7 +5,7 @@
   "devDependencies": {
     "@types/react-email-editor": "^1.1.5",
     "eclint": "^2.8.1",
-    "prettier": "^2.6.1"
+    "prettier": "^2.6.2"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.3",
