@@ -24,6 +24,24 @@ export const AppSessionStateContext = createContext<SimplifiedAppSessionState>(
   defaultAppSessionState
 );
 
+const mapAppSessionStateToSimplifiedAppSessionState: (
+  appSessionState: AppSessionState
+) => SimplifiedAppSessionState = (appSessionState: AppSessionState) => {
+  if (appSessionState.status !== "authenticated") {
+    return { status: appSessionState.status };
+  }
+  const {
+    status,
+    dopplerAccountName,
+    unlayerUser: { id, signature },
+  } = appSessionState;
+  return {
+    status,
+    dopplerAccountName,
+    unlayerUser: { id, signature },
+  };
+};
+
 export const AppSessionStateProvider = ({
   children,
 }: {
@@ -41,21 +59,9 @@ export const AppSessionStateProvider = ({
         return;
       }
 
-      if (newValue.status === "authenticated") {
-        const {
-          status,
-          dopplerAccountName,
-          unlayerUser: { id, signature },
-        } = newValue;
-        setAppSessionState({
-          status,
-          dopplerAccountName,
-          unlayerUser: { id, signature },
-        });
-      } else {
-        const { status } = newValue;
-        setAppSessionState({ status });
-      }
+      setAppSessionState(
+        mapAppSessionStateToSimplifiedAppSessionState(newValue)
+      );
     },
     [appSessionState.status]
   );
