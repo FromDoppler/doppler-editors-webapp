@@ -18,6 +18,16 @@ export const AppSessionStateContext = createContext<SimplifiedAppSessionState>(
   defaultAppSessionState
 );
 
+const isTheSameSession: (
+  prevState: SimplifiedAppSessionState,
+  newValue: AppSessionState
+) => boolean = (
+  prevState: SimplifiedAppSessionState,
+  newValue: AppSessionState
+) =>
+  // When the status does not change, we could assume that the values does not change
+  prevState.status === newValue.status;
+
 const mapAppSessionStateToSimplifiedAppSessionState: (
   appSessionState: AppSessionState
 ) => SimplifiedAppSessionState = (appSessionState: AppSessionState) => {
@@ -49,8 +59,8 @@ export const AppSessionStateProvider = ({
   useEffect(() => {
     appSessionStateMonitor.onSessionUpdate = (newValue) =>
       setAppSessionState((prevState) =>
-        prevState.status === newValue.status
-          ? prevState // When the status does not change, we could assume that the values does not change
+        isTheSameSession(prevState, newValue)
+          ? prevState
           : mapAppSessionStateToSimplifiedAppSessionState(newValue)
       );
     return () => {
