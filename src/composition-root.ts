@@ -1,12 +1,10 @@
 import axios from "axios";
 import { AppConfiguration, AppServices } from "./abstractions";
-import { defaultAppSessionState } from "./abstractions/app-session/app-session-state";
 import { AppConfigurationRendererImplementation } from "./implementations/app-configuration-renderer";
 import {
-  //
-  PollingAppSessionStateMonitor,
-  WrapperAppSessionStateAccessor,
-} from "./implementations/app-session/polling-app-session-state-monitor";
+  DopplerSessionMfeAppSessionStateAccessor,
+  DopplerSessionMfeAppSessionStateMonitor,
+} from "./implementations/app-session/doppler-mfe-app-session-state-monitor";
 import {
   ServicesFactories,
   SingletonLazyAppServicesContainer,
@@ -25,10 +23,6 @@ export const configureApp = (
   const appConfiguration = {
     ...defaultAppConfiguration,
     ...customConfiguration,
-  };
-
-  const appSessionStateWrapper = {
-    current: defaultAppSessionState,
   };
 
   const realFactories: ServicesFactories = {
@@ -58,12 +52,15 @@ export const configureApp = (
         appSessionStateAccessor,
         appConfiguration,
       }),
-    appSessionStateAccessorFactory: () =>
-      new WrapperAppSessionStateAccessor({ appSessionStateWrapper }),
-    appSessionStateMonitorFactory: (appServices: AppServices) =>
-      new PollingAppSessionStateMonitor({
-        appSessionStateWrapper,
-        appServices,
+    appSessionStateAccessorFactory: ({ window }: AppServices) =>
+      new DopplerSessionMfeAppSessionStateAccessor({ window }),
+    appSessionStateMonitorFactory: ({
+      window,
+      appSessionStateAccessor,
+    }: AppServices) =>
+      new DopplerSessionMfeAppSessionStateMonitor({
+        window,
+        appSessionStateAccessor,
       }),
   };
 
