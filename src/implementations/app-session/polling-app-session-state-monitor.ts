@@ -1,4 +1,3 @@
-import { EventEmitter } from "events";
 import { AppServices } from "../../abstractions";
 import {
   AppSessionState,
@@ -6,14 +5,13 @@ import {
   defaultAppSessionState,
 } from "../../abstractions/app-session";
 
-const SESSION_STATE_UPDATE = Symbol("SESSION_STATE_UPDATE");
-
 export class PollingAppSessionStateMonitor implements AppSessionStateMonitor {
   private readonly _appSessionStateWrapper;
   private readonly _window;
   private readonly _dopplerLegacyClient;
-  private readonly _eventEmitter = new EventEmitter();
   private readonly _keepAliveMilliseconds;
+
+  public onSessionUpdate: (sessionState: AppSessionState) => void = () => {};
 
   constructor({
     appSessionStateWrapper,
@@ -34,7 +32,7 @@ export class PollingAppSessionStateMonitor implements AppSessionStateMonitor {
 
   private updateAndEmit(appSessionState: AppSessionState): void {
     this._appSessionStateWrapper.current = appSessionState;
-    this._eventEmitter.emit(SESSION_STATE_UPDATE, appSessionState);
+    this.onSessionUpdate(appSessionState);
   }
 
   private async fetchDopplerUserData(): Promise<AppSessionState> {
@@ -55,9 +53,5 @@ export class PollingAppSessionStateMonitor implements AppSessionStateMonitor {
       this.updateAndEmit(await this.fetchDopplerUserData());
     }, this._keepAliveMilliseconds);
     this.updateAndEmit(await this.fetchDopplerUserData());
-  }
-
-  onSessionUpdate(listener: (appSessionState: AppSessionState) => void): void {
-    this._eventEmitter.on(SESSION_STATE_UPDATE, listener);
   }
 }

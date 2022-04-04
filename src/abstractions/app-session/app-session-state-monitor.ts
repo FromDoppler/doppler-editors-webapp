@@ -1,6 +1,6 @@
 import { AppSessionState } from ".";
 
 export interface AppSessionStateMonitor {
+  onSessionUpdate: (appSessionState: AppSessionState) => void;
   start(): void;
-  onSessionUpdate(listener: (appSessionState: AppSessionState) => void): void;
 }

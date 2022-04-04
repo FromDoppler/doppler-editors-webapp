@@ -47,13 +47,12 @@ export const AppSessionStateProvider = ({
     useState<SimplifiedAppSessionState>(defaultAppSessionState);
 
   useEffect(() => {
-    appSessionStateMonitor.onSessionUpdate((newValue) =>
+    appSessionStateMonitor.onSessionUpdate = (newValue) =>
       setAppSessionState((prevState) =>
         prevState.status === newValue.status
           ? prevState // When the status does not change, we could assume that the values does not change
           : mapAppSessionStateToSimplifiedAppSessionState(newValue)
-      )
-    );
+      );
   }, [appSessionStateMonitor]);
 
   return (
