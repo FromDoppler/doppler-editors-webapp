@@ -25,8 +25,12 @@ const isTheSameSession: (
   prevState: SimplifiedAppSessionState,
   newValue: AppSessionState
 ) =>
-  // When the status does not change, we could assume that the values does not change
-  prevState.status === newValue.status;
+  newValue.status !== "authenticated"
+    ? prevState.status === newValue.status
+    : newValue.status === prevState.status &&
+      newValue.dopplerAccountName === prevState.dopplerAccountName &&
+      newValue.unlayerUser.id === prevState.unlayerUser.id &&
+      newValue.unlayerUser.signature === prevState.unlayerUser.signature;
 
 const mapAppSessionStateToSimplifiedAppSessionState: (
   appSessionState: AppSessionState
