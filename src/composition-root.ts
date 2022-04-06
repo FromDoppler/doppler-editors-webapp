@@ -10,8 +10,6 @@ import {
   SingletonLazyAppServicesContainer,
 } from "./implementations/SingletonLazyAppServicesContainer";
 import { defaultAppConfiguration } from "./default-configuration";
-import { DopplerLegacyClientImpl } from "./implementations/DopplerLegacyClientImpl";
-import { DummyDopplerLegacyClient } from "./implementations/dummies/doppler-legacy-client";
 import { DummyHtmlEditorApiClient } from "./implementations/dummies/html-editor-api-client";
 import { HtmlEditorApiClientImpl } from "./implementations/HtmlEditorApiClientImpl";
 import { DummyDopplerRestApiClient } from "./implementations/dummies/doppler-rest-api-client";
@@ -31,11 +29,6 @@ export const configureApp = (
     appConfigurationFactory: () => appConfiguration,
     appConfigurationRendererFactory: (appServices: AppServices) =>
       new AppConfigurationRendererImplementation(appServices),
-    dopplerLegacyClientFactory: (appServices: AppServices) =>
-      new DopplerLegacyClientImpl({
-        axiosStatic: appServices.axiosStatic,
-        appConfiguration: appServices.appConfiguration,
-      }),
     htmlEditorApiClientFactory: (appServices) =>
       new HtmlEditorApiClientImpl({
         axiosStatic: appServices.axiosStatic,
@@ -65,7 +58,6 @@ export const configureApp = (
   };
 
   const dummyFactories: Partial<ServicesFactories> = {
-    dopplerLegacyClientFactory: () => new DummyDopplerLegacyClient(),
     htmlEditorApiClientFactory: () => new DummyHtmlEditorApiClient(),
     dopplerRestApiClientFactory: () => new DummyDopplerRestApiClient(),
   };
