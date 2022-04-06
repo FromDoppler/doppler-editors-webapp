@@ -1,5 +1,6 @@
 export type AppConfiguration = {
   readonly basename: string | undefined;
+  readonly appElementId: string;
   readonly keepAliveMilliseconds: number;
   readonly loginPageUrl: string;
   readonly unlayerProjectId: number;

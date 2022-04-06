@@ -31,7 +31,7 @@ render(
       </BrowserRouter>
     </QueryClientProvider>
   </StrictMode>,
-  document.getElementById("root")
+  document.getElementById(appServices.appConfiguration.appElementId)
 );
 
 // If you want to start measuring performance in your app, pass a function
