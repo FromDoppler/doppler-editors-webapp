@@ -1,6 +1,7 @@
 import { DropdownButton } from "./DropdownButton";
 import "./EditorTopBar.css";
 import { useAppServices } from "./AppServicesContext";
+import { FormattedMessage, useIntl } from "react-intl";
 
 interface EditorTopBarProps {
   onSave: () => void;
@@ -16,15 +17,27 @@ export const EditorTopBar = ({
     appConfiguration: { dopplerExternalUrls },
   } = useAppServices();
 
+  const intl = useIntl();
+
   return (
     <div className="editor-top-bar" {...otherProps}>
       <ul className="ed-header-list">
         <li>
-          <DropdownButton buttonText="Salir del Editor">
-            <a href={dopplerExternalUrls.home}>Inicio</a>
-            <a href={dopplerExternalUrls.campaigns}>Campañas</a>
-            <a href={dopplerExternalUrls.lists}>Listas</a>
-            <a href={dopplerExternalUrls.controlPanel}>Panel de Control</a>
+          <DropdownButton
+            buttonText={intl.formatMessage({ id: "exit_editor" })}
+          >
+            <a href={dopplerExternalUrls.home}>
+              <FormattedMessage id="home" />
+            </a>
+            <a href={dopplerExternalUrls.campaigns}>
+              <FormattedMessage id="campaigns" />
+            </a>
+            <a href={dopplerExternalUrls.lists}>
+              <FormattedMessage id="lists" />
+            </a>
+            <a href={dopplerExternalUrls.controlPanel}>
+              <FormattedMessage id="control_panel" />
+            </a>
           </DropdownButton>
         </li>
         <li>
@@ -35,7 +48,7 @@ export const EditorTopBar = ({
             onClick={onSave}
             className="dp-button button-medium primary-green"
           >
-            Guardar
+            <FormattedMessage id="save" />
           </button>
         </li>
       </ul>

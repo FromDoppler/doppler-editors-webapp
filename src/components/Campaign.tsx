@@ -9,6 +9,7 @@ import {
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { EditorBottomBar } from "./EditorBottomBar";
+import { useIntl } from "react-intl";
 
 export const loadingMessageTestId = "loading-message";
 export const errorMessageTestId = "error-message";
@@ -20,6 +21,8 @@ export const Campaign = () => {
 
   const campaignContentQuery = useGetCampaignContent(idCampaign);
   const campaignContentMutation = useUpdateCampaignContent();
+
+  const intl = useIntl();
 
   useEffect(() => {
     setContent(campaignContentQuery.data);
@@ -50,7 +53,10 @@ export const Campaign = () => {
             <EditorTopBar
               data-testid={editorTopBarTestId}
               onSave={onSave}
-              title={"Campaign " + idCampaign}
+              title={intl.formatMessage(
+                { id: "campaign_title" },
+                { idCampaign }
+              )}
             />
           </Header>
           <Footer>

@@ -8,6 +8,7 @@ import { configureApp } from "./composition-root";
 import { AppServicesProvider } from "./components/AppServicesContext";
 import { AppSessionStateProvider } from "./components/AppSessionStateContext";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { DopplerIntlProvider } from "./components/i18n/DopplerIntlProvider";
 
 const customConfiguration =
   (window as any)["editors-webapp-configuration"] || {};
@@ -25,7 +26,9 @@ render(
       <BrowserRouter basename={appServices.appConfiguration.basename}>
         <AppServicesProvider appServices={appServices}>
           <AppSessionStateProvider>
-            <App />
+            <DopplerIntlProvider locale="en">
+              <App />
+            </DopplerIntlProvider>
           </AppSessionStateProvider>
         </AppServicesProvider>
       </BrowserRouter>
