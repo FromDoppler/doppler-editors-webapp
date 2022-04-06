@@ -12,6 +12,7 @@ type SimplifiedAppSessionState =
       status: "authenticated";
       dopplerAccountName: string;
       unlayerUser: { id: string; signature: string };
+      lang: "en" | "es";
     };
 
 export const AppSessionStateContext = createContext<SimplifiedAppSessionState>(
@@ -42,11 +43,13 @@ const mapAppSessionStateToSimplifiedAppSessionState: (
     status,
     dopplerAccountName,
     unlayerUser: { id, signature },
+    lang,
   } = appSessionState;
   return {
     status,
     dopplerAccountName,
     unlayerUser: { id, signature },
+    lang,
   };
 };
 

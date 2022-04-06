@@ -3,6 +3,7 @@ export type AuthenticatedAppSessionState = {
   jwtToken: string;
   dopplerAccountName: string;
   unlayerUser: { id: string; signature: string };
+  lang: "en" | "es";
 };
 
 export type AppSessionState =

@@ -14,6 +14,7 @@ type AuthenticatedDopplerSessionMfeState = {
   dopplerAccountName: string;
   unlayerUserId: string;
   unlayerUserSignature: string;
+  lang: "en" | "es";
 };
 
 type DopplerSessionMfeState =
@@ -38,6 +39,7 @@ const mapDopplerSessionState: (
         status: "authenticated",
         jwtToken: dopplerSessionState.jwtToken,
         dopplerAccountName: dopplerSessionState.dopplerAccountName,
+        lang: dopplerSessionState.lang,
         unlayerUser: {
           id: dopplerSessionState.unlayerUserId,
           signature: dopplerSessionState.unlayerUserSignature,
