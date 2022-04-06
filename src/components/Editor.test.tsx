@@ -35,6 +35,7 @@ const authenticatedSession: AuthenticatedAppSessionState = {
     id: unlayerUserId,
     signature: unlayerUserSignature,
   },
+  lang: "en",
 };
 
 const queryClient = new QueryClient({
