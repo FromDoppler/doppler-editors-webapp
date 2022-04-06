@@ -4,8 +4,9 @@ import { defaultAppSessionState } from "./abstractions/app-session/app-session-s
 import { AppConfigurationRendererImplementation } from "./implementations/app-configuration-renderer";
 import {
   //
-  PullingAppSessionStateMonitor,
-} from "./implementations/app-session/pulling-app-session-state-monitor";
+  PollingAppSessionStateMonitor,
+  WrapperAppSessionStateAccessor,
+} from "./implementations/app-session/polling-app-session-state-monitor";
 import {
   ServicesFactories,
   SingletonLazyAppServicesContainer,
@@ -57,9 +58,10 @@ export const configureApp = (
         appSessionStateAccessor,
         appConfiguration,
       }),
-    appSessionStateAccessorFactory: () => appSessionStateWrapper,
+    appSessionStateAccessorFactory: () =>
+      new WrapperAppSessionStateAccessor({ appSessionStateWrapper }),
     appSessionStateMonitorFactory: (appServices: AppServices) =>
-      new PullingAppSessionStateMonitor({
+      new PollingAppSessionStateMonitor({
         appSessionStateWrapper,
         appServices,
       }),

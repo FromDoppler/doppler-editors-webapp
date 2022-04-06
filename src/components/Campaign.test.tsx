@@ -16,7 +16,7 @@ import {
 
 const baseAppServices = {
   appSessionStateAccessor: {
-    current: {
+    getCurrentSessionState: () => ({
       status: "authenticated",
       jwtToken: "jwtToken",
       dopplerAccountName: "dopplerAccountName",
@@ -24,7 +24,7 @@ const baseAppServices = {
         id: "unlayerUserId",
         signature: "unlayerUserSignature",
       },
-    },
+    }),
   },
   appConfiguration: {
     unlayerProjectId: 12345,

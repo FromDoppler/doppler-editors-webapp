@@ -10,13 +10,13 @@ type GetUserFieldsQueryKey = {
 }[];
 
 export const useGetUserFields = () => {
-  const {
-    dopplerRestApiClient,
-    appSessionStateAccessor: { current },
-  } = useAppServices();
+  const { dopplerRestApiClient, appSessionStateAccessor } = useAppServices();
 
+  const currentSessionState = appSessionStateAccessor.getCurrentSessionState();
   const dopplerAccountName =
-    current.status === "authenticated" ? current.dopplerAccountName : null;
+    currentSessionState.status === "authenticated"
+      ? currentSessionState.dopplerAccountName
+      : null;
 
   const queryKey: GetUserFieldsQueryKey = [
     {

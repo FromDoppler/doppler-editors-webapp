@@ -1,15 +1,9 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import {
   AppSessionState,
-  AppSessionStateMonitor,
   defaultAppSessionState,
 } from "../abstractions/app-session";
+import { useAppServices } from "./AppServicesContext";
 
 type SimplifiedAppSessionState =
   | { status: "unknown" }
@@ -24,45 +18,61 @@ export const AppSessionStateContext = createContext<SimplifiedAppSessionState>(
   defaultAppSessionState
 );
 
+const isTheSameSession: (
+  prevState: SimplifiedAppSessionState,
+  newValue: AppSessionState
+) => boolean = (
+  prevState: SimplifiedAppSessionState,
+  newValue: AppSessionState
+) =>
+  newValue.status !== "authenticated"
+    ? prevState.status === newValue.status
+    : newValue.status === prevState.status &&
+      newValue.dopplerAccountName === prevState.dopplerAccountName &&
+      newValue.unlayerUser.id === prevState.unlayerUser.id &&
+      newValue.unlayerUser.signature === prevState.unlayerUser.signature;
+
+const mapAppSessionStateToSimplifiedAppSessionState: (
+  appSessionState: AppSessionState
+) => SimplifiedAppSessionState = (appSessionState: AppSessionState) => {
+  if (appSessionState.status !== "authenticated") {
+    return { status: appSessionState.status };
+  }
+  const {
+    status,
+    dopplerAccountName,
+    unlayerUser: { id, signature },
+  } = appSessionState;
+  return {
+    status,
+    dopplerAccountName,
+    unlayerUser: { id, signature },
+  };
+};
+
 export const AppSessionStateProvider = ({
   children,
-  appSessionStateMonitor,
 }: {
   children: React.ReactNode;
-  appSessionStateMonitor: AppSessionStateMonitor;
 }) => {
+  const { appSessionStateMonitor, appSessionStateAccessor } = useAppServices();
+
   const [appSessionState, setAppSessionState] =
-    useState<SimplifiedAppSessionState>(defaultAppSessionState);
-
-  const onSessionUpdate = useCallback(
-    (newValue: AppSessionState) => {
-      if (newValue.status === appSessionState.status) {
-        // When the status does not change, we could assume that the values does not change
-        return;
-      }
-
-      if (newValue.status === "authenticated") {
-        const {
-          status,
-          dopplerAccountName,
-          unlayerUser: { id, signature },
-        } = newValue;
-        setAppSessionState({
-          status,
-          dopplerAccountName,
-          unlayerUser: { id, signature },
-        });
-      } else {
-        const { status } = newValue;
-        setAppSessionState({ status });
-      }
-    },
-    [appSessionState.status]
-  );
+    useState<SimplifiedAppSessionState>(
+      appSessionStateAccessor.getCurrentSessionState()
+    );
 
   useEffect(() => {
-    appSessionStateMonitor.onSessionUpdate(onSessionUpdate);
-  }, [appSessionStateMonitor, onSessionUpdate]);
+    appSessionStateMonitor.onSessionUpdate = (newValue) =>
+      setAppSessionState((prevState) =>
+        isTheSameSession(prevState, newValue)
+          ? prevState
+          : mapAppSessionStateToSimplifiedAppSessionState(newValue)
+      );
+    return () => {
+      appSessionStateMonitor.onSessionUpdate = () => {};
+    };
+  }, [appSessionStateMonitor]);
 
   return (
     <AppSessionStateContext.Provider value={appSessionState}>

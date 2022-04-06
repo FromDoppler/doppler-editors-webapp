@@ -56,7 +56,7 @@ describe(Editor.name, () => {
         loaderUrl,
       },
       appSessionStateAccessor: {
-        current: authenticatedSession,
+        getCurrentSessionState: () => authenticatedSession,
       },
       dopplerRestApiClient: {
         getFields: () =>
@@ -115,9 +115,9 @@ describe(Editor.name, () => {
           loaderUrl,
         },
         appSessionStateAccessor: {
-          current: {
+          getCurrentSessionState: () => ({
             status: sessionStatus,
-          },
+          }),
         },
         dopplerRestApiClient: {
           getFields: () =>

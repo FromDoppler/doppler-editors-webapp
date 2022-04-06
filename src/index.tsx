@@ -24,9 +24,7 @@ render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter basename={appServices.appConfiguration.basename}>
         <AppServicesProvider appServices={appServices}>
-          <AppSessionStateProvider
-            appSessionStateMonitor={appSessionStateMonitor}
-          >
+          <AppSessionStateProvider>
             <App />
           </AppSessionStateProvider>
         </AppServicesProvider>

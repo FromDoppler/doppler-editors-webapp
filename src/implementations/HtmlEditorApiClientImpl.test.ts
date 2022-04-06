@@ -21,7 +21,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
       };
 
       const appSessionStateAccessor = {
-        current: authenticatedSession,
+        getCurrentSessionState: () => authenticatedSession,
       } as AppSessionStateAccessor;
 
       const htmlContent = "<html></html>";
@@ -98,7 +98,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
       };
 
       const appSessionStateAccessor = {
-        current: authenticatedSession,
+        getCurrentSessionState: () => authenticatedSession,
       } as AppSessionStateAccessor;
 
       const htmlContent = "<html></html>";
@@ -158,11 +158,11 @@ describe(HtmlEditorApiClientImpl.name, () => {
       // Arrange
       const error = new Error("Network error");
       const appSessionStateAccessor = {
-        current: {
+        getCurrentSessionState: () => ({
           status: "authenticated",
           jwtToken: "jwtToken",
           dopplerAccountName: "dopplerAccountName",
-        },
+        }),
       } as AppSessionStateAccessor;
 
       const appConfiguration = {
@@ -197,9 +197,9 @@ describe(HtmlEditorApiClientImpl.name, () => {
       async ({ sessionStatus }) => {
         // Arrange
         const appSessionStateAccessor = {
-          current: {
+          getCurrentSessionState: () => ({
             status: sessionStatus,
-          },
+          }),
         } as AppSessionStateAccessor;
 
         const appConfiguration = {
@@ -247,7 +247,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
       };
 
       const appSessionStateAccessor = {
-        current: authenticatedSession,
+        getCurrentSessionState: () => authenticatedSession,
       } as AppSessionStateAccessor;
 
       const design = { testContent: "test content" } as unknown as Design;
@@ -316,7 +316,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
       };
 
       const appSessionStateAccessor = {
-        current: authenticatedSession,
+        getCurrentSessionState: () => authenticatedSession,
       } as AppSessionStateAccessor;
 
       const htmlContent = "<html></html>";

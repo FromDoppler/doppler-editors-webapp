@@ -18,7 +18,7 @@ describe(DopplerRestApiClientImpl.name, () => {
       };
 
       const appSessionStateAccessor = {
-        current: authenticatedSession,
+        getCurrentSessionState: () => authenticatedSession,
       } as AppSessionStateAccessor;
 
       const field1Name = "field1";
@@ -131,11 +131,11 @@ describe(DopplerRestApiClientImpl.name, () => {
       // Arrange
       const error = new Error("Network error");
       const appSessionStateAccessor = {
-        current: {
+        getCurrentSessionState: () => ({
           status: "authenticated",
           jwtToken: "jwtToken",
           dopplerAccountName: "dopplerAccountName",
-        },
+        }),
       } as AppSessionStateAccessor;
 
       const appConfiguration = {
@@ -170,9 +170,9 @@ describe(DopplerRestApiClientImpl.name, () => {
       async ({ sessionStatus }) => {
         // Arrange
         const appSessionStateAccessor = {
-          current: {
+          getCurrentSessionState: () => ({
             status: sessionStatus,
-          },
+          }),
         } as AppSessionStateAccessor;
 
         const appConfiguration = {
