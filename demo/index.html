@@ -15,54 +15,86 @@
     <div id="root"></div>
     <script src="https://cdn.fromdoppler.com/loader/v1/loader.js"></script>
     <script type="text/javascript">
-      const versionParamRegex = new RegExp(
-        "\\?(?:.+&)*" +
-          "ew_version=((?:(?:main)|(?:INT)|(?:pr-\\d+)|(?:v\\d+(?:\\.\\d+){0,2})))" +
-          "(?:-([a-f\\d]{40}))?" +
-          "(?:&.*)?$"
+
+
+
+      // # Region Editor
+      parseMicroFrontendHref(
+        location.href,
+        "editors-webapp",
+        "ew",
+        "main",
+        "",
+        true,
+        function (parsed) {
+          window["editors-webapp-configuration"] = {
+            basename: "editors",
+            useDummies: parsed.useDummies,
+          };
+
+          new AssetServices().load(parsed.manifestUrl);
+        }
       );
-      const versionParamRegexResult = location.href.match(versionParamRegex);
-      const defaultVersion = "main";
-      const version = versionParamRegexResult
-        ? versionParamRegexResult[1]
-        : defaultVersion;
-      const defaultCommitId = "";
-      const commitId =
-        (versionParamRegexResult && versionParamRegexResult[2]) ||
-        defaultCommitId;
+      // # End region Editor
 
-      const avoidCacheParamRegex =
-        /\?(?:.+&)*ew_nocache=((?:true)|(?:false))(?:&.*)?$/;
-      const avoidCacheParamRegexResult =
-        location.href.match(avoidCacheParamRegex);
-      const avoidCacheDefault = true;
-      const avoidCache = avoidCacheParamRegexResult
-        ? avoidCacheParamRegexResult[1] == "true"
-        : avoidCacheDefault;
+      function parseMicroFrontendHref(
+        href,
+        pkgName,
+        prefix,
+        defaultVersion,
+        defaultCommitId,
+        avoidCacheDefault,
+        action
+      ) {
+        const cdnBaseUrl = "https://cdn.fromdoppler.com";
 
-      const useDummiesParamRegex =
-        /\?(?:.+&)*ew_dummy=((?:true)|(?:false))(?:&.*)?$/;
-      const useDummiesParamRegexResult =
-        location.href.match(useDummiesParamRegex);
-      const useDummiesDefault = false;
-      const useDummies = useDummiesParamRegexResult
-        ? useDummiesParamRegexResult[1] == "true"
-        : useDummiesDefault;
+        const versionParamRegex = new RegExp(
+          "\\?(?:.+&)*" +
+            prefix +
+            "_version=((?:(?:main)|(?:INT)|(?:pr-\\d+)|(?:v\\d+(?:\\.\\d+){0,2})))" +
+            "(?:-([a-f\\d]{40}))?" +
+            "(?:&.*)?$"
+        );
+        const versionParamRegexResult = href.match(versionParamRegex);
+        const version = versionParamRegexResult
+          ? versionParamRegexResult[1]
+          : defaultVersion;
+        const commitId =
+          (versionParamRegexResult && versionParamRegexResult[2]) ||
+          defaultCommitId;
 
-      const cdnBaseUrl = "https://cdn.fromdoppler.com";
-      const pkgName = "editors-webapp";
-      const scriptUrl = `${cdnBaseUrl}/${pkgName}/asset-manifest-${version}${
-        !commitId ? "" : `-${commitId}`
-      }.json${!avoidCache ? "" : `?s=${Date.now()}`}`;
+        const avoidCacheParamRegex = new RegExp(
+          "\\?(?:.+&)*" + prefix + "_nocache=((?:true)|(?:false))(?:&.*)?$"
+        );
+        const avoidCacheParamRegexResult = href.match(avoidCacheParamRegex);
+        const avoidCache = avoidCacheParamRegexResult
+          ? avoidCacheParamRegexResult[1] == "true"
+          : avoidCacheDefault;
 
-      console.log(`Script URL: ${scriptUrl}`);
+        const useDummiesParamRegex = new RegExp(
+          "\\?(?:.+&)*" + prefix + "_dummy=((?:true)|(?:false))(?:&.*)?$"
+        );
+        const useDummiesParamRegexResult = href.match(useDummiesParamRegex);
+        const useDummiesDefault = false;
+        const useDummies = useDummiesParamRegexResult
+          ? useDummiesParamRegexResult[1] == "true"
+          : useDummiesDefault;
 
-      window["editors-webapp-configuration"] = {
-        basename: "editors",
-        useDummies,
-      };
+        const manifestUrl =
+          cdnBaseUrl +
+          "/" +
+          pkgName +
+          "/asset-manifest-" +
+          version +
+          (!commitId ? "" : "-" + commitId) +
+          ".json" +
+          (!avoidCache ? "" : "?s=" + Date.now());
 
-      new AssetServices().load(scriptUrl);
+        action({
+          useDummies: useDummies,
+          manifestUrl: manifestUrl,
+        });
+      }
     </script>
   </body>
 </html>
