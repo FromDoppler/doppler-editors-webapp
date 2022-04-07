@@ -13,6 +13,7 @@ import {
   errorMessageTestId,
   loadingMessageTestId,
 } from "./Campaign";
+import { DopplerIntlProvider } from "./i18n/DopplerIntlProvider";
 
 const baseAppServices = {
   appSessionStateAccessor: {
@@ -68,11 +69,13 @@ describe(Campaign.name, () => {
         <AppServicesProvider
           appServices={{ ...baseAppServices, htmlEditorApiClient }}
         >
-          <MemoryRouter initialEntries={[`/${idCampaign}`]}>
-            <Routes>
-              <Route path="/:idCampaign" element={<Campaign />} />
-            </Routes>
-          </MemoryRouter>
+          <DopplerIntlProvider locale="es">
+            <MemoryRouter initialEntries={[`/${idCampaign}`]}>
+              <Routes>
+                <Route path="/:idCampaign" element={<Campaign />} />
+              </Routes>
+            </MemoryRouter>
+          </DopplerIntlProvider>
         </AppServicesProvider>
       </QueryClientProvider>
     );

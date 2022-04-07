@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AppServicesProvider } from "./AppServicesContext";
 import { EditorTopBar } from "./EditorTopBar";
+import { DopplerIntlProvider } from "./i18n/DopplerIntlProvider";
 
 const appConfiguration = {
   dopplerExternalUrls: {
@@ -19,9 +20,11 @@ describe(EditorTopBar.name, () => {
 
     // Act
     render(
-      <AppServicesProvider appServices={appServices}>
-        <EditorTopBar onSave={() => {}}></EditorTopBar>
-      </AppServicesProvider>
+      <DopplerIntlProvider locale="es">
+        <AppServicesProvider appServices={appServices}>
+          <EditorTopBar onSave={() => {}}></EditorTopBar>
+        </AppServicesProvider>
+      </DopplerIntlProvider>
     );
 
     // Assert
@@ -33,9 +36,11 @@ describe(EditorTopBar.name, () => {
     const appServices = { appConfiguration } as any;
 
     render(
-      <AppServicesProvider appServices={appServices}>
-        <EditorTopBar onSave={() => {}}></EditorTopBar>
-      </AppServicesProvider>
+      <DopplerIntlProvider locale="es">
+        <AppServicesProvider appServices={appServices}>
+          <EditorTopBar onSave={() => {}}></EditorTopBar>
+        </AppServicesProvider>
+      </DopplerIntlProvider>
     );
 
     expect(screen.getByText("Inicio")).toBeNull;
@@ -54,7 +59,9 @@ describe(EditorTopBar.name, () => {
     // Act
     render(
       <AppServicesProvider appServices={appServices}>
-        <EditorTopBar onSave={() => {}}></EditorTopBar>
+        <DopplerIntlProvider locale="es">
+          <EditorTopBar onSave={() => {}}></EditorTopBar>
+        </DopplerIntlProvider>
       </AppServicesProvider>
     );
 
