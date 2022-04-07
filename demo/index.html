@@ -15,6 +15,19 @@
     <div id="root"></div>
     <script src="https://cdn.fromdoppler.com/loader/v1/loader.js"></script>
     <script type="text/javascript">
+      // # Region Style-Guide
+      parseMicroFrontendHref(
+        location.href,
+        "doppler-style-guide",
+        "ds",
+        "main",
+        "",
+        true,
+        function (parsed) {
+          new AssetServices().load(parsed.manifestUrl);
+        }
+      );
+      // # End region Style-Guide
 
 
 
