@@ -2,7 +2,6 @@ import { AppConfiguration } from ".";
 import { AxiosStatic } from "axios";
 import { AppConfigurationRenderer } from "./app-configuration-renderer";
 import { AppSessionStateAccessor, AppSessionStateMonitor } from "./app-session";
-import { DopplerLegacyClient } from "./doppler-legacy-client";
 import { HtmlEditorApiClient } from "./html-editor-api-client";
 import { DopplerRestApiClient } from "./doppler-rest-api-client";
 
@@ -14,7 +13,6 @@ export type AppServices = {
   axiosStatic: AxiosStatic;
   appConfiguration: AppConfiguration;
   appConfigurationRenderer: AppConfigurationRenderer;
-  dopplerLegacyClient: DopplerLegacyClient;
   htmlEditorApiClient: HtmlEditorApiClient;
   dopplerRestApiClient: DopplerRestApiClient;
   appSessionStateAccessor: AppSessionStateAccessor;
