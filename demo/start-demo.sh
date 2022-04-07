@@ -13,4 +13,4 @@ set -u
 
 cd "$(dirname "$0")"
 
-npx http-server . -o /editors/ --proxy http://localhost:8080?
+npx http-server . -o /editors/campaigns/123?dsm_dummy=true\&ew_dummy=true --proxy http://localhost:8080?

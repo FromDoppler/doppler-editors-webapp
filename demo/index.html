@@ -12,57 +12,123 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div class="dp-library dp-wrapper">
+      <header id="root-header"></header>
+      <div id="root"></div>
+      <footer id="root-footer"></footer>
+    </div>
     <script src="https://cdn.fromdoppler.com/loader/v1/loader.js"></script>
     <script type="text/javascript">
-      const versionParamRegex = new RegExp(
-        "\\?(?:.+&)*" +
-          "ew_version=((?:(?:main)|(?:INT)|(?:pr-\\d+)|(?:v\\d+(?:\\.\\d+){0,2})))" +
-          "(?:-([a-f\\d]{40}))?" +
-          "(?:&.*)?$"
+      // # Region Style-Guide
+      parseMicroFrontendHref(
+        location.href,
+        "doppler-style-guide",
+        "ds",
+        "main",
+        "",
+        true,
+        function (parsed) {
+          new AssetServices().load(parsed.manifestUrl);
+        }
       );
-      const versionParamRegexResult = location.href.match(versionParamRegex);
-      const defaultVersion = "main";
-      const version = versionParamRegexResult
-        ? versionParamRegexResult[1]
-        : defaultVersion;
-      const defaultCommitId = "";
-      const commitId =
-        (versionParamRegexResult && versionParamRegexResult[2]) ||
-        defaultCommitId;
+      // # End region Style-Guide
 
-      const avoidCacheParamRegex =
-        /\?(?:.+&)*ew_nocache=((?:true)|(?:false))(?:&.*)?$/;
-      const avoidCacheParamRegexResult =
-        location.href.match(avoidCacheParamRegex);
-      const avoidCacheDefault = true;
-      const avoidCache = avoidCacheParamRegexResult
-        ? avoidCacheParamRegexResult[1] == "true"
-        : avoidCacheDefault;
+      // # Region Doppler Session Micro-Frontend
+      parseMicroFrontendHref(
+        location.href,
+        "doppler-session-mfe",
+        "dsm",
+        "main",
+        "",
+        true,
+        function (parsed) {
+          window["doppler-session-mfe-configuration"] = {
+            dopplerLegacyBaseUrl: "https://appint.fromdoppler.com",
+            useDummies: parsed.useDummies,
+          };
 
-      const useDummiesParamRegex =
-        /\?(?:.+&)*ew_dummy=((?:true)|(?:false))(?:&.*)?$/;
-      const useDummiesParamRegexResult =
-        location.href.match(useDummiesParamRegex);
-      const useDummiesDefault = false;
-      const useDummies = useDummiesParamRegexResult
-        ? useDummiesParamRegexResult[1] == "true"
-        : useDummiesDefault;
+          new AssetServices().load(parsed.manifestUrl);
+        }
+      );
+      // # End region Doppler Session
 
-      const cdnBaseUrl = "https://cdn.fromdoppler.com";
-      const pkgName = "editors-webapp";
-      const scriptUrl = `${cdnBaseUrl}/${pkgName}/asset-manifest-${version}${
-        !commitId ? "" : `-${commitId}`
-      }.json${!avoidCache ? "" : `?s=${Date.now()}`}`;
+      // # Region Editor
+      parseMicroFrontendHref(
+        location.href,
+        "editors-webapp",
+        "ew",
+        "main",
+        "",
+        true,
+        function (parsed) {
+          window["editors-webapp-configuration"] = {
+            basename: "editors",
+            useDummies: parsed.useDummies,
+          };
 
-      console.log(`Script URL: ${scriptUrl}`);
+          new AssetServices().load(parsed.manifestUrl);
+        }
+      );
+      // # End region Editor
 
-      window["editors-webapp-configuration"] = {
-        basename: "editors",
-        useDummies,
-      };
+      function parseMicroFrontendHref(
+        href,
+        pkgName,
+        prefix,
+        defaultVersion,
+        defaultCommitId,
+        avoidCacheDefault,
+        action
+      ) {
+        const cdnBaseUrl = "https://cdn.fromdoppler.com";
 
-      new AssetServices().load(scriptUrl);
+        const versionParamRegex = new RegExp(
+          "\\?(?:.+&)*" +
+            prefix +
+            "_version=((?:(?:main)|(?:INT)|(?:pr-\\d+)|(?:v\\d+(?:\\.\\d+){0,2})))" +
+            "(?:-([a-f\\d]{40}))?" +
+            "(?:&.*)?$"
+        );
+        const versionParamRegexResult = href.match(versionParamRegex);
+        const version = versionParamRegexResult
+          ? versionParamRegexResult[1]
+          : defaultVersion;
+        const commitId =
+          (versionParamRegexResult && versionParamRegexResult[2]) ||
+          defaultCommitId;
+
+        const avoidCacheParamRegex = new RegExp(
+          "\\?(?:.+&)*" + prefix + "_nocache=((?:true)|(?:false))(?:&.*)?$"
+        );
+        const avoidCacheParamRegexResult = href.match(avoidCacheParamRegex);
+        const avoidCache = avoidCacheParamRegexResult
+          ? avoidCacheParamRegexResult[1] == "true"
+          : avoidCacheDefault;
+
+        const useDummiesParamRegex = new RegExp(
+          "\\?(?:.+&)*" + prefix + "_dummy=((?:true)|(?:false))(?:&.*)?$"
+        );
+        const useDummiesParamRegexResult = href.match(useDummiesParamRegex);
+        const useDummiesDefault = false;
+        const useDummies = useDummiesParamRegexResult
+          ? useDummiesParamRegexResult[1] == "true"
+          : useDummiesDefault;
+
+        const manifestUrl =
+          cdnBaseUrl +
+          "/" +
+          pkgName +
+          "/asset-manifest-" +
+          version +
+          (!commitId ? "" : "-" + commitId) +
+          ".json" +
+          (!avoidCache ? "" : "?s=" + Date.now());
+
+        action({
+          useDummies: useDummies,
+          manifestUrl: manifestUrl,
+        });
+      }
     </script>
   </body>
 </html>

@@ -59,6 +59,14 @@
     new AssetServices().load(
       "https://cdn.fromdoppler.com/doppler-style-guide/asset-manifest-main.json"
     );
+
+    window["doppler-session-mfe-configuration"] = {
+      dopplerLegacyBaseUrl: "https://appint.fromdoppler.com",
+      useDummies: true,
+    };
+    new AssetServices().load(
+      "https://cdn.fromdoppler.com/doppler-session-mfe/asset-manifest-main.json"
+    );
   </script>
   <!-- End Use AssetServices -->
 </html>
