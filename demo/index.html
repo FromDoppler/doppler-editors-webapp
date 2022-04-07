@@ -29,7 +29,24 @@
       );
       // # End region Style-Guide
 
+      // # Region Doppler Session Micro-Frontend
+      parseMicroFrontendHref(
+        location.href,
+        "doppler-session-mfe",
+        "dsm",
+        "main",
+        "",
+        true,
+        function (parsed) {
+          window["doppler-session-mfe-configuration"] = {
+            dopplerLegacyBaseUrl: "https://appint.fromdoppler.com",
+            useDummies: parsed.useDummies,
+          };
 
+          new AssetServices().load(parsed.manifestUrl);
+        }
+      );
+      // # End region Doppler Session
 
       // # Region Editor
       parseMicroFrontendHref(
