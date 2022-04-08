@@ -1,12 +1,9 @@
-import React from "react";
 import { DopplerIntlProvider } from "./DopplerIntlProvider";
-import { render, cleanup } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { FormattedMessage } from "react-intl";
 
 describe("DopplerIntlProvider", () => {
-  beforeEach(cleanup);
-
   it("should render Campaign in English", () => {
     const { getByText } = render(
       <DopplerIntlProvider locale="en">
