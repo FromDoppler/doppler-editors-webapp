@@ -5,7 +5,7 @@ import {
 } from "../abstractions/app-session";
 import { useAppServices } from "./AppServicesContext";
 
-type SimplifiedAppSessionState =
+export type SimplifiedAppSessionState =
   | { status: "unknown" }
   | { status: "non-authenticated" }
   | {

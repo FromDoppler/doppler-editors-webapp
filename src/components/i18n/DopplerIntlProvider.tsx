@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IntlProvider } from "react-intl";
 import { messages_en } from "./en";
 import { messages_es } from "./es";
 import { flattenMessages, sanitizeLanguageOrDefault } from "./utils";
+import { useAppSessionState } from "../AppSessionStateContext";
 
 const messages = {
   es: messages_es,
@@ -10,23 +11,27 @@ const messages = {
 };
 
 interface DopplerIntlProviderProps {
-  locale: string;
   children: React.ReactNode;
 }
 
-export const DopplerIntlProvider = (props: DopplerIntlProviderProps) => {
-  const sanitizedLocale = sanitizeLanguageOrDefault(
-    props.locale,
-    Object.keys(messages)
-  );
+export const DopplerIntlProvider = ({ children }: DopplerIntlProviderProps) => {
+  const appSessionState = useAppSessionState();
+  const [locale, setLocale] = useState("es");
+
+  useEffect(() => {
+    if (appSessionState.status === "authenticated" && appSessionState.lang) {
+      setLocale(
+        sanitizeLanguageOrDefault(appSessionState.lang, Object.keys(messages))
+      );
+    }
+  }, [appSessionState]);
+
   return (
     <IntlProvider
-      locale={sanitizedLocale}
-      messages={flattenMessages(
-        messages[sanitizedLocale as keyof typeof messages]
-      )}
+      locale={locale}
+      messages={flattenMessages(messages[locale as keyof typeof messages])}
     >
-      {props.children}
+      {children}
     </IntlProvider>
   );
 };

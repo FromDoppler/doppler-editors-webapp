@@ -26,7 +26,7 @@ render(
       <BrowserRouter basename={appServices.appConfiguration.basename}>
         <AppServicesProvider appServices={appServices}>
           <AppSessionStateProvider>
-            <DopplerIntlProvider locale="en">
+            <DopplerIntlProvider>
               <App />
             </DopplerIntlProvider>
           </AppSessionStateProvider>
