@@ -133,49 +133,6 @@ describe(useAppServices.name, () => {
     );
   };
 
-  it("should inject service with dependencies into a component and do not create other services", () => {
-    // Arrange
-    const {
-      appServices,
-      configurationAsJson,
-      windowFactory,
-      appConfigurationFactory,
-    } = buildTestScenario();
-
-    // Act
-    render(
-      <AppServicesProvider appServices={appServices}>
-        <HookInjectedDemoComponent />
-      </AppServicesProvider>
-    );
-
-    // Assert
-    const renderResult = screen.getByTestId(resultElementTestId);
-    expect(renderResult.textContent).toBe(configurationAsJson);
-    expect(windowFactory).not.toHaveBeenCalled();
-    expect(appConfigurationFactory).toHaveBeenCalled();
-  });
-
-  it("should not inject service defined in a different context", () => {
-    // Arrange
-    const { appServices, appConfigurationFactory } = buildTestScenario();
-
-    // Act
-    render(
-      <div>
-        <AppServicesProvider appServices={appServices}>
-          <div></div>
-        </AppServicesProvider>
-        <HookInjectedDemoComponent />
-      </div>
-    );
-
-    // Assert
-    const renderResult = screen.getByTestId(resultElementTestId);
-    expect(renderResult).toBeEmptyDOMElement();
-    expect(appConfigurationFactory).not.toHaveBeenCalled();
-  });
-
   it("should NOT make honor to explicit injected appServices", () => {
     // Arrange
     const { appServices, appConfigurationFactory } = buildTestScenario();

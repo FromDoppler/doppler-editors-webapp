@@ -47,6 +47,7 @@ describe(RequireAuth.name, () => {
             status: "authenticated",
             dopplerAccountName: "me@me.com",
             unlayerUser: { id: "id", signature: "signature" },
+            lang: "en",
           }}
         >
           <RequireAuth>
