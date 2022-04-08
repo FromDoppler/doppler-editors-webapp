@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AppServicesProvider } from "./AppServicesContext";
 import { EditorTopBar } from "./EditorTopBar";
-import { DopplerIntlProvider } from "./i18n/DopplerIntlProvider";
+import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 
 const appConfiguration = {
   dopplerExternalUrls: {
@@ -20,15 +20,15 @@ describe(EditorTopBar.name, () => {
 
     // Act
     render(
-      <DopplerIntlProvider locale="es">
+      <TestDopplerIntlProvider>
         <AppServicesProvider appServices={appServices}>
           <EditorTopBar onSave={() => {}}></EditorTopBar>
         </AppServicesProvider>
-      </DopplerIntlProvider>
+      </TestDopplerIntlProvider>
     );
 
     // Assert
-    screen.getByText("Salir del Editor");
+    screen.getByText("exit_editor");
   });
 
   it("should render Exit Options after click on Exit Button", async () => {
@@ -36,20 +36,20 @@ describe(EditorTopBar.name, () => {
     const appServices = { appConfiguration } as any;
 
     render(
-      <DopplerIntlProvider locale="es">
+      <TestDopplerIntlProvider>
         <AppServicesProvider appServices={appServices}>
           <EditorTopBar onSave={() => {}}></EditorTopBar>
         </AppServicesProvider>
-      </DopplerIntlProvider>
+      </TestDopplerIntlProvider>
     );
 
-    expect(screen.getByText("Inicio")).toBeNull;
+    expect(screen.getByText("home")).toBeNull;
 
     // Act
-    userEvent.click(screen.getByText("Salir del Editor"));
+    userEvent.click(screen.getByText("exit_editor"));
 
     // Assert
-    expect(screen.queryByText("Inicio")).not.toBeNull;
+    expect(screen.queryByText("home")).not.toBeNull;
   });
 
   it("should Exit to specific url", async () => {
@@ -59,18 +59,18 @@ describe(EditorTopBar.name, () => {
     // Act
     render(
       <AppServicesProvider appServices={appServices}>
-        <DopplerIntlProvider locale="es">
+        <TestDopplerIntlProvider>
           <EditorTopBar onSave={() => {}}></EditorTopBar>
-        </DopplerIntlProvider>
+        </TestDopplerIntlProvider>
       </AppServicesProvider>
     );
 
-    userEvent.click(screen.getByText("Salir del Editor"));
+    userEvent.click(screen.getByText("exit_editor"));
 
-    const homeOption = screen.getByText("Inicio");
-    const campaignsOption = screen.getByText("Campañas");
-    const listsOption = screen.getByText("Listas");
-    const controlPanelOption = screen.getByText("Panel de Control");
+    const homeOption = screen.getByText("home");
+    const campaignsOption = screen.getByText("campaigns");
+    const listsOption = screen.getByText("lists");
+    const controlPanelOption = screen.getByText("control_panel");
 
     // Assert
     expect(homeOption.closest("a")).toHaveAttribute(
