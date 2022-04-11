@@ -12,7 +12,7 @@ type SimplifiedAppSessionState =
       status: "authenticated";
       dopplerAccountName: string;
       unlayerUser: { id: string; signature: string };
-      lang: "en" | "es";
+      lang: string;
     };
 
 export const AppSessionStateContext = createContext<SimplifiedAppSessionState>(
