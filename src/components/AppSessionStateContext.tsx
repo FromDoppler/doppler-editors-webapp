@@ -5,14 +5,14 @@ import {
 } from "../abstractions/app-session";
 import { useAppServices } from "./AppServicesContext";
 
-type SimplifiedAppSessionState =
+export type SimplifiedAppSessionState =
   | { status: "unknown" }
   | { status: "non-authenticated" }
   | {
       status: "authenticated";
       dopplerAccountName: string;
       unlayerUser: { id: string; signature: string };
-      lang: "en" | "es";
+      lang: string;
     };
 
 export const AppSessionStateContext = createContext<SimplifiedAppSessionState>(

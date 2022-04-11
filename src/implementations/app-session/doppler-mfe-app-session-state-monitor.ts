@@ -14,7 +14,7 @@ type AuthenticatedDopplerSessionMfeState = {
   dopplerAccountName: string;
   unlayerUserId: string;
   unlayerUserSignature: string;
-  lang: "en" | "es";
+  lang: string;
 };
 
 type DopplerSessionMfeState =
