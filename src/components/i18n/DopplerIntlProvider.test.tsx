@@ -113,4 +113,22 @@ describe(DopplerIntlProvider.name, () => {
       screen.getByText(LANG_DEFAULT);
     }
   );
+
+  it.each([
+    { userLanguage: "es", language: "spanish" },
+    { userLanguage: "en", language: "english" },
+  ])(
+    "should translate a message to $language when query param lang is $userLanguage",
+    ({ userLanguage }) => {
+      (useAppSessionState as jest.Mock).mockImplementation(
+        () => AUTHENTICATED_WITHOUT_LANG
+      );
+      // Arrange
+      const entry = `/campaigns/000?lang=${userLanguage}`;
+      // Act
+      render(<DopplerIntlProviderTestWrapper initialEntries={[entry]} />);
+      // Assert
+      screen.getByText(userLanguage);
+    }
+  );
 });
