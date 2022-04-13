@@ -5,6 +5,7 @@ import { AppServicesProvider } from "./AppServicesContext";
 import { AppServices } from "../abstractions";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Field } from "../abstractions/doppler-rest-api-client";
+import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 
 const rootURL = "/";
 const expensesURL = "/expenses";
@@ -39,9 +40,11 @@ test("root URL should not render invoices or expenses content", async () => {
   render(
     <QueryClientProvider client={queryClient}>
       <AppServicesProvider appServices={baseAppServices}>
-        <MemoryRouter initialEntries={[initialURL]}>
-          <App />
-        </MemoryRouter>
+        <TestDopplerIntlProvider>
+          <MemoryRouter initialEntries={[initialURL]}>
+            <App />
+          </MemoryRouter>
+        </TestDopplerIntlProvider>
       </AppServicesProvider>
     </QueryClientProvider>
   );
@@ -62,9 +65,11 @@ test("Wrong URL should render expected content", async () => {
   render(
     <QueryClientProvider client={queryClient}>
       <AppServicesProvider appServices={baseAppServices}>
-        <MemoryRouter initialEntries={[initialURL]}>
-          <App />
-        </MemoryRouter>
+        <TestDopplerIntlProvider>
+          <MemoryRouter initialEntries={[initialURL]}>
+            <App />
+          </MemoryRouter>
+        </TestDopplerIntlProvider>
       </AppServicesProvider>
     </QueryClientProvider>
   );
@@ -80,9 +85,11 @@ test("expenses URL should render expected content", async () => {
   render(
     <QueryClientProvider client={queryClient}>
       <AppServicesProvider appServices={baseAppServices}>
-        <MemoryRouter initialEntries={[initialURL]}>
-          <App />
-        </MemoryRouter>
+        <TestDopplerIntlProvider>
+          <MemoryRouter initialEntries={[initialURL]}>
+            <App />
+          </MemoryRouter>
+        </TestDopplerIntlProvider>
       </AppServicesProvider>
     </QueryClientProvider>
   );
@@ -98,9 +105,11 @@ test("invoices URL should render expected content", async () => {
   render(
     <QueryClientProvider client={queryClient}>
       <AppServicesProvider appServices={baseAppServices}>
-        <MemoryRouter initialEntries={[initialURL]}>
-          <App />
-        </MemoryRouter>
+        <TestDopplerIntlProvider>
+          <MemoryRouter initialEntries={[initialURL]}>
+            <App />
+          </MemoryRouter>
+        </TestDopplerIntlProvider>
       </AppServicesProvider>
     </QueryClientProvider>
   );

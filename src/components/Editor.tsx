@@ -8,6 +8,7 @@ import { useGetUserFields } from "../queries/user-fields-queries";
 import { useAppServices } from "./AppServicesContext";
 import { useAppSessionState } from "./AppSessionStateContext";
 import { EditorState } from "./SingletonEditor";
+import { useIntl } from "react-intl";
 
 interface ExtendedUnlayerOptions extends UnlayerOptions {
   features: ExtendedFeatures;
@@ -40,6 +41,7 @@ export const Editor = ({
   const userFieldsQuery = useGetUserFields();
   const emailEditorRef = useRef<EmailEditor>(null);
   const [emailEditorLoaded, setEmailEditorLoaded] = useState(false);
+  const intl = useIntl();
 
   useEffect(() => {
     if (emailEditorLoaded) {
@@ -96,6 +98,11 @@ export const Editor = ({
     value: `[[[${x.name}]]]`,
   }));
 
+  const unlayerLanguages = {
+    es: "es-ES",
+    en: "en-US",
+  };
+
   const unlayerOptions: ExtendedUnlayerOptions = {
     mergeTagsConfig: {
       sort: false,
@@ -120,6 +127,7 @@ export const Editor = ({
         },
       },
     },
+    locale: unlayerLanguages[intl.locale as keyof typeof unlayerLanguages],
   };
 
   return (
