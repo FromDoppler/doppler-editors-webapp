@@ -4,6 +4,7 @@ import { messages_en } from "./en";
 import { messages_es } from "./es";
 import { flattenMessages, sanitizeLanguageOrDefault } from "./utils";
 import { useAppSessionState } from "../AppSessionStateContext";
+import { useSearchParams } from "react-router-dom";
 
 const messages = {
   es: messages_es,
@@ -15,16 +16,26 @@ interface DopplerIntlProviderProps {
 }
 
 export const DopplerIntlProvider = ({ children }: DopplerIntlProviderProps) => {
+  const [searchParams] = useSearchParams();
   const appSessionState = useAppSessionState();
   const [locale, setLocale] = useState("es");
 
+  const langQueryParam = searchParams.get("lang");
+
   useEffect(() => {
-    if (appSessionState.status === "authenticated" && appSessionState.lang) {
+    if (langQueryParam) {
+      setLocale(
+        sanitizeLanguageOrDefault(langQueryParam, Object.keys(messages))
+      );
+    } else if (
+      appSessionState.status === "authenticated" &&
+      appSessionState.lang
+    ) {
       setLocale(
         sanitizeLanguageOrDefault(appSessionState.lang, Object.keys(messages))
       );
     }
-  }, [appSessionState]);
+  }, [appSessionState, langQueryParam]);
 
   return (
     <IntlProvider

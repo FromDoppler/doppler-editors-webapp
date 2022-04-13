@@ -6,6 +6,8 @@ import {
   SimplifiedAppSessionState,
   useAppSessionState,
 } from "../AppSessionStateContext";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { Campaign } from "../Campaign";
 
 jest.mock("../AppSessionStateContext");
 jest.mock("./en", () => ({
@@ -44,6 +46,21 @@ const AUTHENTICATED_WITHOUT_LANG: any | SimplifiedAppSessionState = {
 };
 const LANG_DEFAULT = "es";
 
+const DopplerIntlProviderTestWrapper = ({ initialEntries }: any) => (
+  <MemoryRouter initialEntries={initialEntries}>
+    <Routes>
+      <Route
+        path="/campaigns/:idCampaign"
+        element={
+          <DopplerIntlProvider>
+            <FormattedMessage id="lang" />
+          </DopplerIntlProvider>
+        }
+      />
+    </Routes>
+  </MemoryRouter>
+);
+
 describe(DopplerIntlProvider.name, () => {
   it.each([
     { sessionState: UNKNOWN_SESSION },
@@ -51,13 +68,12 @@ describe(DopplerIntlProvider.name, () => {
   ])(
     `should  translate using the default Spanish language when user state is $sessionState.status`,
     ({ sessionState }) => {
+      // Arrange
       (useAppSessionState as jest.Mock).mockImplementation(() => sessionState);
-
-      render(
-        <DopplerIntlProvider>
-          <FormattedMessage id="lang" />
-        </DopplerIntlProvider>
-      );
+      const entry = "/campaigns/000";
+      // Act
+      render(<DopplerIntlProviderTestWrapper initialEntries={[entry]} />);
+      // Assert
       screen.getByText(LANG_DEFAULT);
     }
   );
@@ -68,16 +84,15 @@ describe(DopplerIntlProvider.name, () => {
   ])(
     `should translate a message to $language when user lang exists`,
     ({ userLanguage }) => {
+      // Arrange
       (useAppSessionState as jest.Mock).mockImplementation(() => ({
         ...AUTHENTICATED,
         lang: userLanguage,
       }));
-
-      render(
-        <DopplerIntlProvider>
-          <FormattedMessage id="lang" />
-        </DopplerIntlProvider>
-      );
+      const entry = "/campaigns/000";
+      // Act
+      render(<DopplerIntlProviderTestWrapper initialEntries={[entry]} />);
+      // Assert
       screen.getByText(userLanguage);
     }
   );
@@ -90,13 +105,30 @@ describe(DopplerIntlProvider.name, () => {
       (useAppSessionState as jest.Mock).mockImplementation(
         () => AUTHENTICATED_WITHOUT_LANG
       );
-
-      render(
-        <DopplerIntlProvider>
-          <FormattedMessage id="lang" />
-        </DopplerIntlProvider>
-      );
+      // Arrange
+      const entry = "/campaigns/000";
+      // Act
+      render(<DopplerIntlProviderTestWrapper initialEntries={[entry]} />);
+      // Assert
       screen.getByText(LANG_DEFAULT);
+    }
+  );
+
+  it.each([
+    { userLanguage: "es", language: "spanish" },
+    { userLanguage: "en", language: "english" },
+  ])(
+    "should translate a message to $language when query param lang is $userLanguage",
+    ({ userLanguage }) => {
+      (useAppSessionState as jest.Mock).mockImplementation(
+        () => AUTHENTICATED_WITHOUT_LANG
+      );
+      // Arrange
+      const entry = `/campaigns/000?lang=${userLanguage}`;
+      // Act
+      render(<DopplerIntlProviderTestWrapper initialEntries={[entry]} />);
+      // Assert
+      screen.getByText(userLanguage);
     }
   );
 });
