@@ -7,6 +7,7 @@ import { AppServicesProvider } from "./AppServicesContext";
 import { Design } from "react-email-editor";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Field } from "../abstractions/doppler-rest-api-client";
+import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 
 const singletonEditorTestId = "singleton-editor-test";
 
@@ -68,9 +69,11 @@ describe(Editor.name, () => {
     render(
       <QueryClientProvider client={queryClient}>
         <AppServicesProvider appServices={appServices}>
-          <SingletonEditorProvider data-testid="singleton-editor-test">
-            <DemoComponent></DemoComponent>
-          </SingletonEditorProvider>
+          <TestDopplerIntlProvider>
+            <SingletonEditorProvider data-testid="singleton-editor-test">
+              <DemoComponent></DemoComponent>
+            </SingletonEditorProvider>
+          </TestDopplerIntlProvider>
         </AppServicesProvider>
       </QueryClientProvider>
     );

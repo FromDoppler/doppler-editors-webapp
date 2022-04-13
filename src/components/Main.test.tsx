@@ -5,6 +5,7 @@ import { AppServices } from "../abstractions";
 import { Field } from "../abstractions/doppler-rest-api-client";
 import { AppServicesProvider } from "./AppServicesContext";
 import { Main, mainTestId } from "./Main";
+import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 
 const baseAppServices = {
   appSessionStateAccessor: {
@@ -30,9 +31,11 @@ describe("Main.name", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <AppServicesProvider appServices={baseAppServices}>
-          <BrowserRouter>
-            <Main />
-          </BrowserRouter>
+          <TestDopplerIntlProvider>
+            <BrowserRouter>
+              <Main />
+            </BrowserRouter>
+          </TestDopplerIntlProvider>
         </AppServicesProvider>
       </QueryClientProvider>
     );

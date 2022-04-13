@@ -11,6 +11,7 @@ import {
 } from "./AppSessionStateContext";
 import { Editor } from "./Editor";
 import { EditorState } from "./SingletonEditor";
+import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 
 const emailEditorPropsTestId = "EmailEditor_props";
 
@@ -69,9 +70,11 @@ describe(Editor.name, () => {
     render(
       <QueryClientProvider client={queryClient}>
         <AppServicesProvider appServices={appServices}>
-          <AppSessionStateContext.Provider value={authenticatedSession}>
-            <Editor setEditorState={jest.fn()} hidden={true} />
-          </AppSessionStateContext.Provider>
+          <TestDopplerIntlProvider>
+            <AppSessionStateContext.Provider value={authenticatedSession}>
+              <Editor setEditorState={jest.fn()} hidden={true} />
+            </AppSessionStateContext.Provider>
+          </TestDopplerIntlProvider>
         </AppServicesProvider>
       </QueryClientProvider>
     );
@@ -130,7 +133,9 @@ describe(Editor.name, () => {
       render(
         <QueryClientProvider client={queryClient}>
           <AppServicesProvider appServices={appServices}>
-            <Editor setEditorState={jest.fn()} hidden={true} />
+            <TestDopplerIntlProvider>
+              <Editor setEditorState={jest.fn()} hidden={true} />
+            </TestDopplerIntlProvider>
           </AppServicesProvider>
         </QueryClientProvider>
       );
