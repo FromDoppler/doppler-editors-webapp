@@ -1,4 +1,4 @@
-import { ReactNode, StrictMode } from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
@@ -19,16 +19,6 @@ const appSessionStateMonitor = appServices.appSessionStateMonitor;
 appSessionStateMonitor.start();
 
 const queryClient = new QueryClient();
-
-// Temporal solution to patch react-query:
-// https://github.com/tannerlinsley/react-query/issues/3476#issuecomment-1092424508
-// Anyway, it does not seems to be a good idea:
-// https://github.com/tannerlinsley/react-query/issues/3476#issuecomment-1092501739
-declare module "react-query/types/react/QueryClientProvider" {
-  interface QueryClientProviderProps {
-    children?: ReactNode;
-  }
-}
 
 const container = document.getElementById(
   appServices.appConfiguration.appElementId
