@@ -1,5 +1,5 @@
-import { StrictMode } from "react";
-import { render } from "react-dom";
+import { ReactNode, StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import { App } from "./components/App";
@@ -20,7 +20,21 @@ appSessionStateMonitor.start();
 
 const queryClient = new QueryClient();
 
-render(
+// Temporal solution to patch react-query:
+// https://github.com/tannerlinsley/react-query/issues/3476#issuecomment-1092424508
+// Anyway, it does not seems to be a good idea:
+// https://github.com/tannerlinsley/react-query/issues/3476#issuecomment-1092501739
+declare module "react-query/types/react/QueryClientProvider" {
+  interface QueryClientProviderProps {
+    children?: ReactNode;
+  }
+}
+
+const container = document.getElementById(
+  appServices.appConfiguration.appElementId
+);
+const root = createRoot(container!);
+root.render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter basename={appServices.appConfiguration.basename}>
@@ -33,8 +47,7 @@ render(
         </AppServicesProvider>
       </BrowserRouter>
     </QueryClientProvider>
-  </StrictMode>,
-  document.getElementById(appServices.appConfiguration.appElementId)
+  </StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
