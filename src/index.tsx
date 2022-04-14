@@ -1,5 +1,5 @@
 import { StrictMode } from "react";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import { App } from "./components/App";
@@ -20,7 +20,11 @@ appSessionStateMonitor.start();
 
 const queryClient = new QueryClient();
 
-render(
+const container = document.getElementById(
+  appServices.appConfiguration.appElementId
+);
+const root = createRoot(container!);
+root.render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter basename={appServices.appConfiguration.basename}>
@@ -33,8 +37,7 @@ render(
         </AppServicesProvider>
       </BrowserRouter>
     </QueryClientProvider>
-  </StrictMode>,
-  document.getElementById(appServices.appConfiguration.appElementId)
+  </StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
