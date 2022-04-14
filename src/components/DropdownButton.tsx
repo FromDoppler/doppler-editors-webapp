@@ -23,6 +23,7 @@ export const DropdownButton = (props: DropdownButtonProps) => {
           onClick={() => setActive(!isActive)}
         >
           {props.buttonText}
+          <span className="dp-dropdown-arrow"></span>
         </button>
         <div
           className="dp-content-menu"
