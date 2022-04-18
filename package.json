@@ -26,7 +26,7 @@
     "react-cool-onclickoutside": "^1.7.0",
     "react-dom": "^18.0.0",
     "react-email-editor": "^1.5.0",
-    "react-intl": "^5.24.8",
+    "react-intl": "^5.25.0",
     "react-query": "^4.0.0-beta.3",
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1",
