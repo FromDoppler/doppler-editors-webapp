@@ -98,11 +98,6 @@ export const Editor = ({
     value: `[[[${x.name}]]]`,
   }));
 
-  const unlayerLanguages = {
-    es: "es-ES",
-    en: "en-US",
-  };
-
   const unlayerOptions: ExtendedUnlayerOptions = {
     mergeTagsConfig: {
       sort: false,
@@ -117,6 +112,10 @@ export const Editor = ({
       delimiter: ["[[{", "}]]"],
     },
     customJS: [
+      `window["unlayer-extensions-configuration"] = {
+        locale: "${intl.locale}",
+        companyTitle: "Demo"
+      };`,
       loaderUrl,
       `(new AssetServices()).load('${unlayerEditorManifestUrl}', []);`,
     ],
@@ -127,7 +126,6 @@ export const Editor = ({
         },
       },
     },
-    locale: unlayerLanguages[intl.locale as keyof typeof unlayerLanguages],
   };
 
   return (
