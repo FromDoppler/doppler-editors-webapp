@@ -18,7 +18,7 @@ interface DopplerIntlProviderProps {
 export const DopplerIntlProvider = ({ children }: DopplerIntlProviderProps) => {
   const [searchParams] = useSearchParams();
   const appSessionState = useAppSessionState();
-  const [locale, setLocale] = useState("es");
+  const [locale, setLocale] = useState("es-ES");
 
   const langQueryParam = searchParams.get("lang");
 

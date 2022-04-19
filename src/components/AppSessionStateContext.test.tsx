@@ -10,7 +10,7 @@ import {
   AppSessionStateMonitor,
 } from "../abstractions/app-session";
 
-const expectedLang = "en";
+const expectedLang = "en-US";
 const UNKNOWN_SESSION: AppSessionState = {
   status: "unknown",
 };

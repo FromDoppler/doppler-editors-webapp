@@ -12,12 +12,12 @@ import { Campaign } from "../Campaign";
 jest.mock("../AppSessionStateContext");
 jest.mock("./en", () => ({
   messages_en: {
-    lang: "en",
+    lang: "en-US",
   },
 }));
 jest.mock("./es", () => ({
   messages_es: {
-    lang: "es",
+    lang: "es-ES",
   },
 }));
 
@@ -28,7 +28,7 @@ const NON_AUTHENTICATED: SimplifiedAppSessionState = {
   status: "non-authenticated",
 };
 const AUTHENTICATED: SimplifiedAppSessionState = {
-  lang: "en",
+  lang: "en-US",
   status: "authenticated",
   unlayerUser: {
     id: "000",
@@ -44,7 +44,7 @@ const AUTHENTICATED_WITHOUT_LANG: any | SimplifiedAppSessionState = {
   },
   dopplerAccountName: "doppler_mock@mail.com",
 };
-const LANG_DEFAULT = "es";
+const LANG_DEFAULT = "es-ES";
 
 const DopplerIntlProviderTestWrapper = ({ initialEntries }: any) => (
   <MemoryRouter initialEntries={initialEntries}>
@@ -79,8 +79,8 @@ describe(DopplerIntlProvider.name, () => {
   );
 
   it.each([
-    { userLanguage: "es", language: "spanish" },
-    { userLanguage: "en", language: "english" },
+    { userLanguage: "es-ES", language: "spanish" },
+    { userLanguage: "en-US", language: "english" },
   ])(
     `should translate a message to $language when user lang exists`,
     ({ userLanguage }) => {
@@ -115,8 +115,8 @@ describe(DopplerIntlProvider.name, () => {
   );
 
   it.each([
-    { userLanguage: "es", language: "spanish" },
-    { userLanguage: "en", language: "english" },
+    { userLanguage: "es-ES", language: "spanish" },
+    { userLanguage: "en-US", language: "english" },
   ])(
     "should translate a message to $language when query param lang is $userLanguage",
     ({ userLanguage }) => {

@@ -17,7 +17,7 @@ export const TestDopplerIntlProvider = ({
   children: ReactNode;
 }) => {
   return (
-    <IntlProvider locale="en" messages={messages}>
+    <IntlProvider locale="en-US" messages={messages}>
       {children}
     </IntlProvider>
   );
