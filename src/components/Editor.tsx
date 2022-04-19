@@ -119,6 +119,9 @@ export const Editor = ({
     customJS: [
       loaderUrl,
       `(new AssetServices()).load('${unlayerEditorManifestUrl}', []);`,
+      `window.initUnlayerExtensions({ locale: "${
+        unlayerLanguages[intl.locale as keyof typeof unlayerLanguages]
+      }", companyTitle: "Demo" })`,
     ],
     appearance: {
       panels: {
@@ -127,7 +130,6 @@ export const Editor = ({
         },
       },
     },
-    locale: unlayerLanguages[intl.locale as keyof typeof unlayerLanguages],
   };
 
   return (
