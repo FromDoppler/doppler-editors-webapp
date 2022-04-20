@@ -20,6 +20,15 @@ appSessionStateMonitor.start();
 
 const queryClient = new QueryClient();
 
+const container = document.getElementById(
+  appServices.appConfiguration.appElementId
+);
+
+// TODO: replace render with createRoot
+//     const root = createRoot(container!);
+//     root.render(
+// It is not possible at the moment because react-email-editor does not work
+// well in local environment.
 render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
@@ -34,7 +43,7 @@ render(
       </BrowserRouter>
     </QueryClientProvider>
   </StrictMode>,
-  document.getElementById(appServices.appConfiguration.appElementId)
+  container
 );
 
 // If you want to start measuring performance in your app, pass a function
