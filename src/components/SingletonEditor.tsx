@@ -17,7 +17,6 @@ interface ISingletonDesignContext {
   hidden: boolean;
   setContent: (c: Content | undefined) => void;
   getContent: () => Promise<Content>;
-  unsetContent: () => void;
   onSave: { cb: () => void };
   setOnSave: (fn: any) => void;
 }
@@ -42,7 +41,6 @@ export const SingletonDesignContext = createContext<ISingletonDesignContext>({
       htmlContent: "",
       type: "unlayer",
     } as Content),
-  unsetContent: () => {},
   onSave: { cb: () => null },
   setOnSave: () => {},
 });
@@ -53,7 +51,6 @@ export const useSingletonEditor = ({
 }: UseSingletonEditorConfig) => {
   const {
     getContent,
-    unsetContent,
     setContent,
     setOnSave,
     onSave: save,
@@ -65,9 +62,9 @@ export const useSingletonEditor = ({
       cb: onSave,
     });
     return () => {
-      unsetContent();
+      setContent(undefined);
     };
-  }, [initialContent, setContent, unsetContent]);
+  }, [initialContent, setContent]);
 
   return { getContent, save: save.cb };
 };
@@ -150,14 +147,9 @@ export const SingletonEditorProvider = ({
     }
   }, [content, editorState]);
 
-  const unsetContent = useCallback(() => {
-    setContent(undefined);
-  }, []);
-
   const defaultContext: ISingletonDesignContext = {
     hidden,
     setContent,
-    unsetContent,
     getContent,
     onSave,
     setOnSave,
