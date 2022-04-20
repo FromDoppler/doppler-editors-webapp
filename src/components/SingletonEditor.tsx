@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { Editor } from "./Editor";
 import EmailEditor, { HtmlExport } from "react-email-editor";
 import { Content } from "../abstractions/domain/content";
@@ -7,11 +13,13 @@ export type EditorState =
   | { isLoaded: false; unlayer: undefined }
   | { isLoaded: true; unlayer: EmailEditor };
 
-export interface ISingletonDesignContext {
+interface ISingletonDesignContext {
   hidden: boolean;
   setContent: (c: Content | undefined) => void;
   getContent: () => Promise<Content>;
   unsetContent: () => void;
+  onSave: { cb: () => void };
+  setOnSave: (fn: any) => void;
 }
 
 export const emptyDesign = {
@@ -22,6 +30,7 @@ export const emptyDesign = {
 
 interface UseSingletonEditorConfig {
   initialContent: Content | undefined;
+  onSave: () => void;
 }
 
 export const SingletonDesignContext = createContext<ISingletonDesignContext>({
@@ -34,23 +43,33 @@ export const SingletonDesignContext = createContext<ISingletonDesignContext>({
       type: "unlayer",
     } as Content),
   unsetContent: () => {},
+  onSave: { cb: () => null },
+  setOnSave: () => {},
 });
 
 export const useSingletonEditor = ({
   initialContent,
+  onSave,
 }: UseSingletonEditorConfig) => {
-  const { getContent, unsetContent, setContent } = useContext(
-    SingletonDesignContext
-  );
+  const {
+    getContent,
+    unsetContent,
+    setContent,
+    setOnSave,
+    onSave: save,
+  } = useContext(SingletonDesignContext);
 
   useEffect(() => {
     setContent(initialContent);
+    setOnSave({
+      cb: onSave,
+    });
     return () => {
       unsetContent();
     };
   }, [initialContent, setContent, unsetContent]);
 
-  return { getContent };
+  return { getContent, save: save.cb };
 };
 
 export const SingletonEditorProvider = ({
@@ -60,6 +79,9 @@ export const SingletonEditorProvider = ({
   children: React.ReactNode;
 }) => {
   const [content, setContent] = useState<Content | undefined>();
+  const [onSave, setOnSave] = useState<any>({
+    cb: () => {},
+  });
   const hidden = !content;
   const [editorState, setEditorState] = useState<EditorState>({
     unlayer: undefined,
@@ -137,6 +159,8 @@ export const SingletonEditorProvider = ({
     setContent,
     unsetContent,
     getContent,
+    onSave,
+    setOnSave,
   };
 
   return (

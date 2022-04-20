@@ -22,8 +22,12 @@ export const Campaign = () => {
 
   const intl = useIntl();
 
-  const { getContent } = useSingletonEditor({
+  const { getContent, save } = useSingletonEditor({
     initialContent: campaignContentQuery.data,
+    onSave: async () => {
+      const content = await getContent();
+      campaignContentMutation.mutate({ idCampaign, content });
+    },
   });
 
   if (campaignContentQuery.error) {
@@ -35,11 +39,6 @@ export const Campaign = () => {
     );
   }
 
-  const onSave = async () => {
-    const content = await getContent();
-    campaignContentMutation.mutate({ idCampaign, content });
-  };
-
   return (
     <>
       {campaignContentQuery.isLoading ? (
@@ -49,7 +48,7 @@ export const Campaign = () => {
           <Header>
             <EditorTopBar
               data-testid={editorTopBarTestId}
-              onSave={onSave}
+              onSave={save}
               title={intl.formatMessage(
                 { id: "campaign_title" },
                 { idCampaign }
