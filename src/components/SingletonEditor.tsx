@@ -1,13 +1,9 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import { Editor } from "./Editor";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import EmailEditor, { HtmlExport } from "react-email-editor";
+import { Editor } from "./Editor";
 import { Content } from "../abstractions/domain/content";
+
+const { throttle } = require("underscore");
 
 export type EditorState =
   | { isLoaded: false; unlayer: undefined }
@@ -19,6 +15,7 @@ interface ISingletonDesignContext {
   getContent: () => Promise<Content>;
   onSave: { cb: () => void };
   setOnSave: (fn: any) => void;
+  isDirty: { current: boolean };
 }
 
 export const emptyDesign = {
@@ -27,12 +24,14 @@ export const emptyDesign = {
   },
 };
 
+const AUTO_SAVE_INTERVAL = 6000;
+
 interface UseSingletonEditorConfig {
   initialContent: Content | undefined;
   onSave: () => void;
 }
 
-export const SingletonDesignContext = createContext<ISingletonDesignContext>({
+const SingletonDesignContext = createContext<ISingletonDesignContext>({
   hidden: true,
   setContent: () => {},
   getContent: () =>
@@ -43,6 +42,7 @@ export const SingletonDesignContext = createContext<ISingletonDesignContext>({
     } as Content),
   onSave: { cb: () => null },
   setOnSave: () => {},
+  isDirty: { current: false },
 });
 
 export const useSingletonEditor = ({
@@ -54,12 +54,16 @@ export const useSingletonEditor = ({
     setContent,
     setOnSave,
     onSave: save,
+    isDirty,
   } = useContext(SingletonDesignContext);
 
   useEffect(() => {
     setContent(initialContent);
     setOnSave({
-      cb: onSave,
+      cb: () => {
+        onSave();
+        isDirty.current = false;
+      },
     });
     return () => {
       onSave();
@@ -85,6 +89,7 @@ export const SingletonEditorProvider = ({
     unlayer: undefined,
     isLoaded: false,
   });
+  const isDirtyRef = useRef(false);
 
   const getContent = () => {
     if (!editorState.isLoaded) {
@@ -113,6 +118,26 @@ export const SingletonEditorProvider = ({
       });
     });
   };
+
+  useEffect(() => {
+    if (!editorState.unlayer) return;
+
+    const throttled = throttle(() => {
+      if (isDirtyRef.current) {
+        onSave.cb();
+        isDirtyRef.current = false;
+      }
+    }, AUTO_SAVE_INTERVAL);
+
+    editorState.unlayer.addEventListener("design:updated", () => {
+      if (content) {
+        isDirtyRef.current = true;
+        throttled();
+      }
+    });
+
+    return () => {};
+  }, [editorState.unlayer]);
 
   useEffect(() => {
     if (editorState.isLoaded) {
@@ -156,6 +181,7 @@ export const SingletonEditorProvider = ({
     getContent,
     onSave,
     setOnSave,
+    isDirty: isDirtyRef,
   };
 
   return (
