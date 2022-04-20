@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSingletonEditor } from "./SingletonEditor";
 import { EditorTopBar } from "./EditorTopBar";
@@ -17,17 +16,15 @@ export const editorTopBarTestId = "editor-top-bar-message";
 
 export const Campaign = () => {
   const { idCampaign } = useParams() as Readonly<{ idCampaign: string }>;
-  const { setContent, unsetContent, getContent } = useSingletonEditor();
 
   const campaignContentQuery = useGetCampaignContent(idCampaign);
   const campaignContentMutation = useUpdateCampaignContent();
 
   const intl = useIntl();
 
-  useEffect(() => {
-    setContent(campaignContentQuery.data);
-    return () => unsetContent();
-  }, [campaignContentQuery.data, unsetContent, setContent]);
+  const { getContent } = useSingletonEditor({
+    initialContent: campaignContentQuery.data,
+  });
 
   if (campaignContentQuery.error) {
     return (

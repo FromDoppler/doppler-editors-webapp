@@ -20,6 +20,10 @@ export const emptyDesign = {
   },
 };
 
+interface UseSingletonEditorConfig {
+  initialContent: Content | undefined;
+}
+
 export const SingletonDesignContext = createContext<ISingletonDesignContext>({
   hidden: true,
   setContent: () => {},
@@ -32,7 +36,22 @@ export const SingletonDesignContext = createContext<ISingletonDesignContext>({
   unsetContent: () => {},
 });
 
-export const useSingletonEditor = () => useContext(SingletonDesignContext);
+export const useSingletonEditor = ({
+  initialContent,
+}: UseSingletonEditorConfig) => {
+  const { getContent, unsetContent, setContent } = useContext(
+    SingletonDesignContext
+  );
+
+  useEffect(() => {
+    setContent(initialContent);
+    return () => {
+      unsetContent();
+    };
+  }, [initialContent, setContent, unsetContent]);
+
+  return { getContent };
+};
 
 export const SingletonEditorProvider = ({
   children,
@@ -109,10 +128,14 @@ export const SingletonEditorProvider = ({
     }
   }, [content, editorState]);
 
+  const unsetContent = useCallback(() => {
+    setContent(undefined);
+  }, []);
+
   const defaultContext: ISingletonDesignContext = {
     hidden,
     setContent,
-    unsetContent: () => setContent(undefined),
+    unsetContent,
     getContent,
   };
 
