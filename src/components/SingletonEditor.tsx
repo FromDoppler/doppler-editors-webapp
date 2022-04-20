@@ -62,6 +62,7 @@ export const useSingletonEditor = ({
       cb: onSave,
     });
     return () => {
+      onSave();
       setContent(undefined);
     };
   }, [initialContent, setContent]);
@@ -119,6 +120,8 @@ export const SingletonEditorProvider = ({
         editorState.unlayer.loadDesign(emptyDesign);
         return;
       }
+
+      window.addEventListener("beforeunload", () => onSave.cb());
 
       if (content.type === "unlayer") {
         editorState.unlayer.loadDesign(content.design);
