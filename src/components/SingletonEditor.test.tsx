@@ -1,13 +1,12 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import { AppServices } from "../abstractions";
-import { Editor } from "./Editor";
 import { SingletonEditorProvider, useSingletonEditor } from "./SingletonEditor";
 import { AppServicesProvider } from "./AppServicesContext";
-import { Design } from "react-email-editor";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Field } from "../abstractions/doppler-rest-api-client";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
-import { act } from "react-dom/test-utils";
+import { Content } from "../abstractions/domain/content";
+import { useState } from "react";
 
 const singletonEditorTestId = "singleton-editor-test";
 
@@ -40,60 +39,75 @@ const queryClient = new QueryClient({
   },
 });
 
-describe(Editor.name, () => {
-  it("should show and hide EmailEditor when design is set and unset", async () => {
-    // Arrange
-    const appServices = defaultAppServices as AppServices;
+let generatedContentCounter = 0;
+const generateNewContent: () => Content = () => ({
+  htmlContent: `Content #${generatedContentCounter++}`,
+  type: "unlayer",
+  design: {
+    body: {
+      rows: [],
+    },
+  },
+});
 
-    const DemoComponent = () => {
-      const { setContent, unsetContent } = useSingletonEditor();
-      return (
-        <>
-          <button
-            onClick={() =>
-              setContent({
-                design: {} as Design,
-                htmlContent: "",
-                type: "unlayer",
-              })
-            }
-          >
-            LoadDesign
-          </button>
-          <button onClick={() => unsetContent()}>UnloadDesign</button>
-        </>
-      );
+describe(`${SingletonEditorProvider.name}`, () => {
+  // Arrange
+  const appServices = defaultAppServices as AppServices;
+
+  const DemoComponent = () => {
+    const [initialContent, setInitialContent] = useState<Content | undefined>(
+      undefined
+    );
+    useSingletonEditor({ initialContent, onSave: () => {} });
+
+    const changeInitialContent = () => {
+      setInitialContent(generateNewContent());
     };
 
+    return (
+      <>
+        <button onClick={changeInitialContent}>change initial content</button>
+      </>
+    );
+  };
+
+  const WrapperSingletonProviderTest = ({ children }: any) => (
+    <QueryClientProvider client={queryClient}>
+      <AppServicesProvider appServices={appServices}>
+        <TestDopplerIntlProvider>
+          <SingletonEditorProvider data-testid="singleton-editor-test">
+            {children}
+          </SingletonEditorProvider>
+        </TestDopplerIntlProvider>
+      </AppServicesProvider>
+    </QueryClientProvider>
+  );
+
+  it("should hide Editor when initialContent is undefined", () => {
     // Act
     render(
-      <QueryClientProvider client={queryClient}>
-        <AppServicesProvider appServices={appServices}>
-          <TestDopplerIntlProvider>
-            <SingletonEditorProvider data-testid="singleton-editor-test">
-              <DemoComponent></DemoComponent>
-            </SingletonEditorProvider>
-          </TestDopplerIntlProvider>
-        </AppServicesProvider>
-      </QueryClientProvider>
+      <WrapperSingletonProviderTest>
+        <DemoComponent />
+      </WrapperSingletonProviderTest>
     );
-
+    // Assert
     const editorEl = screen.getByTestId(singletonEditorTestId);
-
-    // Hidden by default
-    // Assert
     expect(editorEl.style.display).toBe("none");
+  });
 
-    // Shown when a design is loaded
+  it("should show Editor when content is loaded", () => {
     // Act
-    act(() => screen.getByText("LoadDesign").click());
+    render(
+      <WrapperSingletonProviderTest>
+        <DemoComponent />
+      </WrapperSingletonProviderTest>
+    );
+    const loadInitialContentBtn = screen.getByText("change initial content");
+    act(() => {
+      loadInitialContentBtn.click();
+    });
     // Assert
+    const editorEl = screen.getByTestId(singletonEditorTestId);
     expect(editorEl.style.display).toBe("flex");
-
-    // Hidden when the design is unloaded
-    // Act
-    act(() => screen.getByText("UnloadDesign").click());
-    // Assert
-    expect(editorEl.style.display).toBe("none");
   });
 });

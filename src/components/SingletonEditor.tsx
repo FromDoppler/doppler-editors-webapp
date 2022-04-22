@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Editor } from "./Editor";
 import EmailEditor, { HtmlExport } from "react-email-editor";
 import { Content } from "../abstractions/domain/content";
@@ -7,11 +7,10 @@ export type EditorState =
   | { isLoaded: false; unlayer: undefined }
   | { isLoaded: true; unlayer: EmailEditor };
 
-export interface ISingletonDesignContext {
+interface ISingletonDesignContext {
   hidden: boolean;
   setContent: (c: Content | undefined) => void;
   getContent: () => Promise<Content>;
-  unsetContent: () => void;
 }
 
 export const emptyDesign = {
@@ -19,6 +18,11 @@ export const emptyDesign = {
     rows: [],
   },
 };
+
+interface UseSingletonEditorConfig {
+  initialContent: Content | undefined;
+  onSave: () => void;
+}
 
 export const SingletonDesignContext = createContext<ISingletonDesignContext>({
   hidden: true,
@@ -29,10 +33,25 @@ export const SingletonDesignContext = createContext<ISingletonDesignContext>({
       htmlContent: "",
       type: "unlayer",
     } as Content),
-  unsetContent: () => {},
 });
 
-export const useSingletonEditor = () => useContext(SingletonDesignContext);
+export const useSingletonEditor = (
+  { initialContent, onSave }: UseSingletonEditorConfig
+) => {
+  const {
+    getContent,
+    setContent,
+  } = useContext(SingletonDesignContext);
+
+  useEffect(() => {
+    setContent(initialContent);
+    return () => {
+      setContent(undefined);
+    };
+  }, [initialContent, setContent]);
+
+  return { getContent, save: onSave };
+};
 
 export const SingletonEditorProvider = ({
   children,
@@ -112,7 +131,6 @@ export const SingletonEditorProvider = ({
   const defaultContext: ISingletonDesignContext = {
     hidden,
     setContent,
-    unsetContent: () => setContent(undefined),
     getContent,
   };
 
