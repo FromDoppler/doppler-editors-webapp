@@ -54,11 +54,12 @@ describe(`${SingletonEditorProvider.name}`, () => {
   // Arrange
   const appServices = defaultAppServices as AppServices;
 
-  const DemoComponent = () => {
-    const [initialContent, setInitialContent] = useState<Content | undefined>(
-      undefined
-    );
-    useSingletonEditor({ initialContent, onSave: () => {} });
+  const DemoComponent = ({ onSave }: { onSave: () => void }) => {
+    const [initialContent, setInitialContent] = useState<Content | undefined>();
+    const { save } = useSingletonEditor({
+      initialContent,
+      onSave,
+    });
 
     const changeInitialContent = () => {
       setInitialContent(generateNewContent());
@@ -67,6 +68,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
     return (
       <>
         <button onClick={changeInitialContent}>change initial content</button>
+        <button onClick={save}>save content</button>
       </>
     );
   };
@@ -87,7 +89,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
     // Act
     render(
       <WrapperSingletonProviderTest>
-        <DemoComponent />
+        <DemoComponent onSave={() => {}} />
       </WrapperSingletonProviderTest>
     );
     // Assert
@@ -99,7 +101,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
     // Act
     render(
       <WrapperSingletonProviderTest>
-        <DemoComponent />
+        <DemoComponent onSave={() => {}} />
       </WrapperSingletonProviderTest>
     );
     const loadInitialContentBtn = screen.getByText("change initial content");
@@ -109,5 +111,24 @@ describe(`${SingletonEditorProvider.name}`, () => {
     // Assert
     const editorEl = screen.getByTestId(singletonEditorTestId);
     expect(editorEl.style.display).toBe("flex");
+  });
+
+  it("should save content when save event is fire", () => {
+    // Arrange
+    const onSaveFn = jest.fn();
+    // Act
+    render(
+      <WrapperSingletonProviderTest>
+        <DemoComponent onSave={onSaveFn} />
+      </WrapperSingletonProviderTest>
+    );
+    const changeInitialContentBtn = screen.getByText("change initial content");
+    act(() => {
+      changeInitialContentBtn.click();
+    });
+    const buttonSave = screen.getByText("save content");
+    buttonSave.click();
+    // Assert
+    expect(onSaveFn).toHaveBeenCalledTimes(1);
   });
 });
