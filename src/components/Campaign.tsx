@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useSingletonEditor } from "./SingletonEditor";
 import { EditorTopBar } from "./EditorTopBar";
 import {
@@ -10,13 +10,22 @@ import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { EditorBottomBar } from "./EditorBottomBar";
 import { useIntl } from "react-intl";
+import { useAppServices } from "./AppServicesContext";
 
 export const loadingMessageTestId = "loading-message";
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
 
 export const Campaign = () => {
-  const { idCampaign } = useParams() as Readonly<{ idCampaign: string }>;
+  const { idCampaign } = useParams() as Readonly<{
+    idCampaign: string;
+  }>;
+
+  const {
+    appConfiguration: { dopplerLegacyBaseUrl },
+  } = useAppServices();
+
+  const [searchParams] = useSearchParams();
   const { setContent, unsetContent, getContent } = useSingletonEditor();
 
   const campaignContentQuery = useGetCampaignContent(idCampaign);
@@ -43,6 +52,12 @@ export const Campaign = () => {
     campaignContentMutation.mutate({ idCampaign, content });
   };
 
+  const nextUrl =
+    searchParams.get("redirectedFromSummary")?.toUpperCase() === "TRUE"
+      ? `${dopplerLegacyBaseUrl}/Campaigns/Summary/Index?IdCampaign=${idCampaign}`
+      : `${dopplerLegacyBaseUrl}/Campaigns/Recipients/Index?IdCampaign=${idCampaign}` +
+        `&RedirectedFromSummary=False&RedirectedFromTemplateList=False`;
+
   return (
     <>
       {campaignContentQuery.isLoading ? (
@@ -60,7 +75,7 @@ export const Campaign = () => {
             />
           </Header>
           <Footer>
-            <EditorBottomBar></EditorBottomBar>
+            <EditorBottomBar nextUrl={nextUrl}></EditorBottomBar>
           </Footer>
         </>
       )}
