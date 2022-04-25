@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { AppServices } from "../abstractions";
 import { Editor } from "./Editor";
 import { SingletonEditorProvider, useSingletonEditor } from "./SingletonEditor";
@@ -8,6 +7,7 @@ import { Design } from "react-email-editor";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Field } from "../abstractions/doppler-rest-api-client";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
+import { act } from "react-dom/test-utils";
 
 const singletonEditorTestId = "singleton-editor-test";
 
@@ -86,13 +86,13 @@ describe(Editor.name, () => {
 
     // Shown when a design is loaded
     // Act
-    await userEvent.click(screen.getByText("LoadDesign"));
+    act(() => screen.getByText("LoadDesign").click());
     // Assert
     expect(editorEl.style.display).toBe("flex");
 
     // Hidden when the design is unloaded
     // Act
-    await userEvent.click(screen.getByText("UnloadDesign"));
+    act(() => screen.getByText("UnloadDesign").click());
     // Assert
     expect(editorEl.style.display).toBe("none");
   });

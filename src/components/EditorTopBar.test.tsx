@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { act } from "react-dom/test-utils";
 import { AppServicesProvider } from "./AppServicesContext";
 import { EditorTopBar } from "./EditorTopBar";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
@@ -46,7 +46,7 @@ describe(EditorTopBar.name, () => {
     expect(screen.getByText("home")).toBeNull;
 
     // Act
-    userEvent.click(screen.getByText("exit_editor"));
+    act(() => screen.getByText("exit_editor").click());
 
     // Assert
     expect(screen.queryByText("home")).not.toBeNull;
@@ -65,7 +65,7 @@ describe(EditorTopBar.name, () => {
       </AppServicesProvider>
     );
 
-    userEvent.click(screen.getByText("exit_editor"));
+    act(() => screen.getByText("exit_editor").click());
 
     const homeOption = screen.getByText("home");
     const campaignsOption = screen.getByText("campaigns");
