@@ -30,9 +30,10 @@ export const SingletonDesignContext = createContext<ISingletonDesignContext>({
   editorState: { isLoaded: false, unlayer: undefined },
 });
 
-export const useSingletonEditor = (
-  { initialContent, onSave }: UseSingletonEditorConfig
-) => {
+export const useSingletonEditor = ({
+  initialContent,
+  onSave,
+}: UseSingletonEditorConfig) => {
   const { editorState, setContent } = useContext(SingletonDesignContext);
 
   const saveHandler = () => {

@@ -29,14 +29,12 @@ export const Campaign = () => {
 
   const campaignContentQuery = useGetCampaignContent(idCampaign);
   const campaignContentMutation = useUpdateCampaignContent();
-  const { save } = useSingletonEditor(
-    {
-      initialContent: campaignContentQuery.data,
-      onSave: async (content: Content) => {
-        campaignContentMutation.mutate({ idCampaign, content });
-      },
-    }
-  );
+  const { save } = useSingletonEditor({
+    initialContent: campaignContentQuery.data,
+    onSave: async (content: Content) => {
+      campaignContentMutation.mutate({ idCampaign, content });
+    },
+  });
 
   const intl = useIntl();
 
