@@ -10,6 +10,7 @@ import { Header } from "./Header";
 import { EditorBottomBar } from "./EditorBottomBar";
 import { useIntl } from "react-intl";
 import { useAppServices } from "./AppServicesContext";
+import { Content } from "../abstractions/domain/content";
 
 export const loadingMessageTestId = "loading-message";
 export const errorMessageTestId = "error-message";
@@ -28,11 +29,10 @@ export const Campaign = () => {
 
   const campaignContentQuery = useGetCampaignContent(idCampaign);
   const campaignContentMutation = useUpdateCampaignContent();
-  const { getContent, save } = useSingletonEditor(
+  const { save } = useSingletonEditor(
     {
       initialContent: campaignContentQuery.data,
-      onSave: async () => {
-        const content = await getContent();
+      onSave: async (content: Content) => {
         campaignContentMutation.mutate({ idCampaign, content });
       },
     }

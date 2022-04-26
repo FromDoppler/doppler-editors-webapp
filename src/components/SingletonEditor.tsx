@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { Editor } from "./Editor";
 import EmailEditor, { HtmlExport } from "react-email-editor";
 import { Content } from "../abstractions/domain/content";
@@ -10,7 +10,7 @@ export type EditorState =
 interface ISingletonDesignContext {
   hidden: boolean;
   setContent: (c: Content | undefined) => void;
-  getContent: () => Promise<Content>;
+  editorState: EditorState;
 }
 
 export const emptyDesign = {
@@ -21,27 +21,41 @@ export const emptyDesign = {
 
 interface UseSingletonEditorConfig {
   initialContent: Content | undefined;
-  onSave: () => void;
+  onSave: (content: Content) => void;
 }
 
 export const SingletonDesignContext = createContext<ISingletonDesignContext>({
   hidden: true,
   setContent: () => {},
-  getContent: () =>
-    Promise.resolve({
-      design: emptyDesign,
-      htmlContent: "",
-      type: "unlayer",
-    } as Content),
+  editorState: { isLoaded: false, unlayer: undefined },
 });
 
 export const useSingletonEditor = (
   { initialContent, onSave }: UseSingletonEditorConfig
 ) => {
-  const {
-    getContent,
-    setContent,
-  } = useContext(SingletonDesignContext);
+  const { editorState, setContent } = useContext(SingletonDesignContext);
+
+  const saveHandler = () => {
+    if (!editorState.isLoaded) {
+      console.error("The editor is loading, can't save yet!");
+      return;
+    }
+
+    editorState.unlayer.exportHtml((htmlExport: HtmlExport) => {
+      const content = !htmlExport.design
+        ? {
+            htmlContent: htmlExport.html,
+            type: "html",
+          }
+        : {
+            design: htmlExport.design,
+            htmlContent: htmlExport.html,
+            type: "unlayer",
+          };
+
+      onSave(content as Content);
+    });
+  };
 
   useEffect(() => {
     setContent(initialContent);
@@ -50,7 +64,7 @@ export const useSingletonEditor = (
     };
   }, [initialContent, setContent]);
 
-  return { getContent, save: onSave };
+  return { save: saveHandler };
 };
 
 export const SingletonEditorProvider = ({
@@ -65,34 +79,6 @@ export const SingletonEditorProvider = ({
     unlayer: undefined,
     isLoaded: false,
   });
-
-  const getContent = () => {
-    if (!editorState.isLoaded) {
-      const fallbackResult: Content = {
-        design: emptyDesign,
-        htmlContent: "",
-        type: "unlayer",
-      };
-      return Promise.resolve(fallbackResult);
-    }
-    return new Promise<Content>((resolve) => {
-      editorState.unlayer.exportHtml((htmlExport: HtmlExport) => {
-        if (!htmlExport.design) {
-          // It is a legacy template: https://examples.unlayer.com/web/legacy-template
-          resolve({
-            htmlContent: htmlExport.html,
-            type: "html",
-          });
-        } else {
-          resolve({
-            design: htmlExport.design,
-            htmlContent: htmlExport.html,
-            type: "unlayer",
-          });
-        }
-      });
-    });
-  };
 
   useEffect(() => {
     if (editorState.isLoaded) {
@@ -131,7 +117,7 @@ export const SingletonEditorProvider = ({
   const defaultContext: ISingletonDesignContext = {
     hidden,
     setContent,
-    getContent,
+    editorState,
   };
 
   return (
