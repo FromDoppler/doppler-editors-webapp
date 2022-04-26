@@ -52,11 +52,18 @@ export const Campaign = () => {
     campaignContentMutation.mutate({ idCampaign, content });
   };
 
-  const nextUrl =
-    searchParams.get("redirectedFromSummary")?.toUpperCase() === "TRUE"
-      ? `${dopplerLegacyBaseUrl}/Campaigns/Summary/Index?IdCampaign=${idCampaign}`
-      : `${dopplerLegacyBaseUrl}/Campaigns/Recipients/Index?IdCampaign=${idCampaign}` +
-        `&RedirectedFromSummary=False&RedirectedFromTemplateList=False`;
+  const redirectedFromSummary =
+    searchParams.get("redirectedFromSummary")?.toUpperCase() === "TRUE";
+
+  const nextUrl = redirectedFromSummary
+    ? `${dopplerLegacyBaseUrl}/Campaigns/Summary/Index?IdCampaign=${idCampaign}`
+    : `${dopplerLegacyBaseUrl}/Campaigns/Recipients/Index?IdCampaign=${idCampaign}` +
+      `&RedirectedFromSummary=False&RedirectedFromTemplateList=False`;
+
+  const exitUrl = redirectedFromSummary
+    ? `${dopplerLegacyBaseUrl}/Campaigns/Summary/Index?IdCampaign=${idCampaign}`
+    : `${dopplerLegacyBaseUrl}/Campaigns/Content?IdCampaign=${idCampaign}` +
+      `&RedirectedFromSummary=False&RedirectedFromTemplateList=False&RedirectedFromCampaignB=False`;
 
   return (
     <>
@@ -75,7 +82,10 @@ export const Campaign = () => {
             />
           </Header>
           <Footer>
-            <EditorBottomBar nextUrl={nextUrl}></EditorBottomBar>
+            <EditorBottomBar
+              nextUrl={nextUrl}
+              exitUrl={exitUrl}
+            ></EditorBottomBar>
           </Footer>
         </>
       )}

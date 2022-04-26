@@ -11,12 +11,13 @@ const appConfiguration = {
 describe(EditorBottomBar.name, () => {
   it("should render next button", async () => {
     // Arrange
-    const nextUrl = "https://www.test.com/?redirectedFromSummary=true";
+    const nextUrl = "nextUrl";
+    const exitUrl = "exitUrl";
 
     // Act
     render(
       <TestDopplerIntlProvider>
-        <EditorBottomBar nextUrl={nextUrl}></EditorBottomBar>
+        <EditorBottomBar nextUrl={nextUrl} exitUrl={exitUrl}></EditorBottomBar>
       </TestDopplerIntlProvider>
     );
 
@@ -24,17 +25,37 @@ describe(EditorBottomBar.name, () => {
     screen.getByText("continue");
   });
 
+  it("should render exit button", async () => {
+    // Arrange
+    const nextUrl = "nextUrl";
+    const exitUrl = "exitUrl";
+
+    // Act
+    render(
+      <TestDopplerIntlProvider>
+        <EditorBottomBar nextUrl={nextUrl} exitUrl={exitUrl}></EditorBottomBar>
+      </TestDopplerIntlProvider>
+    );
+
+    // Assert
+    screen.getByText("exit_edit_later");
+  });
+
   it("should redirect to specific url", async () => {
     // Arrange
     const appServices = { appConfiguration } as any;
 
     const nextUrl = "nextUrl";
+    const exitUrl = "exitUrl";
 
     // Act
     render(
       <AppServicesProvider appServices={appServices}>
         <TestDopplerIntlProvider>
-          <EditorBottomBar nextUrl={nextUrl}></EditorBottomBar>
+          <EditorBottomBar
+            nextUrl={nextUrl}
+            exitUrl={exitUrl}
+          ></EditorBottomBar>
         </TestDopplerIntlProvider>
       </AppServicesProvider>
     );
@@ -44,5 +65,12 @@ describe(EditorBottomBar.name, () => {
 
     // Assert
     expect(nextButton).toHaveAttribute("href", nextUrl);
+
+    // Act
+    const exitButton = screen.getByText("exit_edit_later");
+    userEvent.click(exitButton);
+
+    // Assert
+    expect(exitButton).toHaveAttribute("href", exitUrl);
   });
 });

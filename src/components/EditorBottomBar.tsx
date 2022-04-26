@@ -3,17 +3,23 @@ import { FormattedMessage } from "react-intl";
 
 interface EditorBottomBarProps {
   nextUrl: string;
+  exitUrl: string;
 }
 
 export const EditorBottomBar = ({
   nextUrl,
+  exitUrl,
   ...otherProps
 }: EditorBottomBarProps) => {
   return (
     <div className="ed-cta-footer" {...otherProps}>
-      <button type="button" className="dp-button button-medium secondary-green">
+      <a
+        type="button"
+        className="dp-button button-medium secondary-green"
+        href={exitUrl}
+      >
         <FormattedMessage id="exit_edit_later" />
-      </button>
+      </a>
       <a className="dp-button button-medium primary-green" href={nextUrl}>
         <FormattedMessage id="continue" />
       </a>
