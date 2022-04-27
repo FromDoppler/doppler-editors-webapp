@@ -41,9 +41,8 @@
     "prettier-fix": "prettier --write \"**/**\"",
     "prettier-check": "prettier --check \"**/**\"",
     "start": "react-scripts start",
-    "build": "react-scripts --openssl-legacy-provider build",
-    "test": "react-scripts --openssl-legacy-provider test",
-    "test-dev": "react-scripts test",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
