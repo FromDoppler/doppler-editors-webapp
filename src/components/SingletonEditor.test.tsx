@@ -6,7 +6,34 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { Field } from "../abstractions/doppler-rest-api-client";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { Content } from "../abstractions/domain/content";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const DoubleEditor = ({ setEditorState, hidden, ...otherProps }: any) => {
+  useEffect(() => {
+    setEditorState({
+      unlayer: {
+        loadDesign: jest.fn(),
+        exportHtml: (cb: any) => {
+          cb({
+            design: {},
+            html: "",
+          });
+        },
+      },
+      isLoaded: true,
+    });
+  }, []);
+
+  const containerStyle = {
+    height: "100%",
+    display: hidden ? "none" : "flex",
+  };
+  return <div style={containerStyle} {...otherProps} />;
+};
+
+jest.mock("./Editor", () => {
+  return { Editor: DoubleEditor };
+});
 
 const singletonEditorTestId = "singleton-editor-test";
 
