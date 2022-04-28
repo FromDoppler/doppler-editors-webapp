@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { Editor } from "./Editor";
 import EmailEditor, { HtmlExport } from "react-email-editor";
 import { Content } from "../abstractions/domain/content";
@@ -36,7 +42,7 @@ export const useSingletonEditor = ({
 }: UseSingletonEditorConfig) => {
   const { editorState, setContent } = useContext(SingletonDesignContext);
 
-  const saveHandler = () => {
+  const saveHandler = useCallback(() => {
     if (!editorState.isLoaded) {
       console.error("The editor is loading, can't save yet!");
       return;
@@ -56,14 +62,17 @@ export const useSingletonEditor = ({
 
       onSave(content as Content);
     });
-  };
+  }, [editorState, onSave]);
 
   useEffect(() => {
     setContent(initialContent);
+    window.addEventListener("beforeunload", saveHandler);
     return () => {
+      window.removeEventListener("beforeunload", saveHandler);
+      saveHandler();
       setContent(undefined);
     };
-  }, [initialContent, setContent]);
+  }, [initialContent, setContent, saveHandler]);
 
   return { save: saveHandler };
 };
