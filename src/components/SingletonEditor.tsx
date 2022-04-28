@@ -39,7 +39,7 @@ export const SingletonDesignContext = createContext<ISingletonDesignContext>({
 export const useSingletonEditor = ({
   initialContent,
   onSave,
-}: UseSingletonEditorConfig) => {
+}: UseSingletonEditorConfig, deps: any[]) => {
   const { editorState, setContent } = useContext(SingletonDesignContext);
 
   const saveHandler = useCallback(() => {
@@ -51,18 +51,19 @@ export const useSingletonEditor = ({
     editorState.unlayer.exportHtml((htmlExport: HtmlExport) => {
       const content = !htmlExport.design
         ? {
-            htmlContent: htmlExport.html,
-            type: "html",
-          }
+          htmlContent: htmlExport.html,
+          type: "html",
+        }
         : {
-            design: htmlExport.design,
-            htmlContent: htmlExport.html,
-            type: "unlayer",
-          };
+          design: htmlExport.design,
+          htmlContent: htmlExport.html,
+          type: "unlayer",
+        };
 
       onSave(content as Content);
     });
-  }, [editorState, onSave]);
+    // eslint-disable-next-line
+  }, [editorState, ...deps]);
 
   useEffect(() => {
     setContent(initialContent);
@@ -72,7 +73,8 @@ export const useSingletonEditor = ({
       saveHandler();
       setContent(undefined);
     };
-  }, [initialContent, setContent, saveHandler]);
+    // eslint-disable-next-line
+  }, [...deps, setContent, saveHandler]);
 
   return { save: saveHandler };
 };

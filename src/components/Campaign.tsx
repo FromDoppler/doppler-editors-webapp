@@ -26,17 +26,19 @@ export const Campaign = () => {
   } = useAppServices();
 
   const [searchParams] = useSearchParams();
-
   const campaignContentQuery = useGetCampaignContent(idCampaign);
   const campaignContentMutation = useUpdateCampaignContent();
-  const { save } = useSingletonEditor({
-    initialContent: campaignContentQuery.data,
-    onSave: async (content: Content) => {
-      campaignContentMutation.mutate({ idCampaign, content });
-    },
-  });
-
   const intl = useIntl();
+
+  const { save } = useSingletonEditor(
+    {
+      initialContent: campaignContentQuery.data,
+      onSave: (content: Content) => {
+        campaignContentMutation.mutate({ idCampaign, content });
+      },
+    },
+    [campaignContentQuery.data, campaignContentMutation.mutate, idCampaign]
+  );
 
   if (campaignContentQuery.error) {
     return (
