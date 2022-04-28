@@ -50,14 +50,19 @@ export const Campaign = () => {
   const redirectedFromSummary =
     searchParams.get("redirectedFromSummary")?.toUpperCase() === "TRUE";
 
+  const idABTest = searchParams.get("idABTest");
+  const fixedIdCampaign = idABTest ? idABTest : idCampaign;
+  const testABIndexSegment = idABTest ? "TestAB" : "Index";
+  const testABContentSegment = idABTest ? "Content/TestAB" : "Content";
+
   const nextUrl = redirectedFromSummary
-    ? `${dopplerLegacyBaseUrl}/Campaigns/Summary/Index?IdCampaign=${idCampaign}`
-    : `${dopplerLegacyBaseUrl}/Campaigns/Recipients/Index?IdCampaign=${idCampaign}` +
+    ? `${dopplerLegacyBaseUrl}/Campaigns/Summary/${testABIndexSegment}?IdCampaign=${fixedIdCampaign}`
+    : `${dopplerLegacyBaseUrl}/Campaigns/Recipients/${testABIndexSegment}?IdCampaign=${fixedIdCampaign}` +
       `&RedirectedFromSummary=False&RedirectedFromTemplateList=False`;
 
   const exitUrl = redirectedFromSummary
-    ? `${dopplerLegacyBaseUrl}/Campaigns/Summary/Index?IdCampaign=${idCampaign}`
-    : `${dopplerLegacyBaseUrl}/Campaigns/Content?IdCampaign=${idCampaign}` +
+    ? `${dopplerLegacyBaseUrl}/Campaigns/Summary/${testABIndexSegment}?IdCampaign=${fixedIdCampaign}`
+    : `${dopplerLegacyBaseUrl}/Campaigns/${testABContentSegment}?IdCampaign=${fixedIdCampaign}` +
       `&RedirectedFromSummary=False&RedirectedFromTemplateList=False&RedirectedFromCampaignB=False`;
 
   return (
