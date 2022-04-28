@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useSingletonEditor } from "./SingletonEditor";
 import { EditorTopBar } from "./EditorTopBar";
@@ -11,6 +10,7 @@ import { Header } from "./Header";
 import { EditorBottomBar } from "./EditorBottomBar";
 import { useIntl } from "react-intl";
 import { useAppServices } from "./AppServicesContext";
+import { Content } from "../abstractions/domain/content";
 
 export const loadingMessageTestId = "loading-message";
 export const errorMessageTestId = "error-message";
@@ -26,17 +26,17 @@ export const Campaign = () => {
   } = useAppServices();
 
   const [searchParams] = useSearchParams();
-  const { setContent, unsetContent, getContent } = useSingletonEditor();
 
   const campaignContentQuery = useGetCampaignContent(idCampaign);
   const campaignContentMutation = useUpdateCampaignContent();
+  const { save } = useSingletonEditor({
+    initialContent: campaignContentQuery.data,
+    onSave: async (content: Content) => {
+      campaignContentMutation.mutate({ idCampaign, content });
+    },
+  });
 
   const intl = useIntl();
-
-  useEffect(() => {
-    setContent(campaignContentQuery.data);
-    return () => unsetContent();
-  }, [campaignContentQuery.data, unsetContent, setContent]);
 
   if (campaignContentQuery.error) {
     return (
@@ -46,11 +46,6 @@ export const Campaign = () => {
       </div>
     );
   }
-
-  const onSave = async () => {
-    const content = await getContent();
-    campaignContentMutation.mutate({ idCampaign, content });
-  };
 
   const redirectedFromSummary =
     searchParams.get("redirectedFromSummary")?.toUpperCase() === "TRUE";
@@ -74,7 +69,7 @@ export const Campaign = () => {
           <Header>
             <EditorTopBar
               data-testid={editorTopBarTestId}
-              onSave={onSave}
+              onSave={save}
               title={intl.formatMessage(
                 { id: "campaign_title" },
                 { idCampaign }
