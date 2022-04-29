@@ -113,7 +113,7 @@ export const useSingletonEditor = (
           onLoadEventListener
         );
         editorState.unlayer.removeEventListener(
-          "design:loaded",
+          "design:updated",
           updateDesignListener
         );
       }
