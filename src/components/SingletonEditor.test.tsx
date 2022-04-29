@@ -19,6 +19,8 @@ const DoubleEditor = ({ setEditorState, hidden, ...otherProps }: any) => {
             html: "",
           });
         },
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
       },
       isLoaded: true,
     });
@@ -83,10 +85,13 @@ describe(`${SingletonEditorProvider.name}`, () => {
 
   const DemoComponent = ({ onSave }: { onSave: () => void }) => {
     const [initialContent, setInitialContent] = useState<Content | undefined>();
-    const { save } = useSingletonEditor({
-      initialContent,
-      onSave,
-    });
+    const { save } = useSingletonEditor(
+      {
+        initialContent,
+        onSave,
+      },
+      [initialContent, onSave]
+    );
 
     const changeInitialContent = () => {
       setInitialContent(generateNewContent());
@@ -151,6 +156,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
     );
     const changeInitialContentBtn = screen.getByText("change initial content");
     act(() => {
+      // eventListener()
       changeInitialContentBtn.click();
     });
     const buttonSave = screen.getByText("save content");

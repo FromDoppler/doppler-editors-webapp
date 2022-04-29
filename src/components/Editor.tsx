@@ -46,7 +46,7 @@ export const Editor = ({
   useEffect(() => {
     if (emailEditorLoaded) {
       setEditorState({
-        unlayer: emailEditorRef.current as EmailEditor,
+        unlayer: (emailEditorRef.current as any).editor,
         isLoaded: true,
       });
     }

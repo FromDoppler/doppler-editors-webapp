@@ -1,11 +1,18 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Editor } from "./Editor";
 import EmailEditor, { HtmlExport } from "react-email-editor";
 import { Content } from "../abstractions/domain/content";
 
 export type EditorState =
   | { isLoaded: false; unlayer: undefined }
-  | { isLoaded: true; unlayer: EmailEditor };
+  | { isLoaded: true; unlayer: UnlayerEditor };
 
 interface ISingletonDesignContext {
   hidden: boolean;
@@ -24,48 +31,100 @@ interface UseSingletonEditorConfig {
   onSave: (content: Content) => void;
 }
 
+interface UnlayerEditor extends EmailEditor {
+  removeEventListener: (event: string, cb: () => void) => void;
+}
+
 export const SingletonDesignContext = createContext<ISingletonDesignContext>({
   hidden: true,
   setContent: () => {},
   editorState: { isLoaded: false, unlayer: undefined },
 });
 
-export const useSingletonEditor = ({
-  initialContent,
-  onSave,
-}: UseSingletonEditorConfig) => {
+export const useSingletonEditor = (
+  { initialContent, onSave }: UseSingletonEditorConfig,
+  deps: any[]
+) => {
   const { editorState, setContent } = useContext(SingletonDesignContext);
+  const hasChangesRef = useRef(false);
 
-  const saveHandler = () => {
-    if (!editorState.isLoaded) {
-      console.error("The editor is loading, can't save yet!");
-      return;
-    }
+  const saveHandler = useCallback(
+    (force = false) => {
+      if (!hasChangesRef.current && !force) {
+        return;
+      }
+      if (!editorState.isLoaded) {
+        console.error("The editor is loading, can't save yet!");
+        return;
+      }
 
-    editorState.unlayer.exportHtml((htmlExport: HtmlExport) => {
-      const content = !htmlExport.design
-        ? {
-            htmlContent: htmlExport.html,
-            type: "html",
-          }
-        : {
-            design: htmlExport.design,
-            htmlContent: htmlExport.html,
-            type: "unlayer",
-          };
+      editorState.unlayer.exportHtml((htmlExport: HtmlExport) => {
+        const content = !htmlExport.design
+          ? {
+              htmlContent: htmlExport.html,
+              type: "html",
+            }
+          : {
+              design: htmlExport.design,
+              htmlContent: htmlExport.html,
+              type: "unlayer",
+            };
 
-      onSave(content as Content);
-    });
-  };
+        onSave(content as Content);
+      });
+    },
+    // eslint-disable-next-line
+    [editorState, ...deps]
+  );
 
   useEffect(() => {
+    hasChangesRef.current = false;
+    const beforeUnloadListener = () => {
+      saveHandler();
+    };
+
+    window.addEventListener("beforeunload", beforeUnloadListener);
+
+    const updateDesignListener = () => {
+      hasChangesRef.current = true;
+    };
+
+    const onLoadEventListener = () => {
+      editorState.unlayer &&
+        editorState.unlayer.addEventListener(
+          "design:updated",
+          updateDesignListener
+        );
+    };
+
+    editorState.isLoaded &&
+      editorState.unlayer.addEventListener(
+        "design:loaded",
+        onLoadEventListener
+      );
+
     setContent(initialContent);
+
     return () => {
+      window.removeEventListener("beforeunload", beforeUnloadListener);
+      if (editorState.isLoaded) {
+        editorState.unlayer.removeEventListener(
+          "design:loaded",
+          onLoadEventListener
+        );
+        editorState.unlayer.removeEventListener(
+          "design:loaded",
+          updateDesignListener
+        );
+      }
+
+      saveHandler();
       setContent(undefined);
     };
-  }, [initialContent, setContent]);
+    // eslint-disable-next-line
+  }, [...deps, setContent, saveHandler, editorState]);
 
-  return { save: saveHandler };
+  return { save: () => saveHandler(true) };
 };
 
 export const SingletonEditorProvider = ({
