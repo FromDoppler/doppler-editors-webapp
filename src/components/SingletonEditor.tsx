@@ -81,7 +81,7 @@ export const useSingletonEditor = (
     hasChangesRef.current = false;
     const beforeUnloadListener = () => {
       saveHandler();
-    }
+    };
 
     window.addEventListener("beforeunload", beforeUnloadListener);
 
