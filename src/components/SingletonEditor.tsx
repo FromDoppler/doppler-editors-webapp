@@ -61,6 +61,7 @@ export const useSingletonEditor = (
         return;
       }
 
+      hasChangesRef.current = false;
       editorState.unlayer.exportHtml((htmlExport: HtmlExport) => {
         const content = !htmlExport.design
           ? {
