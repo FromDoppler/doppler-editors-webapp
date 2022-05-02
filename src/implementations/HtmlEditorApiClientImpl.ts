@@ -62,6 +62,7 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
         success: true,
         value: {
           htmlContent: response.data.htmlContent,
+          previewImage: response.data.previewImage || "",
           type: "html",
         },
       };
@@ -75,6 +76,7 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
         // TODO: consider to sanitize and validate this response
         design: response.data.meta,
         htmlContent: response.data.htmlContent,
+        previewImage: response.data.previewImage || "",
         type: "unlayer",
       },
     };
@@ -88,11 +90,13 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
       content.type === "html"
         ? {
             htmlContent: content.htmlContent,
+            previewImage: content.previewImage,
             type: "html",
           }
         : {
             meta: content.design,
             htmlContent: content.htmlContent,
+            previewImage: content.previewImage,
             type: "unlayer",
           };
 

@@ -25,6 +25,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
       } as AppSessionStateAccessor;
 
       const htmlContent = "<html></html>";
+      const previewImage = "https://app.fromdoppler.net/image.png";
 
       const meta = {
         body: {
@@ -34,6 +35,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
 
       const apiResponse = {
         htmlContent,
+        previewImage,
         meta,
       };
 
@@ -79,6 +81,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
         value: {
           design: meta,
           htmlContent,
+          previewImage,
           type: "unlayer",
         },
       });
@@ -102,9 +105,11 @@ describe(HtmlEditorApiClientImpl.name, () => {
       } as AppSessionStateAccessor;
 
       const htmlContent = "<html></html>";
+      const previewImage = "https://app.fromdoppler.net/image.png";
 
       const apiResponse = {
         htmlContent,
+        previewImage,
         type: "html",
       };
 
@@ -149,6 +154,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
         success: true,
         value: {
           htmlContent,
+          previewImage,
           type: "html",
         },
       });
@@ -252,10 +258,12 @@ describe(HtmlEditorApiClientImpl.name, () => {
 
       const design = { testContent: "test content" } as unknown as Design;
       const htmlContent = "<html></html>";
+      const previewImage = "https://app.fromdoppler.net/image.png";
 
       const content: Content = {
         htmlContent,
         design,
+        previewImage,
         type: "unlayer",
       };
 
@@ -297,6 +305,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
         data: {
           htmlContent,
           meta: design,
+          previewImage,
           type: "unlayer",
         },
       });
@@ -320,9 +329,11 @@ describe(HtmlEditorApiClientImpl.name, () => {
       } as AppSessionStateAccessor;
 
       const htmlContent = "<html></html>";
+      const previewImage = "https://app.fromdoppler.net/image.png";
 
       const content: Content = {
         htmlContent,
+        previewImage,
         type: "html",
       };
 
@@ -363,6 +374,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
         url: `/accounts/${dopplerAccountName}/campaigns/${campaignId}/content`,
         data: {
           htmlContent,
+          previewImage,
           type: "html",
         },
       });

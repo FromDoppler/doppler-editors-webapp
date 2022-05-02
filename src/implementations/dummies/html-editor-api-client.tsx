@@ -49,6 +49,7 @@ function createUnlayerContent(campaignId: string): Content {
   return {
     design: design,
     htmlContent: "<html></html>",
+    previewImage: "",
     type: "unlayer",
   };
 }
@@ -57,6 +58,7 @@ function createHtmlContent(campaignId: string): Content {
   const text = `SOY CampaignDesign #${campaignId} ${new Date().getMinutes()}.`;
   return {
     htmlContent: `<html><body><div>${text}</div></body></html>`,
+    previewImage: "",
     type: "html",
   };
 }

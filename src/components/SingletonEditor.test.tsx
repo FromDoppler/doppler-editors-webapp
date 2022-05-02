@@ -87,6 +87,7 @@ const generateNewContent: () => Content = () => ({
       rows: [],
     },
   },
+  previewImage: "",
 });
 
 describe(`${SingletonEditorProvider.name}`, () => {
