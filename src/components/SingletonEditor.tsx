@@ -68,7 +68,7 @@ export const useSingletonEditor = (
         editorState.unlayer.exportHtml.bind(editorState.unlayer)
       );
 
-      const htmlExport = await exportHtml();
+      const [htmlExport] = await Promise.all([exportHtml()]);
 
       const content = !htmlExport.design
         ? {
