@@ -105,8 +105,12 @@ export const useSingletonEditor = (
 
   useEffect(() => {
     hasChangesRef.current = false;
-    const beforeUnloadListener = () => {
+    const beforeUnloadListener = (e: BeforeUnloadEvent) => {
+      if (!hasChangesRef.current) {
+        return;
+      }
       saveHandler();
+      e.preventDefault();
     };
 
     window.addEventListener("beforeunload", beforeUnloadListener);
