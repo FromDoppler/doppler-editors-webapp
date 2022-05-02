@@ -8,16 +8,18 @@ import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { Content } from "../abstractions/domain/content";
 import { useEffect, useState } from "react";
 
+let exportHtmlData = {
+  design: {},
+  html: "",
+};
+
 const DoubleEditor = ({ setEditorState, hidden, ...otherProps }: any) => {
   useEffect(() => {
     setEditorState({
       unlayer: {
         loadDesign: jest.fn(),
         exportHtml: (cb: any) => {
-          cb({
-            design: {},
-            html: "",
-          });
+          cb(exportHtmlData);
         },
         addEventListener: jest.fn(),
         removeEventListener: jest.fn(),
@@ -80,6 +82,13 @@ const generateNewContent: () => Content = () => ({
 });
 
 describe(`${SingletonEditorProvider.name}`, () => {
+  beforeEach(() => {
+    exportHtmlData = {
+      design: {},
+      html: "",
+    };
+  });
+
   // Arrange
   const appServices = defaultAppServices as AppServices;
 
@@ -151,6 +160,15 @@ describe(`${SingletonEditorProvider.name}`, () => {
 
   it("should save content when save event is fire", () => {
     // Arrange
+    const design = {
+      arbitrary: "data",
+    };
+    const htmlContent = "HTML";
+    exportHtmlData = {
+      design,
+      html: htmlContent,
+    };
+
     const onSaveFn = jest.fn();
 
     render(
@@ -165,5 +183,10 @@ describe(`${SingletonEditorProvider.name}`, () => {
 
     // Assert
     expect(onSaveFn).toHaveBeenCalledTimes(1);
+    expect(onSaveFn).toHaveBeenCalledWith({
+      design,
+      htmlContent,
+      type: "unlayer",
+    });
   });
 });
