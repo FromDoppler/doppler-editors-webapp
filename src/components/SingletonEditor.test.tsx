@@ -124,22 +124,26 @@ describe(`${SingletonEditorProvider.name}`, () => {
         <DemoComponent onSave={() => {}} />
       </WrapperSingletonProviderTest>
     );
+
     // Assert
     const editorEl = screen.getByTestId(singletonEditorTestId);
     expect(editorEl.style.display).toBe("none");
   });
 
   it("should show Editor when content is loaded", () => {
-    // Act
+    // Arrange
     render(
       <WrapperSingletonProviderTest>
         <DemoComponent onSave={() => {}} />
       </WrapperSingletonProviderTest>
     );
-    const loadInitialContentBtn = screen.getByText("change initial content");
+
+    // Act
     act(() => {
+      const loadInitialContentBtn = screen.getByText("change initial content");
       loadInitialContentBtn.click();
     });
+
     // Assert
     const editorEl = screen.getByTestId(singletonEditorTestId);
     expect(editorEl.style.display).toBe("flex");
@@ -148,19 +152,17 @@ describe(`${SingletonEditorProvider.name}`, () => {
   it("should save content when save event is fire", () => {
     // Arrange
     const onSaveFn = jest.fn();
-    // Act
+
     render(
       <WrapperSingletonProviderTest>
         <DemoComponent onSave={onSaveFn} />
       </WrapperSingletonProviderTest>
     );
-    const changeInitialContentBtn = screen.getByText("change initial content");
-    act(() => {
-      // eventListener()
-      changeInitialContentBtn.click();
-    });
+
+    // Act
     const buttonSave = screen.getByText("save content");
     buttonSave.click();
+
     // Assert
     expect(onSaveFn).toHaveBeenCalledTimes(1);
   });
