@@ -7,8 +7,9 @@ import {
   useState,
 } from "react";
 import { Editor } from "./Editor";
-import EmailEditor, { HtmlExport } from "react-email-editor";
+import EmailEditor from "react-email-editor";
 import { Content } from "../abstractions/domain/content";
+import { promisifyFunctionWithoutError } from "../utils";
 import { debounce } from "underscore";
 
 export type EditorState =
@@ -52,7 +53,7 @@ export const useSingletonEditor = (
   const hasChangesRef = useRef(false);
 
   const saveHandler = useCallback(
-    (force = false) => {
+    async (force = false) => {
       if (!hasChangesRef.current && !force) {
         return;
       }
@@ -62,20 +63,25 @@ export const useSingletonEditor = (
       }
 
       hasChangesRef.current = false;
-      editorState.unlayer.exportHtml((htmlExport: HtmlExport) => {
-        const content = !htmlExport.design
-          ? {
-              htmlContent: htmlExport.html,
-              type: "html",
-            }
-          : {
-              design: htmlExport.design,
-              htmlContent: htmlExport.html,
-              type: "unlayer",
-            };
 
-        onSave(content as Content);
-      });
+      const exportHtml = promisifyFunctionWithoutError(
+        editorState.unlayer.exportHtml.bind(editorState.unlayer)
+      );
+
+      const htmlExport = await exportHtml();
+
+      const content = !htmlExport.design
+        ? {
+            htmlContent: htmlExport.html,
+            type: "html",
+          }
+        : {
+            design: htmlExport.design,
+            htmlContent: htmlExport.html,
+            type: "unlayer",
+          };
+
+      onSave(content as Content);
     },
     // eslint-disable-next-line
     [editorState, ...deps]

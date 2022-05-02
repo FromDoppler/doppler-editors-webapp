@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import { AppServices } from "../abstractions";
 import { SingletonEditorProvider, useSingletonEditor } from "./SingletonEditor";
 import { AppServicesProvider } from "./AppServicesContext";
@@ -158,7 +158,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
     expect(editorEl.style.display).toBe("flex");
   });
 
-  it("should save content when save event is fire", () => {
+  it("should save content when save event is fire", async () => {
     // Arrange
     const design = {
       arbitrary: "data",
@@ -182,7 +182,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
     buttonSave.click();
 
     // Assert
-    expect(onSaveFn).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(onSaveFn).toHaveBeenCalledTimes(1));
     expect(onSaveFn).toHaveBeenCalledWith({
       design,
       htmlContent,
