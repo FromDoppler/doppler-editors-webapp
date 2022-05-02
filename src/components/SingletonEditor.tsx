@@ -9,6 +9,7 @@ import {
 import { Editor } from "./Editor";
 import EmailEditor, { HtmlExport } from "react-email-editor";
 import { Content } from "../abstractions/domain/content";
+const { debounce } = require("underscore");
 
 export type EditorState =
   | { isLoaded: false; unlayer: undefined }
@@ -40,6 +41,8 @@ export const SingletonDesignContext = createContext<ISingletonDesignContext>({
   setContent: () => {},
   editorState: { isLoaded: false, unlayer: undefined },
 });
+
+const AUTO_SAVE_INTERVAL = 6000;
 
 export const useSingletonEditor = (
   { initialContent, onSave }: UseSingletonEditorConfig,
@@ -77,6 +80,10 @@ export const useSingletonEditor = (
     [editorState, ...deps]
   );
 
+  const debounced = debounce(() => {
+    saveHandler();
+  }, AUTO_SAVE_INTERVAL);
+
   useEffect(() => {
     hasChangesRef.current = false;
     const beforeUnloadListener = () => {
@@ -87,6 +94,7 @@ export const useSingletonEditor = (
 
     const updateDesignListener = () => {
       hasChangesRef.current = true;
+      debounced();
     };
 
     const onLoadEventListener = () => {
@@ -113,7 +121,7 @@ export const useSingletonEditor = (
           onLoadEventListener
         );
         editorState.unlayer.removeEventListener(
-          "design:loaded",
+          "design:updated",
           updateDesignListener
         );
       }
