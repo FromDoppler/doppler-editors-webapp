@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { Editor } from "./Editor";
-import EmailEditor from "react-email-editor";
+import EmailEditor, { Design } from "react-email-editor";
 import { Content } from "../abstractions/domain/content";
 import { promisifyFunctionWithoutError } from "../utils";
 import { debounce } from "underscore";
@@ -35,6 +35,9 @@ interface UseSingletonEditorConfig {
 
 interface UnlayerEditor extends EmailEditor {
   removeEventListener: (event: string, cb: () => void) => void;
+  exportImage: (
+    callback: (data: { design: Design; url: string }) => void
+  ) => void;
 }
 
 export const SingletonDesignContext = createContext<ISingletonDesignContext>({
@@ -67,17 +70,26 @@ export const useSingletonEditor = (
       const exportHtml = promisifyFunctionWithoutError(
         editorState.unlayer.exportHtml.bind(editorState.unlayer)
       );
+      const exportImage = promisifyFunctionWithoutError(
+        editorState.unlayer.exportImage.bind(editorState.unlayer)
+      );
 
-      const [htmlExport] = await Promise.all([exportHtml()]);
+      const [htmlExport, imageExport] = await Promise.all([
+        exportHtml(),
+        exportImage(),
+      ]);
 
       const content = !htmlExport.design
         ? {
             htmlContent: htmlExport.html,
+            // TODO: validate if the generated image is valid for HTML content
+            previewImage: imageExport.url,
             type: "html",
           }
         : {
             design: htmlExport.design,
             htmlContent: htmlExport.html,
+            previewImage: imageExport.url,
             type: "unlayer",
           };
 

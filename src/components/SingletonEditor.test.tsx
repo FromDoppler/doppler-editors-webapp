@@ -13,6 +13,11 @@ let exportHtmlData = {
   html: "",
 };
 
+let exportImageData = {
+  design: {},
+  url: "",
+};
+
 const DoubleEditor = ({ setEditorState, hidden, ...otherProps }: any) => {
   useEffect(() => {
     setEditorState({
@@ -20,6 +25,9 @@ const DoubleEditor = ({ setEditorState, hidden, ...otherProps }: any) => {
         loadDesign: jest.fn(),
         exportHtml: (cb: any) => {
           cb(exportHtmlData);
+        },
+        exportImage: (cb: any) => {
+          cb(exportImageData);
         },
         addEventListener: jest.fn(),
         removeEventListener: jest.fn(),
@@ -164,9 +172,14 @@ describe(`${SingletonEditorProvider.name}`, () => {
       arbitrary: "data",
     };
     const htmlContent = "HTML";
+    const previewImage = "https://app.fromdoppler.net/image.png";
     exportHtmlData = {
       design,
       html: htmlContent,
+    };
+    exportImageData = {
+      design,
+      url: previewImage,
     };
 
     const onSaveFn = jest.fn();
@@ -186,6 +199,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
     expect(onSaveFn).toHaveBeenCalledWith({
       design,
       htmlContent,
+      previewImage,
       type: "unlayer",
     });
   });
