@@ -9,7 +9,7 @@ import {
 import { Editor } from "./Editor";
 import EmailEditor, { HtmlExport } from "react-email-editor";
 import { Content } from "../abstractions/domain/content";
-const { debounce } = require("underscore");
+import { debounce } from "underscore";
 
 export type EditorState =
   | { isLoaded: false; unlayer: undefined }
