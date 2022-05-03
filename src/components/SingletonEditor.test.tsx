@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import { AppServices } from "../abstractions";
 import { SingletonEditorProvider, useSingletonEditor } from "./SingletonEditor";
 import { AppServicesProvider } from "./AppServicesContext";
@@ -8,16 +8,26 @@ import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { Content } from "../abstractions/domain/content";
 import { useEffect, useState } from "react";
 
+let exportHtmlData = {
+  design: {},
+  html: "",
+};
+
+let exportImageData = {
+  design: {},
+  url: "",
+};
+
 const DoubleEditor = ({ setEditorState, hidden, ...otherProps }: any) => {
   useEffect(() => {
     setEditorState({
       unlayer: {
         loadDesign: jest.fn(),
         exportHtml: (cb: any) => {
-          cb({
-            design: {},
-            html: "",
-          });
+          cb(exportHtmlData);
+        },
+        exportImage: (cb: any) => {
+          cb(exportImageData);
         },
         addEventListener: jest.fn(),
         removeEventListener: jest.fn(),
@@ -77,9 +87,17 @@ const generateNewContent: () => Content = () => ({
       rows: [],
     },
   },
+  previewImage: "",
 });
 
 describe(`${SingletonEditorProvider.name}`, () => {
+  beforeEach(() => {
+    exportHtmlData = {
+      design: {},
+      html: "",
+    };
+  });
+
   // Arrange
   const appServices = defaultAppServices as AppServices;
 
@@ -149,8 +167,22 @@ describe(`${SingletonEditorProvider.name}`, () => {
     expect(editorEl.style.display).toBe("flex");
   });
 
-  it("should save content when save event is fire", () => {
+  it("should save content when save event is fire", async () => {
     // Arrange
+    const design = {
+      arbitrary: "data",
+    };
+    const htmlContent = "HTML";
+    const previewImage = "https://app.fromdoppler.net/image.png";
+    exportHtmlData = {
+      design,
+      html: htmlContent,
+    };
+    exportImageData = {
+      design,
+      url: previewImage,
+    };
+
     const onSaveFn = jest.fn();
 
     render(
@@ -164,6 +196,12 @@ describe(`${SingletonEditorProvider.name}`, () => {
     buttonSave.click();
 
     // Assert
-    expect(onSaveFn).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(onSaveFn).toHaveBeenCalledTimes(1));
+    expect(onSaveFn).toHaveBeenCalledWith({
+      design,
+      htmlContent,
+      previewImage,
+      type: "unlayer",
+    });
   });
 });
