@@ -28,7 +28,7 @@
     "react-dom": "^18.1.0",
     "react-email-editor": "^1.6.0",
     "react-intl": "^5.25.1",
-    "react-query": "^4.0.0-beta.9",
+    "react-query": "^4.0.0-beta.10",
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1",
     "typescript": "^4.6.4",
