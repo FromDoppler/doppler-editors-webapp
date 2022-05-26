@@ -8083,10 +8083,10 @@ react-is@^17.0.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-query@^4.0.0-beta.13:
-  version "4.0.0-beta.13"
-  resolved "https://registry.yarnpkg.com/react-query/-/react-query-4.0.0-beta.13.tgz#07fc1610d87db1a174ad5723b4ca4b3e238dc3db"
-  integrity sha512-CnDuiD4IWGh2nesnAqMlUbXhcw7ZSZZ5JwfQyv3a8OIAs7NoHvtNWlIH88kcOWDZjC7eGALrjnwsWpCK45jjtw==
+react-query@^4.0.0-beta.15:
+  version "4.0.0-beta.15"
+  resolved "https://registry.yarnpkg.com/react-query/-/react-query-4.0.0-beta.15.tgz#c598923bc464597bdcec1dd3845d05a13a07aa22"
+  integrity sha512-Muxedh0VdwL3QitW2ZO71r+w9uIfWgTdiycD59FQ7nHmWq0Hrooo2oBDb14mT3+GW9sTod5oAuWYP7v8VZY66Q==
   dependencies:
     "@babel/runtime" "^7.17.9"
     "@types/use-sync-external-store" "^0.0.3"
