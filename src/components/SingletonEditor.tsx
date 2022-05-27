@@ -53,11 +53,12 @@ export const useSingletonEditor = (
   deps: any[]
 ) => {
   const { editorState, setContent } = useContext(SingletonDesignContext);
-  const hasChangesRef = useRef(false);
+  const savedCounter = useRef(0);
+  const updateCounter = useRef(0);
 
   const saveHandler = useCallback(
     async (force = false) => {
-      if (!hasChangesRef.current && !force) {
+      if (!force && savedCounter.current >= updateCounter.current) {
         return;
       }
       if (!editorState.isLoaded) {
@@ -65,8 +66,7 @@ export const useSingletonEditor = (
         return;
       }
 
-      hasChangesRef.current = false;
-
+      const currentUpdateCounter = updateCounter.current;
       const exportHtml = promisifyFunctionWithoutError(
         editorState.unlayer.exportHtml.bind(editorState.unlayer)
       );
@@ -93,7 +93,10 @@ export const useSingletonEditor = (
             type: "unlayer",
           };
 
-      onSave(content as Content);
+      if (currentUpdateCounter >= savedCounter.current) {
+        savedCounter.current = currentUpdateCounter;
+        onSave(content as Content);
+      }
     },
     // eslint-disable-next-line
     [editorState, ...deps]
@@ -104,19 +107,20 @@ export const useSingletonEditor = (
   }, AUTO_SAVE_INTERVAL);
 
   useEffect(() => {
-    hasChangesRef.current = false;
     const beforeUnloadListener = (e: BeforeUnloadEvent) => {
-      if (!hasChangesRef.current) {
+      if (updateCounter.current <= savedCounter.current) {
         return;
       }
       saveHandler();
       e.preventDefault();
+      e.returnValue = "pending changes";
+      return "pending changes";
     };
 
     window.addEventListener("beforeunload", beforeUnloadListener);
 
     const updateDesignListener = () => {
-      hasChangesRef.current = true;
+      updateCounter.current++;
       debounced();
     };
 
