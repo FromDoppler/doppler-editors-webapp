@@ -16,7 +16,7 @@ export type EditorState =
   | { isLoaded: false; unlayer: undefined }
   | { isLoaded: true; unlayer: UnlayerEditor };
 
-interface ISingletonDesignContext {
+export interface ISingletonDesignContext {
   hidden: boolean;
   setContent: (c: Content | undefined) => void;
   editorState: EditorState;

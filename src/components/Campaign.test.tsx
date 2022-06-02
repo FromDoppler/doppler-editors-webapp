@@ -12,6 +12,12 @@ import {
   loadingMessageTestId,
 } from "./Campaign";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
+import { Design } from "react-email-editor";
+import { act, waitFor } from "@testing-library/react";
+import {
+  ISingletonDesignContext,
+  SingletonDesignContext,
+} from "./SingletonEditor";
 
 const baseAppServices = {
   appSessionStateAccessor: {
@@ -29,6 +35,12 @@ const baseAppServices = {
     unlayerProjectId: 12345,
     unlayerEditorManifestUrl: "unlayerEditorManifestUrl",
     loaderUrl: "loaderUrl",
+    dopplerExternalUrls: {
+      home: "",
+      campaigns: "",
+      lists: "",
+      controlPanel: "",
+    },
   },
   dopplerRestApiClient: {
     getFields: () => Promise.resolve({ success: true, value: [] as Field[] }),
@@ -101,9 +113,7 @@ describe(Campaign.name, () => {
     const editorTobBarEl = screen.queryByTestId(editorTopBarTestId);
     expect(editorTobBarEl).toBeNull();
   });
-  // TODO: Fix test broken for implementation of portal, continue in issue
-  //  https://makingsense.atlassian.net/browse/DE-502
-  /*
+
   it("should show EmailEditor when the getCampaignContent is successful", async () => {
     // Arrange
     const idCampaign = "1234";
@@ -126,11 +136,13 @@ describe(Campaign.name, () => {
         <AppServicesProvider
           appServices={{ ...baseAppServices, htmlEditorApiClient }}
         >
-          <MemoryRouter initialEntries={[`/${idCampaign}`]}>
-            <Routes>
-              <Route path="/:idCampaign" element={<Campaign />} />
-            </Routes>
-          </MemoryRouter>
+          <TestDopplerIntlProvider>
+            <MemoryRouter initialEntries={[`/${idCampaign}`]}>
+              <Routes>
+                <Route path="/:idCampaign" element={<Campaign />} />
+              </Routes>
+            </MemoryRouter>
+          </TestDopplerIntlProvider>
         </AppServicesProvider>
       </QueryClientProvider>
     );
@@ -161,10 +173,10 @@ describe(Campaign.name, () => {
   it("should call API client to store the editor data when the user clicks on save", async () => {
     // Arrange
     const idCampaign = "1234";
-
-    // TODO: mock SingletonEditor to inject these values as result
     const design = { test: "Demo data" } as unknown as Design;
     const htmlContent = "<html><p></p></html>";
+    const exportHtml = (cb: any) => cb({ design, html: htmlContent });
+    const exportImage = (cb: any) => cb({ url: "" });
 
     const getCampaignContent = () =>
       Promise.resolve({ success: true, value: {} });
@@ -175,9 +187,15 @@ describe(Campaign.name, () => {
     const singletonEditorContext: ISingletonDesignContext = {
       hidden: false,
       setContent: () => {},
-      unsetContent: () => {},
-      getContent: () =>
-        Promise.resolve({ design, htmlContent, type: "unlayer" }),
+      editorState: {
+        isLoaded: true,
+        unlayer: {
+          addEventListener: () => {},
+          removeEventListener: () => {},
+          exportHtml,
+          exportImage,
+        } as any,
+      },
     };
 
     const htmlEditorApiClient = {
@@ -185,25 +203,34 @@ describe(Campaign.name, () => {
       updateCampaignContent,
     } as unknown as HtmlEditorApiClient;
 
+    const portalFooter = document.createElement("div");
+    const portalHeader = document.createElement("div");
+    portalFooter.id = "root-footer";
+    portalHeader.id = "root-header";
+    document.body.appendChild(portalFooter);
+    document.body.appendChild(portalHeader);
+
     // Act
     render(
       <QueryClientProvider client={queryClient}>
         <AppServicesProvider
           appServices={{ ...baseAppServices, htmlEditorApiClient }}
         >
-          <SingletonDesignContext.Provider value={singletonEditorContext}>
-            <MemoryRouter initialEntries={[`/${idCampaign}`]}>
-              <Routes>
-                <Route path="/:idCampaign" element={<Campaign />} />
-              </Routes>
-            </MemoryRouter>
-          </SingletonDesignContext.Provider>
+          <TestDopplerIntlProvider>
+            <SingletonDesignContext.Provider value={singletonEditorContext}>
+              <MemoryRouter initialEntries={[`/${idCampaign}`]}>
+                <Routes>
+                  <Route path="/:idCampaign" element={<Campaign />} />
+                </Routes>
+              </MemoryRouter>
+            </SingletonDesignContext.Provider>
+          </TestDopplerIntlProvider>
         </AppServicesProvider>
       </QueryClientProvider>
     );
 
     // Assert
-    const saveBtn = await screen.findByText("Guardar");
+    const saveBtn = await screen.findByText("save");
 
     act(() => saveBtn.click());
 
@@ -211,8 +238,9 @@ describe(Campaign.name, () => {
       expect(updateCampaignContent).toHaveBeenCalledWith(idCampaign, {
         design,
         htmlContent,
+        previewImage: "",
         type: "unlayer",
       });
     });
-  });*/
+  });
 });
