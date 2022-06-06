@@ -1,4 +1,4 @@
-import { render, screen } from "../utils/testUtils";
+import { renderWithPortal } from "../utils/testPortalUtils";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { AppServices } from "../abstractions";
@@ -13,7 +13,7 @@ import {
 } from "./Campaign";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { Design } from "react-email-editor";
-import { act, waitFor } from "@testing-library/react";
+import { act, waitFor, screen } from "@testing-library/react";
 import {
   ISingletonDesignContext,
   SingletonDesignContext,
@@ -74,7 +74,7 @@ describe(Campaign.name, () => {
     } as unknown as HtmlEditorApiClient;
 
     // Act
-    render(
+    renderWithPortal(
       <QueryClientProvider client={queryClient}>
         <AppServicesProvider
           appServices={{ ...baseAppServices, htmlEditorApiClient }}
@@ -131,7 +131,7 @@ describe(Campaign.name, () => {
     } as unknown as HtmlEditorApiClient;
 
     // Act
-    render(
+    renderWithPortal(
       <QueryClientProvider client={queryClient}>
         <AppServicesProvider
           appServices={{ ...baseAppServices, htmlEditorApiClient }}
@@ -211,7 +211,7 @@ describe(Campaign.name, () => {
     document.body.appendChild(portalHeader);
 
     // Act
-    render(
+    renderWithPortal(
       <QueryClientProvider client={queryClient}>
         <AppServicesProvider
           appServices={{ ...baseAppServices, htmlEditorApiClient }}
