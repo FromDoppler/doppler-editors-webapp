@@ -2,6 +2,9 @@ import React, { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 
 const appendContainer = (id: string) => {
+  if (document.getElementById(id)) {
+    return;
+  }
   const portalContainer = document.createElement("div");
   portalContainer.id = id;
   document.body.appendChild(portalContainer);
