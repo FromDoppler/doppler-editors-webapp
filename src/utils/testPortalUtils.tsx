@@ -1,19 +1,22 @@
-import React, { FC, ReactElement } from "react";
+import React, { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 
-const EditorPortalWrapper: FC = ({ children }: any) => {
-  return (
-    <div>
-      <header id="root-header" />
-      {children}
-      <footer id="root-footer" />
-    </div>
-  );
+const appendContainer = (id: string) => {
+  const portalContainer = document.createElement("div");
+  portalContainer.id = id;
+  document.body.appendChild(portalContainer);
 };
 
-const renderWithPortal = (
+const renderEditor = (
   ui: ReactElement,
   options?: Omit<RenderOptions, "wrapper">
-) => render(ui, { wrapper: EditorPortalWrapper, ...options });
+) => {
+  appendContainer("root-header");
+  appendContainer("root-footer");
+  return render(ui, {
+    wrapper: ({ children }) => children,
+    ...options,
+  });
+};
 
-export { renderWithPortal };
+export { renderEditor };

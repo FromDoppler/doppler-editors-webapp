@@ -1,4 +1,4 @@
-import { renderWithPortal } from "../utils/testPortalUtils";
+import { renderEditor } from "../utils/testPortalUtils";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { AppServices } from "../abstractions";
@@ -13,7 +13,7 @@ import {
 } from "./Campaign";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { Design } from "react-email-editor";
-import { act, waitFor, screen } from "@testing-library/react";
+import { act, screen, waitFor } from "@testing-library/react";
 import {
   ISingletonDesignContext,
   SingletonDesignContext,
@@ -74,7 +74,7 @@ describe(Campaign.name, () => {
     } as unknown as HtmlEditorApiClient;
 
     // Act
-    renderWithPortal(
+    renderEditor(
       <QueryClientProvider client={queryClient}>
         <AppServicesProvider
           appServices={{ ...baseAppServices, htmlEditorApiClient }}
@@ -131,7 +131,7 @@ describe(Campaign.name, () => {
     } as unknown as HtmlEditorApiClient;
 
     // Act
-    renderWithPortal(
+    renderEditor(
       <QueryClientProvider client={queryClient}>
         <AppServicesProvider
           appServices={{ ...baseAppServices, htmlEditorApiClient }}
@@ -203,15 +203,8 @@ describe(Campaign.name, () => {
       updateCampaignContent,
     } as unknown as HtmlEditorApiClient;
 
-    const portalFooter = document.createElement("div");
-    const portalHeader = document.createElement("div");
-    portalFooter.id = "root-footer";
-    portalHeader.id = "root-header";
-    document.body.appendChild(portalFooter);
-    document.body.appendChild(portalHeader);
-
     // Act
-    renderWithPortal(
+    renderEditor(
       <QueryClientProvider client={queryClient}>
         <AppServicesProvider
           appServices={{ ...baseAppServices, htmlEditorApiClient }}
