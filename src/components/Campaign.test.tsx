@@ -298,20 +298,32 @@ describe(Campaign.name, () => {
   it.each([
     {
       buttonText: "continue",
+      searchParams: "redirectedFromSummary=true",
+      urlExpected: `${dopplerLegacyBaseUrl}/Campaigns/Summary/Index?IdCampaign=idCampaign`,
+    },
+    {
+      buttonText: "continue",
+      searchParams: "redirectedFromSummary=true&idABTest=idABTest",
+      urlExpected: `${dopplerLegacyBaseUrl}/Campaigns/Summary/TestAB?IdCampaign=idABTest`,
+    },
+    {
+      buttonText: "exit_edit_later",
+      searchParams: "redirectedFromSummary=true",
       urlExpected: `${dopplerLegacyBaseUrl}/Campaigns/Summary/Index?IdCampaign=idCampaign`,
     },
     {
       buttonText: "exit_edit_later",
-      urlExpected: `${dopplerLegacyBaseUrl}/Campaigns/Summary/Index?IdCampaign=idCampaign`,
+      searchParams: "redirectedFromSummary=true&idABTest=idABTest",
+      urlExpected: `${dopplerLegacyBaseUrl}/Campaigns/Summary/TestAB?IdCampaign=idABTest`,
     },
   ])(
-    "should redirect to summary when redirectedFromSummary=true and user click in $buttonText",
-    async ({ buttonText, urlExpected }) => {
+    "should redirect to summary when $searchParams and user click in $buttonText",
+    async ({ buttonText, urlExpected, searchParams }) => {
       // Arrange
-      const initialEntries = [`/idCampaign?redirectedFromSummary=true`];
+      const initialEntries = `/idCampaign?${searchParams}`;
       // Act
       renderEditor(
-        <DoubleEditorWithStateLoaded initialEntries={initialEntries} />
+        <DoubleEditorWithStateLoaded initialEntries={[initialEntries]} />
       );
 
       // Assert
@@ -325,21 +337,37 @@ describe(Campaign.name, () => {
   it.each([
     {
       buttonText: "continue",
+      searchParams: "redirectedFromSummary=false",
       urlExpected:
         `${dopplerLegacyBaseUrl}/Campaigns/Recipients/Index?IdCampaign=idCampaign` +
         `&RedirectedFromSummary=False&RedirectedFromTemplateList=False`,
     },
     {
+      buttonText: "continue",
+      searchParams: "redirectedFromSummary=false&idABTest=idABTest",
+      urlExpected:
+        `${dopplerLegacyBaseUrl}/Campaigns/Recipients/TestAB?IdCampaign=idABTest` +
+        `&RedirectedFromSummary=False&RedirectedFromTemplateList=False`,
+    },
+    {
       buttonText: "exit_edit_later",
+      searchParams: "redirectedFromSummary=false",
       urlExpected:
         `${dopplerLegacyBaseUrl}/Campaigns/Content?IdCampaign=idCampaign` +
         `&RedirectedFromSummary=False&RedirectedFromTemplateList=False&RedirectedFromCampaignB=False`,
     },
+    {
+      buttonText: "exit_edit_later",
+      searchParams: "redirectedFromSummary=false&idABTest=idABTest",
+      urlExpected:
+        `${dopplerLegacyBaseUrl}/Campaigns/Content/TestAB?IdCampaign=idABTest` +
+        `&RedirectedFromSummary=False&RedirectedFromTemplateList=False&RedirectedFromCampaignB=False`,
+    },
   ])(
-    "no should redirect to summary when redirectedFromSummary=false and user click in $buttonText",
-    async ({ buttonText, urlExpected }) => {
+    "no should redirect to summary when $searchParams and user click in $buttonText",
+    async ({ buttonText, urlExpected, searchParams }) => {
       // Arrange
-      const initialEntries = ["/idCampaign?redirectedFromSummary=false"];
+      const initialEntries = [`/idCampaign?${searchParams}`];
       // Act
       renderEditor(
         <DoubleEditorWithStateLoaded initialEntries={initialEntries} />
