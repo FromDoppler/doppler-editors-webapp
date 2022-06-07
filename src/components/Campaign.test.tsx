@@ -321,4 +321,34 @@ describe(Campaign.name, () => {
       expect(buttonByText.href).toEqual(urlExpected);
     }
   );
+
+  it.each([
+    {
+      buttonText: "continue",
+      urlExpected:
+        `${dopplerLegacyBaseUrl}/Campaigns/Recipients/Index?IdCampaign=idCampaign` +
+        `&RedirectedFromSummary=False&RedirectedFromTemplateList=False`,
+    },
+    {
+      buttonText: "exit_edit_later",
+      urlExpected:
+        `${dopplerLegacyBaseUrl}/Campaigns/Content?IdCampaign=idCampaign` +
+        `&RedirectedFromSummary=False&RedirectedFromTemplateList=False&RedirectedFromCampaignB=False`,
+    },
+  ])(
+    "no should redirect to summary when redirectedFromSummary=false and user click in $buttonText",
+    async ({ buttonText, urlExpected }) => {
+      // Arrange
+      const initialEntries = ["/idCampaign?redirectedFromSummary=false"];
+      // Act
+      renderEditor(
+        <DoubleEditorWithStateLoaded initialEntries={initialEntries} />
+      );
+      // Assert
+      const buttonByText: HTMLAnchorElement = await screen.findByText(
+        buttonText
+      );
+      expect(buttonByText.href).toEqual(urlExpected);
+    }
+  );
 });
