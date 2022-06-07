@@ -19,6 +19,7 @@ import {
   SingletonDesignContext,
 } from "./SingletonEditor";
 
+const dopplerLegacyBaseUrl = "http://dopplerlegacybaseurl";
 const baseAppServices = {
   appSessionStateAccessor: {
     getCurrentSessionState: () => ({
@@ -35,6 +36,7 @@ const baseAppServices = {
     unlayerProjectId: 12345,
     unlayerEditorManifestUrl: "unlayerEditorManifestUrl",
     loaderUrl: "loaderUrl",
+    dopplerLegacyBaseUrl,
     dopplerExternalUrls: {
       home: "",
       campaigns: "",
@@ -55,6 +57,62 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+interface SetEditorAsLoadedProps {
+  initialEntries: string[];
+}
+
+const DoubleEditorWithStateLoaded = ({
+  initialEntries,
+}: SetEditorAsLoadedProps) => {
+  const getCampaignContent = () =>
+    Promise.resolve({ success: true, value: {} });
+  const updateCampaignContent = jest.fn(() =>
+    Promise.resolve({ success: true, value: {} })
+  );
+
+  const htmlEditorApiClient = {
+    getCampaignContent,
+    updateCampaignContent,
+  } as unknown as HtmlEditorApiClient;
+
+  const design = { test: "Demo data" } as unknown as Design;
+  const htmlContent = "<html><p></p></html>";
+  const exportHtml = (cb: any) => cb({ design, html: htmlContent });
+  const exportImage = (cb: any) => cb({ url: "" });
+
+  const singletonEditorContext: ISingletonDesignContext = {
+    hidden: false,
+    setContent: () => {},
+    editorState: {
+      isLoaded: true,
+      unlayer: {
+        addEventListener: () => {},
+        removeEventListener: () => {},
+        exportHtml,
+        exportImage,
+      } as any,
+    },
+  };
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AppServicesProvider
+        appServices={{ ...baseAppServices, htmlEditorApiClient }}
+      >
+        <TestDopplerIntlProvider>
+          <SingletonDesignContext.Provider value={singletonEditorContext}>
+            <MemoryRouter initialEntries={initialEntries}>
+              <Routes>
+                <Route path="/:idCampaign" element={<Campaign />} />
+              </Routes>
+            </MemoryRouter>
+          </SingletonDesignContext.Provider>
+        </TestDopplerIntlProvider>
+      </AppServicesProvider>
+    </QueryClientProvider>
+  );
+};
 
 describe(Campaign.name, () => {
   it("should show loading and then error when getCampaignContent is not successful", async () => {
@@ -236,4 +294,31 @@ describe(Campaign.name, () => {
       });
     });
   });
+
+  it.each([
+    {
+      buttonText: "continue",
+      urlExpected: `${dopplerLegacyBaseUrl}/Campaigns/Summary/Index?IdCampaign=idCampaign`,
+    },
+    {
+      buttonText: "exit_edit_later",
+      urlExpected: `${dopplerLegacyBaseUrl}/Campaigns/Summary/Index?IdCampaign=idCampaign`,
+    },
+  ])(
+    "should redirect to summary when redirectedFromSummary=true and user click in $buttonText",
+    async ({ buttonText, urlExpected }) => {
+      // Arrange
+      const initialEntries = [`/idCampaign?redirectedFromSummary=true`];
+      // Act
+      renderEditor(
+        <DoubleEditorWithStateLoaded initialEntries={initialEntries} />
+      );
+
+      // Assert
+      const buttonByText: HTMLAnchorElement = await screen.findByText(
+        buttonText
+      );
+      expect(buttonByText.href).toEqual(urlExpected);
+    }
+  );
 });
