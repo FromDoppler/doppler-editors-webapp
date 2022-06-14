@@ -113,8 +113,7 @@ export const Editor = ({
     },
     customJS: [
       `window["unlayer-extensions-configuration"] = {
-        locale: "${intl.locale}",
-        companyTitle: "Demo"
+        locale: "${intl.locale}"
       };`,
       loaderUrl,
       `(new AssetServices()).load('${unlayerEditorManifestUrl}', []);`,
