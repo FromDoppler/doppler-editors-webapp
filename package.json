@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "resolutions": {
-    "@types/react": "18.0.12"
+    "@types/react": "18.0.13"
   },
   "devDependencies": {
     "@types/react-email-editor": "^1.1.7",
@@ -17,7 +17,7 @@
     "@types/history": "^5.0.0",
     "@types/jest": "^28.1.1",
     "@types/node": "^17.0.43",
-    "@types/react": "^18.0.12",
+    "@types/react": "^18.0.13",
     "@types/react-dom": "^18.0.5",
     "@types/react-router-dom": "^5.3.3",
     "@types/underscore": "^1.11.4",
