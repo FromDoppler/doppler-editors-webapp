@@ -38,10 +38,10 @@ const baseAppServices = {
     loaderUrl: "loaderUrl",
     dopplerLegacyBaseUrl,
     dopplerExternalUrls: {
-      home: "",
-      campaigns: "",
-      lists: "",
-      controlPanel: "",
+      home: "https://dopplerexternalurls.home/",
+      campaigns: "https://dopplerexternalurls.campaigns/",
+      lists: "https://dopplerexternalurls.lists/",
+      controlPanel: "https://dopplerexternalurls.controlpanel/",
     },
   },
   dopplerRestApiClient: {
@@ -306,16 +306,6 @@ describe(Campaign.name, () => {
       searchParams: "redirectedFromSummary=true&idABTest=idABTest",
       urlExpected: `${dopplerLegacyBaseUrl}/Campaigns/Summary/TestAB?IdCampaign=idABTest`,
     },
-    {
-      buttonText: "exit_edit_later",
-      searchParams: "redirectedFromSummary=true",
-      urlExpected: `${dopplerLegacyBaseUrl}/Campaigns/Summary/Index?IdCampaign=idCampaign`,
-    },
-    {
-      buttonText: "exit_edit_later",
-      searchParams: "redirectedFromSummary=true&idABTest=idABTest",
-      urlExpected: `${dopplerLegacyBaseUrl}/Campaigns/Summary/TestAB?IdCampaign=idABTest`,
-    },
   ])(
     "should redirect to summary when $searchParams and user click in $buttonText",
     async ({ buttonText, urlExpected, searchParams }) => {
@@ -349,20 +339,6 @@ describe(Campaign.name, () => {
         `${dopplerLegacyBaseUrl}/Campaigns/Recipients/TestAB?IdCampaign=idABTest` +
         `&RedirectedFromSummary=False&RedirectedFromTemplateList=False`,
     },
-    {
-      buttonText: "exit_edit_later",
-      searchParams: "redirectedFromSummary=false",
-      urlExpected:
-        `${dopplerLegacyBaseUrl}/Campaigns/Content?IdCampaign=idCampaign` +
-        `&RedirectedFromSummary=False&RedirectedFromTemplateList=False&RedirectedFromCampaignB=False`,
-    },
-    {
-      buttonText: "exit_edit_later",
-      searchParams: "redirectedFromSummary=false&idABTest=idABTest",
-      urlExpected:
-        `${dopplerLegacyBaseUrl}/Campaigns/Content/TestAB?IdCampaign=idABTest` +
-        `&RedirectedFromSummary=False&RedirectedFromTemplateList=False&RedirectedFromCampaignB=False`,
-    },
   ])(
     "no should redirect to summary when $searchParams and user click in $buttonText",
     async ({ buttonText, urlExpected, searchParams }) => {
@@ -377,6 +353,42 @@ describe(Campaign.name, () => {
         buttonText
       );
       expect(buttonByText.href).toEqual(urlExpected);
+    }
+  );
+
+  it.each([
+    {
+      searchParams: "redirectedFromSummary=true",
+    },
+    {
+      searchParams: "redirectedFromSummary=true&idABTest=idABTest",
+    },
+    {
+      searchParams: "redirectedFromSummary=false",
+    },
+    {
+      searchParams: "redirectedFromSummary=false&idABTest=idABTest",
+    },
+  ])(
+    "exit button should always redirect to campaign draft",
+    async ({ searchParams }) => {
+      // Arrange
+      const buttonText = "exit_edit_later";
+      //const urlExpected
+      const initialEntries = `/idCampaign?${searchParams}`;
+
+      // Act
+      renderEditor(
+        <DoubleEditorWithStateLoaded initialEntries={[initialEntries]} />
+      );
+
+      // Assert
+      const buttonByText: HTMLAnchorElement = await screen.findByText(
+        buttonText
+      );
+      expect(buttonByText.href).toEqual(
+        baseAppServices.appConfiguration.dopplerExternalUrls.campaigns
+      );
     }
   );
 });
