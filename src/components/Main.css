@@ -4,7 +4,7 @@
   display: grid;
   min-height: 100vh;
   grid-template-columns: 1fr;
-  grid-template-rows: 70px 1fr 70px;
+  grid-template-rows: auto 1fr 70px;
 }
 
 #root-header {
@@ -14,10 +14,6 @@
   z-index: 10;
   box-shadow: 0 3px 10px 0 #ddd;
   border-bottom: 1px solid #e5e5e5;
-}
-
-nav {
-  padding: 24px;
 }
 
 #root-footer {
