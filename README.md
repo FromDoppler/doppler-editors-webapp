@@ -150,7 +150,7 @@ Production's `index.html` example:
     <!-- . . . -->
     <script src="https://cdn.fromdoppler.com/mfe-loader/loader-v2.0.0.js"></script>
     <script type="text/javascript">
-      const scriptUrl = "https://cdn.fromdoppler.com)/editors-webapp/asset-manifest-v1.json`;
+      const scriptUrl = "https://cdn.fromdoppler.com/editors-webapp/asset-manifest-v1.json`;
 
       window["editors-webapp-configuration"] = {
         basename: "editors",
