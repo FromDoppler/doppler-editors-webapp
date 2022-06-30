@@ -17,7 +17,7 @@
       <div id="root"></div>
       <footer id="root-footer"></footer>
     </div>
-    <script src="https://cdn.fromdoppler.com/loader/v1/loader.js"></script>
+    <script src="https://cdn.fromdoppler.com/mfe-loader/loader-v2.0.0.js"></script>
     <script type="text/javascript">
       // # Region Style-Guide
       parseMicroFrontendHref(
@@ -28,7 +28,7 @@
         "",
         true,
         function (parsed) {
-          new AssetServices().load(parsed.manifestUrl);
+          assetServices.load({ manifestURL: parsed.manifestUrl });
         }
       );
       // # End region Style-Guide
@@ -47,7 +47,7 @@
             useDummies: parsed.useDummies,
           };
 
-          new AssetServices().load(parsed.manifestUrl);
+          assetServices.load({ manifestURL: parsed.manifestUrl });
         }
       );
       // # End region Doppler Session
@@ -66,7 +66,7 @@
             useDummies: parsed.useDummies,
           };
 
-          new AssetServices().load(parsed.manifestUrl);
+          assetServices.load({ manifestURL: parsed.manifestUrl });
         }
       );
       // # End region Editor
