@@ -75,6 +75,8 @@ export const AppSessionStateProvider = ({
       );
     };
 
+    appSessionStateMonitor.onSessionUpdate();
+
     return () => {
       appSessionStateMonitor.onSessionUpdate = () => {};
     };
