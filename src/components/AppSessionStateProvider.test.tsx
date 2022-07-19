@@ -74,7 +74,6 @@ function createTestContext() {
   });
   const appSessionStateMonitor = new DopplerSessionMfeAppSessionStateMonitor({
     window: windowDouble,
-    appSessionStateAccessor,
   });
 
   const appServices: AppServices = {
