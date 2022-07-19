@@ -83,6 +83,32 @@ describe("AppSessionStateProvider", () => {
     expect(inspectCurrentSessionState().status).toEqual(AUTHENTICATED.status);
     expect(inspectCurrentSessionState().lang).toEqual(AUTHENTICATED.lang);
   });
+
+  it("should update sessionState when 1st event comes before rendering", () => {
+    const {
+      startMonitoringSessionState,
+      TestComponent,
+      inspectCurrentSessionState,
+      simulateSessionUpdate,
+    } = createTestContext();
+
+    simulateSessionUpdate(AUTHENTICATED);
+
+    startMonitoringSessionState();
+
+    const ComponentToInjectCodeBeforeTestComponentUseEffect = () => {
+      expect(inspectCurrentSessionState().status).toEqual(AUTHENTICATED.status);
+      expect(inspectCurrentSessionState().lang).toEqual(AUTHENTICATED.lang);
+      return <></>;
+    };
+
+    render(
+      <>
+        <TestComponent />
+        <ComponentToInjectCodeBeforeTestComponentUseEffect />
+      </>
+    );
+  });
 });
 
 function createTestContext() {
