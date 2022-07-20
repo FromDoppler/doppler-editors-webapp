@@ -64,32 +64,20 @@ export class DopplerSessionMfeAppSessionStateMonitor
   implements AppSessionStateMonitor
 {
   private readonly _window;
-  private readonly _appSessionStateAccessor;
 
-  public onSessionUpdate: (sessionState: AppSessionState) => void = () => {};
+  public onSessionUpdate: () => void = () => {};
 
-  constructor({
-    window,
-    appSessionStateAccessor,
-  }: {
-    window: Window;
-    appSessionStateAccessor: AppSessionStateAccessor;
-  }) {
+  constructor({ window }: { window: Window }) {
     this._window = window;
-    this._appSessionStateAccessor = appSessionStateAccessor;
   }
 
   async start(): Promise<void> {
     this._window.addEventListener(
       DOPPLER_SESSION_STATE_UPDATE_EVENT_TYPE,
       () => {
-        this.onSessionUpdate(
-          this._appSessionStateAccessor.getCurrentSessionState()
-        );
+        this.onSessionUpdate();
       }
     );
-    this.onSessionUpdate(
-      this._appSessionStateAccessor.getCurrentSessionState()
-    );
+    this.onSessionUpdate();
   }
 }

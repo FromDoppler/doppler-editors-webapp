@@ -47,13 +47,9 @@ export const configureApp = (
       }),
     appSessionStateAccessorFactory: ({ window }: AppServices) =>
       new DopplerSessionMfeAppSessionStateAccessor({ window }),
-    appSessionStateMonitorFactory: ({
-      window,
-      appSessionStateAccessor,
-    }: AppServices) =>
+    appSessionStateMonitorFactory: ({ window }: AppServices) =>
       new DopplerSessionMfeAppSessionStateMonitor({
         window,
-        appSessionStateAccessor,
       }),
   };
 

@@ -66,16 +66,21 @@ export const AppSessionStateProvider = ({
     );
 
   useEffect(() => {
-    appSessionStateMonitor.onSessionUpdate = (newValue) =>
+    appSessionStateMonitor.onSessionUpdate = () => {
+      const newValue = appSessionStateAccessor.getCurrentSessionState();
       setAppSessionState((prevState) =>
         isTheSameSession(prevState, newValue)
           ? prevState
           : mapAppSessionStateToSimplifiedAppSessionState(newValue)
       );
+    };
+
+    appSessionStateMonitor.onSessionUpdate();
+
     return () => {
       appSessionStateMonitor.onSessionUpdate = () => {};
     };
-  }, [appSessionStateMonitor]);
+  }, [appSessionStateMonitor, appSessionStateAccessor]);
 
   return (
     <AppSessionStateContext.Provider value={appSessionState}>
