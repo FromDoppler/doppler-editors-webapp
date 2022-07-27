@@ -4,10 +4,13 @@ import { AppServicesProvider } from "./AppServicesContext";
 import { AppSessionStateContext } from "./AppSessionStateContext";
 import { RequireAuth } from "./RequireAuth";
 
+jest.mock("./LoadingScreen", () => ({
+  LoadingScreen: () => <div>Loading...</div>,
+}));
+
 describe(RequireAuth.name, () => {
   it("should render a waiting message when session status is unknown", () => {
     // Arrange
-    const expectedText = "Loading...";
     const privateText = "ULTRA TOP SECRET";
     const appServices = {
       appConfiguration: { loginPageUrl: "/login" },
@@ -25,7 +28,7 @@ describe(RequireAuth.name, () => {
       </AppServicesProvider>
     );
     // Assert
-    const expectedTextEl = screen.queryByText(expectedText);
+    const expectedTextEl = screen.queryByText("Loading...");
     expect(expectedTextEl).toBeInTheDocument();
     const privateTextEl = screen.queryByText(privateText);
     expect(privateTextEl).not.toBeInTheDocument();

@@ -4,7 +4,7 @@
   display: grid;
   min-height: 100vh;
   grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr 70px;
+  grid-template-rows: auto 1fr;
 }
 
 #root-header {
@@ -24,7 +24,6 @@
   grid-row-start: 3;
   grid-column-end: 3;
   grid-column: 1;
-  padding: 18px 12px 12px 18px;
 }
 
 #root {

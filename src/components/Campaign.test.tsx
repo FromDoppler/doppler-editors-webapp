@@ -5,12 +5,7 @@ import { AppServices } from "../abstractions";
 import { Field } from "../abstractions/doppler-rest-api-client";
 import { HtmlEditorApiClient } from "../abstractions/html-editor-api-client";
 import { AppServicesProvider } from "./AppServicesContext";
-import {
-  Campaign,
-  editorTopBarTestId,
-  errorMessageTestId,
-  loadingMessageTestId,
-} from "./Campaign";
+import { Campaign, editorTopBarTestId, errorMessageTestId } from "./Campaign";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { Design } from "react-email-editor";
 import { act, screen, waitFor } from "@testing-library/react";
@@ -18,6 +13,10 @@ import {
   ISingletonDesignContext,
   SingletonDesignContext,
 } from "./SingletonEditor";
+
+jest.mock("./LoadingScreen", () => ({
+  LoadingScreen: () => <div>Loading...</div>,
+}));
 
 const dopplerLegacyBaseUrl = "http://dopplerlegacybaseurl";
 const baseAppServices = {
@@ -151,7 +150,7 @@ describe(Campaign.name, () => {
     // Assert
     expect(getCampaignContent).toHaveBeenCalledWith(idCampaign);
 
-    screen.getByTestId(loadingMessageTestId);
+    screen.getByText("Loading...");
 
     const topBarMustBeNull = screen.queryByTestId(editorTopBarTestId);
     expect(topBarMustBeNull).toBeNull();
@@ -165,8 +164,7 @@ describe(Campaign.name, () => {
     // Assert
     await screen.findByTestId(errorMessageTestId);
 
-    const loadingMessageEl = screen.queryByTestId(loadingMessageTestId);
-    expect(loadingMessageEl).toBeNull();
+    expect(() => screen.getByText("Loading...")).toThrow();
 
     const editorTobBarEl = screen.queryByTestId(editorTopBarTestId);
     expect(editorTobBarEl).toBeNull();
@@ -206,7 +204,7 @@ describe(Campaign.name, () => {
     );
 
     // Assert
-    screen.getByTestId(loadingMessageTestId);
+    screen.getByText("Loading...");
 
     const errorMessageEl = screen.queryByTestId(errorMessageTestId);
     expect(errorMessageEl).toBeNull();
@@ -219,8 +217,7 @@ describe(Campaign.name, () => {
     // Assert
     await screen.findByTestId(editorTopBarTestId);
 
-    const loadingMessageEl = screen.queryByTestId(loadingMessageTestId);
-    expect(loadingMessageEl).toBeNull();
+    expect(() => screen.getByText("Loading...")).toThrow();
 
     const errorMessageEl2 = screen.queryByTestId(errorMessageTestId);
     expect(errorMessageEl2).toBeNull();

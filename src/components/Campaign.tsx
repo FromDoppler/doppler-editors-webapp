@@ -11,8 +11,8 @@ import { EditorBottomBar } from "./EditorBottomBar";
 import { useIntl } from "react-intl";
 import { useAppServices } from "./AppServicesContext";
 import { Content } from "../abstractions/domain/content";
+import { LoadingScreen } from "./LoadingScreen";
 
-export const loadingMessageTestId = "loading-message";
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
 
@@ -66,7 +66,7 @@ export const Campaign = () => {
   return (
     <>
       {campaignContentQuery.isLoading ? (
-        <div data-testid={loadingMessageTestId}>Loading...</div>
+        <LoadingScreen />
       ) : (
         <>
           <Header>
