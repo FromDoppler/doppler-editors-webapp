@@ -1,6 +1,7 @@
 import { useAppServices } from "./AppServicesContext";
 import { useAppSessionState } from "./AppSessionStateContext";
 import { NavigateToExternalUrl } from "./NavigateToExternalUrl";
+import { LoadingScreen } from "./LoadingScreen";
 
 export const RequireAuth = ({ children }: { children: JSX.Element }) => {
   const {
@@ -10,7 +11,7 @@ export const RequireAuth = ({ children }: { children: JSX.Element }) => {
   const appSessionState = useAppSessionState();
 
   return appSessionState.status === "unknown" ? (
-    <div>Loading...</div>
+    <LoadingScreen />
   ) : appSessionState.status !== "authenticated" ? (
     // Important: redirect value should not be encoded
     <NavigateToExternalUrl to={`${loginPageUrl}?redirect=${location.href}`} />
