@@ -9,6 +9,7 @@ import { useAppServices } from "./AppServicesContext";
 import { useAppSessionState } from "./AppSessionStateContext";
 import { EditorState } from "./SingletonEditor";
 import { useIntl } from "react-intl";
+import { LoadingScreen } from "./LoadingScreen";
 
 interface ExtendedUnlayerOptions extends UnlayerOptions {
   features: ExtendedFeatures;
@@ -66,11 +67,7 @@ export const Editor = ({
   }
 
   if (userFieldsQuery.isLoading) {
-    return (
-      <div style={containerStyle} {...otherProps}>
-        <p>Loading user's fields...</p>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   if (!userFieldsQuery.isSuccess) {
