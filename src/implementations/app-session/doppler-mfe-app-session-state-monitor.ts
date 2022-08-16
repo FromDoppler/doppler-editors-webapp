@@ -18,18 +18,18 @@ type AuthenticatedDopplerSessionMfeState = {
 };
 
 type DopplerSessionMfeState =
-  | { status: "unknown" }
+  | undefined
   | { status: "non-authenticated" }
   | AuthenticatedDopplerSessionMfeState;
 
 declare global {
   interface Window {
-    dopplerSessionState?: DopplerSessionMfeState;
+    dopplerSessionState: DopplerSessionMfeState;
   }
 }
 
 const mapDopplerSessionState: (
-  dopplerSessionState?: DopplerSessionMfeState
+  dopplerSessionState: DopplerSessionMfeState
 ) => AppSessionState = (dopplerSessionState) =>
   !dopplerSessionState
     ? defaultAppSessionState
