@@ -88,6 +88,7 @@ const generateNewContent: () => Content = () => ({
     },
   },
   previewImage: "",
+  campaignName: "campaign-name-test",
 });
 
 describe(`${SingletonEditorProvider.name}`, () => {

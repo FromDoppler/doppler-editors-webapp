@@ -81,6 +81,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
         value: {
           design: meta,
           htmlContent,
+          campaignName: "",
           previewImage,
           type: "unlayer",
         },
@@ -155,6 +156,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
         value: {
           htmlContent,
           previewImage,
+          campaignName: "",
           type: "html",
         },
       });
@@ -264,6 +266,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
         htmlContent,
         design,
         previewImage,
+        campaignName: "campaign-name",
         type: "unlayer",
       };
 
@@ -334,6 +337,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
       const content: Content = {
         htmlContent,
         previewImage,
+        campaignName: "campaign-name",
         type: "html",
       };
 
