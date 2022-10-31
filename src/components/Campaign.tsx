@@ -8,7 +8,6 @@ import {
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { EditorBottomBar } from "./EditorBottomBar";
-import { useIntl } from "react-intl";
 import { useAppServices } from "./AppServicesContext";
 import { Content } from "../abstractions/domain/content";
 import { LoadingScreen } from "./LoadingScreen";
@@ -28,7 +27,6 @@ export const Campaign = () => {
   const [searchParams] = useSearchParams();
   const campaignContentQuery = useGetCampaignContent(idCampaign);
   const campaignContentMutation = useUpdateCampaignContent();
-  const intl = useIntl();
 
   const { save } = useSingletonEditor(
     {
@@ -73,10 +71,11 @@ export const Campaign = () => {
             <EditorTopBar
               data-testid={editorTopBarTestId}
               onSave={save}
-              title={intl.formatMessage(
-                { id: "campaign_title" },
-                { idCampaign }
-              )}
+              title={
+                campaignContentQuery.data?.campaignName
+                  ? campaignContentQuery.data.campaignName
+                  : ""
+              }
             />
           </Header>
           <Footer>

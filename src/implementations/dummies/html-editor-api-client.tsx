@@ -50,6 +50,7 @@ function createUnlayerContent(campaignId: string): Content {
     design: design,
     htmlContent: "<html></html>",
     previewImage: "",
+    campaignName: "Unlayer demo",
     type: "unlayer",
   };
 }
@@ -59,6 +60,7 @@ function createHtmlContent(campaignId: string): Content {
   return {
     htmlContent: `<html><body><div>${text}</div></body></html>`,
     previewImage: "",
+    campaignName: "",
     type: "html",
   };
 }

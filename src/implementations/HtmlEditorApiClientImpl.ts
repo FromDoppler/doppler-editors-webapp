@@ -63,6 +63,7 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
         value: {
           htmlContent: response.data.htmlContent,
           previewImage: response.data.previewImage || "",
+          campaignName: response.data.name || "",
           type: "html",
         },
       };
@@ -77,6 +78,7 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
         design: response.data.meta,
         htmlContent: response.data.htmlContent,
         previewImage: response.data.previewImage || "",
+        campaignName: response.data.campaignName || "",
         type: "unlayer",
       },
     };

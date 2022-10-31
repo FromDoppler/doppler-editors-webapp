@@ -1,6 +1,5 @@
 export const messages_es = {
   campaign: `Campaña`,
-  campaign_title: `Campaña {idCampaign}`,
   campaigns: `Campañas`,
   continue: `Continuar`,
   control_panel: `Panel de Control`,
