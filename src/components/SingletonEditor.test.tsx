@@ -5,7 +5,7 @@ import { AppServicesProvider } from "./AppServicesContext";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Field } from "../abstractions/doppler-rest-api-client";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
-import { CampaignContent } from "../abstractions/domain/content";
+import { CampaignContent, Content } from "../abstractions/domain/content";
 import { useEffect, useState } from "react";
 
 let exportHtmlData = {
@@ -103,9 +103,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
   const appServices = defaultAppServices as AppServices;
 
   const DemoComponent = ({ onSave }: { onSave: () => void }) => {
-    const [initialContent, setInitialContent] = useState<
-      CampaignContent | undefined
-    >();
+    const [initialContent, setInitialContent] = useState<Content | undefined>();
     const { save } = useSingletonEditor(
       {
         initialContent,

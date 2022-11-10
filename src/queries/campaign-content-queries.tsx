@@ -1,5 +1,5 @@
 import { QueryFunction, useMutation, useQuery } from "react-query";
-import { CampaignContent } from "../abstractions/domain/content";
+import { CampaignContent, Content } from "../abstractions/domain/content";
 import { useAppServices } from "../components/AppServicesContext";
 
 type getCampaignContentQueryKey = {
@@ -45,7 +45,7 @@ export const useUpdateCampaignContent = () => {
     content,
   }: {
     idCampaign: string;
-    content: CampaignContent;
+    content: Content;
   }) => htmlEditorApiClient.updateCampaignContent(idCampaign, content);
 
   return useMutation(updateCampaignContent);

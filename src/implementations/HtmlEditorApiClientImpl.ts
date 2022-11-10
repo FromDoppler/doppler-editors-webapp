@@ -5,6 +5,7 @@ import { AxiosStatic, Method } from "axios";
 import { AppSessionStateAccessor } from "../abstractions/app-session";
 import {
   CampaignContent,
+  Content,
   TemplateContent,
 } from "../abstractions/domain/content";
 
@@ -91,7 +92,7 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
 
   async updateCampaignContent(
     campaignId: string,
-    content: CampaignContent
+    content: Content
   ): Promise<Result> {
     const body =
       content.type === "html"

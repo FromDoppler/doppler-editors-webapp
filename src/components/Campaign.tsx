@@ -9,7 +9,7 @@ import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { EditorBottomBar } from "./EditorBottomBar";
 import { useAppServices } from "./AppServicesContext";
-import { CampaignContent } from "../abstractions/domain/content";
+import { Content } from "../abstractions/domain/content";
 import { LoadingScreen } from "./LoadingScreen";
 
 export const errorMessageTestId = "error-message";
@@ -31,7 +31,7 @@ export const Campaign = () => {
   const { save } = useSingletonEditor(
     {
       initialContent: campaignContentQuery.data,
-      onSave: (content: CampaignContent) => {
+      onSave: (content: Content) => {
         campaignContentMutation.mutate({ idCampaign, content });
       },
     },

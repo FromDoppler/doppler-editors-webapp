@@ -8,7 +8,7 @@ import {
 } from "react";
 import { Editor } from "./Editor";
 import EmailEditor, { Design } from "react-email-editor";
-import { CampaignContent } from "../abstractions/domain/content";
+import { Content } from "../abstractions/domain/content";
 import { promisifyFunctionWithoutError } from "../utils";
 import { debounce } from "underscore";
 
@@ -18,7 +18,7 @@ export type EditorState =
 
 export interface ISingletonDesignContext {
   hidden: boolean;
-  setContent: (c: CampaignContent | undefined) => void;
+  setContent: (c: Content | undefined) => void;
   editorState: EditorState;
 }
 
@@ -29,8 +29,8 @@ export const emptyDesign = {
 };
 
 interface UseSingletonEditorConfig {
-  initialContent: CampaignContent | undefined;
-  onSave: (content: CampaignContent) => void;
+  initialContent: Content | undefined;
+  onSave: (content: Content) => void;
 }
 
 interface UnlayerEditor extends EmailEditor {
@@ -79,7 +79,7 @@ export const useSingletonEditor = (
         exportImage(),
       ]);
 
-      const content = !htmlExport.design
+      const content: Content = !htmlExport.design
         ? {
             htmlContent: htmlExport.html,
             // TODO: validate if the generated image is valid for HTML content
@@ -95,7 +95,7 @@ export const useSingletonEditor = (
 
       if (currentUpdateCounter >= savedCounter.current) {
         savedCounter.current = currentUpdateCounter;
-        onSave(content as CampaignContent);
+        onSave(content);
       }
     },
     // eslint-disable-next-line
@@ -168,7 +168,7 @@ export const SingletonEditorProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [content, setContent] = useState<CampaignContent | undefined>();
+  const [content, setContent] = useState<Content | undefined>();
   const hidden = !content;
   const [editorState, setEditorState] = useState<EditorState>({
     unlayer: undefined,

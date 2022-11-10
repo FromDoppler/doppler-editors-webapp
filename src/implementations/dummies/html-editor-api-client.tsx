@@ -4,6 +4,7 @@ import { Result } from "../../abstractions/common/result-types";
 import sampleUnlayerDesign from "./sample-unlayer-design.json";
 import {
   CampaignContent,
+  Content,
   TemplateContent,
 } from "../../abstractions/domain/content";
 
@@ -31,7 +32,7 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
 
   async updateCampaignContent(
     campaignId: string,
-    content: CampaignContent
+    content: Content
   ): Promise<Result> {
     console.log("Begin updateCampaignContent...", {
       campaignId,
