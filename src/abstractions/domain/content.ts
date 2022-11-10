@@ -1,6 +1,6 @@
 import { Design } from "react-email-editor";
 
-export type Content =
+export type CampaignContent =
   | {
       htmlContent: string;
       previewImage: string;

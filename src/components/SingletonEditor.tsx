@@ -8,7 +8,7 @@ import {
 } from "react";
 import { Editor } from "./Editor";
 import EmailEditor, { Design } from "react-email-editor";
-import { Content } from "../abstractions/domain/content";
+import { CampaignContent } from "../abstractions/domain/content";
 import { promisifyFunctionWithoutError } from "../utils";
 import { debounce } from "underscore";
 
@@ -18,7 +18,7 @@ export type EditorState =
 
 export interface ISingletonDesignContext {
   hidden: boolean;
-  setContent: (c: Content | undefined) => void;
+  setContent: (c: CampaignContent | undefined) => void;
   editorState: EditorState;
 }
 
@@ -29,8 +29,8 @@ export const emptyDesign = {
 };
 
 interface UseSingletonEditorConfig {
-  initialContent: Content | undefined;
-  onSave: (content: Content) => void;
+  initialContent: CampaignContent | undefined;
+  onSave: (content: CampaignContent) => void;
 }
 
 interface UnlayerEditor extends EmailEditor {
@@ -95,7 +95,7 @@ export const useSingletonEditor = (
 
       if (currentUpdateCounter >= savedCounter.current) {
         savedCounter.current = currentUpdateCounter;
-        onSave(content as Content);
+        onSave(content as CampaignContent);
       }
     },
     // eslint-disable-next-line
@@ -168,7 +168,7 @@ export const SingletonEditorProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [content, setContent] = useState<Content | undefined>();
+  const [content, setContent] = useState<CampaignContent | undefined>();
   const hidden = !content;
   const [editorState, setEditorState] = useState<EditorState>({
     unlayer: undefined,

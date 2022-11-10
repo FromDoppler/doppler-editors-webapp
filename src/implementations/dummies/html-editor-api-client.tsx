@@ -2,32 +2,33 @@ import { timeout } from "../../utils";
 import { HtmlEditorApiClient } from "../../abstractions/html-editor-api-client";
 import { Result } from "../../abstractions/common/result-types";
 import sampleUnlayerDesign from "./sample-unlayer-design.json";
-import { Content } from "../../abstractions/domain/content";
+import { CampaignContent } from "../../abstractions/domain/content";
 
 export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
-  public getCampaignContent: (campaignId: string) => Promise<Result<Content>> =
-    async (campaignId: string) => {
-      console.log("Begin getCampaignContent...", {
-        campaignId,
-      });
-      await timeout(1000);
+  public getCampaignContent: (
+    campaignId: string
+  ) => Promise<Result<CampaignContent>> = async (campaignId: string) => {
+    console.log("Begin getCampaignContent...", {
+      campaignId,
+    });
+    await timeout(1000);
 
-      const value: Content = campaignId.startsWith("html")
-        ? createHtmlContent(campaignId)
-        : createUnlayerContent(campaignId);
+    const value: CampaignContent = campaignId.startsWith("html")
+      ? createHtmlContent(campaignId)
+      : createUnlayerContent(campaignId);
 
-      const result = {
-        success: true,
-        value,
-      } as Result<Content>;
+    const result = {
+      success: true,
+      value,
+    } as Result<CampaignContent>;
 
-      console.log("End getCampaignContent", { result });
-      return result;
-    };
+    console.log("End getCampaignContent", { result });
+    return result;
+  };
 
   async updateCampaignContent(
     campaignId: string,
-    content: Content
+    content: CampaignContent
   ): Promise<Result> {
     console.log("Begin updateCampaignContent...", {
       campaignId,
@@ -40,7 +41,7 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
   }
 }
 
-function createUnlayerContent(campaignId: string): Content {
+function createUnlayerContent(campaignId: string): CampaignContent {
   const text = `SOY CampaignDesign #${campaignId} ${new Date().getMinutes()}`;
   const design = JSON.parse(JSON.stringify(sampleUnlayerDesign)) as any;
   design.body.rows[0].columns[0].contents[0].values.text = text;
@@ -55,7 +56,7 @@ function createUnlayerContent(campaignId: string): Content {
   };
 }
 
-function createHtmlContent(campaignId: string): Content {
+function createHtmlContent(campaignId: string): CampaignContent {
   const text = `SOY CampaignDesign #${campaignId} ${new Date().getMinutes()}.`;
   return {
     htmlContent: `<html><body><div>${text}</div></body></html>`,

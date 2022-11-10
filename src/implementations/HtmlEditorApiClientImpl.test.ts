@@ -3,7 +3,7 @@ import { AxiosStatic } from "axios";
 import { HtmlEditorApiClientImpl } from "./HtmlEditorApiClientImpl";
 import { AppSessionStateAccessor } from "../abstractions/app-session";
 import { Design } from "react-email-editor";
-import { Content } from "../abstractions/domain/content";
+import { CampaignContent } from "../abstractions/domain/content";
 
 describe(HtmlEditorApiClientImpl.name, () => {
   describe("getCampaignContent", () => {
@@ -262,7 +262,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
       const htmlContent = "<html></html>";
       const previewImage = "https://app.fromdoppler.net/image.png";
 
-      const content: Content = {
+      const content: CampaignContent = {
         htmlContent,
         design,
         previewImage,
@@ -334,7 +334,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
       const htmlContent = "<html></html>";
       const previewImage = "https://app.fromdoppler.net/image.png";
 
-      const content: Content = {
+      const content: CampaignContent = {
         htmlContent,
         previewImage,
         campaignName: "campaign-name",

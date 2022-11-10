@@ -3,7 +3,7 @@ import { AppConfiguration } from "../abstractions";
 import { HtmlEditorApiClient } from "../abstractions/html-editor-api-client";
 import { AxiosStatic, Method } from "axios";
 import { AppSessionStateAccessor } from "../abstractions/app-session";
-import { Content } from "../abstractions/domain/content";
+import { CampaignContent } from "../abstractions/domain/content";
 
 export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
   private axios;
@@ -54,7 +54,9 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
     return this.request<any>("PUT", url, data);
   }
 
-  async getCampaignContent(campaignId: string): Promise<Result<Content>> {
+  async getCampaignContent(
+    campaignId: string
+  ): Promise<Result<CampaignContent>> {
     const response = await this.GET<any>(`/campaigns/${campaignId}/content`);
 
     if (response.data.type === "html") {
@@ -86,7 +88,7 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
 
   async updateCampaignContent(
     campaignId: string,
-    content: Content
+    content: CampaignContent
   ): Promise<Result> {
     const body =
       content.type === "html"
