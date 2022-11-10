@@ -6,7 +6,7 @@
     "@types/react": "18.0.25"
   },
   "devDependencies": {
-    "@types/react-email-editor": "1.5.0",
+    "@types/react-email-editor": "1.5.1",
     "eclint": "2.8.1",
     "prettier": "2.7.1"
   },
@@ -26,7 +26,7 @@
     "react": "18.2.0",
     "react-cool-onclickoutside": "1.7.0",
     "react-dom": "18.2.0",
-    "react-email-editor": "1.6.1",
+    "react-email-editor": "1.6.3",
     "react-intl": "6.2.1",
     "react-query": "4.0.0-beta.23",
     "react-router-dom": "6.4.3",
