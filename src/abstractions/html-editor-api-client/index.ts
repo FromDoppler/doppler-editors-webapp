@@ -1,5 +1,5 @@
 import { Result } from "../common/result-types";
-import { CampaignContent } from "../domain/content";
+import { CampaignContent, TemplateContent } from "../domain/content";
 
 export interface HtmlEditorApiClient {
   getCampaignContent: (campaignId: string) => Promise<Result<CampaignContent>>;
@@ -7,4 +7,5 @@ export interface HtmlEditorApiClient {
     campaignId: string,
     content: CampaignContent
   ) => Promise<Result>;
+  getTemplate: (templateId: string) => Promise<Result<TemplateContent>>;
 }

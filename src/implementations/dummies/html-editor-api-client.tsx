@@ -2,7 +2,10 @@ import { timeout } from "../../utils";
 import { HtmlEditorApiClient } from "../../abstractions/html-editor-api-client";
 import { Result } from "../../abstractions/common/result-types";
 import sampleUnlayerDesign from "./sample-unlayer-design.json";
-import { CampaignContent } from "../../abstractions/domain/content";
+import {
+  CampaignContent,
+  TemplateContent,
+} from "../../abstractions/domain/content";
 
 export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
   public getCampaignContent: (
@@ -39,6 +42,24 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
     console.log("End updateCampaignContent");
     return { success: true };
   }
+
+  public getTemplate: (templateId: string) => Promise<Result<TemplateContent>> =
+    async (templateId: string) => {
+      console.log("Begin getTemplate...", {
+        templateId,
+      });
+      await timeout(1000);
+
+      var value = createUnlayerTemplate(templateId);
+
+      const result = {
+        success: true,
+        value,
+      } as Result<TemplateContent>;
+
+      console.log("End getTemplate", { result });
+      return result;
+    };
 }
 
 function createUnlayerContent(campaignId: string): CampaignContent {
@@ -53,6 +74,22 @@ function createUnlayerContent(campaignId: string): CampaignContent {
     previewImage: "",
     campaignName: "Unlayer demo",
     type: "unlayer",
+  };
+}
+
+function createUnlayerTemplate(templateId: string): TemplateContent {
+  const text = `SOY Template #${templateId} ${new Date().getMinutes()}`;
+  const design = JSON.parse(JSON.stringify(sampleUnlayerDesign)) as any;
+  design.body.rows[0].columns[0].contents[0].values.text = text;
+  design.idTemplate = templateId;
+
+  return {
+    design: design,
+    htmlContent: "<html></html>",
+    previewImage: "",
+    templateName: "Template demo",
+    type: "unlayer",
+    isPublic: false,
   };
 }
 
