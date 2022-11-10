@@ -3,7 +3,10 @@ import { AxiosStatic } from "axios";
 import { HtmlEditorApiClientImpl } from "./HtmlEditorApiClientImpl";
 import { AppSessionStateAccessor } from "../abstractions/app-session";
 import { Design } from "react-email-editor";
-import { CampaignContent } from "../abstractions/domain/content";
+import {
+  CampaignContent,
+  TemplateContent,
+} from "../abstractions/domain/content";
 
 describe(HtmlEditorApiClientImpl.name, () => {
   describe("getCampaignContent", () => {
@@ -549,5 +552,84 @@ describe(HtmlEditorApiClientImpl.name, () => {
         expect(request).not.toBeCalled();
       }
     );
+  });
+
+  describe("updateTemplate", () => {
+    it("should PUT template with name and content", async () => {
+      // Arrange
+      const templateId = "123";
+      const jwtToken = "jwtToken";
+      const dopplerAccountName = "dopplerAccountName";
+      const htmlEditorApiBaseUrl = "htmlEditorApiBaseUrl";
+
+      const authenticatedSession = {
+        status: "authenticated",
+        jwtToken,
+        dopplerAccountName,
+      };
+
+      const appSessionStateAccessor = {
+        getCurrentSessionState: () => authenticatedSession,
+      } as AppSessionStateAccessor;
+
+      const templateName = "TemplateName";
+      const design = { testContent: "test content" } as unknown as Design;
+      const htmlContent = "<html></html>";
+      const previewImage = "https://app.fromdoppler.net/image.png";
+      const isPublic = false;
+
+      const template: TemplateContent = {
+        htmlContent,
+        design,
+        previewImage,
+        templateName,
+        isPublic,
+        type: "unlayer",
+      };
+
+      const appConfiguration = {
+        htmlEditorApiBaseUrl,
+      } as AppConfiguration;
+
+      const request = jest.fn(() =>
+        Promise.resolve({
+          data: {},
+        })
+      );
+
+      const create = jest.fn(() => ({
+        request,
+      }));
+
+      const axiosStatic = {
+        create,
+      } as unknown as AxiosStatic;
+
+      const sut = new HtmlEditorApiClientImpl({
+        axiosStatic,
+        appSessionStateAccessor,
+        appConfiguration,
+      });
+
+      // Act
+      await sut.updateTemplate(templateId, template);
+
+      // Assert
+      expect(create).toBeCalledWith({
+        baseURL: "htmlEditorApiBaseUrl",
+      });
+      expect(request).toBeCalledWith({
+        headers: { Authorization: `Bearer ${jwtToken}` },
+        method: "PUT",
+        url: `/accounts/${dopplerAccountName}/templates/${templateId}`,
+        data: {
+          htmlContent,
+          meta: design,
+          previewImage,
+          templateName: "TemplateName",
+          type: "unlayer",
+        },
+      });
+    });
   });
 });

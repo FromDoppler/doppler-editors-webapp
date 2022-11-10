@@ -130,4 +130,20 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
       },
     };
   }
+
+  async updateTemplate(
+    templateId: string,
+    template: TemplateContent
+  ): Promise<Result> {
+    const body = {
+      templateName: template.templateName,
+      meta: template.design,
+      htmlContent: template.htmlContent,
+      previewImage: template.previewImage,
+      type: "unlayer",
+    };
+
+    await this.PUT(`/templates/${templateId}`, body);
+    return { success: true };
+  }
 }
