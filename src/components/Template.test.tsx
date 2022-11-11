@@ -5,8 +5,12 @@ import { AppServices } from "../abstractions";
 import { HtmlEditorApiClient } from "../abstractions/html-editor-api-client";
 import { AppServicesProvider } from "./AppServicesContext";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
-import { screen } from "@testing-library/react";
+import { act, screen, waitFor } from "@testing-library/react";
 import { editorTopBarTestId, errorMessageTestId, Template } from "./Template";
+import {
+  ISingletonDesignContext,
+  SingletonDesignContext,
+} from "./SingletonEditor";
 
 jest.mock("./LoadingScreen", () => ({
   LoadingScreen: () => <div>Loading...</div>,
@@ -148,5 +152,83 @@ describe(Template.name, () => {
     expect(errorMessageEl2).toBeNull();
 
     screen.getByTestId(editorTopBarTestId);
+  });
+
+  it("should call API client to store the template when the user clicks on save", async () => {
+    // Arrange
+    const idTemplate = "1234";
+    const exportHtml = (cb: any) =>
+      cb({ design: { NEW_DESIGN: "" } as any, html: "NEW HTML CONTENT" });
+    const exportImage = (cb: any) => cb({ url: "NEW PREVIEW IMAGE" });
+
+    const getTemplate = () =>
+      Promise.resolve({
+        success: true,
+        value: {
+          templateName: "ORIGINAL TEMPLATE NAME",
+          isPublic: false,
+          htmlContent: "ORIGINAL HTML CONTENT",
+          design: { ORIGINAL_DESIGN: "" },
+          previewImage: "ORIGINAL PREVIEW IMAGE",
+          type: "unlayer",
+        },
+      });
+    const updateTemplate = jest.fn(() =>
+      Promise.resolve({ success: true, value: {} })
+    );
+
+    const singletonEditorContext: ISingletonDesignContext = {
+      hidden: false,
+      setContent: () => {},
+      editorState: {
+        isLoaded: true,
+        unlayer: {
+          addEventListener: () => {},
+          removeEventListener: () => {},
+          exportHtml,
+          exportImage,
+        } as any,
+      },
+    };
+
+    const htmlEditorApiClient = {
+      getTemplate,
+      updateTemplate,
+    } as unknown as HtmlEditorApiClient;
+
+    // Act
+    renderEditor(
+      <QueryClientProvider client={createQueryClient()}>
+        <AppServicesProvider
+          appServices={{ ...baseAppServices, htmlEditorApiClient }}
+        >
+          <TestDopplerIntlProvider>
+            <SingletonDesignContext.Provider value={singletonEditorContext}>
+              <MemoryRouter initialEntries={[`/${idTemplate}`]}>
+                <Routes>
+                  <Route path="/:idTemplate" element={<Template />} />
+                </Routes>
+              </MemoryRouter>
+            </SingletonDesignContext.Provider>
+          </TestDopplerIntlProvider>
+        </AppServicesProvider>
+      </QueryClientProvider>
+    );
+
+    // Assert
+    const saveBtn = await screen.findByText("save");
+
+    act(() => saveBtn.click());
+
+    await waitFor(() => {
+      expect(updateTemplate).toHaveBeenCalledWith(idTemplate, {
+        design: { NEW_DESIGN: "" },
+        htmlContent: "NEW HTML CONTENT",
+        previewImage: "NEW PREVIEW IMAGE",
+        type: "unlayer",
+        templateName: "ORIGINAL TEMPLATE NAME",
+        isPublic: false,
+      });
+    });
   });
 });
