@@ -5,7 +5,7 @@ import { AppServicesProvider } from "./AppServicesContext";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Field } from "../abstractions/doppler-rest-api-client";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
-import { Content } from "../abstractions/domain/content";
+import { CampaignContent, Content } from "../abstractions/domain/content";
 import { useEffect, useState } from "react";
 
 let exportHtmlData = {
@@ -79,7 +79,7 @@ const queryClient = new QueryClient({
 });
 
 let generatedContentCounter = 0;
-const generateNewContent: () => Content = () => ({
+const generateNewContent: () => CampaignContent = () => ({
   htmlContent: `Content #${generatedContentCounter++}`,
   type: "unlayer",
   design: {

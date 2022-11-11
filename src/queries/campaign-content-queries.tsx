@@ -1,5 +1,5 @@
 import { QueryFunction, useMutation, useQuery } from "react-query";
-import { Content } from "../abstractions/domain/content";
+import { CampaignContent, Content } from "../abstractions/domain/content";
 import { useAppServices } from "../components/AppServicesContext";
 
 type getCampaignContentQueryKey = {
@@ -17,9 +17,10 @@ export const useGetCampaignContent = (idCampaign: string) => {
     },
   ];
 
-  const queryFn: QueryFunction<Content, getCampaignContentQueryKey> = async (
-    context
-  ) => {
+  const queryFn: QueryFunction<
+    CampaignContent,
+    getCampaignContentQueryKey
+  > = async (context) => {
     const [{ idCampaign }] = context.queryKey;
     const result = await htmlEditorApiClient.getCampaignContent(idCampaign);
     return result.value;

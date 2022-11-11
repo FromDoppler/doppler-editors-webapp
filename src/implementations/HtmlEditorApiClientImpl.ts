@@ -3,7 +3,11 @@ import { AppConfiguration } from "../abstractions";
 import { HtmlEditorApiClient } from "../abstractions/html-editor-api-client";
 import { AxiosStatic, Method } from "axios";
 import { AppSessionStateAccessor } from "../abstractions/app-session";
-import { Content } from "../abstractions/domain/content";
+import {
+  CampaignContent,
+  Content,
+  TemplateContent,
+} from "../abstractions/domain/content";
 
 export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
   private axios;
@@ -54,7 +58,9 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
     return this.request<any>("PUT", url, data);
   }
 
-  async getCampaignContent(campaignId: string): Promise<Result<Content>> {
+  async getCampaignContent(
+    campaignId: string
+  ): Promise<Result<CampaignContent>> {
     const response = await this.GET<any>(`/campaigns/${campaignId}/content`);
 
     if (response.data.type === "html") {
@@ -104,5 +110,24 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
 
     await this.PUT(`/campaigns/${campaignId}/content`, body);
     return { success: true };
+  }
+
+  async getTemplate(templateId: string): Promise<Result<TemplateContent>> {
+    const response = await this.GET<any>(`/templates/${templateId}`);
+
+    // TODO: validate the type for unlayer design responses
+
+    return {
+      success: true,
+      value: {
+        // TODO: consider to sanitize and validate this response
+        design: response.data.meta,
+        isPublic: response.data.isPublic || false,
+        htmlContent: response.data.htmlContent,
+        previewImage: response.data.previewImage || "",
+        templateName: response.data.templateName || "",
+        type: response.data.type,
+      },
+    };
   }
 }

@@ -79,7 +79,7 @@ export const useSingletonEditor = (
         exportImage(),
       ]);
 
-      const content = !htmlExport.design
+      const content: Content = !htmlExport.design
         ? {
             htmlContent: htmlExport.html,
             // TODO: validate if the generated image is valid for HTML content
@@ -95,7 +95,7 @@ export const useSingletonEditor = (
 
       if (currentUpdateCounter >= savedCounter.current) {
         savedCounter.current = currentUpdateCounter;
-        onSave(content as Content);
+        onSave(content);
       }
     },
     // eslint-disable-next-line
