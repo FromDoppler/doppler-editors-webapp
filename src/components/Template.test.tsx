@@ -28,14 +28,15 @@ const baseAppServices = {
   },
 } as AppServices;
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-      cacheTime: 0,
+const createQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        cacheTime: 0,
+      },
     },
-  },
-});
+  });
 
 describe(Template.name, () => {
   it("should show loading and then error when getTemplate is not successful", async () => {
@@ -56,7 +57,7 @@ describe(Template.name, () => {
 
     // Act
     renderEditor(
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={createQueryClient()}>
         <AppServicesProvider
           appServices={{ ...baseAppServices, htmlEditorApiClient }}
         >
@@ -112,7 +113,7 @@ describe(Template.name, () => {
 
     // Act
     renderEditor(
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={createQueryClient()}>
         <AppServicesProvider
           appServices={{ ...baseAppServices, htmlEditorApiClient }}
         >
