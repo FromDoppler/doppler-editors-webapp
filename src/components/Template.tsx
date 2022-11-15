@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useSingletonEditor } from "./SingletonEditor";
 import { EditorTopBar } from "./EditorTopBar";
-import { useGetTemplate } from "../queries/template-queries";
+import { useGetTemplate, useUpdateTemplate } from "../queries/template-queries";
 import { Header } from "./Header";
 import { LoadingScreen } from "./LoadingScreen";
 import { Content } from "../abstractions/domain/content";
@@ -15,18 +15,28 @@ export const Template = () => {
   }>;
 
   const templateQuery = useGetTemplate(idTemplate);
+  const templateMutation = useUpdateTemplate();
 
   const { save } = useSingletonEditor(
     {
       initialContent: templateQuery.data,
       onSave: (content: Content) => {
-        console.log(content);
-        // TODO: Implement it
-        // merge with other information like template name
-        // save
+        if (!templateQuery.data) {
+          console.error(
+            "Template data is not available trying to save template content",
+            content
+          );
+        } else if (content.type !== "unlayer") {
+          console.error("Content type is not supported", content);
+        } else {
+          templateMutation.mutate({
+            idTemplate,
+            template: { ...templateQuery.data, ...content },
+          });
+        }
       },
     },
-    [templateQuery.data, idTemplate]
+    [templateQuery.data, templateMutation.mutate, idTemplate]
   );
 
   if (templateQuery.error) {

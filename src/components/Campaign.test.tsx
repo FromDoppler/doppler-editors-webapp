@@ -48,14 +48,15 @@ const baseAppServices = {
   },
 } as AppServices;
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-      cacheTime: 0,
+const createQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        cacheTime: 0,
+      },
     },
-  },
-});
+  });
 
 interface SetEditorAsLoadedProps {
   initialEntries: string[];
@@ -95,7 +96,7 @@ const DoubleEditorWithStateLoaded = ({
   };
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={createQueryClient()}>
       <AppServicesProvider
         appServices={{ ...baseAppServices, htmlEditorApiClient }}
       >
@@ -132,7 +133,7 @@ describe(Campaign.name, () => {
 
     // Act
     renderEditor(
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={createQueryClient()}>
         <AppServicesProvider
           appServices={{ ...baseAppServices, htmlEditorApiClient }}
         >
@@ -188,7 +189,7 @@ describe(Campaign.name, () => {
 
     // Act
     renderEditor(
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={createQueryClient()}>
         <AppServicesProvider
           appServices={{ ...baseAppServices, htmlEditorApiClient }}
         >
@@ -260,7 +261,7 @@ describe(Campaign.name, () => {
 
     // Act
     renderEditor(
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={createQueryClient()}>
         <AppServicesProvider
           appServices={{ ...baseAppServices, htmlEditorApiClient }}
         >
