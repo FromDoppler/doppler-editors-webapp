@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import EmailEditor, {
   Features,
+  ToolConfig,
   UnlayerOptions,
   User,
 } from "react-email-editor";
@@ -11,9 +12,16 @@ import { EditorState } from "./SingletonEditor";
 import { useIntl } from "react-intl";
 import { LoadingScreen } from "./LoadingScreen";
 
+interface ExtendedToolConfig extends ToolConfig {
+  icon: string;
+}
+
 interface ExtendedUnlayerOptions extends UnlayerOptions {
   features: ExtendedFeatures;
   mergeTagsConfig: { sort: boolean };
+  tools?: {
+    readonly [key: string]: ExtendedToolConfig;
+  };
 }
 
 interface ExtendedFeatures extends Features {
@@ -35,7 +43,12 @@ export const Editor = ({
   ...otherProps
 }: EditorProps) => {
   const {
-    appConfiguration: { unlayerProjectId, unlayerEditorManifestUrl, loaderUrl },
+    appConfiguration: {
+      unlayerProjectId,
+      unlayerEditorManifestUrl,
+      loaderUrl,
+      unlayerCDN,
+    },
   } = useAppServices();
 
   const appSessionState = useAppSessionState();
@@ -96,6 +109,11 @@ export const Editor = ({
   }));
 
   const unlayerOptions: ExtendedUnlayerOptions = {
+    tools: {
+      button: {
+        icon: unlayerCDN + "/assets/button.svg",
+      },
+    },
     mergeTagsConfig: {
       sort: false,
     },
