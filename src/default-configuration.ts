@@ -10,6 +10,7 @@ export const defaultAppConfiguration: AppConfiguration = {
   unlayerEditorManifestUrl:
     "https://cdn.fromdoppler.com/unlayer-editor/asset-manifest-v2.json",
   loaderUrl: "https://cdn.fromdoppler.com/loader/v1/loader.js",
+  unlayerCDN: "https://cdn.fromdoppler.com/unlayer-editor",
   unlayerProjectId: 32092,
   dopplerLegacyBaseUrl: "https://appint.fromdoppler.net",
   htmlEditorApiBaseUrl: "https://apisint.fromdoppler.net/html-editor",
