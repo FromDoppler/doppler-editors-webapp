@@ -21,8 +21,8 @@ export MSYS2_ARG_CONV_EXCL="*"
 # See more information in https://jorisroovers.com/gitlint
 
 docker run --ulimit nofile=1024 \
-  -v "$(pwd)/.git":/.git \
-  -v "$(pwd)/.gitlint":/.gitlint \
-  jorisroovers/gitlint \
-  --target . \
+  -v "$(pwd)/.git":/repo/.git \
+  -v "$(pwd)/.gitlint":/repo/.gitlint \
+  jorisroovers/gitlint:0.18.0 \
+  --config /repo/.gitlint \
   --commits origin/main..HEAD
