@@ -1,5 +1,5 @@
 import { renderEditor } from "../utils/testPortalUtils";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { AppServices } from "../abstractions";
 import { HtmlEditorApiClient } from "../abstractions/html-editor-api-client";
