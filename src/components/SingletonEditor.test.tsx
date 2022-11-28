@@ -2,7 +2,7 @@ import { act, render, screen, waitFor } from "@testing-library/react";
 import { AppServices } from "../abstractions";
 import { SingletonEditorProvider, useSingletonEditor } from "./SingletonEditor";
 import { AppServicesProvider } from "./AppServicesContext";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Field } from "../abstractions/doppler-rest-api-client";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { CampaignContent, Content } from "../abstractions/domain/content";

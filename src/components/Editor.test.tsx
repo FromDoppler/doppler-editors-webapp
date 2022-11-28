@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { Design } from "react-email-editor";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppServices } from "../abstractions";
 import { AuthenticatedAppSessionState } from "../abstractions/app-session/app-session-state";
 import { Field } from "../abstractions/doppler-rest-api-client";

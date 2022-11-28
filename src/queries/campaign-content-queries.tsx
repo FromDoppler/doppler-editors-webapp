@@ -1,4 +1,4 @@
-import { QueryFunction, useMutation, useQuery } from "react-query";
+import { QueryFunction, useMutation, useQuery } from "@tanstack/react-query";
 import { CampaignContent, Content } from "../abstractions/domain/content";
 import { useAppServices } from "../components/AppServicesContext";
 

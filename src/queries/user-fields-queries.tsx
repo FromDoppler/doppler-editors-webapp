@@ -1,4 +1,4 @@
-import { QueryFunction, useQuery } from "react-query";
+import { QueryFunction, useQuery } from "@tanstack/react-query";
 import { Field } from "../abstractions/doppler-rest-api-client";
 import { useAppServices } from "../components/AppServicesContext";
 

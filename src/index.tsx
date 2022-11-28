@@ -7,7 +7,7 @@ import { reportWebVitals } from "./reportWebVitals";
 import { configureApp } from "./composition-root";
 import { AppServicesProvider } from "./components/AppServicesContext";
 import { AppSessionStateProvider } from "./components/AppSessionStateContext";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DopplerIntlProvider } from "./components/i18n/DopplerIntlProvider";
 
 const customConfiguration =
