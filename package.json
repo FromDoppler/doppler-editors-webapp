@@ -9,7 +9,7 @@
     "@types/react-email-editor": "1.5.1",
     "@types/react-query": "^1.2.9",
     "eclint": "2.8.1",
-    "prettier": "2.8.0"
+    "prettier": "2.8.1"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.16.1",
