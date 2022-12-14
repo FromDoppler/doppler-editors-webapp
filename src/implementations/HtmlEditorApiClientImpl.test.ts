@@ -305,6 +305,37 @@ describe(HtmlEditorApiClientImpl.name, () => {
     });
   });
 
+  describe("updateCampaignContentFromTemplate", () => {
+    it("should POST ids", async () => {
+      // Arrange
+      const campaignId = "123";
+      const templateId = "456";
+
+      const {
+        sut,
+        htmlEditorApiBaseUrl,
+        jwtToken,
+        dopplerAccountName,
+        axiosStatic,
+        request,
+      } = createTestContext();
+
+      // Act
+      await sut.updateCampaignContentFromTemplate(campaignId, templateId);
+
+      // Assert
+      expect(axiosStatic.create).toBeCalledWith({
+        baseURL: htmlEditorApiBaseUrl,
+      });
+      expect(request).toBeCalledWith({
+        headers: { Authorization: `Bearer ${jwtToken}` },
+        method: "POST",
+        url: `/accounts/${dopplerAccountName}/campaigns/${campaignId}/content/from-template/${templateId}`,
+        data: {},
+      });
+    });
+  });
+
   describe("getTemplate", () => {
     it("should request API with the right parameters and return API result as it is", async () => {
       // Arrange

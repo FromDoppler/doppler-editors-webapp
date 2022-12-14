@@ -44,6 +44,20 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
     return { success: true };
   }
 
+  async updateCampaignContentFromTemplate(
+    campaignId: string,
+    templateId: string
+  ): Promise<Result> {
+    console.log("Begin updateCampaignContentFromTemplate...", {
+      campaignId,
+      templateId,
+    });
+    await timeout(1000);
+
+    console.log("End updateCampaignContentFromTemplate");
+    return { success: true };
+  }
+
   public getTemplate: (templateId: string) => Promise<Result<TemplateContent>> =
     async (templateId: string) => {
       console.log("Begin getTemplate...", {
