@@ -6,13 +6,6 @@
     "@types/react": "18.0.26"
   },
   "devDependencies": {
-    "@types/react-email-editor": "1.5.1",
-    "@types/react-query": "^1.2.9",
-    "eclint": "2.8.1",
-    "prettier": "2.8.1"
-  },
-  "dependencies": {
-    "@tanstack/react-query": "^4.16.1",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "13.4.0",
     "@testing-library/user-event": "14.4.3",
@@ -21,7 +14,14 @@
     "@types/node": "18.11.15",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.9",
+    "@types/react-email-editor": "1.5.1",
+    "@types/react-query": "^1.2.9",
     "@types/underscore": "1.11.4",
+    "eclint": "2.8.1",
+    "prettier": "2.8.1"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^4.16.1",
     "axios": "1.2.0",
     "history": "5.3.0",
     "react": "18.2.0",
