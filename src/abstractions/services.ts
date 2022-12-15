@@ -9,7 +9,7 @@ import { DopplerRestApiClient } from "./doppler-rest-api-client";
 // for example based on this type:
 // type AppServicesTuple = [ Window, AppConfiguration ]
 export type AppServices = {
-  window: Window;
+  window: Window & typeof globalThis;
   axiosStatic: AxiosStatic;
   appConfiguration: AppConfiguration;
   appConfigurationRenderer: AppConfigurationRenderer;
