@@ -10,20 +10,35 @@ export const SetCampaignContentFromTemplate = () => {
   }>;
 
   const { search } = useLocation();
-  const { htmlEditorApiClient } = useAppServices();
+  const { htmlEditorApiClient, window } = useAppServices();
   const navigate = useNavigate();
 
   useEffect(() => {
     async function doAsync() {
-      await htmlEditorApiClient.updateCampaignContentFromTemplate(
-        idCampaign,
-        idTemplate
-      );
-      const campaignUrl = `/campaigns/${idCampaign}${search}`;
-      navigate(campaignUrl, { replace: true });
+      try {
+        const result =
+          await htmlEditorApiClient.updateCampaignContentFromTemplate(
+            idCampaign,
+            idTemplate
+          );
+        if (!result.success) {
+          window.console.error(
+            "Error creating campaign content from template",
+            result
+          );
+        }
+      } catch (e) {
+        window.console.error(
+          "Error creating campaign content from template",
+          e
+        );
+      } finally {
+        const campaignUrl = `/campaigns/${idCampaign}${search}`;
+        navigate(campaignUrl, { replace: true });
+      }
     }
     doAsync();
-  }, [idCampaign, idTemplate, search, htmlEditorApiClient, navigate]);
+  }, [idCampaign, idTemplate, search, htmlEditorApiClient, navigate, window]);
 
   return <LoadingScreen />;
 };

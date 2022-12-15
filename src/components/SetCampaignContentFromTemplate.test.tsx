@@ -6,7 +6,7 @@ import { AppServicesProvider } from "./AppServicesContext";
 import { AppServices } from "../abstractions";
 import { InitialEntry } from "history";
 
-function createTestContext() {
+function createTestContext(window = global) {
   const locationRef = {
     value: undefined as Location | undefined,
   };
@@ -24,6 +24,7 @@ function createTestContext() {
 
   const appServices = {
     htmlEditorApiClient: htmlEditorApiClientDouble,
+    window,
   } as any as AppServices;
 
   const destinationPageText = "DestinationPage";
@@ -93,6 +94,61 @@ describe(SetCampaignContentFromTemplate.name, () => {
       expect(
         htmlEditorApiClientDouble.updateCampaignContentFromTemplate
       ).toHaveBeenCalledWith(idCampaign, idTemplate);
+    });
+
+    await waitFor(() => {
+      expect(locationRef.value?.pathname).toBe(expectedPath);
+      expect(locationRef.value?.search).toBe(initialSearch);
+    });
+
+    screen.getByText(destinationPageText);
+  });
+
+  it("should show error and redirect when API call fails", async () => {
+    // Arrange
+    const idCampaign = "123";
+    const idTemplate = "456";
+    const initialPath = `/campaigns/${idCampaign}/set-content-from-template/${idTemplate}`;
+    const initialSearch = "?abc=cde&x=true";
+    const initialUrl = `${initialPath}${initialSearch}`;
+    const expectedPath = `/campaigns/${idCampaign}`;
+
+    const windowDouble = {
+      console: {
+        error: jest.fn(),
+      },
+    };
+    const {
+      renderTest,
+      locationRef,
+      htmlEditorApiClientDouble,
+      destinationPageText,
+    } = createTestContext(windowDouble as any);
+
+    const errorMessage = "ErrorMessage";
+    htmlEditorApiClientDouble.updateCampaignContentFromTemplate.mockRejectedValue(
+      new Error(errorMessage)
+    );
+
+    // Act
+    renderTest(initialUrl);
+
+    // Assert
+    expect(locationRef.value?.pathname).toBe(initialPath);
+    expect(locationRef.value?.search).toBe(initialSearch);
+    screen.getByTestId("loading-screen");
+
+    await waitFor(() => {
+      expect(
+        htmlEditorApiClientDouble.updateCampaignContentFromTemplate
+      ).toHaveBeenCalledWith(idCampaign, idTemplate);
+    });
+
+    await waitFor(() => {
+      expect(windowDouble.console.error).toHaveBeenCalledWith(
+        "Error creating campaign content from template",
+        expect.objectContaining({ message: errorMessage })
+      );
     });
 
     await waitFor(() => {
