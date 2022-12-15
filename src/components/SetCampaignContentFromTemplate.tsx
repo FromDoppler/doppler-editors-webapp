@@ -25,5 +25,5 @@ export const SetCampaignContentFromTemplate = () => {
     doAsync();
   }, [idCampaign, idTemplate, search, htmlEditorApiClient, navigate]);
 
-  return null;
+  return <LoadingScreen />;
 };

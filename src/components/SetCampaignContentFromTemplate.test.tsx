@@ -87,6 +87,7 @@ describe(SetCampaignContentFromTemplate.name, () => {
     // Assert
     expect(locationRef.value?.pathname).toBe(initialPath);
     expect(locationRef.value?.search).toBe(initialSearch);
+    screen.getByTestId("loading-screen");
 
     await waitFor(() => {
       expect(
