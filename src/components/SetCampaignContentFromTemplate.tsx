@@ -1,5 +1,7 @@
 import { useEffect } from "react";
-import { Navigate, useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useAppServices } from "./AppServicesContext";
+import { LoadingScreen } from "./LoadingScreen";
 
 export const SetCampaignContentFromTemplate = () => {
   const { idCampaign, idTemplate } = useParams() as Readonly<{
@@ -8,11 +10,20 @@ export const SetCampaignContentFromTemplate = () => {
   }>;
 
   const { search } = useLocation();
+  const { htmlEditorApiClient } = useAppServices();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log({ todo: "call to backend", idCampaign, idTemplate });
-  }, [idCampaign, idTemplate]);
+    async function doAsync() {
+      await htmlEditorApiClient.updateCampaignContentFromTemplate(
+        idCampaign,
+        idTemplate
+      );
+      const campaignUrl = `/campaigns/${idCampaign}${search}`;
+      navigate(campaignUrl, { replace: true });
+    }
+    doAsync();
+  }, [idCampaign, idTemplate, search, htmlEditorApiClient, navigate]);
 
-  const campaignUrl = `/campaigns/${idCampaign}${search}`;
-  return <Navigate to={campaignUrl} replace={true} />;
+  return null;
 };
