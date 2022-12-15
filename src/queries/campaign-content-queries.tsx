@@ -50,3 +50,21 @@ export const useUpdateCampaignContent = () => {
 
   return useMutation(updateCampaignContent);
 };
+
+export const useUpdateCampaignContentFromTemplate = () => {
+  const { htmlEditorApiClient } = useAppServices();
+
+  const updateCampaignContent = ({
+    idCampaign,
+    idTemplate,
+  }: {
+    idCampaign: string;
+    idTemplate: string;
+  }) =>
+    htmlEditorApiClient.updateCampaignContentFromTemplate(
+      idCampaign,
+      idTemplate
+    );
+
+  return useMutation(updateCampaignContent);
+};

@@ -5,6 +5,7 @@ import { render, waitFor, screen } from "@testing-library/react";
 import { AppServicesProvider } from "./AppServicesContext";
 import { AppServices } from "../abstractions";
 import { InitialEntry } from "history";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function createTestContext(window = global) {
   const locationRef = {
@@ -29,32 +30,43 @@ function createTestContext(window = global) {
 
   const destinationPageText = "DestinationPage";
 
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        cacheTime: 0,
+      },
+    },
+  });
+
   const renderTest = (initialUrl: InitialEntry) =>
     render(
-      <MemoryRouter initialEntries={[initialUrl]}>
-        <AppServicesProvider appServices={appServices}>
-          <Routes>
-            <Route
-              path="campaigns/:idCampaign/set-content-from-template/:idTemplate"
-              element={
-                <>
-                  <SetCampaignContentFromTemplate />
-                  <LocationInterceptorElement />
-                </>
-              }
-            />
-            <Route
-              path="*"
-              element={
-                <>
-                  <LocationInterceptorElement />
-                  <p>{destinationPageText}</p>
-                </>
-              }
-            />
-          </Routes>
-        </AppServicesProvider>
-      </MemoryRouter>
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter initialEntries={[initialUrl]}>
+          <AppServicesProvider appServices={appServices}>
+            <Routes>
+              <Route
+                path="campaigns/:idCampaign/set-content-from-template/:idTemplate"
+                element={
+                  <>
+                    <SetCampaignContentFromTemplate />
+                    <LocationInterceptorElement />
+                  </>
+                }
+              />
+              <Route
+                path="*"
+                element={
+                  <>
+                    <LocationInterceptorElement />
+                    <p>{destinationPageText}</p>
+                  </>
+                }
+              />
+            </Routes>
+          </AppServicesProvider>
+        </MemoryRouter>
+      </QueryClientProvider>
     );
 
   return {
@@ -102,6 +114,10 @@ describe(SetCampaignContentFromTemplate.name, () => {
     });
 
     screen.getByText(destinationPageText);
+
+    expect(
+      htmlEditorApiClientDouble.updateCampaignContentFromTemplate
+    ).toHaveBeenCalledTimes(1);
   });
 
   it("should show error and redirect when API call fails", async () => {
@@ -157,5 +173,10 @@ describe(SetCampaignContentFromTemplate.name, () => {
     });
 
     screen.getByText(destinationPageText);
+
+    expect(windowDouble.console.error).toHaveBeenCalledTimes(1);
+    expect(
+      htmlEditorApiClientDouble.updateCampaignContentFromTemplate
+    ).toHaveBeenCalledTimes(1);
   });
 });

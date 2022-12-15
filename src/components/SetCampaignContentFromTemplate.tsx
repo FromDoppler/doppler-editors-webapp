@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useLocation, useParams } from "react-router-dom";
+import { useUpdateCampaignContentFromTemplate } from "../queries/campaign-content-queries";
 import { useAppServices } from "./AppServicesContext";
 import { LoadingScreen } from "./LoadingScreen";
 
@@ -10,35 +11,27 @@ export const SetCampaignContentFromTemplate = () => {
   }>;
 
   const { search } = useLocation();
-  const { htmlEditorApiClient, window } = useAppServices();
-  const navigate = useNavigate();
+  const { window } = useAppServices();
+  const { mutate, isError, isIdle, isLoading, isSuccess, data, error } =
+    useUpdateCampaignContentFromTemplate();
 
   useEffect(() => {
-    async function doAsync() {
-      try {
-        const result =
-          await htmlEditorApiClient.updateCampaignContentFromTemplate(
-            idCampaign,
-            idTemplate
-          );
-        if (!result.success) {
-          window.console.error(
-            "Error creating campaign content from template",
-            result
-          );
-        }
-      } catch (e) {
-        window.console.error(
-          "Error creating campaign content from template",
-          e
-        );
-      } finally {
-        const campaignUrl = `/campaigns/${idCampaign}${search}`;
-        navigate(campaignUrl, { replace: true });
-      }
-    }
-    doAsync();
-  }, [idCampaign, idTemplate, search, htmlEditorApiClient, navigate, window]);
+    mutate({ idCampaign, idTemplate });
+  }, [mutate, idCampaign, idTemplate]);
 
-  return <LoadingScreen />;
+  if (isIdle || isLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (isError) {
+    window.console.error(
+      "Error creating campaign content from template",
+      error
+    );
+  } else if (isSuccess && !data.success) {
+    window.console.error("Error creating campaign content from template", data);
+  }
+
+  const campaignUrl = `/campaigns/${idCampaign}${search}`;
+  return <Navigate to={campaignUrl} replace={true} />;
 };
