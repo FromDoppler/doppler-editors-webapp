@@ -28,6 +28,9 @@ const baseAppServices = {
       campaigns: "https://dopplerexternalurls.campaigns/",
       lists: "https://dopplerexternalurls.lists/",
       controlPanel: "https://dopplerexternalurls.controlpanel/",
+      automation: "https://dopplerexternalurls.automation/",
+      templates: "https://dopplerexternalurls.templates/",
+      integrations: "https://dopplerexternalurls.integrations/",
     },
   },
 } as AppServices;

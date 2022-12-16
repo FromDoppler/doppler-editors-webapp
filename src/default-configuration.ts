@@ -21,5 +21,9 @@ export const defaultAppConfiguration: AppConfiguration = {
     campaigns: "https://app2.fromdoppler.com/Campaigns/Draft",
     lists: "https://app2.fromdoppler.com/Lists/SubscribersList",
     controlPanel: "https://app2.fromdoppler.com/ControlPanel/ControlPanel",
+    automation:
+      "https://app2.fromdoppler.com/Automation/Automation/AutomationApp",
+    templates: "https://app2.fromdoppler.com/Templates/Main",
+    integrations: "https://app.fromdoppler.com/integrations",
   },
 };

@@ -10,6 +10,9 @@ const appConfiguration = {
     campaigns: "campaignUrl",
     lists: "listsUrl",
     controlPanel: "controlPanelUrl",
+    automation: "automationUrl",
+    templates: "templatesUrl",
+    integrations: "integrationsUrl",
   },
 };
 
