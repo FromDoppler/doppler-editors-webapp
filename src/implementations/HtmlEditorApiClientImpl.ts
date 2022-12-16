@@ -58,6 +58,10 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
     return this.request<any>("PUT", url, data);
   }
 
+  private POST(url: string, data: unknown) {
+    return this.request<any>("POST", url, data);
+  }
+
   async getCampaignContent(
     campaignId: string
   ): Promise<Result<CampaignContent>> {
@@ -109,6 +113,18 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
           };
 
     await this.PUT(`/campaigns/${campaignId}/content`, body);
+    return { success: true };
+  }
+
+  async updateCampaignContentFromTemplate(
+    campaignId: string,
+    templateId: string
+  ): Promise<Result> {
+    const body = {};
+    await this.POST(
+      `/campaigns/${campaignId}/content/from-template/${templateId}`,
+      body
+    );
     return { success: true };
   }
 

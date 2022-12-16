@@ -9,6 +9,11 @@ export interface HtmlEditorApiClient {
     content: Content
   ) => Promise<Result>;
 
+  updateCampaignContentFromTemplate: (
+    campaignId: string,
+    templateId: string
+  ) => Promise<Result>;
+
   getTemplate: (templateId: string) => Promise<Result<TemplateContent>>;
 
   updateTemplate: (
