@@ -495,4 +495,47 @@ describe(HtmlEditorApiClientImpl.name, () => {
       });
     });
   });
+
+  describe("createTemplateFromTemplate", () => {
+    it("should POST id and parse the id in the response", async () => {
+      // Arrange
+      const baseTemplateId = "123";
+      const newTemplateId = "456";
+
+      const {
+        sut,
+        htmlEditorApiBaseUrl,
+        jwtToken,
+        dopplerAccountName,
+        axiosStatic,
+        request,
+      } = createTestContext();
+
+      request.mockResolvedValue({
+        data: {
+          createdResourceId: newTemplateId,
+        },
+      });
+
+      // Act
+      const result = await sut.createTemplateFromTemplate(baseTemplateId);
+
+      // Assert
+      expect(axiosStatic.create).toBeCalledWith({
+        baseURL: htmlEditorApiBaseUrl,
+      });
+      expect(request).toBeCalledWith({
+        headers: { Authorization: `Bearer ${jwtToken}` },
+        method: "POST",
+        url: `/accounts/${dopplerAccountName}/templates/from-template/${baseTemplateId}`,
+        data: {},
+      });
+      expect(result).toEqual({
+        success: true,
+        value: {
+          newTemplateId,
+        },
+      });
+    });
+  });
 });

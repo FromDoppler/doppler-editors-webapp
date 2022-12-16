@@ -162,4 +162,20 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
     await this.PUT(`/templates/${templateId}`, body);
     return { success: true };
   }
+
+  async createTemplateFromTemplate(
+    baseTemplateId: string
+  ): Promise<Result<{ newTemplateId: string }>> {
+    const body = {};
+
+    const result = await this.POST(
+      `/templates/from-template/${baseTemplateId}`,
+      body
+    );
+
+    return {
+      success: true,
+      value: { newTemplateId: result.data.createdResourceId },
+    };
+  }
 }

@@ -89,6 +89,18 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
     console.log("End updateTemplate");
     return { success: true };
   }
+
+  async createTemplateFromTemplate(
+    baseTemplateId: string
+  ): Promise<Result<{ newTemplateId: string }>> {
+    console.log("Begin createTemplateFromTemplate...", {
+      baseTemplateId,
+    });
+    await timeout(1000);
+
+    console.log("End createTemplateFromTemplate");
+    return { success: true, value: { newTemplateId: "987" } };
+  }
 }
 
 function createUnlayerContent(campaignId: string): CampaignContent {
