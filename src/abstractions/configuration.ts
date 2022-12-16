@@ -19,4 +19,7 @@ export type dopplerExternalUrls = {
   readonly campaigns: string;
   readonly lists: string;
   readonly controlPanel: string;
+  readonly automation: string;
+  readonly templates: string;
+  readonly integrations: string;
 };
