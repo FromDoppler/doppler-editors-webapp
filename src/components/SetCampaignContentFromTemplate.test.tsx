@@ -7,7 +7,7 @@ import { AppServices } from "../abstractions";
 import { InitialEntry } from "history";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-function createTestContext(window = global) {
+function createTestContext() {
   const locationRef = {
     value: undefined as Location | undefined,
   };
@@ -23,9 +23,15 @@ function createTestContext(window = global) {
     { success: true }
   );
 
+  const windowDouble = {
+    console: {
+      error: jest.fn(),
+    },
+  };
+
   const appServices = {
     htmlEditorApiClient: htmlEditorApiClientDouble,
-    window,
+    window: windowDouble,
   } as any as AppServices;
 
   const destinationPageText = "DestinationPage";
@@ -74,6 +80,7 @@ function createTestContext(window = global) {
     locationRef,
     htmlEditorApiClientDouble,
     destinationPageText,
+    windowDouble,
   };
 }
 
@@ -129,17 +136,13 @@ describe(SetCampaignContentFromTemplate.name, () => {
     const initialUrl = `${initialPath}${initialSearch}`;
     const expectedPath = `/campaigns/${idCampaign}`;
 
-    const windowDouble = {
-      console: {
-        error: jest.fn(),
-      },
-    };
     const {
       renderTest,
       locationRef,
       htmlEditorApiClientDouble,
       destinationPageText,
-    } = createTestContext(windowDouble as any);
+      windowDouble,
+    } = createTestContext();
 
     const errorMessage = "ErrorMessage";
     htmlEditorApiClientDouble.updateCampaignContentFromTemplate.mockRejectedValue(
