@@ -8,6 +8,7 @@ import { ConfigurationDemo } from "./ConfigurationDemo";
 import { RequireAuth } from "./RequireAuth";
 import { SessionDemo } from "./SessionDemo";
 import { SetCampaignContentFromTemplate } from "./SetCampaignContentFromTemplate";
+import { CreateTemplateFromTemplate } from "./CreateTemplateFromTemplate";
 
 export const App = () => (
   <Routes>
@@ -33,6 +34,14 @@ export const App = () => (
         element={
           <RequireAuth>
             <Template />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="templates/create-from-template/:idTemplate"
+        element={
+          <RequireAuth>
+            <CreateTemplateFromTemplate />
           </RequireAuth>
         }
       />

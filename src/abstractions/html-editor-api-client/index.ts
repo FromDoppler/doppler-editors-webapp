@@ -20,4 +20,8 @@ export interface HtmlEditorApiClient {
     templateId: string,
     template: TemplateContent
   ) => Promise<Result>;
+
+  createTemplateFromTemplate: (
+    baseTemplateId: string
+  ) => Promise<Result<{ newTemplateId: string }>>;
 }

@@ -49,3 +49,12 @@ export const useUpdateTemplate = () => {
 
   return useMutation(updateTemplate);
 };
+
+export const useCreateTemplateFromTemplate = () => {
+  const { htmlEditorApiClient } = useAppServices();
+
+  const createTemplate = ({ baseTemplateId }: { baseTemplateId: string }) =>
+    htmlEditorApiClient.createTemplateFromTemplate(baseTemplateId);
+
+  return useMutation(createTemplate);
+};

@@ -1,4 +1,4 @@
-import { SetCampaignContentFromTemplate } from "./SetCampaignContentFromTemplate";
+import { CreateTemplateFromTemplate } from "./CreateTemplateFromTemplate";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import type { Location } from "@remix-run/router";
 import { render, waitFor, screen } from "@testing-library/react";
@@ -8,6 +8,8 @@ import { InitialEntry } from "history";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function createTestContext() {
+  const templatesUrl = "https://dopplerexternalurls.templates/";
+  const newTemplateId = "987";
   const locationRef = {
     value: undefined as Location | undefined,
   };
@@ -17,20 +19,35 @@ function createTestContext() {
   };
 
   const htmlEditorApiClientDouble = {
-    updateCampaignContentFromTemplate: jest.fn(),
+    createTemplateFromTemplate: jest.fn(),
   };
-  htmlEditorApiClientDouble.updateCampaignContentFromTemplate.mockResolvedValue(
-    { success: true }
-  );
+  htmlEditorApiClientDouble.createTemplateFromTemplate.mockResolvedValue({
+    success: true,
+    value: { newTemplateId },
+  });
+
+  const setHref = jest.fn();
 
   const windowDouble = {
     console: {
       error: jest.fn(),
     },
+    location: {
+      href: "",
+    },
   };
+
+  Object.defineProperty(windowDouble.location, "href", {
+    set: setHref,
+  });
 
   const appServices = {
     htmlEditorApiClient: htmlEditorApiClientDouble,
+    appConfiguration: {
+      dopplerExternalUrls: {
+        templates: templatesUrl,
+      },
+    },
     window: windowDouble,
   } as any as AppServices;
 
@@ -52,10 +69,10 @@ function createTestContext() {
           <AppServicesProvider appServices={appServices}>
             <Routes>
               <Route
-                path="campaigns/:idCampaign/set-content-from-template/:idTemplate"
+                path="templates/create-from-template/:idTemplate"
                 element={
                   <>
-                    <SetCampaignContentFromTemplate />
+                    <CreateTemplateFromTemplate />
                     <LocationInterceptorElement />
                   </>
                 }
@@ -80,26 +97,30 @@ function createTestContext() {
     locationRef,
     htmlEditorApiClientDouble,
     destinationPageText,
+    newTemplateId,
+    templatesUrl,
     windowDouble,
+    setHref,
   };
 }
 
-describe(SetCampaignContentFromTemplate.name, () => {
+describe(CreateTemplateFromTemplate.name, () => {
   it("should redirect when API call is successful", async () => {
     // Arrange
-    const idCampaign = "123";
     const idTemplate = "456";
-    const initialPath = `/campaigns/${idCampaign}/set-content-from-template/${idTemplate}`;
+    const initialPath = `/templates/create-from-template/${idTemplate}`;
     const initialSearch = "?abc=cde&x=true";
     const initialUrl = `${initialPath}${initialSearch}`;
-    const expectedPath = `/campaigns/${idCampaign}`;
 
     const {
       renderTest,
       locationRef,
       htmlEditorApiClientDouble,
       destinationPageText,
+      newTemplateId,
     } = createTestContext();
+
+    const expectedPath = `/templates/${newTemplateId}`;
 
     // Act
     renderTest(initialUrl);
@@ -111,8 +132,8 @@ describe(SetCampaignContentFromTemplate.name, () => {
 
     await waitFor(() => {
       expect(
-        htmlEditorApiClientDouble.updateCampaignContentFromTemplate
-      ).toHaveBeenCalledWith(idCampaign, idTemplate);
+        htmlEditorApiClientDouble.createTemplateFromTemplate
+      ).toHaveBeenCalledWith(idTemplate);
     });
 
     await waitFor(() => {
@@ -123,29 +144,28 @@ describe(SetCampaignContentFromTemplate.name, () => {
     screen.getByText(destinationPageText);
 
     expect(
-      htmlEditorApiClientDouble.updateCampaignContentFromTemplate
+      htmlEditorApiClientDouble.createTemplateFromTemplate
     ).toHaveBeenCalledTimes(1);
   });
 
   it("should show error and redirect when API call fails", async () => {
     // Arrange
-    const idCampaign = "123";
     const idTemplate = "456";
-    const initialPath = `/campaigns/${idCampaign}/set-content-from-template/${idTemplate}`;
+    const initialPath = `/templates/create-from-template/${idTemplate}`;
     const initialSearch = "?abc=cde&x=true";
     const initialUrl = `${initialPath}${initialSearch}`;
-    const expectedPath = `/campaigns/${idCampaign}`;
 
     const {
       renderTest,
       locationRef,
       htmlEditorApiClientDouble,
-      destinationPageText,
       windowDouble,
+      setHref,
+      templatesUrl,
     } = createTestContext();
 
     const errorMessage = "ErrorMessage";
-    htmlEditorApiClientDouble.updateCampaignContentFromTemplate.mockRejectedValue(
+    htmlEditorApiClientDouble.createTemplateFromTemplate.mockRejectedValue(
       new Error(errorMessage)
     );
 
@@ -159,27 +179,23 @@ describe(SetCampaignContentFromTemplate.name, () => {
 
     await waitFor(() => {
       expect(
-        htmlEditorApiClientDouble.updateCampaignContentFromTemplate
-      ).toHaveBeenCalledWith(idCampaign, idTemplate);
+        htmlEditorApiClientDouble.createTemplateFromTemplate
+      ).toHaveBeenCalledWith(idTemplate);
     });
 
     await waitFor(() => {
       expect(windowDouble.console.error).toHaveBeenCalledWith(
-        "Error creating campaign content from template",
+        "Error creating template from template",
         expect.objectContaining({ message: errorMessage })
       );
     });
 
-    await waitFor(() => {
-      expect(locationRef.value?.pathname).toBe(expectedPath);
-      expect(locationRef.value?.search).toBe(initialSearch);
-    });
-
-    screen.getByText(destinationPageText);
+    expect(setHref).toHaveBeenCalledTimes(1);
+    expect(setHref).toHaveBeenCalledWith(templatesUrl);
 
     expect(windowDouble.console.error).toHaveBeenCalledTimes(1);
     expect(
-      htmlEditorApiClientDouble.updateCampaignContentFromTemplate
+      htmlEditorApiClientDouble.createTemplateFromTemplate
     ).toHaveBeenCalledTimes(1);
   });
 });
