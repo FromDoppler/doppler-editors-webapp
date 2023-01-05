@@ -128,7 +128,8 @@ export const Editor = ({
     },
     customJS: [
       `window["unlayer-extensions-configuration"] = {
-        locale: "${intl.locale}"
+        locale: "${intl.locale}",
+        baseAssetsUrl : "https://app2.dopplerfiles.com/MSEditor/images"
       };`,
       loaderUrl,
       `(new AssetServices()).load('${unlayerEditorManifestUrl}', []);`,
