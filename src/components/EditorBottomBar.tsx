@@ -11,6 +11,9 @@ export const EditorBottomBar = ({
   exitUrl,
   ...otherProps
 }: EditorBottomBarProps) => {
+  var referrer = document.referrer;
+
+  console.log({ nextUrl, exitUrl, referrer });
   return (
     <div className="ed-cta-footer" {...otherProps}>
       <a
