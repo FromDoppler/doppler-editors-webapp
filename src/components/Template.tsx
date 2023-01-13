@@ -7,7 +7,7 @@ import { LoadingScreen } from "./LoadingScreen";
 import { Content } from "../abstractions/domain/content";
 import { Footer } from "./Footer";
 import { EditorBottomBar } from "./EditorBottomBar";
-import { useAppServices } from "./AppServicesContext";
+import { useTemplatesContinuationUrls } from "./continuation-urls";
 
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
@@ -16,10 +16,7 @@ export const Template = () => {
   const { idTemplate } = useParams() as Readonly<{
     idTemplate: string;
   }>;
-
-  const {
-    appConfiguration: { dopplerLegacyBaseUrl },
-  } = useAppServices();
+  const continuationUrls = useTemplatesContinuationUrls();
 
   const templateQuery = useGetTemplate(idTemplate);
   const templateMutation = useUpdateTemplate();
@@ -72,10 +69,7 @@ export const Template = () => {
             />
           </Header>
           <Footer>
-            <EditorBottomBar
-              nextUrl={`${dopplerLegacyBaseUrl}/Templates/Main`}
-              exitUrl={`${dopplerLegacyBaseUrl}/Templates/Main`}
-            ></EditorBottomBar>
+            <EditorBottomBar {...continuationUrls}></EditorBottomBar>
           </Footer>
         </>
       )}

@@ -1,4 +1,4 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSingletonEditor } from "./SingletonEditor";
 import { EditorTopBar } from "./EditorTopBar";
 import {
@@ -8,9 +8,9 @@ import {
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { EditorBottomBar } from "./EditorBottomBar";
-import { useAppServices } from "./AppServicesContext";
 import { Content } from "../abstractions/domain/content";
 import { LoadingScreen } from "./LoadingScreen";
+import { useCampaignContinuationUrls } from "./continuation-urls";
 
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
@@ -20,11 +20,6 @@ export const Campaign = () => {
     idCampaign: string;
   }>;
 
-  const {
-    appConfiguration: { dopplerLegacyBaseUrl, dopplerExternalUrls },
-  } = useAppServices();
-
-  const [searchParams] = useSearchParams();
   const campaignContentQuery = useGetCampaignContent(idCampaign);
   const campaignContentMutation = useUpdateCampaignContent();
 
@@ -38,6 +33,8 @@ export const Campaign = () => {
     [campaignContentQuery.data, campaignContentMutation.mutate, idCampaign]
   );
 
+  const continuationUrls = useCampaignContinuationUrls(idCampaign);
+
   if (campaignContentQuery.error) {
     return (
       <div data-testid={errorMessageTestId}>
@@ -46,20 +43,6 @@ export const Campaign = () => {
       </div>
     );
   }
-
-  const redirectedFromSummary =
-    searchParams.get("redirectedFromSummary")?.toUpperCase() === "TRUE";
-
-  const idABTest = searchParams.get("idABTest");
-  const fixedIdCampaign = idABTest ? idABTest : idCampaign;
-  const testABIndexSegment = idABTest ? "TestAB" : "Index";
-
-  const nextUrl = redirectedFromSummary
-    ? `${dopplerLegacyBaseUrl}/Campaigns/Summary/${testABIndexSegment}?IdCampaign=${fixedIdCampaign}`
-    : `${dopplerLegacyBaseUrl}/Campaigns/Recipients/${testABIndexSegment}?IdCampaign=${fixedIdCampaign}` +
-      `&RedirectedFromSummary=False&RedirectedFromTemplateList=False`;
-
-  const exitUrl = dopplerExternalUrls.campaigns;
 
   return (
     <>
@@ -79,10 +62,7 @@ export const Campaign = () => {
             />
           </Header>
           <Footer>
-            <EditorBottomBar
-              nextUrl={nextUrl}
-              exitUrl={exitUrl}
-            ></EditorBottomBar>
+            <EditorBottomBar {...continuationUrls}></EditorBottomBar>
           </Footer>
         </>
       )}
