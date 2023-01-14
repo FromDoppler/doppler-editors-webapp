@@ -18,7 +18,7 @@
     "@types/react-query": "1.2.9",
     "@types/underscore": "1.11.4",
     "eclint": "2.8.1",
-    "prettier": "2.8.2"
+    "prettier": "2.8.3"
   },
   "dependencies": {
     "@tanstack/react-query": "4.22.0",
