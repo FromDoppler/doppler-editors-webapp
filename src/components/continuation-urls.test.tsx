@@ -1,6 +1,7 @@
 import { render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { AppServices } from "../abstractions";
+import { defaultAppConfiguration } from "../default-configuration";
 import { AppServicesProvider } from "./AppServicesContext";
 import {
   useCampaignContinuationUrls,
@@ -34,8 +35,12 @@ function buildTestScenario({
           appServices={
             {
               appConfiguration: {
+                ...defaultAppConfiguration,
                 dopplerLegacyBaseUrl,
-                dopplerExternalUrls: { campaigns: campaignsExternalUrl },
+                dopplerExternalUrls: {
+                  ...defaultAppConfiguration.dopplerExternalUrls,
+                  campaigns: campaignsExternalUrl,
+                },
               },
             } as AppServices
           }
