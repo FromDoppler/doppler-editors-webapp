@@ -19,6 +19,9 @@ export function useCampaignContinuationUrls(idCampaign: string) {
 }
 
 function useNextAndExitParametersContinuationUrls() {
+  const {
+    appConfiguration: { dopplerUrlRegex },
+  } = useAppServices();
   const [searchParams] = useSearchParams();
 
   const result: { nextUrl?: string; exitUrl?: string } = {};
@@ -26,13 +29,11 @@ function useNextAndExitParametersContinuationUrls() {
   var nextUrl = searchParams.get("next");
   var exitUrl = searchParams.get("exit");
 
-  // TODO: validate next and exit with a domain whitelist
-
-  if (nextUrl) {
+  if (nextUrl && dopplerUrlRegex.test(nextUrl)) {
     result.nextUrl = nextUrl;
   }
 
-  if (exitUrl) {
+  if (exitUrl && dopplerUrlRegex.test(exitUrl)) {
     result.exitUrl = exitUrl;
   }
 

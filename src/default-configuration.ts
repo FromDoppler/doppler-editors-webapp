@@ -26,4 +26,5 @@ export const defaultAppConfiguration: AppConfiguration = {
     templates: "https://app2.fromdoppler.com/Templates/Main",
     integrations: "https://app.fromdoppler.com/integrations",
   },
+  dopplerUrlRegex: /^https:\/\/(?:[\w.-]+\.)?fromdoppler\.(?:com|net)(?:\/|$)/,
 };

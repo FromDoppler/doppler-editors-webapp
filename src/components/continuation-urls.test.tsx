@@ -103,6 +103,18 @@ describe(useTemplatesContinuationUrls.name, () => {
       expectedExitUrl:
         "https://app.legacyBaseUrl.fromdoppler.net/Exit?123&abc=1",
     },
+    {
+      scenario:
+        "querystring contains exit and next of invalid domains (should be ignored)",
+      currentRouterEntry:
+        "https://webapp.formdoppler.net/editor" +
+        "?next=https%3A%2F%2Fapp.anotherdomain.net%2FNext%3F123%26abc%3D1" +
+        "&exit=https%3A%2F%2Fapp.fromdoppler.org%2FExit%3F123%26abc%3D1",
+      expectedNextUrl:
+        "https://app.legacyBaseUrl.fromdoppler.net/Templates/Main",
+      expectedExitUrl:
+        "https://app.legacyBaseUrl.fromdoppler.net/Templates/Main",
+    },
   ])(
     "should return continuation URLs based on querystring parameters when $scenario",
     ({ currentRouterEntry, expectedNextUrl, expectedExitUrl }) => {
