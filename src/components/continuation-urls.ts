@@ -3,13 +3,40 @@ import { useAppServices } from "./AppServicesContext";
 
 export function useTemplatesContinuationUrls() {
   const defaultUrls = useDefaultTemplateContinuationUrls();
-  return { ...defaultUrls };
+  const nextAndExitUrls = useNextAndExitParametersContinuationUrls();
+  return { ...defaultUrls, ...nextAndExitUrls };
 }
 
 export function useCampaignContinuationUrls(idCampaign: string) {
   const defaultUrls = useDefaultCampaignContinuationUrls();
   const legacyResolvedUrls = useLegacyCampaignContinuationUrls(idCampaign);
-  return { ...defaultUrls, ...legacyResolvedUrls };
+  const nextAndExitUrls = useNextAndExitParametersContinuationUrls();
+  return {
+    ...defaultUrls,
+    ...legacyResolvedUrls,
+    ...nextAndExitUrls,
+  };
+}
+
+function useNextAndExitParametersContinuationUrls() {
+  const [searchParams] = useSearchParams();
+
+  const result: { nextUrl?: string; exitUrl?: string } = {};
+
+  var nextUrl = searchParams.get("next");
+  var exitUrl = searchParams.get("exit");
+
+  // TODO: validate next and exit with a domain whitelist
+
+  if (nextUrl) {
+    result.nextUrl = nextUrl;
+  }
+
+  if (exitUrl) {
+    result.exitUrl = exitUrl;
+  }
+
+  return result;
 }
 
 /** Obsolete: we are tending to use exit and next querystring parameters, see DE-932 */
