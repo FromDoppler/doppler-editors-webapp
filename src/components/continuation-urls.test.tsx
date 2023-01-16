@@ -88,7 +88,7 @@ describe(useTemplatesContinuationUrls.name, () => {
         "https://webapp.formdoppler.net/editor" +
         "?exit=https%3A%2F%2Fapp.legacyBaseUrl.fromdoppler.net%2FExit%3F123%26abc%3D1",
       expectedNextUrl:
-        "https://app.legacyBaseUrl.fromdoppler.net/Templates/Main",
+        "https://app.legacyBaseUrl.fromdoppler.net/Exit?123&abc=1",
       expectedExitUrl:
         "https://app.legacyBaseUrl.fromdoppler.net/Exit?123&abc=1",
     },
@@ -185,8 +185,7 @@ describe(useCampaignContinuationUrls.name, () => {
         "https://webapp.formdoppler.net/editor" +
         "?exit=https%3A%2F%2Fapp.legacyBaseUrl.fromdoppler.net%2FExit%3F123%26abc%3D1",
       expectedNextUrl:
-        "https://app.legacyBaseUrl.fromdoppler.net/Campaigns/Recipients/Index" +
-        "?IdCampaign=123&RedirectedFromSummary=False&RedirectedFromTemplateList=False",
+        "https://app.legacyBaseUrl.fromdoppler.net/Exit?123&abc=1",
       expectedExitUrl:
         "https://app.legacyBaseUrl.fromdoppler.net/Exit?123&abc=1",
     },
@@ -196,8 +195,7 @@ describe(useCampaignContinuationUrls.name, () => {
         "https://webapp.formdoppler.net/editor" +
         "?idABTest=456&exit=https%3A%2F%2Fapp.legacyBaseUrl.fromdoppler.net%2FExit%3F123%26abc%3D1",
       expectedNextUrl:
-        "https://app.legacyBaseUrl.fromdoppler.net/Campaigns/Recipients/TestAB" +
-        "?IdCampaign=456&RedirectedFromSummary=False&RedirectedFromTemplateList=False",
+        "https://app.legacyBaseUrl.fromdoppler.net/Exit?123&abc=1",
       expectedExitUrl:
         "https://app.legacyBaseUrl.fromdoppler.net/Exit?123&abc=1",
     },

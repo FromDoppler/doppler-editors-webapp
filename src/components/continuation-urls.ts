@@ -26,8 +26,8 @@ function useNextAndExitParametersContinuationUrls() {
 
   const result: { nextUrl?: string; exitUrl?: string } = {};
 
-  var nextUrl = searchParams.get("next");
   var exitUrl = searchParams.get("exit");
+  var nextUrl = searchParams.get("next") || exitUrl;
 
   if (nextUrl && dopplerUrlRegex.test(nextUrl)) {
     result.nextUrl = nextUrl;
