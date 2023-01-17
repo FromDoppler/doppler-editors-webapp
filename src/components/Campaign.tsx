@@ -11,6 +11,7 @@ import { EditorBottomBar } from "./EditorBottomBar";
 import { Content } from "../abstractions/domain/content";
 import { LoadingScreen } from "./LoadingScreen";
 import { useCampaignContinuationUrls } from "./continuation-urls";
+import { FormattedMessage } from "react-intl";
 
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
@@ -53,13 +54,20 @@ export const Campaign = () => {
           <Header>
             <EditorTopBar
               data-testid={editorTopBarTestId}
-              onSave={save}
               title={
                 campaignContentQuery.data?.campaignName
                   ? campaignContentQuery.data.campaignName
                   : ""
               }
-            />
+            >
+              <button
+                type="button"
+                onClick={save}
+                className="dp-button button-medium primary-green"
+              >
+                <FormattedMessage id="save" />
+              </button>
+            </EditorTopBar>
           </Header>
           <Footer>
             <EditorBottomBar {...continuationUrls}></EditorBottomBar>
