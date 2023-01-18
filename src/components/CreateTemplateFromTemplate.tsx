@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Navigate, useLocation, useParams } from "react-router-dom";
+import { NavigateToExternalUrl } from "./NavigateToExternalUrl";
 import { useCreateTemplateFromTemplate } from "../queries/template-queries";
 import { useAppServices } from "./AppServicesContext";
 import { LoadingScreen } from "./LoadingScreen";
@@ -33,7 +34,7 @@ export const CreateTemplateFromTemplate = () => {
       "Error creating template from template",
       error || data
     );
-    window.location.href = templatesUrl;
+    return <NavigateToExternalUrl to={templatesUrl} />;
   }
 
   return <LoadingScreen />;
