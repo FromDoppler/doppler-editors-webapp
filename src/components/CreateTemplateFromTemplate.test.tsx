@@ -6,6 +6,7 @@ import { AppServicesProvider } from "./AppServicesContext";
 import { AppServices } from "../abstractions";
 import { InitialEntry } from "history";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { defaultAppConfiguration } from "../default-configuration";
 
 function createTestContext() {
   const templatesUrl = "https://dopplerexternalurls.templates/";
@@ -44,6 +45,7 @@ function createTestContext() {
   const appServices = {
     htmlEditorApiClient: htmlEditorApiClientDouble,
     appConfiguration: {
+      ...defaultAppConfiguration,
       dopplerExternalUrls: {
         templates: templatesUrl,
       },
