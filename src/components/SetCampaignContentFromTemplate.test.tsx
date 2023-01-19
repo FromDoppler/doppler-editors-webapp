@@ -90,7 +90,8 @@ describe(SetCampaignContentFromTemplate.name, () => {
     const idCampaign = "123";
     const idTemplate = "456";
     const initialPath = `/campaigns/${idCampaign}/set-content-from-template/${idTemplate}`;
-    const initialSearch = "?abc=cde&x=true";
+    const initialSearch =
+      "?abc=cde&exit=https%3A%2F%2Fexternalurl.fromdoppler.net%2Fexit";
     const initialUrl = `${initialPath}${initialSearch}`;
     const expectedPath = `/campaigns/${idCampaign}`;
 

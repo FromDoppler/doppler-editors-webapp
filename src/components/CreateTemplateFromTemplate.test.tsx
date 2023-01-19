@@ -111,7 +111,8 @@ describe(CreateTemplateFromTemplate.name, () => {
     // Arrange
     const idTemplate = "456";
     const initialPath = `/templates/create-from-template/${idTemplate}`;
-    const initialSearch = "?abc=cde&x=true";
+    const initialSearch =
+      "?abc=cde&exit=https%3A%2F%2Fexternalurl.fromdoppler.net%2Fexit";
     const initialUrl = `${initialPath}${initialSearch}`;
 
     const {
