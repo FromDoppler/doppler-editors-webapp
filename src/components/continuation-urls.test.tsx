@@ -13,11 +13,13 @@ type ContinuationUrlsResult = { nextUrl?: string; exitUrl?: string };
 function buildTestScenario({
   currentRouterEntry,
   dopplerLegacyBaseUrl,
+  templatesExternalUrl,
   campaignsExternalUrl,
   useHookUnderTesting,
 }: {
   currentRouterEntry: string;
   dopplerLegacyBaseUrl: string;
+  templatesExternalUrl: string;
   campaignsExternalUrl: string;
   useHookUnderTesting: () => ContinuationUrlsResult;
 }) {
@@ -40,6 +42,7 @@ function buildTestScenario({
                 dopplerExternalUrls: {
                   ...defaultAppConfiguration.dopplerExternalUrls,
                   campaigns: campaignsExternalUrl,
+                  templates: templatesExternalUrl,
                 },
               },
             } as AppServices
@@ -58,6 +61,8 @@ function buildTestScenario({
 }
 
 const dopplerLegacyBaseUrl = "https://app.legacyBaseUrl.fromdoppler.net";
+const templatesExternalUrl =
+  "https://app.legacyBaseUrl.fromdoppler.net/Templates/Main";
 const idCampaign = "123";
 const campaignsExternalUrl =
   "https://app.legacyBaseUrl.fromdoppler.net/Campaigns/Draft/";
@@ -122,6 +127,7 @@ describe(useTemplatesContinuationUrls.name, () => {
       const { renderAndGetContinuationUrls } = buildTestScenario({
         currentRouterEntry,
         dopplerLegacyBaseUrl,
+        templatesExternalUrl,
         campaignsExternalUrl,
         useHookUnderTesting: useTemplatesContinuationUrls,
       });
@@ -231,6 +237,7 @@ describe(useCampaignContinuationUrls.name, () => {
       const { renderAndGetContinuationUrls } = buildTestScenario({
         currentRouterEntry,
         dopplerLegacyBaseUrl,
+        templatesExternalUrl,
         campaignsExternalUrl,
         useHookUnderTesting: () => useCampaignContinuationUrls(idCampaign),
       });

@@ -76,10 +76,10 @@ function useDefaultCampaignContinuationUrls() {
 
 function useDefaultTemplateContinuationUrls() {
   const {
-    appConfiguration: { dopplerLegacyBaseUrl },
+    appConfiguration: {
+      dopplerExternalUrls: { templates: templatesUrl },
+    },
   } = useAppServices();
-
-  const templatesUrl = `${dopplerLegacyBaseUrl}/Templates/Main`;
 
   return { nextUrl: templatesUrl, exitUrl: templatesUrl };
 }
