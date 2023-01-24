@@ -12,6 +12,7 @@ export type AppConfiguration = {
   readonly dopplerRestApiBaseUrl: string;
   readonly useDummies: boolean;
   readonly dopplerExternalUrls: dopplerExternalUrls;
+  readonly dopplerUrlRegex: RegExp;
 };
 
 export type dopplerExternalUrls = {

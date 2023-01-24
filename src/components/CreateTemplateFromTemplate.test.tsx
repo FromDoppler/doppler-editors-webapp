@@ -6,6 +6,7 @@ import { AppServicesProvider } from "./AppServicesContext";
 import { AppServices } from "../abstractions";
 import { InitialEntry } from "history";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { defaultAppConfiguration } from "../default-configuration";
 
 function createTestContext() {
   const templatesUrl = "https://dopplerexternalurls.templates/";
@@ -44,6 +45,7 @@ function createTestContext() {
   const appServices = {
     htmlEditorApiClient: htmlEditorApiClientDouble,
     appConfiguration: {
+      ...defaultAppConfiguration,
       dopplerExternalUrls: {
         templates: templatesUrl,
       },
@@ -109,7 +111,8 @@ describe(CreateTemplateFromTemplate.name, () => {
     // Arrange
     const idTemplate = "456";
     const initialPath = `/templates/create-from-template/${idTemplate}`;
-    const initialSearch = "?abc=cde&x=true";
+    const initialSearch =
+      "?abc=cde&exit=https%3A%2F%2Fexternalurl.fromdoppler.net%2Fexit";
     const initialUrl = `${initialPath}${initialSearch}`;
 
     const {
@@ -148,11 +151,68 @@ describe(CreateTemplateFromTemplate.name, () => {
     ).toHaveBeenCalledTimes(1);
   });
 
-  it("should show error and redirect when API call fails", async () => {
+  it(
+    "should show error and redirect to templates URL" +
+      "when API call fails and exit parameter is not set",
+    async () => {
+      // Arrange
+      const idTemplate = "456";
+      const initialPath = `/templates/create-from-template/${idTemplate}`;
+      const initialSearch = "?abc=cde&x=true";
+      const initialUrl = `${initialPath}${initialSearch}`;
+
+      const {
+        renderTest,
+        locationRef,
+        htmlEditorApiClientDouble,
+        windowDouble,
+        setHref,
+        templatesUrl,
+      } = createTestContext();
+
+      const errorMessage = "ErrorMessage";
+      htmlEditorApiClientDouble.createTemplateFromTemplate.mockRejectedValue(
+        new Error(errorMessage)
+      );
+
+      // Act
+      renderTest(initialUrl);
+
+      // Assert
+      expect(locationRef.value?.pathname).toBe(initialPath);
+      expect(locationRef.value?.search).toBe(initialSearch);
+      screen.getByTestId("loading-screen");
+
+      await waitFor(() => {
+        expect(
+          htmlEditorApiClientDouble.createTemplateFromTemplate
+        ).toHaveBeenCalledWith(idTemplate);
+      });
+
+      await waitFor(() => {
+        expect(windowDouble.console.error).toHaveBeenCalledWith(
+          "Error creating template from template",
+          expect.objectContaining({ message: errorMessage })
+        );
+      });
+
+      expect(setHref).toHaveBeenCalledTimes(1);
+      expect(setHref).toHaveBeenCalledWith(templatesUrl);
+
+      expect(windowDouble.console.error).toHaveBeenCalledTimes(1);
+      expect(
+        htmlEditorApiClientDouble.createTemplateFromTemplate
+      ).toHaveBeenCalledTimes(1);
+    }
+  );
+
+  it("should show error and redirect to exit URL when API call fails and exit parameter is set", async () => {
     // Arrange
     const idTemplate = "456";
     const initialPath = `/templates/create-from-template/${idTemplate}`;
-    const initialSearch = "?abc=cde&x=true";
+    const initialSearch =
+      "?abc=cde&x=true&exit=https%3A%2F%2Fexternalurl.fromdoppler.net%2Fexit";
+    const expectedRedirectUrl = "https://externalurl.fromdoppler.net/exit";
     const initialUrl = `${initialPath}${initialSearch}`;
 
     const {
@@ -161,7 +221,6 @@ describe(CreateTemplateFromTemplate.name, () => {
       htmlEditorApiClientDouble,
       windowDouble,
       setHref,
-      templatesUrl,
     } = createTestContext();
 
     const errorMessage = "ErrorMessage";
@@ -191,7 +250,7 @@ describe(CreateTemplateFromTemplate.name, () => {
     });
 
     expect(setHref).toHaveBeenCalledTimes(1);
-    expect(setHref).toHaveBeenCalledWith(templatesUrl);
+    expect(setHref).toHaveBeenCalledWith(expectedRedirectUrl);
 
     expect(windowDouble.console.error).toHaveBeenCalledTimes(1);
     expect(
