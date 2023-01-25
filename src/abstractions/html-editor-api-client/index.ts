@@ -24,4 +24,8 @@ export interface HtmlEditorApiClient {
   createTemplateFromTemplate: (
     baseTemplateId: string
   ) => Promise<Result<{ newTemplateId: string }>>;
+
+  createPrivateTemplate: (
+    template: TemplateContent
+  ) => Promise<Result<{ newTemplateId: string }>>;
 }
