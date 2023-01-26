@@ -8,6 +8,7 @@ import { Content } from "../abstractions/domain/content";
 import { Footer } from "./Footer";
 import { EditorBottomBar } from "./EditorBottomBar";
 import { useTemplatesContinuationUrls } from "./continuation-urls";
+import { FormattedMessage } from "react-intl";
 
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
@@ -60,13 +61,20 @@ export const Template = () => {
           <Header>
             <EditorTopBar
               data-testid={editorTopBarTestId}
-              onSave={save}
               title={
                 templateQuery.data?.templateName
                   ? templateQuery.data.templateName
                   : ""
               }
-            />
+            >
+              <button
+                type="button"
+                onClick={save}
+                className="dp-button button-medium primary-green"
+              >
+                <FormattedMessage id="save" />
+              </button>
+            </EditorTopBar>
           </Header>
           <Footer>
             <EditorBottomBar {...continuationUrls}></EditorBottomBar>

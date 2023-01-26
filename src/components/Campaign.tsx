@@ -11,11 +11,15 @@ import { EditorBottomBar } from "./EditorBottomBar";
 import { Content } from "../abstractions/domain/content";
 import { LoadingScreen } from "./LoadingScreen";
 import { useCampaignContinuationUrls } from "./continuation-urls";
+import { FormattedMessage } from "react-intl";
+import { SaveAsTemplateModal } from "./SaveAsTemplateModal";
+import { useState } from "react";
 
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
 
 export const Campaign = () => {
+  const [isOpen, setOpen] = useState(false);
   const { idCampaign } = useParams() as Readonly<{
     idCampaign: string;
   }>;
@@ -53,13 +57,43 @@ export const Campaign = () => {
           <Header>
             <EditorTopBar
               data-testid={editorTopBarTestId}
-              onSave={save}
               title={
                 campaignContentQuery.data?.campaignName
                   ? campaignContentQuery.data.campaignName
                   : ""
               }
-            />
+            >
+              <ul className="ed-header-list">
+                {campaignContentQuery.data?.type === "unlayer" ? (
+                  <li>
+                    <button
+                      type="button"
+                      onClick={() => setOpen(true)}
+                      className="dp-button button-medium primary-green"
+                    >
+                      <FormattedMessage id="save_template" />
+                    </button>
+                    <SaveAsTemplateModal
+                      isOpen={isOpen}
+                      content={campaignContentQuery.data}
+                      defaultName={campaignContentQuery.data.campaignName}
+                      close={() => setOpen(false)}
+                    />
+                  </li>
+                ) : (
+                  false
+                )}
+                <li>
+                  <button
+                    type="button"
+                    onClick={save}
+                    className="dp-button button-medium primary-green"
+                  >
+                    <FormattedMessage id="save" />
+                  </button>
+                </li>
+              </ul>
+            </EditorTopBar>
           </Header>
           <Footer>
             <EditorBottomBar {...continuationUrls}></EditorBottomBar>

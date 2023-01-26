@@ -6,7 +6,7 @@ type HtmlContent = {
   type: "html";
 };
 
-type UnlayerContent = {
+export type UnlayerContent = {
   htmlContent: string;
   design: Design;
   previewImage: string;

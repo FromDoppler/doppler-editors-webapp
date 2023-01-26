@@ -25,7 +25,7 @@ describe(EditorTopBar.name, () => {
     render(
       <TestDopplerIntlProvider>
         <AppServicesProvider appServices={appServices}>
-          <EditorTopBar onSave={() => {}}></EditorTopBar>
+          <EditorTopBar />
         </AppServicesProvider>
       </TestDopplerIntlProvider>
     );
@@ -41,7 +41,7 @@ describe(EditorTopBar.name, () => {
     render(
       <TestDopplerIntlProvider>
         <AppServicesProvider appServices={appServices}>
-          <EditorTopBar onSave={() => {}}></EditorTopBar>
+          <EditorTopBar />
         </AppServicesProvider>
       </TestDopplerIntlProvider>
     );
@@ -63,7 +63,7 @@ describe(EditorTopBar.name, () => {
     render(
       <AppServicesProvider appServices={appServices}>
         <TestDopplerIntlProvider>
-          <EditorTopBar onSave={() => {}}></EditorTopBar>
+          <EditorTopBar />
         </TestDopplerIntlProvider>
       </AppServicesProvider>
     );

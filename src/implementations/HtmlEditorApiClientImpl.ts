@@ -178,4 +178,15 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
       value: { newTemplateId: result.data.createdResourceId },
     };
   }
+
+  async createPrivateTemplate(
+    template: TemplateContent
+  ): Promise<Result<{ newTemplateId: string }>> {
+    const body = {};
+    const result = await this.POST(`/templates`, body);
+    return {
+      success: true,
+      value: { newTemplateId: result.data.createdResourceId },
+    };
+  }
 }

@@ -2,15 +2,16 @@ import { DropdownButton } from "./DropdownButton";
 import "./EditorTopBar.css";
 import { useAppServices } from "./AppServicesContext";
 import { FormattedMessage, useIntl } from "react-intl";
+import { ReactNode } from "react";
 
 interface EditorTopBarProps {
-  onSave: () => void;
   title?: string;
+  children?: ReactNode;
 }
 
 export const EditorTopBar = ({
-  onSave,
   title,
+  children,
   ...otherProps
 }: EditorTopBarProps) => {
   const {
@@ -43,14 +44,7 @@ export const EditorTopBar = ({
         <li>
           <h2>{title}</h2>
         </li>
-        <li>
-          <button
-            onClick={onSave}
-            className="dp-button button-medium primary-green"
-          >
-            <FormattedMessage id="save" />
-          </button>
-        </li>
+        {children ? <li>{children}</li> : false}
       </ul>
     </div>
   );

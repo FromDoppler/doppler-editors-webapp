@@ -9,6 +9,7 @@ import { AppServicesProvider } from "./components/AppServicesContext";
 import { AppSessionStateProvider } from "./components/AppSessionStateContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DopplerIntlProvider } from "./components/i18n/DopplerIntlProvider";
+import ReactModal from "react-modal";
 
 const customConfiguration =
   (window as any)["editors-webapp-configuration"] || {};
@@ -23,6 +24,8 @@ const queryClient = new QueryClient();
 const container = document.getElementById(
   appServices.appConfiguration.appElementId
 );
+
+ReactModal.setAppElement("#root-apps");
 
 // TODO: replace render with createRoot
 //     const root = createRoot(container!);

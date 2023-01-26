@@ -58,3 +58,11 @@ export const useCreateTemplateFromTemplate = () => {
 
   return useMutation(createTemplate);
 };
+
+export const useCreatePrivateTemplate = () => {
+  const { htmlEditorApiClient } = useAppServices();
+  const createTemplate = (templateContent: TemplateContent) =>
+    htmlEditorApiClient.createPrivateTemplate(templateContent);
+
+  return useMutation(createTemplate);
+};
