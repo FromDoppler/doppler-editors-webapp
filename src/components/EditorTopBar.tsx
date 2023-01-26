@@ -44,7 +44,7 @@ export const EditorTopBar = ({
         <li>
           <h2>{title}</h2>
         </li>
-        {children ? <li>{children}</li> : ""}
+        {children ? <li>{children}</li> : false}
       </ul>
     </div>
   );

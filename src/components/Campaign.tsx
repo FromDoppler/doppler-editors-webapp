@@ -64,27 +64,25 @@ export const Campaign = () => {
               }
             >
               <ul className="ed-header-list">
-                <li>
-                  {campaignContentQuery.data?.type === "unlayer" ? (
-                    <>
-                      <button
-                        type="button"
-                        onClick={() => setOpen(true)}
-                        className="dp-button button-medium primary-green"
-                      >
-                        <FormattedMessage id="save_template" />
-                      </button>
-                      <SaveAsTemplateModal
-                        isOpen={isOpen}
-                        content={campaignContentQuery.data}
-                        defaultName={campaignContentQuery.data.campaignName}
-                        onClose={() => setOpen(false)}
-                      />
-                    </>
-                  ) : (
-                    ""
-                  )}
-                </li>
+                {campaignContentQuery.data?.type === "unlayer" ? (
+                  <li>
+                    <button
+                      type="button"
+                      onClick={() => setOpen(true)}
+                      className="dp-button button-medium primary-green"
+                    >
+                      <FormattedMessage id="save_template" />
+                    </button>
+                    <SaveAsTemplateModal
+                      isOpen={isOpen}
+                      content={campaignContentQuery.data}
+                      defaultName={campaignContentQuery.data.campaignName}
+                      close={() => setOpen(false)}
+                    />
+                  </li>
+                ) : (
+                  false
+                )}
                 <li>
                   <button
                     type="button"

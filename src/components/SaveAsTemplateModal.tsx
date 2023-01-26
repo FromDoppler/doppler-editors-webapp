@@ -5,14 +5,14 @@ import { UnlayerContent } from "../abstractions/domain/content";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 interface SaveAsTemplateModalProps {
-  onClose: () => void;
+  close: () => void;
   content: UnlayerContent;
   defaultName?: string;
   isOpen: boolean;
 }
 
 export const SaveAsTemplateModal = ({
-  onClose,
+  close,
   isOpen,
   content,
   defaultName,
@@ -35,7 +35,7 @@ export const SaveAsTemplateModal = ({
             type="button"
             name="ok"
             className="dp-button button-medium primary-green"
-            onClick={onClose}
+            onClick={close}
           >
             <FormattedMessage id="accept"></FormattedMessage>
           </button>
@@ -87,7 +87,7 @@ export const SaveAsTemplateModal = ({
             type="button"
             name="cancel"
             className="dp-button button-medium primary-grey"
-            onClick={onClose}
+            onClick={close}
           >
             <FormattedMessage id="cancel"></FormattedMessage>
           </button>
@@ -109,17 +109,16 @@ export const SaveAsTemplateModal = ({
   return (
     <ReactModal
       isOpen={isOpen}
-      onRequestClose={onClose}
+      onRequestClose={close}
       className="modal-content--medium"
       overlayClassName="modal"
       portalClassName="dp-library"
-      shouldFocusAfterRender={false}
     >
       <button
         className="close dp-button"
         type="button"
         name="close-modal"
-        onClick={onClose}
+        onClick={close}
       ></button>
       <div>
         <h2 className="modal-title">
