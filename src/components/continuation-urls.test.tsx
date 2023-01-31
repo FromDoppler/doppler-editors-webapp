@@ -8,22 +8,20 @@ import {
   useTemplatesContinuationUrls,
 } from "./continuation-urls";
 
-type ContinuationUrlsResult = { nextUrl?: string; exitUrl?: string };
+const dopplerLegacyBaseUrl = "https://app.legacyBaseUrl.fromdoppler.net";
+const templatesExternalUrl =
+  "https://app.legacyBaseUrl.fromdoppler.net/Templates/Main";
+const campaignsExternalUrl =
+  "https://app.legacyBaseUrl.fromdoppler.net/Campaigns/Draft/";
 
-function buildTestScenario({
+function buildTestScenario<T>({
   currentRouterEntry,
-  dopplerLegacyBaseUrl,
-  templatesExternalUrl,
-  campaignsExternalUrl,
   useHookUnderTesting,
 }: {
   currentRouterEntry: string;
-  dopplerLegacyBaseUrl: string;
-  templatesExternalUrl: string;
-  campaignsExternalUrl: string;
-  useHookUnderTesting: () => ContinuationUrlsResult;
+  useHookUnderTesting: () => T;
 }) {
-  let result: ContinuationUrlsResult = {};
+  let result: Partial<T> = {};
 
   const TestComponent = () => {
     result = useHookUnderTesting();
@@ -60,12 +58,7 @@ function buildTestScenario({
   };
 }
 
-const dopplerLegacyBaseUrl = "https://app.legacyBaseUrl.fromdoppler.net";
-const templatesExternalUrl =
-  "https://app.legacyBaseUrl.fromdoppler.net/Templates/Main";
 const idCampaign = "123";
-const campaignsExternalUrl =
-  "https://app.legacyBaseUrl.fromdoppler.net/Campaigns/Draft/";
 
 describe(useTemplatesContinuationUrls.name, () => {
   it.each([
@@ -126,9 +119,6 @@ describe(useTemplatesContinuationUrls.name, () => {
       // Arrange
       const { renderAndGetContinuationUrls } = buildTestScenario({
         currentRouterEntry,
-        dopplerLegacyBaseUrl,
-        templatesExternalUrl,
-        campaignsExternalUrl,
         useHookUnderTesting: useTemplatesContinuationUrls,
       });
 
@@ -236,9 +226,6 @@ describe(useCampaignContinuationUrls.name, () => {
       // Arrange
       const { renderAndGetContinuationUrls } = buildTestScenario({
         currentRouterEntry,
-        dopplerLegacyBaseUrl,
-        templatesExternalUrl,
-        campaignsExternalUrl,
         useHookUnderTesting: () => useCampaignContinuationUrls(idCampaign),
       });
 
