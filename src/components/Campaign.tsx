@@ -8,7 +8,7 @@ import {
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { EditorBottomBar } from "./EditorBottomBar";
-import { Content } from "../abstractions/domain/content";
+import { Content, UnlayerContent } from "../abstractions/domain/content";
 import { LoadingScreen } from "./LoadingScreen";
 import { useCampaignContinuationUrls } from "./continuation-urls";
 import { FormattedMessage } from "react-intl";
@@ -19,7 +19,11 @@ export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
 
 export const Campaign = () => {
-  const [isOpen, setOpen] = useState(false);
+  const [contentToExportAsTemplate, setContentToExportAsTemplate] =
+    useState<UnlayerContent>();
+  const [isExportAsTemplateModalOpen, setIsExportAsTemplateModalOpen] =
+    useState(false);
+  const [isExportingAsTemplate, setIsExportingAsTemplate] = useState(false);
   const { idCampaign } = useParams() as Readonly<{
     idCampaign: string;
   }>;
@@ -27,7 +31,7 @@ export const Campaign = () => {
   const campaignContentQuery = useGetCampaignContent(idCampaign);
   const campaignContentMutation = useUpdateCampaignContent();
 
-  const { save } = useSingletonEditor(
+  const { save, exportContent } = useSingletonEditor(
     {
       initialContent: campaignContentQuery.data,
       onSave: (content: Content) => {
@@ -47,6 +51,22 @@ export const Campaign = () => {
       </div>
     );
   }
+
+  const closeExportModal = () => {
+    setIsExportAsTemplateModalOpen(false);
+    setContentToExportAsTemplate(undefined);
+  };
+
+  const openExportModal = async () => {
+    setIsExportingAsTemplate(true);
+    try {
+      const content = await exportContent();
+      setContentToExportAsTemplate(content);
+    } finally {
+      setIsExportAsTemplateModalOpen(true);
+      setIsExportingAsTemplate(false);
+    }
+  };
 
   return (
     <>
@@ -68,17 +88,24 @@ export const Campaign = () => {
                   <li>
                     <button
                       type="button"
-                      onClick={() => setOpen(true)}
-                      className="dp-button button-medium primary-green"
+                      onClick={openExportModal}
+                      disabled={isExportingAsTemplate}
+                      className={`dp-button button-medium primary-green ${
+                        isExportingAsTemplate ? "button--loading" : ""
+                      }`}
                     >
                       <FormattedMessage id="save_template" />
                     </button>
-                    <SaveAsTemplateModal
-                      isOpen={isOpen}
-                      content={campaignContentQuery.data}
-                      defaultName={campaignContentQuery.data.campaignName}
-                      close={() => setOpen(false)}
-                    />
+                    {contentToExportAsTemplate ? (
+                      <SaveAsTemplateModal
+                        isOpen={isExportAsTemplateModalOpen}
+                        content={contentToExportAsTemplate}
+                        defaultName={campaignContentQuery.data.campaignName}
+                        close={() => closeExportModal()}
+                      />
+                    ) : (
+                      false
+                    )}
                   </li>
                 ) : (
                   false
