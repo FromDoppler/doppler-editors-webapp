@@ -1,6 +1,6 @@
 import { useAppServices } from "./AppServicesContext";
 import { useAppSessionState } from "./AppSessionStateContext";
-import { NavigateToExternalUrl } from "./NavigateToExternalUrl";
+import { NavigateToExternalUrl } from "./smart-urls";
 import { LoadingScreen } from "./LoadingScreen";
 
 export const RequireAuth = ({ children }: { children: JSX.Element }) => {

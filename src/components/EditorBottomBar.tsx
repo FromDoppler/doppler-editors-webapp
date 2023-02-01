@@ -1,5 +1,6 @@
 import "./EditorBottomBar.css";
 import { FormattedMessage } from "react-intl";
+import { LinkSmart } from "./smart-urls";
 
 interface EditorBottomBarProps {
   nextUrl: string;
@@ -13,16 +14,15 @@ export const EditorBottomBar = ({
 }: EditorBottomBarProps) => {
   return (
     <div className="ed-cta-footer" {...otherProps}>
-      <a
-        type="button"
+      <LinkSmart
         className="dp-button button-medium secondary-green"
-        href={exitUrl}
+        to={exitUrl}
       >
         <FormattedMessage id="exit_edit_later" />
-      </a>
-      <a className="dp-button button-medium primary-green" href={nextUrl}>
+      </LinkSmart>
+      <LinkSmart className="dp-button button-medium primary-green" to={nextUrl}>
         <FormattedMessage id="continue" />
-      </a>
+      </LinkSmart>
     </div>
   );
 };

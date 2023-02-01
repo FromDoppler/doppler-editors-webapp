@@ -1,8 +1,9 @@
 import { useEffect } from "react";
-import { Navigate, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useUpdateCampaignContentFromTemplate } from "../queries/campaign-content-queries";
 import { useAppServices } from "./AppServicesContext";
 import { LoadingScreen } from "./LoadingScreen";
+import { NavigateSmart } from "./smart-urls";
 
 export const SetCampaignContentFromTemplate = () => {
   const { idCampaign, idTemplate } = useParams() as Readonly<{
@@ -33,5 +34,5 @@ export const SetCampaignContentFromTemplate = () => {
   }
 
   const campaignUrl = `/campaigns/${idCampaign}${search}`;
-  return <Navigate to={campaignUrl} replace={true} />;
+  return <NavigateSmart to={campaignUrl} replace={true} />;
 };
