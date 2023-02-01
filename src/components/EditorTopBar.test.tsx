@@ -1,18 +1,19 @@
 import { render, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
+import { MemoryRouter } from "react-router-dom";
 import { AppServicesProvider } from "./AppServicesContext";
 import { EditorTopBar } from "./EditorTopBar";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 
 const appConfiguration = {
   dopplerExternalUrls: {
-    home: "homeUrl",
-    campaigns: "campaignUrl",
-    lists: "listsUrl",
-    controlPanel: "controlPanelUrl",
-    automation: "automationUrl",
-    templates: "templatesUrl",
-    integrations: "integrationsUrl",
+    home: "https://external.fromdoppler.net/homeUrl",
+    campaigns: "https://external.fromdoppler.net/campaignUrl",
+    lists: "https://external.fromdoppler.net/listsUrl",
+    controlPanel: "https://external.fromdoppler.net/controlPanelUrl",
+    automation: "https://external.fromdoppler.net/automationUrl",
+    templates: "https://external.fromdoppler.net/templatesUrl",
+    integrations: "https://external.fromdoppler.net/integrationsUrl",
   },
 };
 
@@ -23,11 +24,13 @@ describe(EditorTopBar.name, () => {
 
     // Act
     render(
-      <TestDopplerIntlProvider>
-        <AppServicesProvider appServices={appServices}>
-          <EditorTopBar />
-        </AppServicesProvider>
-      </TestDopplerIntlProvider>
+      <MemoryRouter>
+        <TestDopplerIntlProvider>
+          <AppServicesProvider appServices={appServices}>
+            <EditorTopBar />
+          </AppServicesProvider>
+        </TestDopplerIntlProvider>
+      </MemoryRouter>
     );
 
     // Assert
@@ -39,11 +42,13 @@ describe(EditorTopBar.name, () => {
     const appServices = { appConfiguration } as any;
 
     render(
-      <TestDopplerIntlProvider>
-        <AppServicesProvider appServices={appServices}>
-          <EditorTopBar />
-        </AppServicesProvider>
-      </TestDopplerIntlProvider>
+      <MemoryRouter>
+        <TestDopplerIntlProvider>
+          <AppServicesProvider appServices={appServices}>
+            <EditorTopBar />
+          </AppServicesProvider>
+        </TestDopplerIntlProvider>
+      </MemoryRouter>
     );
 
     expect(screen.getByText("home")).toBeNull;
@@ -61,11 +66,13 @@ describe(EditorTopBar.name, () => {
 
     // Act
     render(
-      <AppServicesProvider appServices={appServices}>
-        <TestDopplerIntlProvider>
-          <EditorTopBar />
-        </TestDopplerIntlProvider>
-      </AppServicesProvider>
+      <MemoryRouter>
+        <AppServicesProvider appServices={appServices}>
+          <TestDopplerIntlProvider>
+            <EditorTopBar />
+          </TestDopplerIntlProvider>
+        </AppServicesProvider>
+      </MemoryRouter>
     );
 
     act(() => screen.getByText("exit_editor").click());

@@ -3,6 +3,7 @@ import "./EditorTopBar.css";
 import { useAppServices } from "./AppServicesContext";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ReactNode } from "react";
+import { LinkSmart } from "./smart-urls";
 
 interface EditorTopBarProps {
   title?: string;
@@ -27,18 +28,18 @@ export const EditorTopBar = ({
           <DropdownButton
             buttonText={intl.formatMessage({ id: "exit_editor" })}
           >
-            <a href={dopplerExternalUrls.home}>
+            <LinkSmart to={dopplerExternalUrls.home}>
               <FormattedMessage id="home" />
-            </a>
-            <a href={dopplerExternalUrls.campaigns}>
+            </LinkSmart>
+            <LinkSmart to={dopplerExternalUrls.campaigns}>
               <FormattedMessage id="campaigns" />
-            </a>
-            <a href={dopplerExternalUrls.lists}>
+            </LinkSmart>
+            <LinkSmart to={dopplerExternalUrls.lists}>
               <FormattedMessage id="lists" />
-            </a>
-            <a href={dopplerExternalUrls.controlPanel}>
+            </LinkSmart>
+            <LinkSmart to={dopplerExternalUrls.controlPanel}>
               <FormattedMessage id="control_panel" />
-            </a>
+            </LinkSmart>
           </DropdownButton>
         </li>
         <li>

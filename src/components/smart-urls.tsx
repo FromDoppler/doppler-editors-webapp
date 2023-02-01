@@ -1,5 +1,5 @@
 import { useLayoutEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAppServices } from "./AppServicesContext";
 
 const absoluteUrlRegex = /^(?:[a-z]+:)?\/\//;
@@ -26,4 +26,23 @@ export const NavigateSmart = ({
     <NavigateToExternalUrl to={to} />
   ) : (
     <Navigate to={to} replace={replace} />
+  );
+
+export const LinkSmart = ({
+  to,
+  replace,
+  children,
+  ...others
+}: { to: string; replace?: boolean } & Omit<
+  React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  "href"
+>) =>
+  absoluteUrlRegex.test(to) ? (
+    <a href={to} {...others}>
+      {children}
+    </a>
+  ) : (
+    <Link to={to} replace={replace} {...others}>
+      {children}
+    </Link>
   );

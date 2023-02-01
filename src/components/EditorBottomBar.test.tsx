@@ -2,7 +2,8 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { EditorBottomBar } from "./EditorBottomBar";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
-import { useAppServices, AppServicesProvider } from "./AppServicesContext";
+import { AppServicesProvider } from "./AppServicesContext";
+import { MemoryRouter } from "react-router-dom";
 
 const appConfiguration = {
   dopplerLegacyBaseUrl: "https://appint.fromdoppler.net",
@@ -16,9 +17,14 @@ describe(EditorBottomBar.name, () => {
 
     // Act
     render(
-      <TestDopplerIntlProvider>
-        <EditorBottomBar nextUrl={nextUrl} exitUrl={exitUrl}></EditorBottomBar>
-      </TestDopplerIntlProvider>
+      <MemoryRouter>
+        <TestDopplerIntlProvider>
+          <EditorBottomBar
+            nextUrl={nextUrl}
+            exitUrl={exitUrl}
+          ></EditorBottomBar>
+        </TestDopplerIntlProvider>
+      </MemoryRouter>
     );
 
     // Assert
@@ -32,9 +38,14 @@ describe(EditorBottomBar.name, () => {
 
     // Act
     render(
-      <TestDopplerIntlProvider>
-        <EditorBottomBar nextUrl={nextUrl} exitUrl={exitUrl}></EditorBottomBar>
-      </TestDopplerIntlProvider>
+      <MemoryRouter>
+        <TestDopplerIntlProvider>
+          <EditorBottomBar
+            nextUrl={nextUrl}
+            exitUrl={exitUrl}
+          ></EditorBottomBar>
+        </TestDopplerIntlProvider>
+      </MemoryRouter>
     );
 
     // Assert
@@ -45,19 +56,21 @@ describe(EditorBottomBar.name, () => {
     // Arrange
     const appServices = { appConfiguration } as any;
 
-    const nextUrl = "nextUrl";
-    const exitUrl = "exitUrl";
+    const nextUrl = "https://external.fromdoppler.net/nextUrl";
+    const exitUrl = "https://external.fromdoppler.net/exitUrl";
 
     // Act
     render(
-      <AppServicesProvider appServices={appServices}>
-        <TestDopplerIntlProvider>
-          <EditorBottomBar
-            nextUrl={nextUrl}
-            exitUrl={exitUrl}
-          ></EditorBottomBar>
-        </TestDopplerIntlProvider>
-      </AppServicesProvider>
+      <MemoryRouter>
+        <AppServicesProvider appServices={appServices}>
+          <TestDopplerIntlProvider>
+            <EditorBottomBar
+              nextUrl={nextUrl}
+              exitUrl={exitUrl}
+            ></EditorBottomBar>
+          </TestDopplerIntlProvider>
+        </AppServicesProvider>
+      </MemoryRouter>
     );
 
     const nextButton = screen.getByText("continue");
