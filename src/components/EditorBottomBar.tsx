@@ -14,7 +14,6 @@ export const EditorBottomBar = ({
   return (
     <div className="ed-cta-footer" {...otherProps}>
       <a
-        type="button"
         className="dp-button button-medium secondary-green"
         href={exitUrl}
       >
