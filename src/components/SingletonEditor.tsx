@@ -8,7 +8,7 @@ import {
 } from "react";
 import { Editor } from "./Editor";
 import EmailEditor, { Design } from "react-email-editor";
-import { Content } from "../abstractions/domain/content";
+import { Content, UnlayerContent } from "../abstractions/domain/content";
 import { promisifyFunctionWithoutError } from "../utils";
 import { debounce } from "underscore";
 
@@ -102,6 +102,40 @@ export const useSingletonEditor = (
     [editorState, ...deps]
   );
 
+  //TODO: implement a better solution when occurs this error, maybe replace undefined return to objectError
+  const exportContent = async (): Promise<UnlayerContent | undefined> => {
+    if (!editorState.isLoaded) {
+      console.error("The editor is loading, can't save yet!");
+      return;
+    }
+
+    const exportHtml = promisifyFunctionWithoutError(
+      editorState.unlayer.exportHtml.bind(editorState.unlayer)
+    );
+    const exportImage = promisifyFunctionWithoutError(
+      editorState.unlayer.exportImage.bind(editorState.unlayer)
+    );
+
+    const [htmlExport, imageExport] = await Promise.all([
+      exportHtml(),
+      exportImage(),
+    ]);
+
+    if (!htmlExport.design) {
+      console.error("The model exported don´t contain design");
+      return;
+    }
+
+    const { design, html } = htmlExport;
+
+    return {
+      design,
+      htmlContent: html,
+      type: "unlayer",
+      previewImage: imageExport.url,
+    };
+  };
+
   const debounced = debounce(() => {
     saveHandler();
   }, AUTO_SAVE_INTERVAL);
@@ -159,7 +193,10 @@ export const useSingletonEditor = (
     // eslint-disable-next-line
   }, [...deps, setContent, saveHandler, editorState]);
 
-  return { save: () => saveHandler(true) };
+  return {
+    save: () => saveHandler(true),
+    exportContent,
+  };
 };
 
 export const SingletonEditorProvider = ({
