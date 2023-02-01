@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Navigate, useLocation, useParams } from "react-router-dom";
-import { NavigateToExternalUrl } from "./NavigateToExternalUrl";
+import { NavigateToExternalUrl } from "./smart-urls";
 import { useCreateTemplateFromTemplate } from "../queries/template-queries";
 import { useAppServices } from "./AppServicesContext";
 import { LoadingScreen } from "./LoadingScreen";
