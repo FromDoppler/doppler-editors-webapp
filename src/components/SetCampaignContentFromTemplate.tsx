@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useUpdateCampaignContentFromTemplate } from "../queries/campaign-content-queries";
 import { useAppServices } from "./AppServicesContext";
+import { useContinueUrl } from "./continuation-urls";
 import { LoadingScreen } from "./LoadingScreen";
 import { NavigateSmart } from "./smart-urls";
 
@@ -12,6 +13,9 @@ export const SetCampaignContentFromTemplate = () => {
   }>;
 
   const { search } = useLocation();
+  const { continueUrl } = useContinueUrl({
+    fallback: `/campaigns/${idCampaign}${search}`,
+  });
   const { window } = useAppServices();
   const { mutate, isError, isIdle, isLoading, isSuccess, data, error } =
     useUpdateCampaignContentFromTemplate();
@@ -33,6 +37,5 @@ export const SetCampaignContentFromTemplate = () => {
     window.console.error("Error creating campaign content from template", data);
   }
 
-  const campaignUrl = `/campaigns/${idCampaign}${search}`;
-  return <NavigateSmart to={campaignUrl} replace={true} />;
+  return <NavigateSmart to={continueUrl} replace={true} />;
 };
