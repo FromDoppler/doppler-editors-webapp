@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { Navigate, useLocation, useParams } from "react-router-dom";
-import { NavigateToExternalUrl } from "./smart-urls";
+import { useLocation, useParams } from "react-router-dom";
+import { NavigateSmart } from "./smart-urls";
 import { useCreateTemplateFromTemplate } from "../queries/template-queries";
 import { useAppServices } from "./AppServicesContext";
 import { LoadingScreen } from "./LoadingScreen";
@@ -24,7 +24,7 @@ export const CreateTemplateFromTemplate = () => {
 
   if (isSuccess && data?.success && data?.value?.newTemplateId) {
     const templateUrl = `/templates/${data?.value?.newTemplateId}${search}`;
-    return <Navigate to={templateUrl} replace={true} />;
+    return <NavigateSmart to={templateUrl} replace={true} />;
   }
 
   if (!isIdle && !isLoading) {
@@ -32,7 +32,7 @@ export const CreateTemplateFromTemplate = () => {
       "Error creating template from template",
       error || data
     );
-    return <NavigateToExternalUrl to={exitUrl} />;
+    return <NavigateSmart to={exitUrl} />;
   }
 
   return <LoadingScreen />;
