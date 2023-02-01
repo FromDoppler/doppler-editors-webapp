@@ -18,6 +18,19 @@ export function useCampaignContinuationUrls(idCampaign: string) {
   };
 }
 
+export function useContinueUrl({ fallback }: { fallback: string }) {
+  const {
+    appConfiguration: { dopplerUrlRegex },
+  } = useAppServices();
+  const [searchParams] = useSearchParams();
+
+  var continueUrl = searchParams.get("continue");
+
+  return continueUrl && dopplerUrlRegex.test(continueUrl)
+    ? { continueUrl }
+    : { continueUrl: fallback };
+}
+
 function useNextAndExitParametersContinuationUrls() {
   const {
     appConfiguration: { dopplerUrlRegex },

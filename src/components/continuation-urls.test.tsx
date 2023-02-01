@@ -5,6 +5,7 @@ import { defaultAppConfiguration } from "../default-configuration";
 import { AppServicesProvider } from "./AppServicesContext";
 import {
   useCampaignContinuationUrls,
+  useContinueUrl,
   useTemplatesContinuationUrls,
 } from "./continuation-urls";
 
@@ -235,6 +236,54 @@ describe(useCampaignContinuationUrls.name, () => {
       // Assert
       expect(nextUrl).toBe(expectedNextUrl);
       expect(exitUrl).toBe(expectedExitUrl);
+    }
+  );
+});
+
+describe(useContinueUrl, () => {
+  it.each([
+    {
+      scenario: "querystring is empty",
+      currentRouterEntry:
+        "https://webapp.formdoppler.net/123/set-content-from-template/456",
+      fallback: "/fallback",
+      expectedContinuationUrl: "/fallback",
+    },
+    {
+      scenario: "querystring contains a valid continue",
+      currentRouterEntry:
+        "https://webapp.formdoppler.net/editor" +
+        "?abc=cde" +
+        "&continue=https%3A%2F%2Ftest.fromdoppler.net%2Fsegment%3Fparameter%3Dvalue" +
+        "&exit=https%3A%2F%2Fexternalurl.fromdoppler.net%2Fexit",
+      fallback: "/fallback",
+      expectedContinuationUrl:
+        "https://test.fromdoppler.net/segment?parameter=value",
+    },
+    {
+      scenario: "querystring contains a invalid valid continue",
+      currentRouterEntry:
+        "https://webapp.formdoppler.net/editor" +
+        "?abc=cde" +
+        "&continue=https%3A%2F%2Ftest.invaliddomain.net%2Fsegment%3Fparameter%3Dvalue" +
+        "&exit=https%3A%2F%2Fexternalurl.fromdoppler.net%2Fexit",
+      fallback: "/fallback",
+      expectedContinuationUrl: "/fallback",
+    },
+  ])(
+    "should return continue URL based on querystring parameter when $scenario",
+    ({ currentRouterEntry, fallback, expectedContinuationUrl }) => {
+      // Arrange
+      const { renderAndGetContinuationUrls } = buildTestScenario({
+        currentRouterEntry,
+        useHookUnderTesting: () => useContinueUrl({ fallback }),
+      });
+
+      // Act
+      const { continueUrl } = renderAndGetContinuationUrls();
+
+      // Assert
+      expect(continueUrl).toBe(expectedContinuationUrl);
     }
   );
 });
