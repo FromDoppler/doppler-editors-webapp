@@ -234,4 +234,36 @@ describe(Template.name, () => {
       });
     });
   });
+
+  it("shouldn't show the export button", async () => {
+    // Arrange
+    const idTemplate = "1234";
+    const getTemplate = jest.fn(() =>
+      Promise.resolve({ success: true, value: { type: "unlayer" } })
+    );
+
+    const htmlEditorApiClient = {
+      getTemplate,
+    } as unknown as HtmlEditorApiClient;
+
+    // Act
+    renderEditor(
+      <QueryClientProvider client={createQueryClient()}>
+        <AppServicesProvider
+          appServices={{ ...baseAppServices, htmlEditorApiClient }}
+        >
+          <TestDopplerIntlProvider>
+            <MemoryRouter initialEntries={[`/${idTemplate}`]}>
+              <Routes>
+                <Route path="/:idTemplate" element={<Template />} />
+              </Routes>
+            </MemoryRouter>
+          </TestDopplerIntlProvider>
+        </AppServicesProvider>
+      </QueryClientProvider>
+    );
+
+    // Assert
+    expect(() => screen.getByRole("export_to_template")).toThrow();
+  });
 });
