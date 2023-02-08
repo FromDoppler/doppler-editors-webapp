@@ -395,7 +395,7 @@ describe(Campaign.name, () => {
     renderEditor(<DoubleEditorWithStateLoaded initialEntries={["/000"]} />);
 
     await waitFor(async () => {
-      const exportToTemplate = await screen.findByRole("export_to_template");
+      const exportToTemplate = await screen.findByText("save_template");
       act(() => exportToTemplate.click());
       await waitFor(() => expect(exportToTemplate).toBeDisabled());
     });
@@ -405,7 +405,7 @@ describe(Campaign.name, () => {
     // Act
     renderEditor(<DoubleEditorWithStateLoaded initialEntries={["/000"]} />);
 
-    const exportToTemplate = await screen.findByRole("export_to_template");
+    const exportToTemplate = await screen.findByText("save_template");
     await act(() => exportToTemplate.click());
     expect(await screen.findByRole("dialog")).toBeInTheDocument();
     expect(exportToTemplate).toBeEnabled();

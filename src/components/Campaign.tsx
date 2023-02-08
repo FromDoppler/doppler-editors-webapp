@@ -88,7 +88,6 @@ export const Campaign = () => {
                   <li>
                     <button
                       type="button"
-                      role="export_to_template"
                       onClick={openExportModal}
                       disabled={isExportingAsTemplate}
                       className={`dp-button button-medium primary-green ${
