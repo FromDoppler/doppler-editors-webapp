@@ -66,7 +66,7 @@ const DoubleEditorWithStateLoaded = ({
   initialEntries,
 }: SetEditorAsLoadedProps) => {
   const getCampaignContent = () =>
-    Promise.resolve({ success: true, value: {} });
+    Promise.resolve({ success: true, value: { type: "unlayer" } });
   const updateCampaignContent = jest.fn(() =>
     Promise.resolve({ success: true, value: {} })
   );
@@ -389,4 +389,25 @@ describe(Campaign.name, () => {
       );
     }
   );
+
+  it("export button must be disabled when is exporting as template", async () => {
+    // Act
+    renderEditor(<DoubleEditorWithStateLoaded initialEntries={["/000"]} />);
+
+    await waitFor(async () => {
+      const exportToTemplate = await screen.findByText("save_template");
+      act(() => exportToTemplate.click());
+      await waitFor(() => expect(exportToTemplate).toBeDisabled());
+    });
+  });
+
+  it("export modal must open when click in export as template", async () => {
+    // Act
+    renderEditor(<DoubleEditorWithStateLoaded initialEntries={["/000"]} />);
+
+    const exportToTemplate = await screen.findByText("save_template");
+    await act(() => exportToTemplate.click());
+    expect(await screen.findByRole("dialog")).toBeInTheDocument();
+    expect(exportToTemplate).toBeEnabled();
+  });
 });
