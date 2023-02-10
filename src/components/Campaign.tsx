@@ -14,11 +14,13 @@ import { useCampaignContinuationUrls } from "./continuation-urls";
 import { FormattedMessage } from "react-intl";
 import { SaveAsTemplateModal } from "./SaveAsTemplateModal";
 import { useState } from "react";
+import { useNavigateSmart } from "./smart-urls";
 
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
 
 export const Campaign = () => {
+  const navigateSmart = useNavigateSmart();
   const [contentToExportAsTemplate, setContentToExportAsTemplate] =
     useState<UnlayerContent>();
   const [isExportAsTemplateModalOpen, setIsExportAsTemplateModalOpen] =
@@ -66,6 +68,11 @@ export const Campaign = () => {
       setIsExportAsTemplateModalOpen(true);
       setIsExportingAsTemplate(false);
     }
+  };
+
+  const saveAndNavigateClick = async (to: string) => {
+    await save();
+    navigateSmart(to);
   };
 
   return (
@@ -123,7 +130,20 @@ export const Campaign = () => {
             </EditorTopBar>
           </Header>
           <Footer>
-            <EditorBottomBar {...continuationUrls}></EditorBottomBar>
+            <EditorBottomBar {...continuationUrls}>
+              <button
+                onClick={() => saveAndNavigateClick(continuationUrls.exitUrl)}
+                className="dp-button button-medium secondary-green"
+              >
+                <FormattedMessage id="exit_edit_later" />
+              </button>
+              <button
+                onClick={() => saveAndNavigateClick(continuationUrls.nextUrl)}
+                className="dp-button button-medium primary-green"
+              >
+                <FormattedMessage id="continue" />
+              </button>
+            </EditorBottomBar>
           </Footer>
         </>
       )}
