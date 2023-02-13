@@ -117,15 +117,6 @@ export const Campaign = () => {
                 ) : (
                   false
                 )}
-                <li>
-                  <button
-                    type="button"
-                    onClick={save}
-                    className="dp-button button-medium primary-green"
-                  >
-                    <FormattedMessage id="save" />
-                  </button>
-                </li>
               </ul>
             </EditorTopBar>
           </Header>
