@@ -180,9 +180,15 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
   }
 
   async createPrivateTemplate(
-    template: TemplateContent
+    content: TemplateContent
   ): Promise<Result<{ newTemplateId: string }>> {
-    const body = {};
+    const body = {
+      meta: content.design,
+      htmlContent: content.htmlContent,
+      previewImage: content.previewImage,
+      type: "unlayer",
+      templateName: content.templateName,
+    };
     const result = await this.POST(`/templates`, body);
     return {
       success: true,
