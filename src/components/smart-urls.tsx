@@ -1,8 +1,22 @@
 import { useLayoutEffect } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAppServices } from "./AppServicesContext";
 
 const absoluteUrlRegex = /^(?:[a-z]+:)?\/\//;
+
+export const useNavigateSmart = () => {
+  const {
+    window: { location },
+  } = useAppServices();
+  const navigate = useNavigate();
+  return (to: string) => {
+    if (absoluteUrlRegex.test(to)) {
+      location.href = to;
+      return;
+    }
+    navigate(to);
+  };
+};
 
 export const NavigateToExternalUrl = ({ to }: { to: string }) => {
   const {

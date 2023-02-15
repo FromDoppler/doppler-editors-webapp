@@ -18,7 +18,7 @@ export const messages_es = {
   new_template_label: "Nombre de la Plantilla:",
   new_template_title: "Guardar como Plantilla privada",
   save: `Guardar`,
-  save_template: "Guardar como Plantilla",
+  save_template: "Convertir en plantilla",
   saving_changes:
     "Hubo un error al guardar los cambios. Por favor intente mas tarde.",
 };

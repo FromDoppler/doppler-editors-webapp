@@ -45,6 +45,21 @@ const createQueryClient = () =>
     },
   });
 
+const setHref = jest.fn();
+
+const windowDouble: any = {
+  console: {
+    error: jest.fn(),
+  },
+  location: {
+    href: "",
+  },
+};
+
+Object.defineProperty(windowDouble.location, "href", {
+  set: setHref,
+});
+
 describe(Template.name, () => {
   it("should show loading and then error when getTemplate is not successful", async () => {
     // Arrange
@@ -66,7 +81,11 @@ describe(Template.name, () => {
     renderEditor(
       <QueryClientProvider client={createQueryClient()}>
         <AppServicesProvider
-          appServices={{ ...baseAppServices, htmlEditorApiClient }}
+          appServices={{
+            ...baseAppServices,
+            htmlEditorApiClient,
+            window: windowDouble,
+          }}
         >
           <TestDopplerIntlProvider>
             <MemoryRouter initialEntries={[`/${idTemplate}`]}>
@@ -122,7 +141,11 @@ describe(Template.name, () => {
     renderEditor(
       <QueryClientProvider client={createQueryClient()}>
         <AppServicesProvider
-          appServices={{ ...baseAppServices, htmlEditorApiClient }}
+          appServices={{
+            ...baseAppServices,
+            htmlEditorApiClient,
+            window: windowDouble,
+          }}
         >
           <TestDopplerIntlProvider>
             <MemoryRouter initialEntries={[`/${idTemplate}`]}>
@@ -203,7 +226,11 @@ describe(Template.name, () => {
     renderEditor(
       <QueryClientProvider client={createQueryClient()}>
         <AppServicesProvider
-          appServices={{ ...baseAppServices, htmlEditorApiClient }}
+          appServices={{
+            ...baseAppServices,
+            htmlEditorApiClient,
+            window: windowDouble,
+          }}
         >
           <TestDopplerIntlProvider>
             <SingletonDesignContext.Provider value={singletonEditorContext}>
@@ -250,7 +277,11 @@ describe(Template.name, () => {
     renderEditor(
       <QueryClientProvider client={createQueryClient()}>
         <AppServicesProvider
-          appServices={{ ...baseAppServices, htmlEditorApiClient }}
+          appServices={{
+            ...baseAppServices,
+            htmlEditorApiClient,
+            window: windowDouble,
+          }}
         >
           <TestDopplerIntlProvider>
             <MemoryRouter initialEntries={[`/${idTemplate}`]}>

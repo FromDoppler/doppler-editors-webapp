@@ -14,11 +14,13 @@ import { useCampaignContinuationUrls } from "./continuation-urls";
 import { FormattedMessage } from "react-intl";
 import { SaveAsTemplateModal } from "./SaveAsTemplateModal";
 import { useState } from "react";
+import { useNavigateSmart } from "./smart-urls";
 
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
 
 export const Campaign = () => {
+  const navigateSmart = useNavigateSmart();
   const [contentToExportAsTemplate, setContentToExportAsTemplate] =
     useState<UnlayerContent>();
   const [isExportAsTemplateModalOpen, setIsExportAsTemplateModalOpen] =
@@ -68,6 +70,11 @@ export const Campaign = () => {
     }
   };
 
+  const saveAndNavigateClick = async (to: string) => {
+    await save();
+    navigateSmart(to);
+  };
+
   return (
     <>
       {campaignContentQuery.isLoading ? (
@@ -110,20 +117,24 @@ export const Campaign = () => {
                 ) : (
                   false
                 )}
-                <li>
-                  <button
-                    type="button"
-                    onClick={save}
-                    className="dp-button button-medium primary-green"
-                  >
-                    <FormattedMessage id="save" />
-                  </button>
-                </li>
               </ul>
             </EditorTopBar>
           </Header>
           <Footer>
-            <EditorBottomBar {...continuationUrls}></EditorBottomBar>
+            <EditorBottomBar {...continuationUrls}>
+              <button
+                onClick={() => saveAndNavigateClick(continuationUrls.exitUrl)}
+                className="dp-button button-medium secondary-green"
+              >
+                <FormattedMessage id="exit_edit_later" />
+              </button>
+              <button
+                onClick={() => saveAndNavigateClick(continuationUrls.nextUrl)}
+                className="dp-button button-medium primary-green"
+              >
+                <FormattedMessage id="continue" />
+              </button>
+            </EditorBottomBar>
           </Footer>
         </>
       )}
