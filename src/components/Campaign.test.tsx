@@ -13,6 +13,7 @@ import {
   ISingletonDesignContext,
   SingletonDesignContext,
 } from "./SingletonEditor";
+import userEvent from "@testing-library/user-event";
 
 jest.mock("./LoadingScreen", () => ({
   LoadingScreen: () => <div>Loading...</div>,
@@ -62,6 +63,21 @@ interface SetEditorAsLoadedProps {
   initialEntries: string[];
 }
 
+const setHref = jest.fn();
+
+const windowDouble: any = {
+  console: {
+    error: jest.fn(),
+  },
+  location: {
+    href: "",
+  },
+};
+
+Object.defineProperty(windowDouble.location, "href", {
+  set: setHref,
+});
+
 const DoubleEditorWithStateLoaded = ({
   initialEntries,
 }: SetEditorAsLoadedProps) => {
@@ -98,7 +114,11 @@ const DoubleEditorWithStateLoaded = ({
   return (
     <QueryClientProvider client={createQueryClient()}>
       <AppServicesProvider
-        appServices={{ ...baseAppServices, htmlEditorApiClient }}
+        appServices={{
+          ...baseAppServices,
+          htmlEditorApiClient,
+          window: windowDouble,
+        }}
       >
         <TestDopplerIntlProvider>
           <SingletonDesignContext.Provider value={singletonEditorContext}>
@@ -135,7 +155,11 @@ describe(Campaign.name, () => {
     renderEditor(
       <QueryClientProvider client={createQueryClient()}>
         <AppServicesProvider
-          appServices={{ ...baseAppServices, htmlEditorApiClient }}
+          appServices={{
+            ...baseAppServices,
+            htmlEditorApiClient,
+            window: windowDouble,
+          }}
         >
           <TestDopplerIntlProvider>
             <MemoryRouter initialEntries={[`/${idCampaign}`]}>
@@ -191,7 +215,11 @@ describe(Campaign.name, () => {
     renderEditor(
       <QueryClientProvider client={createQueryClient()}>
         <AppServicesProvider
-          appServices={{ ...baseAppServices, htmlEditorApiClient }}
+          appServices={{
+            ...baseAppServices,
+            htmlEditorApiClient,
+            window: windowDouble,
+          }}
         >
           <TestDopplerIntlProvider>
             <MemoryRouter initialEntries={[`/${idCampaign}`]}>
@@ -226,72 +254,79 @@ describe(Campaign.name, () => {
     screen.getByTestId(editorTopBarTestId);
   });
 
-  it("should call API client to store the editor data when the user clicks on save", async () => {
-    // Arrange
-    const idCampaign = "1234";
-    const design = { test: "Demo data" } as unknown as Design;
-    const htmlContent = "<html><p></p></html>";
-    const exportHtml = (cb: any) => cb({ design, html: htmlContent });
-    const exportImage = (cb: any) => cb({ url: "" });
+  it.each([{ buttonText: "exit_edit_later" }, { buttonText: "continue" }])(
+    "should call API client to store the editor data when the user clicks on $buttonText",
+    async ({ buttonText }) => {
+      // Arrange
+      const idCampaign = "1234";
+      const design = { test: "Demo data" } as unknown as Design;
+      const htmlContent = "<html><p></p></html>";
+      const exportHtml = (cb: any) => cb({ design, html: htmlContent });
+      const exportImage = (cb: any) => cb({ url: "" });
 
-    const getCampaignContent = () =>
-      Promise.resolve({ success: true, value: {} });
-    const updateCampaignContent = jest.fn(() =>
-      Promise.resolve({ success: true, value: {} })
-    );
+      const getCampaignContent = () =>
+        Promise.resolve({ success: true, value: {} });
+      const updateCampaignContent = jest.fn(() =>
+        Promise.resolve({ success: true, value: {} })
+      );
 
-    const singletonEditorContext: ISingletonDesignContext = {
-      hidden: false,
-      setContent: () => {},
-      editorState: {
-        isLoaded: true,
-        unlayer: {
-          addEventListener: () => {},
-          removeEventListener: () => {},
-          exportHtml,
-          exportImage,
-        } as any,
-      },
-    };
+      const singletonEditorContext: ISingletonDesignContext = {
+        hidden: false,
+        setContent: () => {},
+        editorState: {
+          isLoaded: true,
+          unlayer: {
+            addEventListener: () => {},
+            removeEventListener: () => {},
+            exportHtml,
+            exportImage,
+          } as any,
+        },
+      };
 
-    const htmlEditorApiClient = {
-      getCampaignContent,
-      updateCampaignContent,
-    } as unknown as HtmlEditorApiClient;
+      const htmlEditorApiClient = {
+        getCampaignContent,
+        updateCampaignContent,
+      } as unknown as HtmlEditorApiClient;
 
-    // Act
-    renderEditor(
-      <QueryClientProvider client={createQueryClient()}>
-        <AppServicesProvider
-          appServices={{ ...baseAppServices, htmlEditorApiClient }}
-        >
-          <TestDopplerIntlProvider>
-            <SingletonDesignContext.Provider value={singletonEditorContext}>
-              <MemoryRouter initialEntries={[`/${idCampaign}`]}>
-                <Routes>
-                  <Route path="/:idCampaign" element={<Campaign />} />
-                </Routes>
-              </MemoryRouter>
-            </SingletonDesignContext.Provider>
-          </TestDopplerIntlProvider>
-        </AppServicesProvider>
-      </QueryClientProvider>
-    );
+      // Act
+      renderEditor(
+        <QueryClientProvider client={createQueryClient()}>
+          <AppServicesProvider
+            appServices={{
+              ...baseAppServices,
+              htmlEditorApiClient,
+              window: windowDouble,
+            }}
+          >
+            <TestDopplerIntlProvider>
+              <SingletonDesignContext.Provider value={singletonEditorContext}>
+                <MemoryRouter initialEntries={[`/${idCampaign}`]}>
+                  <Routes>
+                    <Route path="/:idCampaign" element={<Campaign />} />
+                  </Routes>
+                </MemoryRouter>
+              </SingletonDesignContext.Provider>
+            </TestDopplerIntlProvider>
+          </AppServicesProvider>
+        </QueryClientProvider>
+      );
 
-    // Assert
-    const saveBtn = await screen.findByText("save");
+      // Assert
+      const buttonWithSave = await screen.findByText(buttonText);
 
-    act(() => saveBtn.click());
+      act(() => buttonWithSave.click());
 
-    await waitFor(() => {
-      expect(updateCampaignContent).toHaveBeenCalledWith(idCampaign, {
-        design,
-        htmlContent,
-        previewImage: "",
-        type: "unlayer",
+      await waitFor(() => {
+        expect(updateCampaignContent).toHaveBeenCalledWith(idCampaign, {
+          design,
+          htmlContent,
+          previewImage: "",
+          type: "unlayer",
+        });
       });
-    });
-  });
+    }
+  );
 
   it.each([
     {
@@ -318,7 +353,8 @@ describe(Campaign.name, () => {
       const buttonByText: HTMLAnchorElement = await screen.findByText(
         buttonText
       );
-      expect(buttonByText.href).toEqual(urlExpected);
+      await userEvent.click(buttonByText);
+      expect(setHref).toHaveBeenCalledWith(urlExpected);
     }
   );
 
@@ -347,10 +383,9 @@ describe(Campaign.name, () => {
         <DoubleEditorWithStateLoaded initialEntries={initialEntries} />
       );
       // Assert
-      const buttonByText: HTMLAnchorElement = await screen.findByText(
-        buttonText
-      );
-      expect(buttonByText.href).toEqual(urlExpected);
+      const buttonByText = await screen.findByText(buttonText);
+      await userEvent.click(buttonByText);
+      expect(setHref).toHaveBeenCalledWith(urlExpected);
     }
   );
 
@@ -381,10 +416,10 @@ describe(Campaign.name, () => {
       );
 
       // Assert
-      const buttonByText: HTMLAnchorElement = await screen.findByText(
-        buttonText
-      );
-      expect(buttonByText.href).toEqual(
+      const buttonByText = await screen.findByText(buttonText);
+
+      await userEvent.click(buttonByText);
+      expect(setHref).toHaveBeenCalledWith(
         baseAppServices.appConfiguration.dopplerExternalUrls.campaigns
       );
     }
