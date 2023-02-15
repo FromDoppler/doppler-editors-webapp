@@ -9,6 +9,7 @@ import { Footer } from "./Footer";
 import { EditorBottomBar } from "./EditorBottomBar";
 import { useTemplatesContinuationUrls } from "./continuation-urls";
 import { FormattedMessage } from "react-intl";
+import { useNavigateSmart } from "./smart-urls";
 
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
@@ -18,6 +19,7 @@ export const Template = () => {
     idTemplate: string;
   }>;
   const continuationUrls = useTemplatesContinuationUrls();
+  const navigateSmart = useNavigateSmart();
 
   const templateQuery = useGetTemplate(idTemplate);
   const templateMutation = useUpdateTemplate();
@@ -43,6 +45,11 @@ export const Template = () => {
     },
     [templateQuery.data, templateMutation.mutate, idTemplate]
   );
+
+  const saveAndNavigateClick = async (to: string) => {
+    await save();
+    navigateSmart(to);
+  };
 
   if (templateQuery.error) {
     return (
@@ -77,7 +84,20 @@ export const Template = () => {
             </EditorTopBar>
           </Header>
           <Footer>
-            <EditorBottomBar {...continuationUrls}></EditorBottomBar>
+            <EditorBottomBar>
+              <button
+                onClick={() => saveAndNavigateClick(continuationUrls.exitUrl)}
+                className="dp-button button-medium secondary-green"
+              >
+                <FormattedMessage id="exit_edit_later" />
+              </button>
+              <button
+                onClick={() => saveAndNavigateClick(continuationUrls.nextUrl)}
+                className="dp-button button-medium primary-green"
+              >
+                <FormattedMessage id="continue" />
+              </button>
+            </EditorBottomBar>
           </Footer>
         </>
       )}
