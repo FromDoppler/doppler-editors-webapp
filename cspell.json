@@ -1,0 +1,56 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "language": "en, es",
+  "import": ["@cspell/dict-es-es/cspell-ext.json"],
+  "allowCompoundWords": false,
+  "dictionaryDefinitions": [
+    {
+      "name": "project-words",
+      "path": "./cspell-project-words.txt",
+      "addWords": true
+    }
+  ],
+  "dictionaries": ["project-words"],
+  "ignorePaths": [
+    "**/*-keys-dev/**",
+    "**/*.snap",
+    "**/.git/**",
+    "**/TestResults/**",
+    "**/__snapshots__/**",
+    "**/bin/**",
+    "**/lib/**",
+    "**/node_modules/**",
+    "**/obj/**",
+    "**/vscode-extension/**",
+    "*.csproj",
+    "*.svg",
+    ".eslintrc.js",
+    ".gitignore",
+    ".prettierignore",
+    "/build",
+    "coverage/**",
+    "cspell.json",
+    "package-lock.json",
+    "pnpm-lock.yaml",
+    "yarn.lock"
+  ],
+  "ignoreRegExpList": [
+    "%[23][FD]\\w+",
+    "&ntilde;",
+    "\\.resx",
+    "eyJhbGciOiJ[a-zA-Z0-9\\._-]+"
+  ],
+  "overrides": [
+    {
+      "filename": "sample-user-fields.json",
+      "ignoreWords": [
+        "PAIS",
+        "ELECTRONICO",
+        "CUMPLEANOS",
+        "FIRSTNAME",
+        "LASTNAME"
+      ]
+    }
+  ]
+}
