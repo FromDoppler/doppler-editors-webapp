@@ -6,6 +6,7 @@
     "@types/react": "18.0.28"
   },
   "devDependencies": {
+    "@cspell/dict-es-es": "2.2.4",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "14.0.0",
     "@testing-library/user-event": "14.4.3",
@@ -18,6 +19,7 @@
     "@types/react-modal": "^3.13.1",
     "@types/react-query": "1.2.9",
     "@types/underscore": "1.11.4",
+    "cspell": "6.26.3",
     "eclint": "2.8.1",
     "prettier": "2.8.4"
   },
@@ -39,6 +41,7 @@
   },
   "scripts": {
     "verify-format": "yarn prettier-check && yarn eclint-check",
+    "verify-spell": "cspell .",
     "fix-format": "yarn prettier-fix && yarn eclint-fix",
     "eclint-fix": "eclint fix",
     "eclint-check": "eclint check",
