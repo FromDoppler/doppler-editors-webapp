@@ -11,7 +11,7 @@ COPY . .
 
 FROM restore AS verify-format
 ENV CI=true
-RUN yarn verify-format
+RUN yarn verify-format && yarn verify-spell
 
 FROM restore AS test
 ENV CI=true
