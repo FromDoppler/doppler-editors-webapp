@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import EmailEditor, {
+  EditorRef,
   Features,
   ToolConfig,
   UnlayerOptions,
@@ -53,7 +54,7 @@ export const Editor = ({
 
   const appSessionState = useAppSessionState();
   const userFieldsQuery = useGetUserFields();
-  const emailEditorRef = useRef<EmailEditor>(null);
+  const emailEditorRef = useRef<EditorRef>(null);
   const [emailEditorLoaded, setEmailEditorLoaded] = useState(false);
   const intl = useIntl();
 

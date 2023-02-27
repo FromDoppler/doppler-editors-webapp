@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { Editor } from "./Editor";
-import EmailEditor, { Design } from "react-email-editor";
+import { Design, EditorRef } from "react-email-editor";
 import { Content, UnlayerContent } from "../abstractions/domain/content";
 import { promisifyFunctionWithoutError } from "../utils";
 import { debounce } from "underscore";
@@ -33,7 +33,7 @@ interface UseSingletonEditorConfig {
   onSave: (content: Content) => void;
 }
 
-interface UnlayerEditor extends EmailEditor {
+interface UnlayerEditor extends EditorRef {
   removeEventListener: (event: string, cb: () => void) => void;
   exportImage: (
     callback: (data: { design: Design; url: string }) => void

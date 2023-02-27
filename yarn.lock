@@ -2186,13 +2186,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-email-editor@1.5.1":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@types/react-email-editor/-/react-email-editor-1.5.1.tgz#b36a5ceb85e27d8eae51735f7c59f39e584e5701"
-  integrity sha512-d6qqfnurOFGFB+JPyLA4QZDLgMdqbftYZSF6BzfYmlsjcysoDawAABdSN/fVRvcBgH5+Ta5/mXeuN+4PvwPRkA==
-  dependencies:
-    "@types/react" "*"
-
 "@types/react-modal@^3.13.1":
   version "3.13.1"
   resolved "https://registry.yarnpkg.com/@types/react-modal/-/react-modal-3.13.1.tgz#5b9845c205fccc85d9a77966b6e16dc70a60825a"
