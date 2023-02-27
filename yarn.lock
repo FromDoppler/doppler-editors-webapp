@@ -8800,10 +8800,10 @@ react-dom@18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
-react-email-editor@1.6.3:
-  version "1.6.3"
-  resolved "https://registry.yarnpkg.com/react-email-editor/-/react-email-editor-1.6.3.tgz#9ea2efcba73c45aeb2a827098fa63eb6fd0e2a96"
-  integrity sha512-QbUdNfVYKLpAnY5blAMddQzobXugD/ugKkVC7TSjEkba/1nv4qg4qYMu9/+cDpU+iNe7PCayBuDMNhAog5VUvQ==
+react-email-editor@1.7.4:
+  version "1.7.4"
+  resolved "https://registry.yarnpkg.com/react-email-editor/-/react-email-editor-1.7.4.tgz#356cad7c6bae36abcc0d8507fbc3c7e4de3362d7"
+  integrity sha512-lvoMQrxbfywqgl1RDfXK4dO15LYlA7g7ZK8vnZVHzaTqhatWEuKFv3buW6mWSdDYMvuJYFSJUGAGQnZAZudr+w==
 
 react-error-overlay@^6.0.11:
   version "6.0.11"
