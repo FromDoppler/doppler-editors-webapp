@@ -25,7 +25,7 @@ describe(PortalComponent.name, () => {
   it("show error if container id doesn't exist", async () => {
     // Arrange
     const error = new Error(
-      `The element with id=container-test-id wasn´t found`
+      `The element with id=container-test-id wasn't found`
     );
     // Act
     const renderPortal = () =>
