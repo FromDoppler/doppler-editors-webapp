@@ -92,11 +92,11 @@ const DoubleEditorWithStateLoaded = ({
     updateCampaignContent,
   } as unknown as HtmlEditorApiClient;
 
-  const design = { test: "Demo data" } as unknown as Design;
-  const htmlContent = "<html><p></p></html>";
-  const exportedImageUrl = "https://test.fromdoppler.net/exportedImageUrl.png";
-  const exportHtml = (cb: any) => cb({ design, html: htmlContent });
-  const exportImage = (cb: any) => cb({ url: exportedImageUrl });
+  const editorDesign = { test: "Demo data" } as unknown as Design;
+  const editorHtmlContent = "<html><p></p></html>";
+  const editorExportedImageUrl = "https://test.fromdoppler.net/exportedImageUrl.png";
+  const exportHtml = (cb: any) => cb({ design: editorDesign, html: editorHtmlContent });
+  const exportImage = (cb: any) => cb({ url: editorExportedImageUrl });
 
   const singletonEditorContext: ISingletonDesignContext = {
     hidden: false,
@@ -251,12 +251,11 @@ describe(Campaign.name, () => {
     async ({ buttonText }) => {
       // Arrange
       const idCampaign = "1234";
-      const design = { test: "Demo data" } as unknown as Design;
-      const htmlContent = "<html><p></p></html>";
-      const exportedImageUrl =
-        "https://test.fromdoppler.net/exportedImageUrl.png";
-      const exportHtml = (cb: any) => cb({ design, html: htmlContent });
-      const exportImage = (cb: any) => cb({ url: exportedImageUrl });
+      const editorDesign = { test: "Demo data" } as unknown as Design;
+      const editorHtmlContent = "<html><p></p></html>";
+      const editorExportedImageUrl = "https://test.fromdoppler.net/exportedImageUrl.png";
+      const exportHtml = (cb: any) => cb({ design: editorDesign, html: editorHtmlContent });
+      const exportImage = (cb: any) => cb({ url: editorExportedImageUrl });
 
       const getCampaignContent = () =>
         Promise.resolve({ success: true, value: {} });
@@ -312,9 +311,9 @@ describe(Campaign.name, () => {
 
       // Assert
       expect(updateCampaignContent).toHaveBeenCalledWith(idCampaign, {
-        design,
-        htmlContent,
-        previewImage: exportedImageUrl,
+        design: editorDesign,
+        htmlContent: editorHtmlContent,
+        previewImage: editorExportedImageUrl,
         type: "unlayer",
       });
     }
