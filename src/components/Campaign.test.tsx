@@ -94,8 +94,9 @@ const DoubleEditorWithStateLoaded = ({
 
   const design = { test: "Demo data" } as unknown as Design;
   const htmlContent = "<html><p></p></html>";
+  const exportedImageUrl = "https://test.fromdoppler.net/exportedImageUrl.png";
   const exportHtml = (cb: any) => cb({ design, html: htmlContent });
-  const exportImage = (cb: any) => cb({ url: "" });
+  const exportImage = (cb: any) => cb({ url: exportedImageUrl });
 
   const singletonEditorContext: ISingletonDesignContext = {
     hidden: false,
@@ -252,8 +253,10 @@ describe(Campaign.name, () => {
       const idCampaign = "1234";
       const design = { test: "Demo data" } as unknown as Design;
       const htmlContent = "<html><p></p></html>";
+      const exportedImageUrl =
+        "https://test.fromdoppler.net/exportedImageUrl.png";
       const exportHtml = (cb: any) => cb({ design, html: htmlContent });
-      const exportImage = (cb: any) => cb({ url: "" });
+      const exportImage = (cb: any) => cb({ url: exportedImageUrl });
 
       const getCampaignContent = () =>
         Promise.resolve({ success: true, value: {} });
@@ -311,7 +314,7 @@ describe(Campaign.name, () => {
       expect(updateCampaignContent).toHaveBeenCalledWith(idCampaign, {
         design,
         htmlContent,
-        previewImage: "",
+        previewImage: exportedImageUrl,
         type: "unlayer",
       });
     }
