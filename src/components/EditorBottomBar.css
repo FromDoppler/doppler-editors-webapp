@@ -7,3 +7,9 @@
   align-items: center;
   margin: 18px 12px 12px 18px;
 }
+
+.ed-cta-footer > .dp-animate--saving {
+  position: absolute;
+  right: 10px;
+  top: -120px;
+}
