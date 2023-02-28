@@ -2,6 +2,7 @@
 
 .ed-cta-footer {
   display: flex;
+  position: relative;
   justify-content: space-between;
   align-items: center;
   margin: 18px 12px 12px 18px;

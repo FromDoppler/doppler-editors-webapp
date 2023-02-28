@@ -19,6 +19,7 @@ export const messages_en = {
   new_template_title: "Save as private Template",
   save: `Save`,
   save_template: "Convert to Template",
+  saving: "Saving",
   saving_changes:
     "There has been an error saving changes, please try again later.",
 };

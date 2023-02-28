@@ -15,6 +15,7 @@ import { FormattedMessage } from "react-intl";
 import { SaveAsTemplateModal } from "./SaveAsTemplateModal";
 import { useState } from "react";
 import { useNavigateSmart } from "./smart-urls";
+import { SavingMessage } from "./SavingMessage";
 
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
@@ -121,7 +122,8 @@ export const Campaign = () => {
             </EditorTopBar>
           </Header>
           <Footer>
-            <EditorBottomBar {...continuationUrls}>
+            <EditorBottomBar>
+              <SavingMessage show={campaignContentMutation.isLoading} />
               <button
                 onClick={() => saveAndNavigateClick(continuationUrls.exitUrl)}
                 className="dp-button button-medium secondary-green"
