@@ -8,7 +8,7 @@ import { AppServicesProvider } from "./AppServicesContext";
 import { Campaign, editorTopBarTestId, errorMessageTestId } from "./Campaign";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { Design } from "react-email-editor";
-import { act, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import {
   ISingletonDesignContext,
   SingletonDesignContext,
@@ -305,16 +305,14 @@ describe(Campaign.name, () => {
       const buttonWithSave = await screen.findByText(buttonText);
 
       // Act
-      act(() => buttonWithSave.click());
+      await userEvent.click(buttonWithSave);
 
       // Assert
-      await waitFor(() => {
-        expect(updateCampaignContent).toHaveBeenCalledWith(idCampaign, {
-          design,
-          htmlContent,
-          previewImage: "",
-          type: "unlayer",
-        });
+      expect(updateCampaignContent).toHaveBeenCalledWith(idCampaign, {
+        design,
+        htmlContent,
+        previewImage: "",
+        type: "unlayer",
       });
     }
   );
@@ -425,15 +423,13 @@ describe(Campaign.name, () => {
     // Arrange
     renderEditor(<DoubleEditorWithStateLoaded initialEntries={["/000"]} />);
 
-    await waitFor(async () => {
-      const exportToTemplate = await screen.findByText("save_template");
+    const exportToTemplate = await screen.findByText("save_template");
 
-      // Act
-      act(() => exportToTemplate.click());
+    // Act
+    userEvent.click(exportToTemplate);
 
-      // Assert
-      await waitFor(() => expect(exportToTemplate).toBeDisabled());
-    });
+    // Assert
+    await waitFor(() => expect(exportToTemplate).toBeDisabled());
   });
 
   it("export modal must open when click in export as template", async () => {
@@ -443,10 +439,10 @@ describe(Campaign.name, () => {
     const exportToTemplate = await screen.findByText("save_template");
 
     // Act
-    await act(() => exportToTemplate.click());
+    userEvent.click(exportToTemplate);
 
     // Assert
-    expect(await screen.findByRole("dialog")).toBeInTheDocument();
+    await screen.findByRole("dialog");
     expect(exportToTemplate).toBeEnabled();
   });
 });
