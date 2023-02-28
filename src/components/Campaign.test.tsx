@@ -151,7 +151,6 @@ describe(Campaign.name, () => {
       getCampaignContent,
     } as unknown as HtmlEditorApiClient;
 
-    // Act
     renderEditor(
       <QueryClientProvider client={createQueryClient()}>
         <AppServicesProvider
@@ -172,14 +171,10 @@ describe(Campaign.name, () => {
       </QueryClientProvider>
     );
 
-    // Assert
     expect(getCampaignContent).toHaveBeenCalledWith(idCampaign);
-
     screen.getByText("Loading...");
-
     const topBarMustBeNull = screen.queryByTestId(editorTopBarTestId);
     expect(topBarMustBeNull).toBeNull();
-
     const errorMessageEl = screen.queryByTestId(errorMessageTestId);
     expect(errorMessageEl).toBeNull();
 
@@ -211,7 +206,6 @@ describe(Campaign.name, () => {
       getCampaignContent,
     } as unknown as HtmlEditorApiClient;
 
-    // Act
     renderEditor(
       <QueryClientProvider client={createQueryClient()}>
         <AppServicesProvider
@@ -232,12 +226,9 @@ describe(Campaign.name, () => {
       </QueryClientProvider>
     );
 
-    // Assert
     screen.getByText("Loading...");
-
     const errorMessageEl = screen.queryByTestId(errorMessageTestId);
     expect(errorMessageEl).toBeNull();
-
     expect(getCampaignContent).toHaveBeenCalledWith(idCampaign);
 
     // Act
@@ -289,7 +280,6 @@ describe(Campaign.name, () => {
         updateCampaignContent,
       } as unknown as HtmlEditorApiClient;
 
-      // Act
       renderEditor(
         <QueryClientProvider client={createQueryClient()}>
           <AppServicesProvider
@@ -312,11 +302,12 @@ describe(Campaign.name, () => {
         </QueryClientProvider>
       );
 
-      // Assert
       const buttonWithSave = await screen.findByText(buttonText);
 
+      // Act
       act(() => buttonWithSave.click());
 
+      // Assert
       await waitFor(() => {
         expect(updateCampaignContent).toHaveBeenCalledWith(idCampaign, {
           design,
@@ -344,16 +335,18 @@ describe(Campaign.name, () => {
     async ({ buttonText, urlExpected, searchParams }) => {
       // Arrange
       const initialEntries = `/idCampaign?${searchParams}`;
-      // Act
       renderEditor(
         <DoubleEditorWithStateLoaded initialEntries={[initialEntries]} />
       );
 
-      // Assert
       const buttonByText: HTMLAnchorElement = await screen.findByText(
         buttonText
       );
+
+      // Act
       await userEvent.click(buttonByText);
+
+      // Assert
       expect(setHref).toHaveBeenCalledWith(urlExpected);
     }
   );
@@ -378,13 +371,16 @@ describe(Campaign.name, () => {
     async ({ buttonText, urlExpected, searchParams }) => {
       // Arrange
       const initialEntries = [`/idCampaign?${searchParams}`];
-      // Act
       renderEditor(
         <DoubleEditorWithStateLoaded initialEntries={initialEntries} />
       );
-      // Assert
+
       const buttonByText = await screen.findByText(buttonText);
+
+      // Act
       await userEvent.click(buttonByText);
+
+      // Assert
       expect(setHref).toHaveBeenCalledWith(urlExpected);
     }
   );
@@ -407,18 +403,18 @@ describe(Campaign.name, () => {
     async ({ searchParams }) => {
       // Arrange
       const buttonText = "exit_edit_later";
-      //const urlExpected
-      const initialEntries = `/idCampaign?${searchParams}`;
 
-      // Act
+      const initialEntries = `/idCampaign?${searchParams}`;
       renderEditor(
         <DoubleEditorWithStateLoaded initialEntries={[initialEntries]} />
       );
 
-      // Assert
       const buttonByText = await screen.findByText(buttonText);
 
+      // Act
       await userEvent.click(buttonByText);
+
+      // Assert
       expect(setHref).toHaveBeenCalledWith(
         baseAppServices.appConfiguration.dopplerExternalUrls.campaigns
       );
@@ -426,22 +422,30 @@ describe(Campaign.name, () => {
   );
 
   it("export button must be disabled when is exporting as template", async () => {
-    // Act
+    // Arrange
     renderEditor(<DoubleEditorWithStateLoaded initialEntries={["/000"]} />);
 
     await waitFor(async () => {
       const exportToTemplate = await screen.findByText("save_template");
+
+      // Act
       act(() => exportToTemplate.click());
+
+      // Assert
       await waitFor(() => expect(exportToTemplate).toBeDisabled());
     });
   });
 
   it("export modal must open when click in export as template", async () => {
-    // Act
+    // Arrange
     renderEditor(<DoubleEditorWithStateLoaded initialEntries={["/000"]} />);
 
     const exportToTemplate = await screen.findByText("save_template");
+
+    // Act
     await act(() => exportToTemplate.click());
+
+    // Assert
     expect(await screen.findByRole("dialog")).toBeInTheDocument();
     expect(exportToTemplate).toBeEnabled();
   });
