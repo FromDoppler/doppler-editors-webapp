@@ -24,7 +24,7 @@ export const Template = () => {
   const templateQuery = useGetTemplate(idTemplate);
   const templateMutation = useUpdateTemplate();
 
-  const { forceSave } = useSingletonEditor(
+  const { forceSave, smartSave } = useSingletonEditor(
     {
       initialContent: templateQuery.data,
       onSave: (content: Content) => {
@@ -47,7 +47,7 @@ export const Template = () => {
   );
 
   const saveAndNavigateClick = async (to: string) => {
-    await forceSave();
+    await smartSave();
     navigateSmart(to);
   };
 
