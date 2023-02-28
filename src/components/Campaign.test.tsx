@@ -320,19 +320,21 @@ describe(Campaign.name, () => {
   it.each([
     {
       buttonText: "continue",
+      idCampaign: "idCampaign",
       searchParams: "redirectedFromSummary=true",
       urlExpected: `${dopplerLegacyBaseUrl}/Campaigns/Summary/Index?IdCampaign=idCampaign`,
     },
     {
       buttonText: "continue",
+      idCampaign: "idCampaign",
       searchParams: "redirectedFromSummary=true&idABTest=idABTest",
       urlExpected: `${dopplerLegacyBaseUrl}/Campaigns/Summary/TestAB?IdCampaign=idABTest`,
     },
   ])(
     "should redirect to summary when $searchParams and user click in $buttonText",
-    async ({ buttonText, urlExpected, searchParams }) => {
+    async ({ buttonText, idCampaign, searchParams, urlExpected }) => {
       // Arrange
-      const initialEntries = `/idCampaign?${searchParams}`;
+      const initialEntries = `/${idCampaign}?${searchParams}`;
       renderEditor(
         <DoubleEditorWithStateLoaded initialEntries={[initialEntries]} />
       );
@@ -352,6 +354,7 @@ describe(Campaign.name, () => {
   it.each([
     {
       buttonText: "continue",
+      idCampaign: "idCampaign",
       searchParams: "redirectedFromSummary=false",
       urlExpected:
         `${dopplerLegacyBaseUrl}/Campaigns/Recipients/Index?IdCampaign=idCampaign` +
@@ -359,6 +362,7 @@ describe(Campaign.name, () => {
     },
     {
       buttonText: "continue",
+      idCampaign: "idCampaign",
       searchParams: "redirectedFromSummary=false&idABTest=idABTest",
       urlExpected:
         `${dopplerLegacyBaseUrl}/Campaigns/Recipients/TestAB?IdCampaign=idABTest` +
@@ -366,9 +370,9 @@ describe(Campaign.name, () => {
     },
   ])(
     "no should redirect to summary when $searchParams and user click in $buttonText",
-    async ({ buttonText, urlExpected, searchParams }) => {
+    async ({ buttonText, idCampaign, searchParams, urlExpected }) => {
       // Arrange
-      const initialEntries = [`/idCampaign?${searchParams}`];
+      const initialEntries = [`/${idCampaign}?${searchParams}`];
       renderEditor(
         <DoubleEditorWithStateLoaded initialEntries={initialEntries} />
       );
