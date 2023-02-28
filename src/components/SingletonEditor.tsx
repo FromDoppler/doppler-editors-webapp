@@ -194,7 +194,8 @@ export const useSingletonEditor = (
   }, [...deps, setContent, saveHandler, editorState]);
 
   return {
-    save: forceSave,
+    forceSave,
+    smartSave,
     exportContent,
   };
 };

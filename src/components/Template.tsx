@@ -24,7 +24,7 @@ export const Template = () => {
   const templateQuery = useGetTemplate(idTemplate);
   const templateMutation = useUpdateTemplate();
 
-  const { save } = useSingletonEditor(
+  const { forceSave } = useSingletonEditor(
     {
       initialContent: templateQuery.data,
       onSave: (content: Content) => {
@@ -47,7 +47,7 @@ export const Template = () => {
   );
 
   const saveAndNavigateClick = async (to: string) => {
-    await save();
+    await forceSave();
     navigateSmart(to);
   };
 
@@ -76,7 +76,7 @@ export const Template = () => {
             >
               <button
                 type="button"
-                onClick={save}
+                onClick={forceSave}
                 className="dp-button button-medium primary-green"
               >
                 <FormattedMessage id="save" />

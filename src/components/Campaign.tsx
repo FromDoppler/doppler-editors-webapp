@@ -34,7 +34,7 @@ export const Campaign = () => {
   const campaignContentQuery = useGetCampaignContent(idCampaign);
   const campaignContentMutation = useUpdateCampaignContent();
 
-  const { save, exportContent } = useSingletonEditor(
+  const { forceSave, exportContent } = useSingletonEditor(
     {
       initialContent: campaignContentQuery.data,
       onSave: (content: Content) => {
@@ -72,7 +72,7 @@ export const Campaign = () => {
   };
 
   const saveAndNavigateClick = async (to: string) => {
-    await save();
+    await forceSave();
     navigateSmart(to);
   };
 
