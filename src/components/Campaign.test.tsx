@@ -14,6 +14,8 @@ import {
   SingletonDesignContext,
 } from "./SingletonEditor";
 import userEvent from "@testing-library/user-event";
+import { Result } from "../abstractions/common/result-types";
+import { CampaignContent } from "../abstractions/domain/content";
 
 jest.mock("./LoadingScreen", () => ({
   LoadingScreen: () => <div>Loading...</div>,
@@ -59,10 +61,6 @@ const createQueryClient = () =>
     },
   });
 
-interface SetEditorAsLoadedProps {
-  initialEntries: string[];
-}
-
 const setHref = jest.fn();
 
 const windowDouble: any = {
@@ -78,13 +76,25 @@ Object.defineProperty(windowDouble.location, "href", {
   set: setHref,
 });
 
-const DoubleEditorWithStateLoaded = ({
-  initialEntries,
-}: SetEditorAsLoadedProps) => {
-  const getCampaignContent = () =>
-    Promise.resolve({ success: true, value: { type: "unlayer" } });
-  const updateCampaignContent = jest.fn(() =>
-    Promise.resolve({ success: true, value: {} })
+const createTestContext = () => {
+  let resolveGetCampaignContentPromise: any;
+  let rejectGetCampaignContentPromise: any;
+  const getCampaignContent = jest.fn(
+    () =>
+      new Promise((resolve, reject) => {
+        resolveGetCampaignContentPromise = resolve;
+        rejectGetCampaignContentPromise = reject;
+      })
+  );
+
+  let resolveUpdateCampaignContentPromise: any;
+  let rejectUpdateCampaignContentPromise: any;
+  const updateCampaignContent = jest.fn(
+    () =>
+      new Promise((resolve, reject) => {
+        resolveUpdateCampaignContentPromise = resolve;
+        rejectUpdateCampaignContentPromise = reject;
+      })
   );
 
   const htmlEditorApiClient = {
@@ -94,8 +104,9 @@ const DoubleEditorWithStateLoaded = ({
 
   const editorDesign = { test: "Demo data" } as unknown as Design;
   const editorHtmlContent = "<html><p></p></html>";
-  const editorExportedImageUrl = "https://test.fromdoppler.net/exportedImageUrl.png";
-  const exportHtml = (cb: any) => cb({ design: editorDesign, html: editorHtmlContent });
+  const editorExportedImageUrl = "https://test.fromdoppler.net/export.png";
+  const exportHtml = (cb: any) =>
+    cb({ design: editorDesign, html: editorHtmlContent });
   const exportImage = (cb: any) => cb({ url: editorExportedImageUrl });
 
   const singletonEditorContext: ISingletonDesignContext = {
@@ -112,7 +123,11 @@ const DoubleEditorWithStateLoaded = ({
     },
   };
 
-  return (
+  const TestComponent = ({
+    routerInitialEntry,
+  }: {
+    routerInitialEntry: string;
+  }) => (
     <QueryClientProvider client={createQueryClient()}>
       <AppServicesProvider
         appServices={{
@@ -123,7 +138,7 @@ const DoubleEditorWithStateLoaded = ({
       >
         <TestDopplerIntlProvider>
           <SingletonDesignContext.Provider value={singletonEditorContext}>
-            <MemoryRouter initialEntries={initialEntries}>
+            <MemoryRouter initialEntries={[routerInitialEntry]}>
               <Routes>
                 <Route path="/:idCampaign" element={<Campaign />} />
               </Routes>
@@ -133,44 +148,36 @@ const DoubleEditorWithStateLoaded = ({
       </AppServicesProvider>
     </QueryClientProvider>
   );
+
+  return {
+    editorDesign,
+    editorHtmlContent,
+    editorExportedImageUrl,
+    getCampaignContent,
+    updateCampaignContent,
+    resolveGetCampaignContentPromise: (result: Result<CampaignContent>) =>
+      resolveGetCampaignContentPromise(result),
+    rejectGetCampaignContentPromise: (error: any) =>
+      rejectGetCampaignContentPromise(error),
+    resolveUpdateCampaignContentPromise: (result: Result) =>
+      resolveUpdateCampaignContentPromise(result),
+    rejectUpdateCampaignContentPromise: (error: any) =>
+      rejectUpdateCampaignContentPromise(error),
+    TestComponent,
+  };
 };
 
 describe(Campaign.name, () => {
   it("should show loading and then error when getCampaignContent is not successful", async () => {
     // Arrange
     const idCampaign = "1234";
-
-    let rejectGetCampaignContentPromise: any;
-    const getCampaignContent = jest.fn(
-      () =>
-        new Promise((_, reject) => {
-          rejectGetCampaignContentPromise = reject;
-        })
-    );
-
-    const htmlEditorApiClient = {
+    const {
       getCampaignContent,
-    } as unknown as HtmlEditorApiClient;
+      rejectGetCampaignContentPromise,
+      TestComponent,
+    } = createTestContext();
 
-    renderEditor(
-      <QueryClientProvider client={createQueryClient()}>
-        <AppServicesProvider
-          appServices={{
-            ...baseAppServices,
-            htmlEditorApiClient,
-            window: windowDouble,
-          }}
-        >
-          <TestDopplerIntlProvider>
-            <MemoryRouter initialEntries={[`/${idCampaign}`]}>
-              <Routes>
-                <Route path="/:idCampaign" element={<Campaign />} />
-              </Routes>
-            </MemoryRouter>
-          </TestDopplerIntlProvider>
-        </AppServicesProvider>
-      </QueryClientProvider>
-    );
+    renderEditor(<TestComponent routerInitialEntry={`/${idCampaign}`} />);
 
     expect(getCampaignContent).toHaveBeenCalledWith(idCampaign);
     screen.getByText("Loading...");
@@ -194,38 +201,13 @@ describe(Campaign.name, () => {
   it("should show EmailEditor when the getCampaignContent is successful", async () => {
     // Arrange
     const idCampaign = "1234";
-
-    let resolveGetCampaignContentPromise: any;
-    const getCampaignContent = jest.fn(
-      () =>
-        new Promise((resolve) => {
-          resolveGetCampaignContentPromise = resolve;
-        })
-    );
-
-    const htmlEditorApiClient = {
+    const {
       getCampaignContent,
-    } as unknown as HtmlEditorApiClient;
+      resolveGetCampaignContentPromise,
+      TestComponent,
+    } = createTestContext();
 
-    renderEditor(
-      <QueryClientProvider client={createQueryClient()}>
-        <AppServicesProvider
-          appServices={{
-            ...baseAppServices,
-            htmlEditorApiClient,
-            window: windowDouble,
-          }}
-        >
-          <TestDopplerIntlProvider>
-            <MemoryRouter initialEntries={[`/${idCampaign}`]}>
-              <Routes>
-                <Route path="/:idCampaign" element={<Campaign />} />
-              </Routes>
-            </MemoryRouter>
-          </TestDopplerIntlProvider>
-        </AppServicesProvider>
-      </QueryClientProvider>
-    );
+    renderEditor(<TestComponent routerInitialEntry={`/${idCampaign}`} />);
 
     screen.getByText("Loading...");
     const errorMessageEl = screen.queryByTestId(errorMessageTestId);
@@ -233,7 +215,7 @@ describe(Campaign.name, () => {
     expect(getCampaignContent).toHaveBeenCalledWith(idCampaign);
 
     // Act
-    resolveGetCampaignContentPromise({ success: true, value: {} });
+    resolveGetCampaignContentPromise({ success: true, value: {} as any });
 
     // Assert
     await screen.findByTestId(editorTopBarTestId);
@@ -251,58 +233,17 @@ describe(Campaign.name, () => {
     async ({ buttonText }) => {
       // Arrange
       const idCampaign = "1234";
-      const editorDesign = { test: "Demo data" } as unknown as Design;
-      const editorHtmlContent = "<html><p></p></html>";
-      const editorExportedImageUrl = "https://test.fromdoppler.net/exportedImageUrl.png";
-      const exportHtml = (cb: any) => cb({ design: editorDesign, html: editorHtmlContent });
-      const exportImage = (cb: any) => cb({ url: editorExportedImageUrl });
-
-      const getCampaignContent = () =>
-        Promise.resolve({ success: true, value: {} });
-      const updateCampaignContent = jest.fn(() =>
-        Promise.resolve({ success: true, value: {} })
-      );
-
-      const singletonEditorContext: ISingletonDesignContext = {
-        hidden: false,
-        setContent: () => {},
-        editorState: {
-          isLoaded: true,
-          unlayer: {
-            addEventListener: () => {},
-            removeEventListener: () => {},
-            exportHtml,
-            exportImage,
-          } as any,
-        },
-      };
-
-      const htmlEditorApiClient = {
-        getCampaignContent,
+      const {
+        editorDesign,
+        editorHtmlContent,
+        editorExportedImageUrl,
         updateCampaignContent,
-      } as unknown as HtmlEditorApiClient;
+        resolveGetCampaignContentPromise,
+        TestComponent,
+      } = createTestContext();
 
-      renderEditor(
-        <QueryClientProvider client={createQueryClient()}>
-          <AppServicesProvider
-            appServices={{
-              ...baseAppServices,
-              htmlEditorApiClient,
-              window: windowDouble,
-            }}
-          >
-            <TestDopplerIntlProvider>
-              <SingletonDesignContext.Provider value={singletonEditorContext}>
-                <MemoryRouter initialEntries={[`/${idCampaign}`]}>
-                  <Routes>
-                    <Route path="/:idCampaign" element={<Campaign />} />
-                  </Routes>
-                </MemoryRouter>
-              </SingletonDesignContext.Provider>
-            </TestDopplerIntlProvider>
-          </AppServicesProvider>
-        </QueryClientProvider>
-      );
+      renderEditor(<TestComponent routerInitialEntry={`/${idCampaign}`} />);
+      resolveGetCampaignContentPromise({ success: true, value: {} as any });
 
       const buttonWithSave = await screen.findByText(buttonText);
 
@@ -336,10 +277,15 @@ describe(Campaign.name, () => {
     "should redirect to summary when $searchParams and user click in $buttonText",
     async ({ buttonText, idCampaign, searchParams, urlExpected }) => {
       // Arrange
-      const initialEntries = `/${idCampaign}?${searchParams}`;
-      renderEditor(
-        <DoubleEditorWithStateLoaded initialEntries={[initialEntries]} />
-      );
+      const { resolveGetCampaignContentPromise, TestComponent } =
+        createTestContext();
+      const routerInitialEntry = `/${idCampaign}?${searchParams}`;
+
+      renderEditor(<TestComponent {...{ routerInitialEntry }} />);
+      resolveGetCampaignContentPromise({
+        success: true,
+        value: { type: "unlayer" } as any,
+      });
 
       const buttonByText: HTMLAnchorElement = await screen.findByText(
         buttonText
@@ -374,10 +320,15 @@ describe(Campaign.name, () => {
     "no should redirect to summary when $searchParams and user click in $buttonText",
     async ({ buttonText, idCampaign, searchParams, urlExpected }) => {
       // Arrange
-      const initialEntries = [`/${idCampaign}?${searchParams}`];
-      renderEditor(
-        <DoubleEditorWithStateLoaded initialEntries={initialEntries} />
-      );
+      const { resolveGetCampaignContentPromise, TestComponent } =
+        createTestContext();
+      const routerInitialEntry = `/${idCampaign}?${searchParams}`;
+
+      renderEditor(<TestComponent {...{ routerInitialEntry }} />);
+      resolveGetCampaignContentPromise({
+        success: true,
+        value: { type: "unlayer" } as any,
+      });
 
       const buttonByText = await screen.findByText(buttonText);
 
@@ -406,13 +357,17 @@ describe(Campaign.name, () => {
     "exit button should always redirect to campaign draft",
     async ({ searchParams }) => {
       // Arrange
+      const { resolveGetCampaignContentPromise, TestComponent } =
+        createTestContext();
+      const routerInitialEntry = `/idCampaign?${searchParams}`;
+
+      renderEditor(<TestComponent {...{ routerInitialEntry }} />);
+      resolveGetCampaignContentPromise({
+        success: true,
+        value: { type: "unlayer" } as any,
+      });
+
       const buttonText = "exit_edit_later";
-
-      const initialEntries = `/idCampaign?${searchParams}`;
-      renderEditor(
-        <DoubleEditorWithStateLoaded initialEntries={[initialEntries]} />
-      );
-
       const buttonByText = await screen.findByText(buttonText);
 
       // Act
@@ -427,7 +382,14 @@ describe(Campaign.name, () => {
 
   it("export button must be disabled when is exporting as template", async () => {
     // Arrange
-    renderEditor(<DoubleEditorWithStateLoaded initialEntries={["/000"]} />);
+    const { resolveGetCampaignContentPromise, TestComponent } =
+      createTestContext();
+
+    renderEditor(<TestComponent routerInitialEntry="/000" />);
+    resolveGetCampaignContentPromise({
+      success: true,
+      value: { type: "unlayer" } as any,
+    });
 
     const exportToTemplate = await screen.findByText("save_template");
 
@@ -440,7 +402,14 @@ describe(Campaign.name, () => {
 
   it("export modal must open when click in export as template", async () => {
     // Arrange
-    renderEditor(<DoubleEditorWithStateLoaded initialEntries={["/000"]} />);
+    const { resolveGetCampaignContentPromise, TestComponent } =
+      createTestContext();
+
+    renderEditor(<TestComponent routerInitialEntry="/000" />);
+    resolveGetCampaignContentPromise({
+      success: true,
+      value: { type: "unlayer" } as any,
+    });
 
     const exportToTemplate = await screen.findByText("save_template");
 
