@@ -283,6 +283,7 @@ describe(Template.name, () => {
         </AppServicesProvider>
       </QueryClientProvider>
     );
+    await screen.findByText("exit_edit_later");
 
     // Assert
     expect(() => screen.getByRole("export_to_template")).toThrow();
