@@ -77,7 +77,6 @@ describe(Template.name, () => {
       getTemplate,
     } as unknown as HtmlEditorApiClient;
 
-    // Act
     renderEditor(
       <QueryClientProvider client={createQueryClient()}>
         <AppServicesProvider
@@ -98,14 +97,10 @@ describe(Template.name, () => {
       </QueryClientProvider>
     );
 
-    // Assert
     expect(getTemplate).toHaveBeenCalledWith(idTemplate);
-
     screen.getByText("Loading...");
-
     const topBarMustBeNull = screen.queryByTestId(editorTopBarTestId);
     expect(topBarMustBeNull).toBeNull();
-
     const errorMessageEl = screen.queryByTestId(errorMessageTestId);
     expect(errorMessageEl).toBeNull();
 
@@ -137,7 +132,6 @@ describe(Template.name, () => {
       getTemplate,
     } as unknown as HtmlEditorApiClient;
 
-    // Act
     renderEditor(
       <QueryClientProvider client={createQueryClient()}>
         <AppServicesProvider
@@ -158,12 +152,9 @@ describe(Template.name, () => {
       </QueryClientProvider>
     );
 
-    // Assert
     screen.getByText("Loading...");
-
     const errorMessageEl = screen.queryByTestId(errorMessageTestId);
     expect(errorMessageEl).toBeNull();
-
     expect(getTemplate).toHaveBeenCalledWith(idTemplate);
 
     // Act
@@ -222,7 +213,6 @@ describe(Template.name, () => {
       updateTemplate,
     } as unknown as HtmlEditorApiClient;
 
-    // Act
     renderEditor(
       <QueryClientProvider client={createQueryClient()}>
         <AppServicesProvider
@@ -245,11 +235,12 @@ describe(Template.name, () => {
       </QueryClientProvider>
     );
 
-    // Assert
     const saveBtn = await screen.findByText("save");
 
+    // Act
     act(() => saveBtn.click());
 
+    // Assert
     await waitFor(() => {
       expect(updateTemplate).toHaveBeenCalledWith(idTemplate, {
         design: { NEW_DESIGN: "" },
