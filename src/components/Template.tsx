@@ -24,7 +24,7 @@ export const Template = () => {
   const templateQuery = useGetTemplate(idTemplate);
   const templateMutation = useUpdateTemplate();
 
-  const { forceSave, smartSave } = useSingletonEditor(
+  const { smartSave } = useSingletonEditor(
     {
       initialContent: templateQuery.data,
       onSave: (content: Content) => {
@@ -73,15 +73,7 @@ export const Template = () => {
                   ? templateQuery.data.templateName
                   : ""
               }
-            >
-              <button
-                type="button"
-                onClick={forceSave}
-                className="dp-button button-medium primary-green"
-              >
-                <FormattedMessage id="save" />
-              </button>
-            </EditorTopBar>
+            ></EditorTopBar>
           </Header>
           <Footer>
             <EditorBottomBar>

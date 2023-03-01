@@ -209,52 +209,6 @@ describe(Template.name, () => {
     screen.getByTestId(editorTopBarTestId);
   });
 
-  it("should call API client to store the template when the user clicks on save", async () => {
-    // Arrange
-    const idTemplate = "1234";
-    const {
-      editorDesign,
-      editorHtmlContent,
-      editorExportedImageUrl,
-      updateTemplate,
-      resolveGetTemplatePromise,
-      TestComponent,
-    } = createTestContext();
-
-    renderEditor(<TestComponent routerInitialEntry={`/${idTemplate}`} />);
-
-    const originalTemplateName = "ORIGINAL TEMPLATE NAME";
-    const originalDesign = { ORIGINAL_DESIGN: "" };
-    const originalHtmlContent = "ORIGINAL HTML CONTENT";
-    const originalImageUrl = "ORIGINAL PREVIEW IMAGE";
-    resolveGetTemplatePromise({
-      success: true,
-      value: {
-        templateName: originalTemplateName,
-        isPublic: false,
-        htmlContent: originalHtmlContent,
-        design: originalDesign as any,
-        previewImage: originalImageUrl,
-        type: "unlayer",
-      },
-    });
-
-    const saveBtn = await screen.findByText("save");
-
-    // Act
-    await userEvent.click(saveBtn);
-
-    // Assert
-    expect(updateTemplate).toHaveBeenCalledWith(idTemplate, {
-      design: editorDesign,
-      htmlContent: editorHtmlContent,
-      previewImage: editorExportedImageUrl,
-      type: "unlayer",
-      templateName: originalTemplateName,
-      isPublic: false,
-    });
-  });
-
   it("shouldn't show the export button", async () => {
     // Arrange
     const idTemplate = "1234";

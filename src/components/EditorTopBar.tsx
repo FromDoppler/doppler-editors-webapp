@@ -45,7 +45,13 @@ export const EditorTopBar = ({
         <li>
           <h2>{title}</h2>
         </li>
-        {children ? <li>{children}</li> : false}
+        <li>
+          {
+            children
+            // When children is empty or undefined, this li should be render anyway because it is on the right
+            // TODO: restructure header styles and ed-header-list class
+          }
+        </li>
       </ul>
     </div>
   );
