@@ -79,6 +79,11 @@ export const useSingletonEditor = (
         exportImage(),
       ]);
 
+      const newerChangesSaved = currentUpdateCounter < savedCounter.current;
+      if (newerChangesSaved) {
+        return;
+      }
+
       const content: Content = !htmlExport.design
         ? {
             htmlContent: htmlExport.html,
@@ -93,10 +98,8 @@ export const useSingletonEditor = (
             type: "unlayer",
           };
 
-      if (currentUpdateCounter >= savedCounter.current) {
-        savedCounter.current = currentUpdateCounter;
-        onSave(content);
-      }
+      savedCounter.current = currentUpdateCounter;
+      onSave(content);
     },
     // eslint-disable-next-line
     [editorState, ...deps]
