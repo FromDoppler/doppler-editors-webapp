@@ -80,7 +80,8 @@ export const useSingletonEditor = (
       ]);
 
       const newerChangesSaved = currentUpdateCounter < savedCounter.current;
-      if (newerChangesSaved) {
+      const currentChangesSaved = currentUpdateCounter === savedCounter.current;
+      if (newerChangesSaved || (!force && currentChangesSaved)) {
         return;
       }
 
