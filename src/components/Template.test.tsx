@@ -175,19 +175,27 @@ describe(Template.name, () => {
   it("should call API client to store the template when the user clicks on save", async () => {
     // Arrange
     const idTemplate = "1234";
+    const editorDesign = { test: "Demo data" };
+    const editorHtmlContent = "<html><p></p></html>";
+    const editorExportedImageUrl = "https://test.fromdoppler.net/export.png";
     const exportHtml = (cb: any) =>
-      cb({ design: { NEW_DESIGN: "" } as any, html: "NEW HTML CONTENT" });
-    const exportImage = (cb: any) => cb({ url: "NEW PREVIEW IMAGE" });
+      cb({ design: editorDesign as any, html: editorHtmlContent });
+    const exportImage = (cb: any) => cb({ url: editorExportedImageUrl });
+
+    const originalTemplateName = "ORIGINAL TEMPLATE NAME";
+    const originalDesign = { ORIGINAL_DESIGN: "" };
+    const originalHtmlContent = "ORIGINAL HTML CONTENT";
+    const originalImageUrl = "ORIGINAL PREVIEW IMAGE";
 
     const getTemplate = () =>
       Promise.resolve({
         success: true,
         value: {
-          templateName: "ORIGINAL TEMPLATE NAME",
+          templateName: originalTemplateName,
           isPublic: false,
-          htmlContent: "ORIGINAL HTML CONTENT",
-          design: { ORIGINAL_DESIGN: "" },
-          previewImage: "ORIGINAL PREVIEW IMAGE",
+          htmlContent: originalHtmlContent,
+          design: originalDesign,
+          previewImage: originalImageUrl,
           type: "unlayer",
         },
       });
@@ -243,11 +251,11 @@ describe(Template.name, () => {
 
     // Assert
     expect(updateTemplate).toHaveBeenCalledWith(idTemplate, {
-      design: { NEW_DESIGN: "" },
-      htmlContent: "NEW HTML CONTENT",
-      previewImage: "NEW PREVIEW IMAGE",
+      design: editorDesign,
+      htmlContent: editorHtmlContent,
+      previewImage: editorExportedImageUrl,
       type: "unlayer",
-      templateName: "ORIGINAL TEMPLATE NAME",
+      templateName: originalTemplateName,
       isPublic: false,
     });
   });
