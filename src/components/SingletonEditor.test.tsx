@@ -104,7 +104,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
 
   const DemoComponent = ({ onSave }: { onSave: () => void }) => {
     const [initialContent, setInitialContent] = useState<Content | undefined>();
-    const { save } = useSingletonEditor(
+    const { forceSave } = useSingletonEditor(
       {
         initialContent,
         onSave,
@@ -119,7 +119,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
     return (
       <>
         <button onClick={changeInitialContent}>change initial content</button>
-        <button onClick={save}>save content</button>
+        <button onClick={forceSave}>save content</button>
       </>
     );
   };

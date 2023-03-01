@@ -57,7 +57,7 @@ export const useSingletonEditor = (
   const updateCounter = useRef(0);
 
   const saveHandler = useCallback(
-    async (force = false) => {
+    async ({ force }: { force: boolean }) => {
       if (!force && savedCounter.current >= updateCounter.current) {
         return;
       }
@@ -101,6 +101,8 @@ export const useSingletonEditor = (
     // eslint-disable-next-line
     [editorState, ...deps]
   );
+  const smartSave = () => saveHandler({ force: false });
+  const forceSave = () => saveHandler({ force: true });
 
   //TODO: implement a better solution when occurs this error, maybe replace undefined return to objectError
   const exportContent = async (): Promise<UnlayerContent | undefined> => {
@@ -136,16 +138,14 @@ export const useSingletonEditor = (
     };
   };
 
-  const debounced = debounce(() => {
-    saveHandler();
-  }, AUTO_SAVE_INTERVAL);
+  const debounced = debounce(smartSave, AUTO_SAVE_INTERVAL);
 
   useEffect(() => {
     const beforeUnloadListener = (e: BeforeUnloadEvent) => {
       if (updateCounter.current <= savedCounter.current) {
         return;
       }
-      saveHandler();
+      smartSave();
       e.preventDefault();
       e.returnValue = "pending changes";
       return "pending changes";
@@ -187,14 +187,15 @@ export const useSingletonEditor = (
         );
       }
 
-      saveHandler();
+      smartSave();
       setContent(undefined);
     };
     // eslint-disable-next-line
   }, [...deps, setContent, saveHandler, editorState]);
 
   return {
-    save: () => saveHandler(true),
+    forceSave,
+    smartSave,
     exportContent,
   };
 };

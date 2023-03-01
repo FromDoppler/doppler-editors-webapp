@@ -109,14 +109,34 @@ const createTestContext = () => {
     cb({ design: editorDesign, html: editorHtmlContent });
   const exportImage = (cb: any) => cb({ url: editorExportedImageUrl });
 
+  let simulateEditorLoadedEvent = null as any;
+  let simulateEditorChangeEvent = null as any;
   const singletonEditorContext: ISingletonDesignContext = {
     hidden: false,
     setContent: () => {},
     editorState: {
       isLoaded: true,
       unlayer: {
-        addEventListener: () => {},
-        removeEventListener: () => {},
+        addEventListener: (type: string, callback: () => void) => {
+          switch (type) {
+            case "design:updated":
+              simulateEditorChangeEvent = callback;
+              break;
+            case "design:loaded":
+              simulateEditorLoadedEvent = callback;
+              break;
+          }
+        },
+        removeEventListener: (type: string) => {
+          switch (type) {
+            case "design:updated":
+              simulateEditorChangeEvent = null;
+              break;
+            case "design:loaded":
+              simulateEditorLoadedEvent = null;
+              break;
+          }
+        },
         exportHtml,
         exportImage,
       } as any,
@@ -163,6 +183,8 @@ const createTestContext = () => {
       resolveUpdateCampaignContentPromise(result),
     rejectUpdateCampaignContentPromise: (error: any) =>
       rejectUpdateCampaignContentPromise(error),
+    simulateEditorLoadedEvent: () => simulateEditorLoadedEvent(),
+    simulateEditorChangeEvent: () => simulateEditorChangeEvent(),
     TestComponent,
   };
 };
@@ -229,7 +251,8 @@ describe(Campaign.name, () => {
   });
 
   it.each([{ buttonText: "exit_edit_later" }, { buttonText: "continue" }])(
-    "should call API client to store the editor data when the user clicks on $buttonText",
+    "should call API client to store the editor data" +
+      "when there are pending changes and the user clicks on $buttonText",
     async ({ buttonText }) => {
       // Arrange
       const idCampaign = "1234";
@@ -239,12 +262,16 @@ describe(Campaign.name, () => {
         editorExportedImageUrl,
         updateCampaignContent,
         resolveGetCampaignContentPromise,
+        simulateEditorLoadedEvent,
+        simulateEditorChangeEvent,
         TestComponent,
       } = createTestContext();
 
       renderEditor(<TestComponent routerInitialEntry={`/${idCampaign}`} />);
       resolveGetCampaignContentPromise({ success: true, value: {} as any });
+      simulateEditorLoadedEvent();
 
+      simulateEditorChangeEvent();
       const buttonWithSave = await screen.findByText(buttonText);
 
       // Act
@@ -257,6 +284,33 @@ describe(Campaign.name, () => {
         previewImage: editorExportedImageUrl,
         type: "unlayer",
       });
+    }
+  );
+
+  it.each([{ buttonText: "exit_edit_later" }, { buttonText: "continue" }])(
+    "should not call API client to store the editor data" +
+      "when there are not pending changes and the user clicks on $buttonText",
+    async ({ buttonText }) => {
+      // Arrange
+      const idCampaign = "1234";
+      const {
+        updateCampaignContent,
+        resolveGetCampaignContentPromise,
+        simulateEditorLoadedEvent,
+        TestComponent,
+      } = createTestContext();
+
+      renderEditor(<TestComponent routerInitialEntry={`/${idCampaign}`} />);
+      resolveGetCampaignContentPromise({ success: true, value: {} as any });
+      simulateEditorLoadedEvent();
+
+      const buttonWithSave = await screen.findByText(buttonText);
+
+      // Act
+      await userEvent.click(buttonWithSave);
+
+      // Assert
+      expect(updateCampaignContent).not.toHaveBeenCalled();
     }
   );
 
