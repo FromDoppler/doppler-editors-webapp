@@ -5,12 +5,13 @@ import { AppServices } from "../abstractions";
 import { HtmlEditorApiClient } from "../abstractions/html-editor-api-client";
 import { AppServicesProvider } from "./AppServicesContext";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
-import { act, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { editorTopBarTestId, errorMessageTestId, Template } from "./Template";
 import {
   ISingletonDesignContext,
   SingletonDesignContext,
 } from "./SingletonEditor";
+import userEvent from "@testing-library/user-event";
 
 jest.mock("./LoadingScreen", () => ({
   LoadingScreen: () => <div>Loading...</div>,
@@ -238,18 +239,16 @@ describe(Template.name, () => {
     const saveBtn = await screen.findByText("save");
 
     // Act
-    act(() => saveBtn.click());
+    await userEvent.click(saveBtn);
 
     // Assert
-    await waitFor(() => {
-      expect(updateTemplate).toHaveBeenCalledWith(idTemplate, {
-        design: { NEW_DESIGN: "" },
-        htmlContent: "NEW HTML CONTENT",
-        previewImage: "NEW PREVIEW IMAGE",
-        type: "unlayer",
-        templateName: "ORIGINAL TEMPLATE NAME",
-        isPublic: false,
-      });
+    expect(updateTemplate).toHaveBeenCalledWith(idTemplate, {
+      design: { NEW_DESIGN: "" },
+      htmlContent: "NEW HTML CONTENT",
+      previewImage: "NEW PREVIEW IMAGE",
+      type: "unlayer",
+      templateName: "ORIGINAL TEMPLATE NAME",
+      isPublic: false,
     });
   });
 
