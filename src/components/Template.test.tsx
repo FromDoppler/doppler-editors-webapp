@@ -12,6 +12,9 @@ import {
   SingletonDesignContext,
 } from "./SingletonEditor";
 import userEvent from "@testing-library/user-event";
+import { Result } from "../abstractions/common/result-types";
+import { TemplateContent } from "../abstractions/domain/content";
+import { Design } from "react-email-editor";
 
 jest.mock("./LoadingScreen", () => ({
   LoadingScreen: () => <div>Loading...</div>,
@@ -61,42 +64,104 @@ Object.defineProperty(windowDouble.location, "href", {
   set: setHref,
 });
 
-describe(Template.name, () => {
-  it("should show loading and then error when getTemplate is not successful", async () => {
-    // Arrange
-    const idTemplate = "1234";
+const createTestContext = () => {
+  let resolveGetTemplatePromise: any;
+  let rejectGetTemplatePromise: any;
+  const getTemplate = jest.fn(
+    () =>
+      new Promise((resolve, reject) => {
+        resolveGetTemplatePromise = resolve;
+        rejectGetTemplatePromise = reject;
+      })
+  );
 
-    let rejectGetTemplatePromise: any;
-    const getTemplate = jest.fn(
-      () =>
-        new Promise((_, reject) => {
-          rejectGetTemplatePromise = reject;
-        })
-    );
+  let resolveUpdateTemplatePromise: any;
+  let rejectUpdateTemplatePromise: any;
+  const updateTemplate = jest.fn(
+    () =>
+      new Promise((resolve, reject) => {
+        resolveUpdateTemplatePromise = resolve;
+        rejectUpdateTemplatePromise = reject;
+      })
+  );
 
-    const htmlEditorApiClient = {
-      getTemplate,
-    } as unknown as HtmlEditorApiClient;
+  const htmlEditorApiClient = {
+    getTemplate,
+    updateTemplate,
+  } as unknown as HtmlEditorApiClient;
 
-    renderEditor(
-      <QueryClientProvider client={createQueryClient()}>
-        <AppServicesProvider
-          appServices={{
-            ...baseAppServices,
-            htmlEditorApiClient,
-            window: windowDouble,
-          }}
-        >
-          <TestDopplerIntlProvider>
-            <MemoryRouter initialEntries={[`/${idTemplate}`]}>
+  const editorDesign = { test: "Demo data" } as unknown as Design;
+  const editorHtmlContent = "<html><p></p></html>";
+  const editorExportedImageUrl = "https://test.fromdoppler.net/export.png";
+  const exportHtml = (cb: any) =>
+    cb({ design: editorDesign, html: editorHtmlContent });
+  const exportImage = (cb: any) => cb({ url: editorExportedImageUrl });
+
+  const singletonEditorContext: ISingletonDesignContext = {
+    hidden: false,
+    setContent: () => {},
+    editorState: {
+      isLoaded: true,
+      unlayer: {
+        addEventListener: () => {},
+        removeEventListener: () => {},
+        exportHtml,
+        exportImage,
+      } as any,
+    },
+  };
+
+  const TestComponent = ({
+    routerInitialEntry,
+  }: {
+    routerInitialEntry: string;
+  }) => (
+    <QueryClientProvider client={createQueryClient()}>
+      <AppServicesProvider
+        appServices={{
+          ...baseAppServices,
+          htmlEditorApiClient,
+          window: windowDouble,
+        }}
+      >
+        <TestDopplerIntlProvider>
+          <SingletonDesignContext.Provider value={singletonEditorContext}>
+            <MemoryRouter initialEntries={[routerInitialEntry]}>
               <Routes>
                 <Route path="/:idTemplate" element={<Template />} />
               </Routes>
             </MemoryRouter>
-          </TestDopplerIntlProvider>
-        </AppServicesProvider>
-      </QueryClientProvider>
-    );
+          </SingletonDesignContext.Provider>
+        </TestDopplerIntlProvider>
+      </AppServicesProvider>
+    </QueryClientProvider>
+  );
+
+  return {
+    editorDesign,
+    editorHtmlContent,
+    editorExportedImageUrl,
+    getTemplate,
+    updateTemplate,
+    resolveGetTemplatePromise: (result: Result<TemplateContent>) =>
+      resolveGetTemplatePromise(result),
+    rejectGetTemplatePromise: (error: any) => rejectGetTemplatePromise(error),
+    resolveUpdateTemplatePromise: (result: Result) =>
+      resolveUpdateTemplatePromise(result),
+    rejectUpdateTemplatePromise: (error: any) =>
+      rejectUpdateTemplatePromise(error),
+    TestComponent,
+  };
+};
+
+describe(Template.name, () => {
+  it("should show loading and then error when getTemplate is not successful", async () => {
+    // Arrange
+    const idTemplate = "1234";
+    const { getTemplate, rejectGetTemplatePromise, TestComponent } =
+      createTestContext();
+
+    renderEditor(<TestComponent routerInitialEntry={`/${idTemplate}`} />);
 
     expect(getTemplate).toHaveBeenCalledWith(idTemplate);
     screen.getByText("Loading...");
@@ -120,38 +185,10 @@ describe(Template.name, () => {
   it("should show EmailEditor when the getTemplate is successful", async () => {
     // Arrange
     const idTemplate = "1234";
+    const { getTemplate, resolveGetTemplatePromise, TestComponent } =
+      createTestContext();
 
-    let resolveGetTemplatePromise: any;
-    const getTemplate = jest.fn(
-      () =>
-        new Promise((resolve) => {
-          resolveGetTemplatePromise = resolve;
-        })
-    );
-
-    const htmlEditorApiClient = {
-      getTemplate,
-    } as unknown as HtmlEditorApiClient;
-
-    renderEditor(
-      <QueryClientProvider client={createQueryClient()}>
-        <AppServicesProvider
-          appServices={{
-            ...baseAppServices,
-            htmlEditorApiClient,
-            window: windowDouble,
-          }}
-        >
-          <TestDopplerIntlProvider>
-            <MemoryRouter initialEntries={[`/${idTemplate}`]}>
-              <Routes>
-                <Route path="/:idTemplate" element={<Template />} />
-              </Routes>
-            </MemoryRouter>
-          </TestDopplerIntlProvider>
-        </AppServicesProvider>
-      </QueryClientProvider>
-    );
+    renderEditor(<TestComponent routerInitialEntry={`/${idTemplate}`} />);
 
     screen.getByText("Loading...");
     const errorMessageEl = screen.queryByTestId(errorMessageTestId);
@@ -159,7 +196,7 @@ describe(Template.name, () => {
     expect(getTemplate).toHaveBeenCalledWith(idTemplate);
 
     // Act
-    resolveGetTemplatePromise({ success: true, value: {} });
+    resolveGetTemplatePromise({ success: true, value: {} as any });
 
     // Assert
     await screen.findByTestId(editorTopBarTestId);
@@ -175,74 +212,32 @@ describe(Template.name, () => {
   it("should call API client to store the template when the user clicks on save", async () => {
     // Arrange
     const idTemplate = "1234";
-    const editorDesign = { test: "Demo data" };
-    const editorHtmlContent = "<html><p></p></html>";
-    const editorExportedImageUrl = "https://test.fromdoppler.net/export.png";
-    const exportHtml = (cb: any) =>
-      cb({ design: editorDesign as any, html: editorHtmlContent });
-    const exportImage = (cb: any) => cb({ url: editorExportedImageUrl });
+    const {
+      editorDesign,
+      editorHtmlContent,
+      editorExportedImageUrl,
+      updateTemplate,
+      resolveGetTemplatePromise,
+      TestComponent,
+    } = createTestContext();
+
+    renderEditor(<TestComponent routerInitialEntry={`/${idTemplate}`} />);
 
     const originalTemplateName = "ORIGINAL TEMPLATE NAME";
     const originalDesign = { ORIGINAL_DESIGN: "" };
     const originalHtmlContent = "ORIGINAL HTML CONTENT";
     const originalImageUrl = "ORIGINAL PREVIEW IMAGE";
-
-    const getTemplate = () =>
-      Promise.resolve({
-        success: true,
-        value: {
-          templateName: originalTemplateName,
-          isPublic: false,
-          htmlContent: originalHtmlContent,
-          design: originalDesign,
-          previewImage: originalImageUrl,
-          type: "unlayer",
-        },
-      });
-    const updateTemplate = jest.fn(() =>
-      Promise.resolve({ success: true, value: {} })
-    );
-
-    const singletonEditorContext: ISingletonDesignContext = {
-      hidden: false,
-      setContent: () => {},
-      editorState: {
-        isLoaded: true,
-        unlayer: {
-          addEventListener: () => {},
-          removeEventListener: () => {},
-          exportHtml,
-          exportImage,
-        } as any,
+    resolveGetTemplatePromise({
+      success: true,
+      value: {
+        templateName: originalTemplateName,
+        isPublic: false,
+        htmlContent: originalHtmlContent,
+        design: originalDesign as any,
+        previewImage: originalImageUrl,
+        type: "unlayer",
       },
-    };
-
-    const htmlEditorApiClient = {
-      getTemplate,
-      updateTemplate,
-    } as unknown as HtmlEditorApiClient;
-
-    renderEditor(
-      <QueryClientProvider client={createQueryClient()}>
-        <AppServicesProvider
-          appServices={{
-            ...baseAppServices,
-            htmlEditorApiClient,
-            window: windowDouble,
-          }}
-        >
-          <TestDopplerIntlProvider>
-            <SingletonDesignContext.Provider value={singletonEditorContext}>
-              <MemoryRouter initialEntries={[`/${idTemplate}`]}>
-                <Routes>
-                  <Route path="/:idTemplate" element={<Template />} />
-                </Routes>
-              </MemoryRouter>
-            </SingletonDesignContext.Provider>
-          </TestDopplerIntlProvider>
-        </AppServicesProvider>
-      </QueryClientProvider>
-    );
+    });
 
     const saveBtn = await screen.findByText("save");
 
@@ -263,34 +258,14 @@ describe(Template.name, () => {
   it("shouldn't show the export button", async () => {
     // Arrange
     const idTemplate = "1234";
-    const getTemplate = jest.fn(() =>
-      Promise.resolve({ success: true, value: { type: "unlayer" } })
-    );
-
-    const htmlEditorApiClient = {
-      getTemplate,
-    } as unknown as HtmlEditorApiClient;
+    const { resolveGetTemplatePromise, TestComponent } = createTestContext();
 
     // Act
-    renderEditor(
-      <QueryClientProvider client={createQueryClient()}>
-        <AppServicesProvider
-          appServices={{
-            ...baseAppServices,
-            htmlEditorApiClient,
-            window: windowDouble,
-          }}
-        >
-          <TestDopplerIntlProvider>
-            <MemoryRouter initialEntries={[`/${idTemplate}`]}>
-              <Routes>
-                <Route path="/:idTemplate" element={<Template />} />
-              </Routes>
-            </MemoryRouter>
-          </TestDopplerIntlProvider>
-        </AppServicesProvider>
-      </QueryClientProvider>
-    );
+    renderEditor(<TestComponent routerInitialEntry={`/${idTemplate}`} />);
+    resolveGetTemplatePromise({
+      success: true,
+      value: {} as any,
+    });
     await screen.findByText("exit_edit_later");
 
     // Assert
