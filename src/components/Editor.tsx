@@ -10,7 +10,6 @@ import { useGetUserFields } from "../queries/user-fields-queries";
 import { useAppServices } from "./AppServicesContext";
 import { useAppSessionState } from "./AppSessionStateContext";
 import { EditorState } from "./SingletonEditor";
-import { useIntl } from "react-intl";
 import { LoadingScreen } from "./LoadingScreen";
 
 interface ExtendedToolConfig extends ToolConfig {
@@ -56,7 +55,6 @@ export const Editor = ({
   const userFieldsQuery = useGetUserFields();
   const emailEditorRef = useRef<EditorRef>(null);
   const [emailEditorLoaded, setEmailEditorLoaded] = useState(false);
-  const intl = useIntl();
 
   useEffect(() => {
     if (emailEditorLoaded) {
@@ -127,15 +125,6 @@ export const Editor = ({
     designTagsConfig: {
       delimiter: ["[[{", "}]]"],
     },
-    customJS: [
-      `window["unlayer-extensions-configuration"] = {
-        locale: "${intl.locale}",
-        baseAssetsUrl : "https://app2.dopplerfiles.com/MSEditor/images"
-      };`,
-      "https://cdn.fromdoppler.com/unlayer-editor/static/main.48dd60556419121d3b68.js",
-      // loaderUrl,
-      // `(new AssetServices()).load('${unlayerEditorManifestUrl}', []);`,
-    ],
     appearance: {
       panels: {
         tools: {
