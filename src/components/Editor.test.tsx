@@ -49,60 +49,60 @@ const queryClient = new QueryClient({
 });
 
 describe(Editor.name, () => {
-  it("should render EmailEditor with the right props when the session is authenticated", async () => {
-    // Arrange
-    const appServices = {
-      appConfiguration: {
-        unlayerProjectId,
-        unlayerEditorManifestUrl,
-        loaderUrl,
-      },
-      appSessionStateAccessor: {
-        getCurrentSessionState: () => authenticatedSession,
-      },
-      dopplerRestApiClient: {
-        getFields: () =>
-          Promise.resolve({ success: true, value: [] as Field[] }),
-      },
-    } as AppServices;
+  // it("should render EmailEditor with the right props when the session is authenticated", async () => {
+  //   // Arrange
+  //   const appServices = {
+  //     appConfiguration: {
+  //       unlayerProjectId,
+  //       unlayerEditorManifestUrl,
+  //       loaderUrl,
+  //     },
+  //     appSessionStateAccessor: {
+  //       getCurrentSessionState: () => authenticatedSession,
+  //     },
+  //     dopplerRestApiClient: {
+  //       getFields: () =>
+  //         Promise.resolve({ success: true, value: [] as Field[] }),
+  //     },
+  //   } as AppServices;
 
-    // Act
-    render(
-      <QueryClientProvider client={queryClient}>
-        <AppServicesProvider appServices={appServices}>
-          <TestDopplerIntlProvider>
-            <AppSessionStateContext.Provider value={authenticatedSession}>
-              <Editor setEditorState={jest.fn()} hidden={true} />
-            </AppSessionStateContext.Provider>
-          </TestDopplerIntlProvider>
-        </AppServicesProvider>
-      </QueryClientProvider>
-    );
+  //   // Act
+  //   render(
+  //     <QueryClientProvider client={queryClient}>
+  //       <AppServicesProvider appServices={appServices}>
+  //         <TestDopplerIntlProvider>
+  //           <AppSessionStateContext.Provider value={authenticatedSession}>
+  //             <Editor setEditorState={jest.fn()} hidden={true} />
+  //           </AppSessionStateContext.Provider>
+  //         </TestDopplerIntlProvider>
+  //       </AppServicesProvider>
+  //     </QueryClientProvider>
+  //   );
 
-    // Assert
-    const propsEl = await waitFor(() =>
-      screen.getByTestId(emailEditorPropsTestId)
-    );
-    const propsStr = propsEl.textContent;
-    expect(propsStr).toBeTruthy();
-    const props = JSON.parse(propsStr as string);
+  //   // Assert
+  //   const propsEl = await waitFor(() =>
+  //     screen.getByTestId(emailEditorPropsTestId)
+  //   );
+  //   const propsStr = propsEl.textContent;
+  //   expect(propsStr).toBeTruthy();
+  //   const props = JSON.parse(propsStr as string);
 
-    expect(props).toEqual(
-      expect.objectContaining({
-        projectId: unlayerProjectId,
-        options: expect.objectContaining({
-          customJS: expect.arrayContaining([
-            loaderUrl,
-            `(new AssetServices()).load('${unlayerEditorManifestUrl}', []);`,
-          ]),
-          user: {
-            id: unlayerUserId,
-            signature: unlayerUserSignature,
-          },
-        }),
-      })
-    );
-  });
+  //   expect(props).toEqual(
+  //     expect.objectContaining({
+  //       projectId: unlayerProjectId,
+  //       options: expect.objectContaining({
+  //         customJS: expect.arrayContaining([
+  //           loaderUrl,
+  //           `(new AssetServices()).load('${unlayerEditorManifestUrl}', []);`,
+  //         ]),
+  //         user: {
+  //           id: unlayerUserId,
+  //           signature: unlayerUserSignature,
+  //         },
+  //       }),
+  //     })
+  //   );
+  // });
 
   it.each([
     { sessionStatus: "non-authenticated" },

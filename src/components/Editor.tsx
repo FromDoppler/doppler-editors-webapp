@@ -46,8 +46,8 @@ export const Editor = ({
   const {
     appConfiguration: {
       unlayerProjectId,
-      unlayerEditorManifestUrl,
-      loaderUrl,
+      // unlayerEditorManifestUrl,
+      // loaderUrl,
       unlayerCDN,
     },
   } = useAppServices();
@@ -132,8 +132,9 @@ export const Editor = ({
         locale: "${intl.locale}",
         baseAssetsUrl : "https://app2.dopplerfiles.com/MSEditor/images"
       };`,
-      loaderUrl,
-      `(new AssetServices()).load('${unlayerEditorManifestUrl}', []);`,
+      "https://cdn.fromdoppler.com/unlayer-editor/static/main.48dd60556419121d3b68.js",
+      // loaderUrl,
+      // `(new AssetServices()).load('${unlayerEditorManifestUrl}', []);`,
     ],
     appearance: {
       panels: {
