@@ -38,6 +38,15 @@ export interface EditorProps {
   hidden: boolean;
 }
 
+const customCss = `
+.blockbuilder-content-tool-name{
+  text-transform: lowercase;
+}
+.blockbuilder-content-tool-name:first-letter{
+  text-transform: uppercase;
+}
+`;
+
 export const Editor = ({
   setEditorState,
   hidden,
@@ -127,6 +136,7 @@ export const Editor = ({
     designTagsConfig: {
       delimiter: ["[[{", "}]]"],
     },
+    customCSS: [customCss],
     customJS: [
       `window["unlayer-extensions-configuration"] = {
         locale: "${intl.locale}",
