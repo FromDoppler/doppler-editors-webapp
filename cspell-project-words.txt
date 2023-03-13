@@ -36,6 +36,7 @@ entitize
 Liskov
 nofile
 webfonts
+entrypoints
 
 # our services and providers
 aspnet
