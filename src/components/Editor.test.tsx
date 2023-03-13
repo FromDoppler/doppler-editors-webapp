@@ -26,7 +26,6 @@ const sampleDesign: Design = {
 
 const unlayerProjectId = 12345;
 const unlayerEditorManifestUrl = "unlayerEditorManifestUrl";
-const loaderUrl = "loaderUrl";
 const unlayerUserId = "unlayerUserId";
 const unlayerUserSignature = "unlayerUserSignature";
 
@@ -66,7 +65,6 @@ describe(Editor.name, () => {
       appConfiguration: {
         unlayerProjectId,
         unlayerEditorManifestUrl,
-        loaderUrl,
       },
       appSessionStateAccessor: {
         getCurrentSessionState: () => authenticatedSession,
@@ -129,7 +127,6 @@ describe(Editor.name, () => {
         appConfiguration: {
           unlayerProjectId,
           unlayerEditorManifestUrl,
-          loaderUrl,
         },
         appSessionStateAccessor: {
           getCurrentSessionState: () => ({
