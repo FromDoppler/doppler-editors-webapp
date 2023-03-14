@@ -10,6 +10,7 @@ import { EditorBottomBar } from "./EditorBottomBar";
 import { useTemplatesContinuationUrls } from "./continuation-urls";
 import { FormattedMessage } from "react-intl";
 import { useNavigateSmart } from "./smart-urls";
+import { SavingMessage } from "./SavingMessage";
 
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
@@ -77,6 +78,7 @@ export const Template = () => {
           </Header>
           <Footer>
             <EditorBottomBar>
+              <SavingMessage show={templateMutation.isLoading} />
               <button
                 onClick={() => saveAndNavigateClick(continuationUrls.exitUrl)}
                 className="dp-button button-medium secondary-green"
