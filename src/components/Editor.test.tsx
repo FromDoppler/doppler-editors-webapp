@@ -12,6 +12,8 @@ import {
 import { Editor } from "./Editor";
 import { EditorState } from "./SingletonEditor";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
+import { AssetManifestClient } from "../abstractions/asset-manifest-client";
+import { MfeLoaderAssetManifestClientImpl } from "../implementations/MfeLoaderAssetManifestClientImpl";
 
 const emailEditorPropsTestId = "EmailEditor_props";
 
@@ -24,7 +26,6 @@ const sampleDesign: Design = {
 
 const unlayerProjectId = 12345;
 const unlayerEditorManifestUrl = "unlayerEditorManifestUrl";
-const loaderUrl = "loaderUrl";
 const unlayerUserId = "unlayerUserId";
 const unlayerUserSignature = "unlayerUserSignature";
 
@@ -51,11 +52,19 @@ const queryClient = new QueryClient({
 describe(Editor.name, () => {
   it("should render EmailEditor with the right props when the session is authenticated", async () => {
     // Arrange
+    const unlayerEditorExtensionsEntrypoints = ["a", "b"];
+    const expectedCustomJS = ["a", "b"];
+    const getEntrypoints = jest.fn(() =>
+      Promise.resolve(unlayerEditorExtensionsEntrypoints)
+    );
+    const assetManifestClient: AssetManifestClient =
+      new MfeLoaderAssetManifestClientImpl({
+        window: { assetServices: { getEntrypoints } },
+      });
     const appServices = {
       appConfiguration: {
         unlayerProjectId,
         unlayerEditorManifestUrl,
-        loaderUrl,
       },
       appSessionStateAccessor: {
         getCurrentSessionState: () => authenticatedSession,
@@ -64,6 +73,7 @@ describe(Editor.name, () => {
         getFields: () =>
           Promise.resolve({ success: true, value: [] as Field[] }),
       },
+      assetManifestClient,
     } as AppServices;
 
     // Act
@@ -80,6 +90,10 @@ describe(Editor.name, () => {
     );
 
     // Assert
+    expect(getEntrypoints).toBeCalledWith({
+      manifestURL: unlayerEditorManifestUrl,
+    });
+
     const propsEl = await waitFor(() =>
       screen.getByTestId(emailEditorPropsTestId)
     );
@@ -91,10 +105,7 @@ describe(Editor.name, () => {
       expect.objectContaining({
         projectId: unlayerProjectId,
         options: expect.objectContaining({
-          customJS: expect.arrayContaining([
-            loaderUrl,
-            `(new AssetServices()).load('${unlayerEditorManifestUrl}', []);`,
-          ]),
+          customJS: expect.arrayContaining(expectedCustomJS),
           user: {
             id: unlayerUserId,
             signature: unlayerUserSignature,
@@ -116,7 +127,6 @@ describe(Editor.name, () => {
         appConfiguration: {
           unlayerProjectId,
           unlayerEditorManifestUrl,
-          loaderUrl,
         },
         appSessionStateAccessor: {
           getCurrentSessionState: () => ({

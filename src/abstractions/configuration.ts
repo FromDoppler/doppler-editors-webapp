@@ -5,7 +5,6 @@ export type AppConfiguration = {
   readonly loginPageUrl: string;
   readonly unlayerProjectId: number;
   readonly unlayerEditorManifestUrl: string;
-  readonly loaderUrl: string;
   readonly unlayerCDN: string;
   readonly dopplerLegacyBaseUrl: string;
   readonly htmlEditorApiBaseUrl: string;

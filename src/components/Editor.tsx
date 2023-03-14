@@ -12,6 +12,7 @@ import { useAppSessionState } from "./AppSessionStateContext";
 import { EditorState } from "./SingletonEditor";
 import { useIntl } from "react-intl";
 import { LoadingScreen } from "./LoadingScreen";
+import { useUnlayerEditorExtensionsEntrypoints } from "../queries/unlayer-editor-extensions-entrypoints";
 
 interface ExtendedToolConfig extends ToolConfig {
   icon: string;
@@ -44,16 +45,13 @@ export const Editor = ({
   ...otherProps
 }: EditorProps) => {
   const {
-    appConfiguration: {
-      unlayerProjectId,
-      unlayerEditorManifestUrl,
-      loaderUrl,
-      unlayerCDN,
-    },
+    appConfiguration: { unlayerProjectId, unlayerCDN },
   } = useAppServices();
 
   const appSessionState = useAppSessionState();
   const userFieldsQuery = useGetUserFields();
+  const unlayerEditorExtensionsEntrypointsQuery =
+    useUnlayerEditorExtensionsEntrypoints();
   const emailEditorRef = useRef<EditorRef>(null);
   const [emailEditorLoaded, setEmailEditorLoaded] = useState(false);
   const intl = useIntl();
@@ -80,8 +78,19 @@ export const Editor = ({
     );
   }
 
-  if (userFieldsQuery.isLoading) {
+  if (
+    userFieldsQuery.isLoading ||
+    unlayerEditorExtensionsEntrypointsQuery.isLoading
+  ) {
     return <LoadingScreen />;
+  }
+
+  if (!unlayerEditorExtensionsEntrypointsQuery.isSuccess) {
+    return (
+      <div style={containerStyle} {...otherProps}>
+        <p>Error loading editor's extensions entrypoints...</p>
+      </div>
+    );
   }
 
   if (!userFieldsQuery.isSuccess) {
@@ -132,8 +141,7 @@ export const Editor = ({
         locale: "${intl.locale}",
         baseAssetsUrl : "https://app2.dopplerfiles.com/MSEditor/images"
       };`,
-      loaderUrl,
-      `(new AssetServices()).load('${unlayerEditorManifestUrl}', []);`,
+      ...unlayerEditorExtensionsEntrypointsQuery.data,
     ],
     appearance: {
       panels: {

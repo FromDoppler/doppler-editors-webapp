@@ -14,6 +14,7 @@ import { DummyHtmlEditorApiClient } from "./implementations/dummies/html-editor-
 import { HtmlEditorApiClientImpl } from "./implementations/HtmlEditorApiClientImpl";
 import { DummyDopplerRestApiClient } from "./implementations/dummies/doppler-rest-api-client";
 import { DopplerRestApiClientImpl } from "./implementations/DopplerRestApiClientImpl";
+import { MfeLoaderAssetManifestClientImpl } from "./implementations/MfeLoaderAssetManifestClientImpl";
 
 export const configureApp = (
   customConfiguration: Partial<AppConfiguration>
@@ -51,6 +52,8 @@ export const configureApp = (
       new DopplerSessionMfeAppSessionStateMonitor({
         window,
       }),
+    assetManifestClientFactory: ({ window }: AppServices) =>
+      new MfeLoaderAssetManifestClientImpl({ window }),
   };
 
   const dummyFactories: Partial<ServicesFactories> = {
