@@ -45,6 +45,12 @@ const customCss = `
 .blockbuilder-content-tool-name:first-letter{
   text-transform: uppercase;
 }
+.blockbuilder-widget-label{
+  text-transform: lowercase;
+}
+.blockbuilder-widget-label > *:first-letter{
+  text-transform: uppercase;
+}
 `;
 
 export const Editor = ({
