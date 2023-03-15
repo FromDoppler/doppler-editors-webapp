@@ -105,7 +105,12 @@ describe(Editor.name, () => {
       expect.objectContaining({
         projectId: unlayerProjectId,
         options: expect.objectContaining({
-          customJS: expect.arrayContaining(expectedCustomJS),
+          customJS: [
+            expect.stringContaining(
+              'window["unlayer-extensions-configuration"] = {'
+            ),
+            ...expectedCustomJS,
+          ],
           user: {
             id: unlayerUserId,
             signature: unlayerUserSignature,
