@@ -101,7 +101,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
   // Arrange
   const appServices = defaultAppServices as AppServices;
 
-  const DemoComponent = ({ onSave }: { onSave: () => void }) => {
+  const DemoComponent = ({ onSave }: { onSave: () => Promise<void> }) => {
     const [initialContent, setInitialContent] = useState<Content | undefined>();
     const { forceSave } = useSingletonEditor(
       {
@@ -139,7 +139,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
     // Act
     render(
       <WrapperSingletonProviderTest>
-        <DemoComponent onSave={() => {}} />
+        <DemoComponent onSave={() => Promise.resolve()} />
       </WrapperSingletonProviderTest>
     );
 
@@ -152,7 +152,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
     // Arrange
     render(
       <WrapperSingletonProviderTest>
-        <DemoComponent onSave={() => {}} />
+        <DemoComponent onSave={() => Promise.resolve()} />
       </WrapperSingletonProviderTest>
     );
 
@@ -183,7 +183,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
       url: previewImage,
     };
 
-    const onSaveFn = jest.fn();
+    const onSaveFn = jest.fn(() => Promise.resolve());
 
     render(
       <WrapperSingletonProviderTest>
