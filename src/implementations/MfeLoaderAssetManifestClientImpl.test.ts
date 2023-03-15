@@ -5,7 +5,11 @@ describe(MfeLoaderAssetManifestClientImpl.name, () => {
     it("should use assetServices as it is", async () => {
       // Arrange
       const manifestURL = "a";
-      const assetServicesResult = ["b", "c"];
+      const assetServicesResult = ["a.js", "b.css", "c", "d.js"];
+      const expectedResult = {
+        css: ["b.css"],
+        js: ["a.js", "d.js"],
+      };
 
       const windowDouble = {
         assetServices: {
@@ -27,7 +31,7 @@ describe(MfeLoaderAssetManifestClientImpl.name, () => {
       expect(windowDouble.assetServices.getEntrypoints).toBeCalledWith({
         manifestURL,
       });
-      expect(result).toEqual({ success: true, value: assetServicesResult });
+      expect(result).toEqual({ success: true, value: expectedResult });
     });
   });
 });

@@ -136,12 +136,13 @@ export const Editor = ({
     designTagsConfig: {
       delimiter: ["[[{", "}]]"],
     },
+    customCSS: unlayerEditorExtensionsEntrypointsQuery.data.css,
     customJS: [
       `window["unlayer-extensions-configuration"] = {
         locale: "${intl.locale}",
         baseAssetsUrl : "https://app2.dopplerfiles.com/MSEditor/images"
       };`,
-      ...unlayerEditorExtensionsEntrypointsQuery.data,
+      ...unlayerEditorExtensionsEntrypointsQuery.data.js,
     ],
     appearance: {
       panels: {

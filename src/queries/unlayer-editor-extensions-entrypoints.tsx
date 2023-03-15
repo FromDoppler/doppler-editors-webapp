@@ -1,4 +1,5 @@
 import { QueryFunction, useQuery } from "@tanstack/react-query";
+import { EntrypointsByKnownType } from "../abstractions/asset-manifest-client";
 import { useAppServices } from "../components/AppServicesContext";
 
 export const useUnlayerEditorExtensionsEntrypoints = () => {
@@ -9,7 +10,10 @@ export const useUnlayerEditorExtensionsEntrypoints = () => {
 
   const queryKey = [unlayerEditorManifestUrl];
 
-  const queryFn: QueryFunction<string[], typeof queryKey> = async (context) => {
+  const queryFn: QueryFunction<
+    EntrypointsByKnownType,
+    typeof queryKey
+  > = async (context) => {
     const [manifestURL] = context.queryKey;
 
     const result = await assetManifestClient.getEntrypoints({ manifestURL });
