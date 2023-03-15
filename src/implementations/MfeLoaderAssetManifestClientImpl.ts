@@ -1,4 +1,7 @@
-import { AssetManifestClient } from "../abstractions/asset-manifest-client";
+import {
+  AssetManifestClient,
+  EntrypointsByKnownType,
+} from "../abstractions/asset-manifest-client";
 
 interface IAssetServices {
   getEntrypoints({ manifestURL }: { manifestURL: string }): Promise<string[]>;
@@ -28,8 +31,13 @@ export class MfeLoaderAssetManifestClientImpl implements AssetManifestClient {
     manifestURL,
   }: {
     manifestURL: string;
-  }): Promise<{ success: true; value: string[] }> {
-    const value = await this.assetServices.getEntrypoints({ manifestURL });
+  }): Promise<{ success: true; value: EntrypointsByKnownType }> {
+    const entrypoints = await this.assetServices.getEntrypoints({
+      manifestURL,
+    });
+    const value = {
+      js: entrypoints.filter((x) => x.endsWith(".js")),
+    };
     return { success: true, value };
   }
 }

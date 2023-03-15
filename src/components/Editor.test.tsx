@@ -41,8 +41,8 @@ const queryClient = new QueryClient({
 describe(Editor.name, () => {
   it("should render EmailEditor with the right props when the session is authenticated", async () => {
     // Arrange
-    const unlayerEditorExtensionsEntrypoints = ["a", "b"];
-    const expectedCustomJS = ["a", "b"];
+    const unlayerEditorExtensionsEntrypoints = ["a.js", "b.css", "c", "d.js"];
+    const expectedCustomJS = ["a.js", "d.js"];
     const getEntrypoints = jest.fn(() =>
       Promise.resolve(unlayerEditorExtensionsEntrypoints)
     );
