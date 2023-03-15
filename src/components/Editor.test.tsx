@@ -42,6 +42,7 @@ describe(Editor.name, () => {
   it("should render EmailEditor with the right props when the session is authenticated", async () => {
     // Arrange
     const unlayerEditorExtensionsEntrypoints = ["a.js", "b.css", "c", "d.js"];
+    const expectedCustomCSS = ["b.css"];
     const expectedCustomJS = ["a.js", "d.js"];
     const getEntrypoints = jest.fn(() =>
       Promise.resolve(unlayerEditorExtensionsEntrypoints)
@@ -94,6 +95,7 @@ describe(Editor.name, () => {
       expect.objectContaining({
         projectId: unlayerProjectId,
         options: expect.objectContaining({
+          customCSS: expectedCustomCSS,
           customJS: [
             expect.stringContaining(
               'window["unlayer-extensions-configuration"] = {'

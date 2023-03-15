@@ -1,6 +1,7 @@
 import { Result } from "../common/result-types";
 
 export interface EntrypointsByKnownType {
+  css: string[];
   js: string[];
 }
 

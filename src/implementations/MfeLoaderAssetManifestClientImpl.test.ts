@@ -7,6 +7,7 @@ describe(MfeLoaderAssetManifestClientImpl.name, () => {
       const manifestURL = "a";
       const assetServicesResult = ["a.js", "b.css", "c", "d.js"];
       const expectedResult = {
+        css: ["b.css"],
         js: ["a.js", "d.js"],
       };
 

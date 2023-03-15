@@ -36,6 +36,7 @@ export class MfeLoaderAssetManifestClientImpl implements AssetManifestClient {
       manifestURL,
     });
     const value = {
+      css: entrypoints.filter((x) => x.endsWith(".css")),
       js: entrypoints.filter((x) => x.endsWith(".js")),
     };
     return { success: true, value };
