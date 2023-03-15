@@ -5,24 +5,13 @@ import { AppServices } from "../abstractions";
 import { AuthenticatedAppSessionState } from "../abstractions/app-session/app-session-state";
 import { Field } from "../abstractions/doppler-rest-api-client";
 import { AppServicesProvider } from "./AppServicesContext";
-import {
-  AppSessionStateContext,
-  AppSessionStateProvider,
-} from "./AppSessionStateContext";
+import { AppSessionStateContext } from "./AppSessionStateContext";
 import { Editor } from "./Editor";
-import { EditorState } from "./SingletonEditor";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { AssetManifestClient } from "../abstractions/asset-manifest-client";
 import { MfeLoaderAssetManifestClientImpl } from "../implementations/MfeLoaderAssetManifestClientImpl";
 
 const emailEditorPropsTestId = "EmailEditor_props";
-
-const sampleDesign: Design = {
-  counters: {},
-  body: {
-    rows: [],
-  },
-};
 
 const unlayerProjectId = 12345;
 const unlayerEditorManifestUrl = "unlayerEditorManifestUrl";
