@@ -30,7 +30,7 @@ export const emptyDesign = {
 
 interface UseSingletonEditorConfig {
   initialContent: Content | undefined;
-  onSave: (content: Content) => void;
+  onSave: (content: Content) => Promise<void>;
 }
 
 interface UnlayerEditor extends EditorRef {
@@ -100,7 +100,7 @@ export const useSingletonEditor = (
           };
 
       savedCounter.current = currentUpdateCounter;
-      onSave(content);
+      await onSave(content);
     },
     // eslint-disable-next-line
     [editorState, ...deps]

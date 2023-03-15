@@ -37,8 +37,8 @@ export const Campaign = () => {
   const { smartSave, exportContent } = useSingletonEditor(
     {
       initialContent: campaignContentQuery.data,
-      onSave: (content: Content) => {
-        campaignContentMutation.mutate({ idCampaign, content });
+      onSave: async (content: Content) => {
+        await campaignContentMutation.mutateAsync({ idCampaign, content });
       },
     },
     [campaignContentQuery.data, campaignContentMutation.mutate, idCampaign]

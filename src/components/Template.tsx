@@ -28,7 +28,7 @@ export const Template = () => {
   const { smartSave } = useSingletonEditor(
     {
       initialContent: templateQuery.data,
-      onSave: (content: Content) => {
+      onSave: async (content: Content) => {
         if (!templateQuery.data) {
           console.error(
             "Template data is not available trying to save template content",
@@ -37,7 +37,7 @@ export const Template = () => {
         } else if (content.type !== "unlayer") {
           console.error("Content type is not supported", content);
         } else {
-          templateMutation.mutate({
+          await templateMutation.mutateAsync({
             idTemplate,
             template: { ...templateQuery.data, ...content },
           });
