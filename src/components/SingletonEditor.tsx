@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { Editor } from "./Editor";
-import { Design, EditorRef } from "react-email-editor";
+import { EditorRef, HtmlExport, ImageExport } from "react-email-editor";
 import { Content, UnlayerContent } from "../abstractions/domain/content";
 import { promisifyFunctionWithoutError } from "../utils";
 import { debounce } from "underscore";
@@ -34,10 +34,8 @@ interface UseSingletonEditorConfig {
 }
 
 interface UnlayerEditor extends EditorRef {
-  removeEventListener: (event: string, cb: () => void) => void;
-  exportImage: (
-    callback: (data: { design: Design; url: string }) => void
-  ) => void;
+  // The UnlayerEditor interface is used to complete the inconsistent types
+  // between the EditorRef interface and the Unlayer Editor object
 }
 
 export const SingletonDesignContext = createContext<ISingletonDesignContext>({
@@ -74,10 +72,10 @@ export const useSingletonEditor = (
         editorState.unlayer.exportImage.bind(editorState.unlayer)
       );
 
-      const [htmlExport, imageExport] = await Promise.all([
+      const [htmlExport, imageExport] = (await Promise.all([
         exportHtml(),
         exportImage(),
-      ]);
+      ])) as [HtmlExport, ImageExport];
 
       const newerChangesSaved = currentUpdateCounter < savedCounter.current;
       const currentChangesSaved = currentUpdateCounter === savedCounter.current;
@@ -122,10 +120,10 @@ export const useSingletonEditor = (
       editorState.unlayer.exportImage.bind(editorState.unlayer)
     );
 
-    const [htmlExport, imageExport] = await Promise.all([
+    const [htmlExport, imageExport] = (await Promise.all([
       exportHtml(),
       exportImage(),
-    ]);
+    ])) as [HtmlExport, ImageExport];
 
     if (!htmlExport.design) {
       console.error("The model exported don´t contain design");
