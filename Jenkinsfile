@@ -48,7 +48,7 @@ pipeline {
                     steps {
                         sh '''
                           sh build-n-publish.sh \
-                            --package=${PKG_NAME} \
+                            --package=${PKG_NAME}${PACKAGE_SUFFIX} \
                             --commit=${GIT_COMMIT} \
                             --name=pr-${CHANGE_ID}
                           '''
@@ -61,7 +61,7 @@ pipeline {
                     steps {
                         sh '''
                           sh build-n-publish.sh \
-                            --package=${PKG_NAME} \
+                            --package=${PKG_NAME}${PACKAGE_SUFFIX} \
                             --commit=${GIT_COMMIT} \
                             --name=main
                           '''
@@ -74,7 +74,7 @@ pipeline {
                     steps {
                         sh '''
                           sh build-n-publish.sh \
-                            --package=${PKG_NAME} \
+                            --package=${PKG_NAME}${PACKAGE_SUFFIX} \
                             --commit=${GIT_COMMIT} \
                             --name=INT
                           '''
@@ -89,7 +89,7 @@ pipeline {
                     steps {
                         sh '''
                           sh build-n-publish.sh \
-                            --package=${PKG_NAME} \
+                            --package=${PKG_NAME}${PACKAGE_SUFFIX} \
                             --commit=${GIT_COMMIT} \
                             --version=${TAG_NAME}
                           '''
