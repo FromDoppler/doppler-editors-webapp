@@ -48,7 +48,7 @@ pipeline {
                     steps {
                         sh '''
                           sh build-n-publish.sh \
-                            --package=${PKG_NAME} \
+                            --package=${PKG_NAME}${PACKAGE_SUFFIX} \
                             --commit=${GIT_COMMIT} \
                             --name=pr-${CHANGE_ID}
                           '''
@@ -61,7 +61,7 @@ pipeline {
                     steps {
                         sh '''
                           sh build-n-publish.sh \
-                            --package=${PKG_NAME} \
+                            --package=${PKG_NAME}${PACKAGE_SUFFIX} \
                             --commit=${GIT_COMMIT} \
                             --name=main
                           '''
@@ -69,12 +69,15 @@ pipeline {
                 }
                 stage('Publish pre-release packages from INT') {
                     when {
-                        branch 'INT'
+                        anyOf {
+                            branch 'INT'
+                            branch 'TESTING-JENKINS'
+                        }
                     }
                     steps {
                         sh '''
                           sh build-n-publish.sh \
-                            --package=${PKG_NAME} \
+                            --package=${PKG_NAME}${PACKAGE_SUFFIX} \
                             --commit=${GIT_COMMIT} \
                             --name=INT
                           '''
@@ -89,7 +92,7 @@ pipeline {
                     steps {
                         sh '''
                           sh build-n-publish.sh \
-                            --package=${PKG_NAME} \
+                            --package=${PKG_NAME}${PACKAGE_SUFFIX} \
                             --commit=${GIT_COMMIT} \
                             --version=${TAG_NAME}
                           '''
