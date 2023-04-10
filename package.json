@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "resolutions": {
-    "@types/react": "18.0.33"
+    "@types/react": "18.0.34"
   },
   "devDependencies": {
     "@cspell/dict-es-es": "2.2.4",
@@ -13,7 +13,7 @@
     "@types/history": "5.0.0",
     "@types/jest": "29.5.0",
     "@types/node": "18.15.11",
-    "@types/react": "18.0.33",
+    "@types/react": "18.0.34",
     "@types/react-dom": "18.0.11",
     "@types/react-modal": "^3.13.1",
     "@types/react-query": "1.2.9",
