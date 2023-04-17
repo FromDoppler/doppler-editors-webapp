@@ -17,7 +17,7 @@ block_comment_end = */
 max_line_length = 220
 
 # Unset for binary and generated files
-[{**.svg,**.png,**/obj/**,**/bin/**,.vscode/**,**/Properties/launchSettings.json,*.[sS]ecret.*,yarn.lock,.doppler-ci,build/**}]
+[{**.svg,**.png,**/obj/**,**/bin/**,.vscode/**,**/Properties/launchSettings.json,*.[sS]ecret.*,yarn.lock,.doppler-ci,doppler-jenkins*.groovy,build/**}]
 charset = unset
 end_of_line = unset
 insert_final_newline = unset
