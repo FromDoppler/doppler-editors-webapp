@@ -32,7 +32,7 @@
     "react-email-editor": "1.7.8",
     "react-intl": "6.4.0",
     "react-modal": "^3.16.1",
-    "react-router-dom": "6.9.0",
+    "react-router-dom": "6.10.0",
     "react-scripts": "5.0.1",
     "typescript": "5.0.4",
     "underscore": "1.13.6",
