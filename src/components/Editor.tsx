@@ -27,6 +27,7 @@ interface ExtendedUnlayerOptions extends UnlayerOptions {
 }
 
 interface ExtendedFeatures extends Features {
+  sendTestEmail?: boolean;
   preheaderText?: boolean;
 }
 
@@ -130,6 +131,7 @@ export const Editor = ({
     },
     displayMode: "email",
     features: {
+      sendTestEmail: true,
       preheaderText: false,
     },
     mergeTags: mergeTags,
