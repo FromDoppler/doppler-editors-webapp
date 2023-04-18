@@ -105,6 +105,7 @@ describe(Editor.name, () => {
           user: {
             id: unlayerUserId,
             signature: unlayerUserSignature,
+            email: authenticatedSession.dopplerAccountName,
           },
         }),
       })

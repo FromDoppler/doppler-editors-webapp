@@ -27,6 +27,7 @@ interface ExtendedUnlayerOptions extends UnlayerOptions {
 }
 
 interface ExtendedFeatures extends Features {
+  sendTestEmail?: boolean;
   preheaderText?: boolean;
 }
 
@@ -107,6 +108,7 @@ export const Editor = ({
     // Ugly patch because Unlayer types does not accept string as id
     id: id as unknown as number,
     signature,
+    email: appSessionState.dopplerAccountName,
   };
 
   // TODO: consider translating the name for predefined fields
@@ -129,6 +131,7 @@ export const Editor = ({
     },
     displayMode: "email",
     features: {
+      sendTestEmail: true,
       preheaderText: false,
     },
     mergeTags: mergeTags,
