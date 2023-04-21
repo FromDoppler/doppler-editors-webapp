@@ -149,6 +149,9 @@ export const Editor = ({
         position: 0,
       },
     },
+    editor: {
+      autoSelectOnDrop: true,
+    },
     tools: {
       button: {
         icon: unlayerCDN + "/assets/button.svg",
