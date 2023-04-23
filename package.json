@@ -20,7 +20,7 @@
     "@types/underscore": "1.11.4",
     "cspell": "6.31.1",
     "eclint": "2.8.1",
-    "prettier": "2.8.7"
+    "prettier": "2.8.8"
   },
   "dependencies": {
     "@tanstack/react-query": "4.29.3",
