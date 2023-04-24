@@ -18,9 +18,24 @@ interface ExtendedToolConfig extends ToolConfig {
   icon: string;
 }
 
+interface ExtendedUnlayerTabOptions {
+  enabled?: boolean;
+  active?: boolean;
+  position?: number;
+}
+
 interface ExtendedUnlayerOptions extends UnlayerOptions {
   features: ExtendedFeatures;
   mergeTagsConfig: { sort: boolean };
+  tabs?: {
+    body?: ExtendedUnlayerTabOptions;
+    content?: ExtendedUnlayerTabOptions;
+    blocks?: ExtendedUnlayerTabOptions;
+    images?: ExtendedUnlayerTabOptions;
+    uploads?: ExtendedUnlayerTabOptions;
+    row?: ExtendedUnlayerTabOptions;
+    audit?: ExtendedUnlayerTabOptions;
+  };
   tools?: {
     readonly [key: string]: ExtendedToolConfig;
   };
@@ -121,6 +136,13 @@ export const Editor = ({
   }));
 
   const unlayerOptions: ExtendedUnlayerOptions = {
+    tabs: {
+      body: {
+        enabled: true,
+        active: true,
+        position: 0,
+      },
+    },
     tools: {
       button: {
         icon: unlayerCDN + "/assets/button.svg",
