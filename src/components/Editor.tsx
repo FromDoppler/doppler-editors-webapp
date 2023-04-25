@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import EmailEditor, {
+  EditorConfig,
   EditorRef,
   Features,
   ToolConfig,
@@ -39,6 +40,11 @@ interface ExtendedUnlayerOptions extends UnlayerOptions {
   tools?: {
     readonly [key: string]: ExtendedToolConfig;
   };
+  editor?: ExtendedEditorConfig | undefined;
+}
+
+interface ExtendedEditorConfig extends EditorConfig {
+  autoSelectOnDrop?: boolean;
 }
 
 interface ExtendedFeatures extends Features {
@@ -142,6 +148,9 @@ export const Editor = ({
         active: true,
         position: 0,
       },
+    },
+    editor: {
+      autoSelectOnDrop: true,
     },
     tools: {
       button: {
