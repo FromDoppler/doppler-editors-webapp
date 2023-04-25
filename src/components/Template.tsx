@@ -25,7 +25,7 @@ export const Template = () => {
   const templateQuery = useGetTemplate(idTemplate);
   const templateMutation = useUpdateTemplate();
 
-  const { smartSave } = useSingletonEditor(
+  const { smartSave, saveStatus } = useSingletonEditor(
     {
       initialContent: templateQuery.data,
       onSave: async (content: Content) => {
@@ -74,6 +74,7 @@ export const Template = () => {
                   ? templateQuery.data.templateName
                   : ""
               }
+              saveStatus={saveStatus}
             ></EditorTopBar>
           </Header>
           <Footer>

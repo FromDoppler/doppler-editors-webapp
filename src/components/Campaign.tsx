@@ -34,7 +34,7 @@ export const Campaign = () => {
   const campaignContentQuery = useGetCampaignContent(idCampaign);
   const campaignContentMutation = useUpdateCampaignContent();
 
-  const { smartSave, exportContent } = useSingletonEditor(
+  const { smartSave, exportContent, saveStatus } = useSingletonEditor(
     {
       initialContent: campaignContentQuery.data,
       onSave: async (content: Content) => {
@@ -90,6 +90,7 @@ export const Campaign = () => {
                   ? campaignContentQuery.data.campaignName
                   : ""
               }
+              saveStatus={saveStatus}
             >
               <ul className="ed-header-list">
                 {campaignContentQuery.data?.type === "unlayer" ? (
