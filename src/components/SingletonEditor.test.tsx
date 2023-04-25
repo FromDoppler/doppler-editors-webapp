@@ -91,6 +91,7 @@ const generateNewContent: () => CampaignContent = () => ({
 });
 
 describe(`${SingletonEditorProvider.name}`, () => {
+  // TODO: add more tests for saveStatus
   beforeEach(() => {
     exportHtmlData = {
       design: {},
@@ -103,7 +104,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
 
   const DemoComponent = ({ onSave }: { onSave: () => Promise<void> }) => {
     const [initialContent, setInitialContent] = useState<Content | undefined>();
-    const { forceSave } = useSingletonEditor(
+    const { forceSave, saveStatus } = useSingletonEditor(
       {
         initialContent,
         onSave,
@@ -119,6 +120,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
       <>
         <button onClick={changeInitialContent}>change initial content</button>
         <button onClick={forceSave}>save content</button>
+        <p>saveStatus={saveStatus}</p>
       </>
     );
   };
@@ -146,6 +148,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
     // Assert
     const editorEl = screen.getByTestId(singletonEditorTestId);
     expect(editorEl.style.display).toBe("none");
+    screen.getByText("saveStatus=idle");
   });
 
   it("should show Editor when content is loaded", () => {
@@ -165,6 +168,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
     // Assert
     const editorEl = screen.getByTestId(singletonEditorTestId);
     expect(editorEl.style.display).toBe("flex");
+    screen.getByText("saveStatus=idle");
   });
 
   it("should save content when save event is fire", async () => {
@@ -183,7 +187,10 @@ describe(`${SingletonEditorProvider.name}`, () => {
       url: previewImage,
     };
 
-    const onSaveFn = jest.fn(() => Promise.resolve());
+    let resolveOnSavePromise = () => {};
+    const onSaveFn = jest.fn(() => new Promise<void>((resolve) => {
+      resolveOnSavePromise = resolve;
+    }));
 
     render(
       <WrapperSingletonProviderTest>
@@ -196,12 +203,16 @@ describe(`${SingletonEditorProvider.name}`, () => {
     buttonSave.click();
 
     // Assert
+    screen.getByText("saveStatus=idle");
     await waitFor(() => expect(onSaveFn).toHaveBeenCalledTimes(1));
+    screen.getByText("saveStatus=saving");
     expect(onSaveFn).toHaveBeenCalledWith({
       design,
       htmlContent,
       previewImage,
       type: "unlayer",
     });
+    resolveOnSavePromise();
+    await screen.findByText("saveStatus=saved")
   });
 });

@@ -11,6 +11,7 @@ import { EditorRef, HtmlExport, ImageExport } from "react-email-editor";
 import { Content, UnlayerContent } from "../abstractions/domain/content";
 import { promisifyFunctionWithoutError } from "../utils";
 import { debounce } from "underscore";
+import { SaveStatus } from "../abstractions/common/save-status";
 
 export type EditorState =
   | { isLoaded: false; unlayer: undefined }
@@ -50,6 +51,7 @@ export const useSingletonEditor = (
   { initialContent, onSave }: UseSingletonEditorConfig,
   deps: any[]
 ) => {
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
   const { editorState, setContent } = useContext(SingletonDesignContext);
   const savedCounter = useRef(0);
   const updateCounter = useRef(0);
@@ -65,40 +67,58 @@ export const useSingletonEditor = (
       }
 
       const currentUpdateCounter = updateCounter.current;
-      const exportHtml = promisifyFunctionWithoutError(
-        editorState.unlayer.exportHtml.bind(editorState.unlayer)
-      );
-      const exportImage = promisifyFunctionWithoutError(
-        editorState.unlayer.exportImage.bind(editorState.unlayer)
-      );
+      try {
+        setSaveStatus("saving");
+        const exportHtml = promisifyFunctionWithoutError(
+          editorState.unlayer.exportHtml.bind(editorState.unlayer)
+        );
+        const exportImage = promisifyFunctionWithoutError(
+          editorState.unlayer.exportImage.bind(editorState.unlayer)
+        );
 
-      const [htmlExport, imageExport] = (await Promise.all([
-        exportHtml(),
-        exportImage(),
-      ])) as [HtmlExport, ImageExport];
+        const [htmlExport, imageExport] = (await Promise.all([
+          exportHtml(),
+          exportImage(),
+        ])) as [HtmlExport, ImageExport];
 
-      const newerChangesSaved = currentUpdateCounter < savedCounter.current;
-      const currentChangesSaved = currentUpdateCounter === savedCounter.current;
-      if (newerChangesSaved || (!force && currentChangesSaved)) {
-        return;
+        const newerChangesSaved = currentUpdateCounter < savedCounter.current;
+        const currentChangesSaved =
+          currentUpdateCounter === savedCounter.current;
+        if (newerChangesSaved || (!force && currentChangesSaved)) {
+          // saveStatus should not be modified because another thread is
+          // saving now.
+          return;
+        }
+
+        const content: Content = !htmlExport.design
+          ? {
+              htmlContent: htmlExport.html,
+              // TODO: validate if the generated image is valid for HTML content
+              previewImage: imageExport.url,
+              type: "html",
+            }
+          : {
+              design: htmlExport.design,
+              htmlContent: htmlExport.html,
+              previewImage: imageExport.url,
+              type: "unlayer",
+            };
+
+        savedCounter.current = currentUpdateCounter;
+        await onSave(content);
+        if (updateCounter.current <= savedCounter.current) {
+          // Saving process finished and there are not pending changes
+          setSaveStatus("saved");
+        }
+        // There is an scenario here where maybe we are not still not saving the next value
+        // but in place of changing status to 'pending' we are keeping it as 'saving'
+      } catch (e) {
+        if (updateCounter.current <= savedCounter.current) {
+          // Saving process failed and there are not pending changes
+          setSaveStatus("error");
+        }
+        throw e;
       }
-
-      const content: Content = !htmlExport.design
-        ? {
-            htmlContent: htmlExport.html,
-            // TODO: validate if the generated image is valid for HTML content
-            previewImage: imageExport.url,
-            type: "html",
-          }
-        : {
-            design: htmlExport.design,
-            htmlContent: htmlExport.html,
-            previewImage: imageExport.url,
-            type: "unlayer",
-          };
-
-      savedCounter.current = currentUpdateCounter;
-      await onSave(content);
     },
     // eslint-disable-next-line
     [editorState, ...deps]
@@ -157,6 +177,11 @@ export const useSingletonEditor = (
 
     const updateDesignListener = () => {
       updateCounter.current++;
+      // Only modify the status when it is not already saving
+      setSaveStatus((saveStatus) => {
+        return saveStatus !== "saving" ? "pending" : saveStatus;
+      });
+
       debounced();
     };
 
@@ -199,6 +224,7 @@ export const useSingletonEditor = (
     forceSave,
     smartSave,
     exportContent,
+    saveStatus,
   };
 };
 
