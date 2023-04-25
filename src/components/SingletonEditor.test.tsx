@@ -188,9 +188,12 @@ describe(`${SingletonEditorProvider.name}`, () => {
     };
 
     let resolveOnSavePromise = () => {};
-    const onSaveFn = jest.fn(() => new Promise<void>((resolve) => {
-      resolveOnSavePromise = resolve;
-    }));
+    const onSaveFn = jest.fn(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveOnSavePromise = resolve;
+        })
+    );
 
     render(
       <WrapperSingletonProviderTest>
@@ -213,6 +216,6 @@ describe(`${SingletonEditorProvider.name}`, () => {
       type: "unlayer",
     });
     resolveOnSavePromise();
-    await screen.findByText("saveStatus=saved")
+    await screen.findByText("saveStatus=saved");
   });
 });
