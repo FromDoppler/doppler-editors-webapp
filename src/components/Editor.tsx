@@ -1,12 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import EmailEditor, {
-  EditorConfig,
-  EditorRef,
-  Features,
-  ToolConfig,
-  UnlayerOptions,
-  User,
-} from "react-email-editor";
+import EmailEditor, { EditorRef } from "react-email-editor";
+import { ExtendedUnlayerOptions } from "../abstractions/domain/unlayer-type-patches";
+
 import { useGetUserFields } from "../queries/user-fields-queries";
 import { useAppServices } from "./AppServicesContext";
 import { useAppSessionState } from "./AppSessionStateContext";
@@ -14,47 +9,6 @@ import { EditorState } from "./SingletonEditor";
 import { useIntl } from "react-intl";
 import { LoadingScreen } from "./LoadingScreen";
 import { useUnlayerEditorExtensionsEntrypoints } from "../queries/unlayer-editor-extensions-entrypoints";
-
-interface ExtendedToolConfig extends ToolConfig {
-  icon: string;
-}
-
-interface ExtendedUnlayerTabOptions {
-  enabled?: boolean;
-  active?: boolean;
-  position?: number;
-}
-
-interface ExtendedUnlayerOptions extends UnlayerOptions {
-  features: ExtendedFeatures;
-  mergeTagsConfig: { sort: boolean };
-  tabs?: {
-    body?: ExtendedUnlayerTabOptions;
-    content?: ExtendedUnlayerTabOptions;
-    blocks?: ExtendedUnlayerTabOptions;
-    images?: ExtendedUnlayerTabOptions;
-    uploads?: ExtendedUnlayerTabOptions;
-    row?: ExtendedUnlayerTabOptions;
-    audit?: ExtendedUnlayerTabOptions;
-  };
-  tools?: {
-    readonly [key: string]: ExtendedToolConfig;
-  };
-  editor?: ExtendedEditorConfig | undefined;
-}
-
-interface ExtendedEditorConfig extends EditorConfig {
-  autoSelectOnDrop?: boolean;
-}
-
-interface ExtendedFeatures extends Features {
-  sendTestEmail?: boolean;
-  preheaderText?: boolean;
-}
-
-interface ExtendedUnlayerUser extends User {
-  signature?: string;
-}
 
 export interface EditorProps {
   setEditorState: (state: EditorState) => void;
@@ -125,13 +79,6 @@ export const Editor = ({
 
   const { id, signature } = appSessionState.unlayerUser;
 
-  const user: ExtendedUnlayerUser = {
-    // Ugly patch because Unlayer types does not accept string as id
-    id: id as unknown as number,
-    signature,
-    email: appSessionState.dopplerAccountName,
-  };
-
   // TODO: consider translating the name for predefined fields
   // TODO: consider sorting fields (for example predefined first)
   // TODO: consider hiding some types of fields
@@ -166,7 +113,12 @@ export const Editor = ({
       preheaderText: false,
     },
     mergeTags: mergeTags,
-    user: user,
+    user: {
+      // Ugly patch because Unlayer types does not accept string as id
+      id: id as unknown as number,
+      signature,
+      email: appSessionState.dopplerAccountName,
+    },
     designTagsConfig: {
       delimiter: ["[[{", "}]]"],
     },
