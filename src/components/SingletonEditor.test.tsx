@@ -7,13 +7,17 @@ import { Field } from "../abstractions/doppler-rest-api-client";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { CampaignContent, Content } from "../abstractions/domain/content";
 import { useEffect, useState } from "react";
+import {
+  EditorState,
+  UnlayerEditorObject,
+} from "../abstractions/domain/editor";
 
-let exportHtmlData = {
+let exportHtmlData: any = {
   design: {},
   html: "",
 };
 
-let exportImageData = {
+let exportImageData: any = {
   design: {},
   url: "",
 };
@@ -22,20 +26,19 @@ const DoubleUnlayerEditorWrapper = ({
   setEditorState,
   hidden,
   ...otherProps
-}: any) => {
+}: {
+  setEditorState: (state: EditorState) => void;
+  hidden: boolean;
+}) => {
   useEffect(() => {
     setEditorState({
       unlayer: {
         loadDesign: jest.fn(),
-        exportHtml: (cb: any) => {
-          cb(exportHtmlData);
-        },
-        exportImage: (cb: any) => {
-          cb(exportImageData);
-        },
+        exportHtmlAsync: () => Promise.resolve(exportHtmlData),
+        exportImageAsync: () => Promise.resolve(exportImageData),
         addEventListener: jest.fn(),
         removeEventListener: jest.fn(),
-      },
+      } as Partial<UnlayerEditorObject> as UnlayerEditorObject,
       isLoaded: true,
     });
   }, []);

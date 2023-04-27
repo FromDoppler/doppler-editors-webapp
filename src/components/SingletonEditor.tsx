@@ -9,7 +9,6 @@ import {
 import { UnlayerEditorWrapper } from "./UnlayerEditorWrapper";
 import { HtmlExport, ImageExport } from "react-email-editor";
 import { Content, UnlayerContent } from "../abstractions/domain/content";
-import { promisifyFunctionWithoutError } from "../utils";
 import { debounce } from "underscore";
 import { EditorState } from "../abstractions/domain/editor";
 
@@ -58,16 +57,10 @@ export const useSingletonEditor = (
       }
 
       const currentUpdateCounter = updateCounter.current;
-      const exportHtml = promisifyFunctionWithoutError(
-        editorState.unlayer.exportHtml.bind(editorState.unlayer)
-      );
-      const exportImage = promisifyFunctionWithoutError(
-        editorState.unlayer.exportImage.bind(editorState.unlayer)
-      );
 
       const [htmlExport, imageExport] = (await Promise.all([
-        exportHtml(),
-        exportImage(),
+        editorState.unlayer.exportHtmlAsync(),
+        editorState.unlayer.exportImageAsync(),
       ])) as [HtmlExport, ImageExport];
 
       const newerChangesSaved = currentUpdateCounter < savedCounter.current;
@@ -106,16 +99,9 @@ export const useSingletonEditor = (
       return;
     }
 
-    const exportHtml = promisifyFunctionWithoutError(
-      editorState.unlayer.exportHtml.bind(editorState.unlayer)
-    );
-    const exportImage = promisifyFunctionWithoutError(
-      editorState.unlayer.exportImage.bind(editorState.unlayer)
-    );
-
     const [htmlExport, imageExport] = (await Promise.all([
-      exportHtml(),
-      exportImage(),
+      editorState.unlayer.exportHtmlAsync(),
+      editorState.unlayer.exportImageAsync(),
     ])) as [HtmlExport, ImageExport];
 
     if (!htmlExport.design) {

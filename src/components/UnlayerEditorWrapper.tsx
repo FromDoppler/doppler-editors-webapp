@@ -1,13 +1,25 @@
 import { useEffect, useRef, useState } from "react";
-import EmailEditor, { EditorRef } from "react-email-editor";
+import EmailEditor, { EditorRef, Editor } from "react-email-editor";
 import { ExtendedUnlayerOptions } from "../abstractions/domain/unlayer-type-patches";
 import { useGetUserFields } from "../queries/user-fields-queries";
 import { useAppServices } from "./AppServicesContext";
 import { useAppSessionState } from "./AppSessionStateContext";
-import { EditorState } from "../abstractions/domain/editor";
+import {
+  EditorState,
+  UnlayerEditorObject,
+} from "../abstractions/domain/editor";
 import { useIntl } from "react-intl";
 import { LoadingScreen } from "./LoadingScreen";
 import { useUnlayerEditorExtensionsEntrypoints } from "../queries/unlayer-editor-extensions-entrypoints";
+import { promisifyProps } from "../utils";
+
+const prepareUnlayerEditorObject = (
+  editorObject: Editor
+): UnlayerEditorObject =>
+  promisifyProps<UnlayerEditorObject>(editorObject, {
+    exportHtmlAsync: "exportHtml",
+    exportImageAsync: "exportImage",
+  });
 
 export const UnlayerEditorWrapper = ({
   setEditorState,
@@ -41,7 +53,7 @@ export const UnlayerEditorWrapper = ({
     }
 
     setEditorState({
-      unlayer: emailEditorRef.current.editor,
+      unlayer: prepareUnlayerEditorObject(emailEditorRef.current.editor),
       isLoaded: true,
     });
   }, [emailEditorLoaded, setEditorState]);
