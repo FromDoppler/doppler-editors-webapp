@@ -29,13 +29,21 @@ export const UnlayerEditorWrapper = ({
   const [emailEditorLoaded, setEmailEditorLoaded] = useState(false);
   const intl = useIntl();
 
+  // emailEditorLoaded
   useEffect(() => {
-    if (emailEditorLoaded) {
-      setEditorState({
-        unlayer: (emailEditorRef.current as any).editor,
-        isLoaded: true,
-      });
+    if (!emailEditorLoaded) {
+      return;
     }
+
+    if (!emailEditorRef.current?.editor) {
+      console.error("Editor object is not available after onReady");
+      return;
+    }
+
+    setEditorState({
+      unlayer: emailEditorRef.current.editor,
+      isLoaded: true,
+    });
   }, [emailEditorLoaded, setEditorState]);
 
   const containerStyle = {

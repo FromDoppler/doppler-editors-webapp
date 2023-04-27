@@ -1,10 +1,10 @@
-import { EditorRef } from "react-email-editor";
+import { Editor } from "react-email-editor";
 
 export type EditorState =
   | { isLoaded: false; unlayer: undefined }
-  | { isLoaded: true; unlayer: UnlayerEditor };
+  | { isLoaded: true; unlayer: UnlayerEditorObject };
 
-export interface UnlayerEditor extends EditorRef {
-  // The UnlayerEditor interface is used to complete the inconsistent types
-  // between the EditorRef interface and the Unlayer Editor object
+export interface UnlayerEditorObject extends Editor {
+  // The UnlayerEditorObject interface is used to complete the inconsistent types
+  // between the Unlayer's Editor type and the real Unlayer's editor object.
 }
