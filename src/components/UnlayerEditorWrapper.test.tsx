@@ -6,7 +6,7 @@ import { AuthenticatedAppSessionState } from "../abstractions/app-session/app-se
 import { Field } from "../abstractions/doppler-rest-api-client";
 import { AppServicesProvider } from "./AppServicesContext";
 import { AppSessionStateContext } from "./AppSessionStateContext";
-import { Editor } from "./Editor";
+import { UnlayerEditorWrapper } from "./UnlayerEditorWrapper";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { AssetManifestClient } from "../abstractions/asset-manifest-client";
 import { MfeLoaderAssetManifestClientImpl } from "../implementations/MfeLoaderAssetManifestClientImpl";
@@ -38,7 +38,7 @@ const queryClient = new QueryClient({
   },
 });
 
-describe(Editor.name, () => {
+describe(UnlayerEditorWrapper.name, () => {
   it("should render EmailEditor with the right props when the session is authenticated", async () => {
     // Arrange
     const unlayerEditorExtensionsEntrypoints = ["a.js", "b.css", "c", "d.js"];
@@ -72,7 +72,7 @@ describe(Editor.name, () => {
         <AppServicesProvider appServices={appServices}>
           <TestDopplerIntlProvider>
             <AppSessionStateContext.Provider value={authenticatedSession}>
-              <Editor setEditorState={jest.fn()} hidden={true} />
+              <UnlayerEditorWrapper setEditorState={jest.fn()} hidden={true} />
             </AppSessionStateContext.Provider>
           </TestDopplerIntlProvider>
         </AppServicesProvider>
@@ -141,7 +141,7 @@ describe(Editor.name, () => {
         <QueryClientProvider client={queryClient}>
           <AppServicesProvider appServices={appServices}>
             <TestDopplerIntlProvider>
-              <Editor setEditorState={jest.fn()} hidden={true} />
+              <UnlayerEditorWrapper setEditorState={jest.fn()} hidden={true} />
             </TestDopplerIntlProvider>
           </AppServicesProvider>
         </QueryClientProvider>

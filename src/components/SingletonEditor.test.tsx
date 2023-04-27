@@ -18,7 +18,11 @@ let exportImageData = {
   url: "",
 };
 
-const DoubleEditor = ({ setEditorState, hidden, ...otherProps }: any) => {
+const DoubleUnlayerEditorWrapper = ({
+  setEditorState,
+  hidden,
+  ...otherProps
+}: any) => {
   useEffect(() => {
     setEditorState({
       unlayer: {
@@ -43,8 +47,8 @@ const DoubleEditor = ({ setEditorState, hidden, ...otherProps }: any) => {
   return <div style={containerStyle} {...otherProps} />;
 };
 
-jest.mock("./Editor", () => {
-  return { Editor: DoubleEditor };
+jest.mock("./UnlayerEditorWrapper", () => {
+  return { UnlayerEditorWrapper: DoubleUnlayerEditorWrapper };
 });
 
 const singletonEditorTestId = "singleton-editor-test";

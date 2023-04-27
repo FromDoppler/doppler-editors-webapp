@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Editor } from "./Editor";
+import { UnlayerEditorWrapper } from "./UnlayerEditorWrapper";
 import { HtmlExport, ImageExport } from "react-email-editor";
 import { Content, UnlayerContent } from "../abstractions/domain/content";
 import { promisifyFunctionWithoutError } from "../utils";
@@ -251,7 +251,11 @@ export const SingletonEditorProvider = ({
   return (
     <SingletonDesignContext.Provider value={defaultContext}>
       {children}
-      <Editor setEditorState={setEditorState} hidden={hidden} {...props} />
+      <UnlayerEditorWrapper
+        setEditorState={setEditorState}
+        hidden={hidden}
+        {...props}
+      />
     </SingletonDesignContext.Provider>
   );
 };

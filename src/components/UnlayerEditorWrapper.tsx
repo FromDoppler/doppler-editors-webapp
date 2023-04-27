@@ -9,7 +9,7 @@ import { useIntl } from "react-intl";
 import { LoadingScreen } from "./LoadingScreen";
 import { useUnlayerEditorExtensionsEntrypoints } from "../queries/unlayer-editor-extensions-entrypoints";
 
-export const Editor = ({
+export const UnlayerEditorWrapper = ({
   setEditorState,
   hidden,
   ...otherProps
