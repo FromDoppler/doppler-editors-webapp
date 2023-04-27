@@ -1,25 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import EmailEditor, { EditorRef } from "react-email-editor";
 import { ExtendedUnlayerOptions } from "../abstractions/domain/unlayer-type-patches";
-
 import { useGetUserFields } from "../queries/user-fields-queries";
 import { useAppServices } from "./AppServicesContext";
 import { useAppSessionState } from "./AppSessionStateContext";
-import { EditorState } from "./SingletonEditor";
+import { EditorState } from "../abstractions/domain/editor";
 import { useIntl } from "react-intl";
 import { LoadingScreen } from "./LoadingScreen";
 import { useUnlayerEditorExtensionsEntrypoints } from "../queries/unlayer-editor-extensions-entrypoints";
-
-export interface EditorProps {
-  setEditorState: (state: EditorState) => void;
-  hidden: boolean;
-}
 
 export const Editor = ({
   setEditorState,
   hidden,
   ...otherProps
-}: EditorProps) => {
+}: {
+  setEditorState: (state: EditorState) => void;
+  hidden: boolean;
+}) => {
   const {
     appConfiguration: { unlayerProjectId, unlayerCDN },
   } = useAppServices();
