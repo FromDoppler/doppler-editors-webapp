@@ -16,6 +16,7 @@ import {
 import userEvent from "@testing-library/user-event";
 import { Result } from "../abstractions/common/result-types";
 import { CampaignContent } from "../abstractions/domain/content";
+import { UnlayerEditorObject } from "../abstractions/domain/editor";
 
 jest.mock("./LoadingScreen", () => ({
   LoadingScreen: () => <div>Loading...</div>,
@@ -104,9 +105,10 @@ const createTestContext = () => {
   const editorDesign = { test: "Demo data" } as unknown as Design;
   const editorHtmlContent = "<html><p></p></html>";
   const editorExportedImageUrl = "https://test.fromdoppler.net/export.png";
-  const exportHtml = (cb: any) =>
-    cb({ design: editorDesign, html: editorHtmlContent });
-  const exportImage = (cb: any) => cb({ url: editorExportedImageUrl });
+  const exportHtmlAsync = () =>
+    Promise.resolve({ design: editorDesign, html: editorHtmlContent });
+  const exportImageAsync = () =>
+    Promise.resolve({ url: editorExportedImageUrl, design: {} as Design });
 
   let simulateEditorLoadedEvent = null as any;
   let simulateEditorChangeEvent = null as any;
@@ -116,7 +118,7 @@ const createTestContext = () => {
     editorState: {
       isLoaded: true,
       unlayer: {
-        addEventListener: (type: string, callback: () => void) => {
+        addEventListener: (type: string, callback: (data: object) => void) => {
           switch (type) {
             case "design:updated":
               simulateEditorChangeEvent = callback;
@@ -136,9 +138,9 @@ const createTestContext = () => {
               break;
           }
         },
-        exportHtml,
-        exportImage,
-      } as any,
+        exportHtmlAsync,
+        exportImageAsync,
+      } as Partial<UnlayerEditorObject> as UnlayerEditorObject,
     },
   };
 

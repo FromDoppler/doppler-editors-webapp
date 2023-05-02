@@ -13,3 +13,17 @@ export const promisifyFunctionWithoutError =
         reject(e);
       }
     });
+
+// TODO: improve this function to add type inference and deal with errors
+export const promisifyProps = <TOut>(
+  obj: any,
+  maps: { [prop: string]: string }
+) => {
+  for (const newProp in maps) {
+    const originalProp = maps[newProp];
+    if (!(newProp in obj) && originalProp in obj) {
+      obj[newProp] = promisifyFunctionWithoutError(obj[originalProp].bind(obj));
+    }
+  }
+  return obj as TOut;
+};

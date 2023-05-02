@@ -6,15 +6,11 @@ import {
   useRef,
   useState,
 } from "react";
-import { Editor } from "./Editor";
-import { EditorRef, HtmlExport, ImageExport } from "react-email-editor";
+import { UnlayerEditorWrapper } from "./UnlayerEditorWrapper";
+import { HtmlExport, ImageExport } from "react-email-editor";
 import { Content, UnlayerContent } from "../abstractions/domain/content";
-import { promisifyFunctionWithoutError } from "../utils";
 import { debounce } from "underscore";
-
-export type EditorState =
-  | { isLoaded: false; unlayer: undefined }
-  | { isLoaded: true; unlayer: UnlayerEditor };
+import { EditorState } from "../abstractions/domain/editor";
 
 export interface ISingletonDesignContext {
   hidden: boolean;
@@ -28,16 +24,6 @@ export const emptyDesign = {
   },
 };
 
-interface UseSingletonEditorConfig {
-  initialContent: Content | undefined;
-  onSave: (content: Content) => Promise<void>;
-}
-
-interface UnlayerEditor extends EditorRef {
-  // The UnlayerEditor interface is used to complete the inconsistent types
-  // between the EditorRef interface and the Unlayer Editor object
-}
-
 export const SingletonDesignContext = createContext<ISingletonDesignContext>({
   hidden: true,
   setContent: () => {},
@@ -47,7 +33,13 @@ export const SingletonDesignContext = createContext<ISingletonDesignContext>({
 const AUTO_SAVE_INTERVAL = 6000;
 
 export const useSingletonEditor = (
-  { initialContent, onSave }: UseSingletonEditorConfig,
+  {
+    initialContent,
+    onSave,
+  }: {
+    initialContent: Content | undefined;
+    onSave: (content: Content) => Promise<void>;
+  },
   deps: any[]
 ) => {
   const { editorState, setContent } = useContext(SingletonDesignContext);
@@ -65,16 +57,10 @@ export const useSingletonEditor = (
       }
 
       const currentUpdateCounter = updateCounter.current;
-      const exportHtml = promisifyFunctionWithoutError(
-        editorState.unlayer.exportHtml.bind(editorState.unlayer)
-      );
-      const exportImage = promisifyFunctionWithoutError(
-        editorState.unlayer.exportImage.bind(editorState.unlayer)
-      );
 
       const [htmlExport, imageExport] = (await Promise.all([
-        exportHtml(),
-        exportImage(),
+        editorState.unlayer.exportHtmlAsync(),
+        editorState.unlayer.exportImageAsync(),
       ])) as [HtmlExport, ImageExport];
 
       const newerChangesSaved = currentUpdateCounter < savedCounter.current;
@@ -113,16 +99,9 @@ export const useSingletonEditor = (
       return;
     }
 
-    const exportHtml = promisifyFunctionWithoutError(
-      editorState.unlayer.exportHtml.bind(editorState.unlayer)
-    );
-    const exportImage = promisifyFunctionWithoutError(
-      editorState.unlayer.exportImage.bind(editorState.unlayer)
-    );
-
     const [htmlExport, imageExport] = (await Promise.all([
-      exportHtml(),
-      exportImage(),
+      editorState.unlayer.exportHtmlAsync(),
+      editorState.unlayer.exportImageAsync(),
     ])) as [HtmlExport, ImageExport];
 
     if (!htmlExport.design) {
@@ -258,7 +237,11 @@ export const SingletonEditorProvider = ({
   return (
     <SingletonDesignContext.Provider value={defaultContext}>
       {children}
-      <Editor setEditorState={setEditorState} hidden={hidden} {...props} />
+      <UnlayerEditorWrapper
+        setEditorState={setEditorState}
+        hidden={hidden}
+        {...props}
+      />
     </SingletonDesignContext.Provider>
   );
 };

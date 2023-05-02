@@ -15,6 +15,7 @@ import userEvent from "@testing-library/user-event";
 import { Result } from "../abstractions/common/result-types";
 import { TemplateContent } from "../abstractions/domain/content";
 import { Design } from "react-email-editor";
+import { UnlayerEditorObject } from "../abstractions/domain/editor";
 
 jest.mock("./LoadingScreen", () => ({
   LoadingScreen: () => <div>Loading...</div>,
@@ -92,9 +93,10 @@ const createTestContext = () => {
   const editorDesign = { test: "Demo data" } as unknown as Design;
   const editorHtmlContent = "<html><p></p></html>";
   const editorExportedImageUrl = "https://test.fromdoppler.net/export.png";
-  const exportHtml = (cb: any) =>
-    cb({ design: editorDesign, html: editorHtmlContent });
-  const exportImage = (cb: any) => cb({ url: editorExportedImageUrl });
+  const exportHtmlAsync = () =>
+    Promise.resolve({ design: editorDesign, html: editorHtmlContent });
+  const exportImageAsync = () =>
+    Promise.resolve({ url: editorExportedImageUrl, design: {} as Design });
 
   const singletonEditorContext: ISingletonDesignContext = {
     hidden: false,
@@ -102,11 +104,14 @@ const createTestContext = () => {
     editorState: {
       isLoaded: true,
       unlayer: {
-        addEventListener: () => {},
-        removeEventListener: () => {},
-        exportHtml,
-        exportImage,
-      } as any,
+        addEventListener: (
+          _type: string,
+          _callback: (data: object) => void
+        ) => {},
+        removeEventListener: (_type: string) => {},
+        exportHtmlAsync,
+        exportImageAsync,
+      } as Partial<UnlayerEditorObject> as UnlayerEditorObject,
     },
   };
 

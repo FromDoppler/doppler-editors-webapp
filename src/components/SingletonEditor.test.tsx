@@ -7,31 +7,38 @@ import { Field } from "../abstractions/doppler-rest-api-client";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { CampaignContent, Content } from "../abstractions/domain/content";
 import { useEffect, useState } from "react";
+import {
+  EditorState,
+  UnlayerEditorObject,
+} from "../abstractions/domain/editor";
 
-let exportHtmlData = {
+let exportHtmlData: any = {
   design: {},
   html: "",
 };
 
-let exportImageData = {
+let exportImageData: any = {
   design: {},
   url: "",
 };
 
-const DoubleEditor = ({ setEditorState, hidden, ...otherProps }: any) => {
+const DoubleUnlayerEditorWrapper = ({
+  setEditorState,
+  hidden,
+  ...otherProps
+}: {
+  setEditorState: (state: EditorState) => void;
+  hidden: boolean;
+}) => {
   useEffect(() => {
     setEditorState({
       unlayer: {
         loadDesign: jest.fn(),
-        exportHtml: (cb: any) => {
-          cb(exportHtmlData);
-        },
-        exportImage: (cb: any) => {
-          cb(exportImageData);
-        },
+        exportHtmlAsync: () => Promise.resolve(exportHtmlData),
+        exportImageAsync: () => Promise.resolve(exportImageData),
         addEventListener: jest.fn(),
         removeEventListener: jest.fn(),
-      },
+      } as Partial<UnlayerEditorObject> as UnlayerEditorObject,
       isLoaded: true,
     });
   }, []);
@@ -43,8 +50,8 @@ const DoubleEditor = ({ setEditorState, hidden, ...otherProps }: any) => {
   return <div style={containerStyle} {...otherProps} />;
 };
 
-jest.mock("./Editor", () => {
-  return { Editor: DoubleEditor };
+jest.mock("./UnlayerEditorWrapper", () => {
+  return { UnlayerEditorWrapper: DoubleUnlayerEditorWrapper };
 });
 
 const singletonEditorTestId = "singleton-editor-test";
