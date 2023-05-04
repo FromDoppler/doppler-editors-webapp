@@ -8,7 +8,7 @@ import { AppServicesProvider } from "./AppServicesContext";
 import { Campaign, editorTopBarTestId, errorMessageTestId } from "./Campaign";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { Design } from "react-email-editor";
-import { screen, waitFor } from "@testing-library/react";
+import { act, screen, waitFor } from "@testing-library/react";
 import {
   ISingletonDesignContext,
   SingletonDesignContext,
@@ -184,8 +184,8 @@ const createTestContext = () => {
       resolveUpdateCampaignContentPromise(result),
     rejectUpdateCampaignContentPromise: (error: any) =>
       rejectUpdateCampaignContentPromise(error),
-    simulateEditorLoadedEvent: () => simulateEditorLoadedEvent(),
-    simulateEditorChangeEvent: () => simulateEditorChangeEvent(),
+    simulateEditorLoadedEvent: () => act(() => simulateEditorLoadedEvent()),
+    simulateEditorChangeEvent: () => act(() => simulateEditorChangeEvent()),
     TestComponent,
   };
 };

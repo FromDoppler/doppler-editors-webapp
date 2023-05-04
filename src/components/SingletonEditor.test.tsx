@@ -200,7 +200,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
 
     // Act
     const buttonSave = screen.getByText("save content");
-    buttonSave.click();
+    act(() => buttonSave.click());
 
     // Assert
     await waitFor(() => expect(onSaveFn).toHaveBeenCalledTimes(1));
