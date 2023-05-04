@@ -41,7 +41,7 @@ describe(SaveAsTemplateModal.name, () => {
     );
 
     screen.getByRole("dialog");
-    const inputName = await screen.getByLabelText("new_template_label");
+    const inputName = screen.getByLabelText("new_template_label");
     expect(inputName).toHaveValue(defaultName);
     await act(() => userEvent.type(inputName, "-with-changes"));
     expect(inputName).toHaveValue(`${defaultName}-with-changes`);
@@ -71,7 +71,7 @@ describe(SaveAsTemplateModal.name, () => {
     );
 
     screen.getByRole("dialog");
-    const submitButton = await screen.getByText("save");
+    const submitButton = screen.getByText("save");
     act(() => userEvent.click(submitButton));
     waitFor(() => screen.getByText("new_template_has_been_saved"));
   });
