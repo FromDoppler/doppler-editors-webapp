@@ -72,7 +72,7 @@ describe(SaveAsTemplateModal.name, () => {
 
     screen.getByRole("dialog");
     const submitButton = screen.getByText("save");
-    act(() => userEvent.click(submitButton));
-    waitFor(() => screen.getByText("new_template_has_been_saved"));
+    await act(() => userEvent.click(submitButton));
+    await waitFor(() => screen.getByText("new_template_has_been_saved"));
   });
 });
