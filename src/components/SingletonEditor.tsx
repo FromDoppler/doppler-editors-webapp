@@ -10,12 +10,12 @@ import { UnlayerEditorWrapper } from "./UnlayerEditorWrapper";
 import { HtmlExport, ImageExport } from "react-email-editor";
 import { Content, UnlayerContent } from "../abstractions/domain/content";
 import { debounce } from "underscore";
-import { EditorState } from "../abstractions/domain/editor";
+import { UnlayerEditorObject } from "../abstractions/domain/editor";
 
 export interface ISingletonDesignContext {
   hidden: boolean;
   setContent: (c: Content | undefined) => void;
-  editorState: EditorState;
+  unlayerEditorObject: UnlayerEditorObject | undefined;
 }
 
 export const emptyDesign = {
@@ -27,7 +27,7 @@ export const emptyDesign = {
 export const SingletonDesignContext = createContext<ISingletonDesignContext>({
   hidden: true,
   setContent: () => {},
-  editorState: { isLoaded: false, unlayer: undefined },
+  unlayerEditorObject: undefined,
 });
 
 const AUTO_SAVE_INTERVAL = 6000;
@@ -42,7 +42,9 @@ export const useSingletonEditor = (
   },
   deps: any[]
 ) => {
-  const { editorState, setContent } = useContext(SingletonDesignContext);
+  const { unlayerEditorObject, setContent } = useContext(
+    SingletonDesignContext
+  );
   const savedCounter = useRef(0);
   const updateCounter = useRef(0);
 
@@ -51,7 +53,7 @@ export const useSingletonEditor = (
       if (!force && savedCounter.current >= updateCounter.current) {
         return;
       }
-      if (!editorState.isLoaded) {
+      if (!unlayerEditorObject) {
         console.error("The editor is loading, can't save yet!");
         return;
       }
@@ -59,8 +61,8 @@ export const useSingletonEditor = (
       const currentUpdateCounter = updateCounter.current;
 
       const [htmlExport, imageExport] = (await Promise.all([
-        editorState.unlayer.exportHtmlAsync(),
-        editorState.unlayer.exportImageAsync(),
+        unlayerEditorObject.exportHtmlAsync(),
+        unlayerEditorObject.exportImageAsync(),
       ])) as [HtmlExport, ImageExport];
 
       const newerChangesSaved = currentUpdateCounter < savedCounter.current;
@@ -87,21 +89,21 @@ export const useSingletonEditor = (
       await onSave(content);
     },
     // eslint-disable-next-line
-    [editorState, ...deps]
+    [unlayerEditorObject, ...deps]
   );
   const smartSave = () => saveHandler({ force: false });
   const forceSave = () => saveHandler({ force: true });
 
   //TODO: implement a better solution when occurs this error, maybe replace undefined return to objectError
   const exportContent = async (): Promise<UnlayerContent | undefined> => {
-    if (!editorState.isLoaded) {
+    if (!unlayerEditorObject) {
       console.error("The editor is loading, can't save yet!");
       return;
     }
 
     const [htmlExport, imageExport] = (await Promise.all([
-      editorState.unlayer.exportHtmlAsync(),
-      editorState.unlayer.exportImageAsync(),
+      unlayerEditorObject.exportHtmlAsync(),
+      unlayerEditorObject.exportImageAsync(),
     ])) as [HtmlExport, ImageExport];
 
     if (!htmlExport.design) {
@@ -140,15 +142,15 @@ export const useSingletonEditor = (
     };
 
     const onLoadEventListener = () => {
-      editorState.unlayer &&
-        editorState.unlayer.addEventListener(
+      unlayerEditorObject &&
+        unlayerEditorObject.addEventListener(
           "design:updated",
           updateDesignListener
         );
     };
 
-    editorState.isLoaded &&
-      editorState.unlayer.addEventListener(
+    unlayerEditorObject &&
+      unlayerEditorObject.addEventListener(
         "design:loaded",
         onLoadEventListener
       );
@@ -157,12 +159,12 @@ export const useSingletonEditor = (
 
     return () => {
       window.removeEventListener("beforeunload", beforeUnloadListener);
-      if (editorState.isLoaded) {
-        editorState.unlayer.removeEventListener(
+      if (unlayerEditorObject) {
+        unlayerEditorObject.removeEventListener(
           "design:loaded",
           onLoadEventListener
         );
-        editorState.unlayer.removeEventListener(
+        unlayerEditorObject.removeEventListener(
           "design:updated",
           updateDesignListener
         );
@@ -172,7 +174,7 @@ export const useSingletonEditor = (
       setContent(undefined);
     };
     // eslint-disable-next-line
-  }, [...deps, setContent, saveHandler, editorState]);
+  }, [...deps, setContent, saveHandler, unlayerEditorObject]);
 
   return {
     forceSave,
@@ -189,20 +191,19 @@ export const SingletonEditorProvider = ({
 }) => {
   const [content, setContent] = useState<Content | undefined>();
   const hidden = !content;
-  const [editorState, setEditorState] = useState<EditorState>({
-    unlayer: undefined,
-    isLoaded: false,
-  });
+  const [unlayerEditorObject, setUnlayerEditorObject] = useState<
+    UnlayerEditorObject | undefined
+  >(undefined);
 
   useEffect(() => {
-    if (editorState.isLoaded) {
+    if (unlayerEditorObject) {
       if (!content) {
-        editorState.unlayer.loadDesign(emptyDesign);
+        unlayerEditorObject.loadDesign(emptyDesign);
         return;
       }
 
       if (content.type === "unlayer") {
-        editorState.unlayer.loadDesign(content.design);
+        unlayerEditorObject.loadDesign(content.design);
         return;
       }
 
@@ -210,10 +211,10 @@ export const SingletonEditorProvider = ({
         // Ugly patch because of:
         // * https://github.com/unlayer/react-email-editor/issues/212
         // * https://unlayer.canny.io/bug-reports/p/loaddesign-doesnt-reload-for-legacy-templates
-        editorState.unlayer.loadDesign(emptyDesign);
+        unlayerEditorObject.loadDesign(emptyDesign);
 
         // See https://examples.unlayer.com/web/legacy-template
-        editorState.unlayer.loadDesign({
+        unlayerEditorObject.loadDesign({
           html: content.htmlContent,
           classic: true,
         } as any);
@@ -226,19 +227,19 @@ export const SingletonEditorProvider = ({
         }' is not supported yet.`
       );
     }
-  }, [content, editorState]);
+  }, [content, unlayerEditorObject]);
 
   const defaultContext: ISingletonDesignContext = {
     hidden,
     setContent,
-    editorState,
+    unlayerEditorObject,
   };
 
   return (
     <SingletonDesignContext.Provider value={defaultContext}>
       {children}
       <UnlayerEditorWrapper
-        setEditorState={setEditorState}
+        setUnlayerEditorObject={setUnlayerEditorObject}
         hidden={hidden}
         {...props}
       />

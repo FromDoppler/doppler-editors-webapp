@@ -72,7 +72,10 @@ describe(UnlayerEditorWrapper.name, () => {
         <AppServicesProvider appServices={appServices}>
           <TestDopplerIntlProvider>
             <AppSessionStateContext.Provider value={authenticatedSession}>
-              <UnlayerEditorWrapper setEditorState={jest.fn()} hidden={true} />
+              <UnlayerEditorWrapper
+                setUnlayerEditorObject={jest.fn()}
+                hidden={true}
+              />
             </AppSessionStateContext.Provider>
           </TestDopplerIntlProvider>
         </AppServicesProvider>
@@ -141,7 +144,10 @@ describe(UnlayerEditorWrapper.name, () => {
         <QueryClientProvider client={queryClient}>
           <AppServicesProvider appServices={appServices}>
             <TestDopplerIntlProvider>
-              <UnlayerEditorWrapper setEditorState={jest.fn()} hidden={true} />
+              <UnlayerEditorWrapper
+                setUnlayerEditorObject={jest.fn()}
+                hidden={true}
+              />
             </TestDopplerIntlProvider>
           </AppServicesProvider>
         </QueryClientProvider>

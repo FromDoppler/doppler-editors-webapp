@@ -7,10 +7,7 @@ import { Field } from "../abstractions/doppler-rest-api-client";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { CampaignContent, Content } from "../abstractions/domain/content";
 import { useEffect, useState } from "react";
-import {
-  EditorState,
-  UnlayerEditorObject,
-} from "../abstractions/domain/editor";
+import { UnlayerEditorObject } from "../abstractions/domain/editor";
 
 let exportHtmlData: any = {
   design: {},
@@ -23,24 +20,23 @@ let exportImageData: any = {
 };
 
 const DoubleUnlayerEditorWrapper = ({
-  setEditorState,
+  setUnlayerEditorObject,
   hidden,
   ...otherProps
 }: {
-  setEditorState: (state: EditorState) => void;
+  setUnlayerEditorObject: (
+    unlayerEditorObject: UnlayerEditorObject | undefined
+  ) => void;
   hidden: boolean;
 }) => {
   useEffect(() => {
-    setEditorState({
-      unlayer: {
-        loadDesign: jest.fn(),
-        exportHtmlAsync: () => Promise.resolve(exportHtmlData),
-        exportImageAsync: () => Promise.resolve(exportImageData),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-      } as Partial<UnlayerEditorObject> as UnlayerEditorObject,
-      isLoaded: true,
-    });
+    setUnlayerEditorObject({
+      loadDesign: jest.fn(),
+      exportHtmlAsync: () => Promise.resolve(exportHtmlData),
+      exportImageAsync: () => Promise.resolve(exportImageData),
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+    } as Partial<UnlayerEditorObject> as UnlayerEditorObject);
   }, []);
 
   const containerStyle = {

@@ -4,10 +4,7 @@ import { ExtendedUnlayerOptions } from "../abstractions/domain/unlayer-type-patc
 import { useGetUserFields } from "../queries/user-fields-queries";
 import { useAppServices } from "./AppServicesContext";
 import { useAppSessionState } from "./AppSessionStateContext";
-import {
-  EditorState,
-  UnlayerEditorObject,
-} from "../abstractions/domain/editor";
+import { UnlayerEditorObject } from "../abstractions/domain/editor";
 import { useIntl } from "react-intl";
 import { LoadingScreen } from "./LoadingScreen";
 import { useUnlayerEditorExtensionsEntrypoints } from "../queries/unlayer-editor-extensions-entrypoints";
@@ -22,11 +19,11 @@ const prepareUnlayerEditorObject = (
   });
 
 export const UnlayerEditorWrapper = ({
-  setEditorState,
+  setUnlayerEditorObject,
   hidden,
   ...otherProps
 }: {
-  setEditorState: (state: EditorState) => void;
+  setUnlayerEditorObject: (unlayerEditorObject: UnlayerEditorObject) => void;
   hidden: boolean;
 }) => {
   const {
@@ -52,11 +49,10 @@ export const UnlayerEditorWrapper = ({
       return;
     }
 
-    setEditorState({
-      unlayer: prepareUnlayerEditorObject(emailEditorRef.current.editor),
-      isLoaded: true,
-    });
-  }, [emailEditorLoaded, setEditorState]);
+    setUnlayerEditorObject(
+      prepareUnlayerEditorObject(emailEditorRef.current.editor)
+    );
+  }, [emailEditorLoaded, setUnlayerEditorObject]);
 
   const containerStyle = {
     height: "100%",
