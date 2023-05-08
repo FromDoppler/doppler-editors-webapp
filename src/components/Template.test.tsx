@@ -5,13 +5,9 @@ import { AppServices } from "../abstractions";
 import { HtmlEditorApiClient } from "../abstractions/html-editor-api-client";
 import { AppServicesProvider } from "./AppServicesContext";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
-import { screen, waitFor } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { editorTopBarTestId, errorMessageTestId, Template } from "./Template";
-import {
-  ISingletonDesignContext,
-  SingletonDesignContext,
-} from "./SingletonEditor";
-import userEvent from "@testing-library/user-event";
+import { SingletonDesignContext } from "./SingletonEditor";
 import { Result } from "../abstractions/common/result-types";
 import { TemplateContent } from "../abstractions/domain/content";
 import { Design } from "react-email-editor";
@@ -98,7 +94,7 @@ const createTestContext = () => {
   const exportImageAsync = () =>
     Promise.resolve({ url: editorExportedImageUrl, design: {} as Design });
 
-  const singletonEditorContext: ISingletonDesignContext = {
+  const singletonEditorContext = {
     hidden: false,
     setContent: () => {},
     unlayerEditorObject: {
