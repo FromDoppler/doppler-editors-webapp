@@ -48,17 +48,14 @@ export const Template = () => {
     [templateQuery.data, updateTemplateMutateAsync, idTemplate]
   );
 
-  const { smartSave } = useSingletonEditor(
-    {
-      initialContent: templateQuery.data,
-      onSave,
-    },
-    [templateQuery.data, onSave]
-  );
+  const { smartSave, doWhenNoPendingUpdates } = useSingletonEditor({
+    initialContent: templateQuery.data,
+    onSave,
+  });
 
   const saveAndNavigateClick = async (to: string) => {
-    await smartSave();
-    navigateSmart(to);
+    smartSave();
+    doWhenNoPendingUpdates(() => navigateSmart(to));
   };
 
   if (templateQuery.error) {

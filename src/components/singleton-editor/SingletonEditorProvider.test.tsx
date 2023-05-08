@@ -8,6 +8,7 @@ import { TestDopplerIntlProvider } from "../i18n/TestDopplerIntlProvider";
 import { CampaignContent, Content } from "../../abstractions/domain/content";
 import { useEffect, useState } from "react";
 import { UnlayerEditorObject } from "../../abstractions/domain/editor";
+import { noopAsync } from "../../utils";
 
 let exportHtmlData: any = {
   design: {},
@@ -106,13 +107,10 @@ describe(`${SingletonEditorProvider.name}`, () => {
 
   const DemoComponent = ({ onSave }: { onSave: () => Promise<void> }) => {
     const [initialContent, setInitialContent] = useState<Content | undefined>();
-    const { forceSave } = useSingletonEditor(
-      {
-        initialContent,
-        onSave,
-      },
-      [initialContent, onSave]
-    );
+    const { forceSave } = useSingletonEditor({
+      initialContent,
+      onSave,
+    });
 
     const changeInitialContent = () => {
       setInitialContent(generateNewContent());
@@ -142,7 +140,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
     // Act
     render(
       <WrapperSingletonProviderTest>
-        <DemoComponent onSave={() => Promise.resolve()} />
+        <DemoComponent onSave={noopAsync} />
       </WrapperSingletonProviderTest>
     );
 
@@ -155,7 +153,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
     // Arrange
     render(
       <WrapperSingletonProviderTest>
-        <DemoComponent onSave={() => Promise.resolve()} />
+        <DemoComponent onSave={noopAsync} />
       </WrapperSingletonProviderTest>
     );
 
@@ -186,7 +184,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
       url: previewImage,
     };
 
-    const onSaveFn = jest.fn(() => Promise.resolve());
+    const onSaveFn = jest.fn(noopAsync);
 
     render(
       <WrapperSingletonProviderTest>
