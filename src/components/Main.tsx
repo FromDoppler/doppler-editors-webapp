@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import "./Main.css";
-import { SingletonEditorProvider } from "./SingletonEditor";
+import { SingletonEditorProvider } from "./singleton-editor";
 
 export const mainTestId = "outlet-test-id";
 

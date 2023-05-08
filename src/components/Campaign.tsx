@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useSingletonEditor } from "./SingletonEditor";
+import { useSingletonEditor } from "./singleton-editor";
 import { EditorTopBar } from "./EditorTopBar";
 import {
   useGetCampaignContent,

@@ -7,7 +7,7 @@ import { AppServicesProvider } from "./AppServicesContext";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { screen } from "@testing-library/react";
 import { editorTopBarTestId, errorMessageTestId, Template } from "./Template";
-import { SingletonDesignContext } from "./SingletonEditor";
+import { SingletonDesignContextProvider } from "./singleton-editor/singletonDesignContext";
 import { Result } from "../abstractions/common/result-types";
 import { TemplateContent } from "../abstractions/domain/content";
 import { Design } from "react-email-editor";
@@ -122,13 +122,13 @@ const createTestContext = () => {
         }}
       >
         <TestDopplerIntlProvider>
-          <SingletonDesignContext.Provider value={singletonEditorContext}>
+          <SingletonDesignContextProvider value={singletonEditorContext}>
             <MemoryRouter initialEntries={[routerInitialEntry]}>
               <Routes>
                 <Route path="/:idTemplate" element={<Template />} />
               </Routes>
             </MemoryRouter>
-          </SingletonDesignContext.Provider>
+          </SingletonDesignContextProvider>
         </TestDopplerIntlProvider>
       </AppServicesProvider>
     </QueryClientProvider>
