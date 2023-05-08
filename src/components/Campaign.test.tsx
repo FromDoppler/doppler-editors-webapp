@@ -110,7 +110,6 @@ const createTestContext = () => {
   const exportImageAsync = () =>
     Promise.resolve({ url: editorExportedImageUrl, design: {} as Design });
 
-  let simulateEditorLoadedEvent = null as any;
   let simulateEditorChangeEvent = null as any;
   const singletonEditorContext: ISingletonDesignContext = {
     hidden: false,
@@ -121,18 +120,12 @@ const createTestContext = () => {
           case "design:updated":
             simulateEditorChangeEvent = callback;
             break;
-          case "design:loaded":
-            simulateEditorLoadedEvent = callback;
-            break;
         }
       },
       removeEventListener: (type: string) => {
         switch (type) {
           case "design:updated":
             simulateEditorChangeEvent = null;
-            break;
-          case "design:loaded":
-            simulateEditorLoadedEvent = null;
             break;
         }
       },
@@ -181,7 +174,6 @@ const createTestContext = () => {
       resolveUpdateCampaignContentPromise(result),
     rejectUpdateCampaignContentPromise: (error: any) =>
       rejectUpdateCampaignContentPromise(error),
-    simulateEditorLoadedEvent: () => act(() => simulateEditorLoadedEvent()),
     simulateEditorChangeEvent: () => act(() => simulateEditorChangeEvent()),
     TestComponent,
   };
@@ -260,14 +252,12 @@ describe(Campaign.name, () => {
         editorExportedImageUrl,
         updateCampaignContent,
         resolveGetCampaignContentPromise,
-        simulateEditorLoadedEvent,
         simulateEditorChangeEvent,
         TestComponent,
       } = createTestContext();
 
       renderEditor(<TestComponent routerInitialEntry={`/${idCampaign}`} />);
       resolveGetCampaignContentPromise({ success: true, value: {} as any });
-      simulateEditorLoadedEvent();
 
       simulateEditorChangeEvent();
       const buttonWithSave = await screen.findByText(buttonText);
@@ -294,13 +284,11 @@ describe(Campaign.name, () => {
       const {
         updateCampaignContent,
         resolveGetCampaignContentPromise,
-        simulateEditorLoadedEvent,
         TestComponent,
       } = createTestContext();
 
       renderEditor(<TestComponent routerInitialEntry={`/${idCampaign}`} />);
       resolveGetCampaignContentPromise({ success: true, value: {} as any });
-      simulateEditorLoadedEvent();
 
       const buttonWithSave = await screen.findByText(buttonText);
 

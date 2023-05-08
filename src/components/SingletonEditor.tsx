@@ -141,18 +141,10 @@ export const useSingletonEditor = (
       debounced();
     };
 
-    const onLoadEventListener = () => {
-      unlayerEditorObject &&
-        unlayerEditorObject.addEventListener(
-          "design:updated",
-          updateDesignListener
-        );
-    };
-
     unlayerEditorObject &&
       unlayerEditorObject.addEventListener(
-        "design:loaded",
-        onLoadEventListener
+        "design:updated",
+        updateDesignListener
       );
 
     setContent(initialContent);
@@ -160,10 +152,6 @@ export const useSingletonEditor = (
     return () => {
       window.removeEventListener("beforeunload", beforeUnloadListener);
       if (unlayerEditorObject) {
-        unlayerEditorObject.removeEventListener(
-          "design:loaded",
-          onLoadEventListener
-        );
         unlayerEditorObject.removeEventListener(
           "design:updated",
           updateDesignListener
