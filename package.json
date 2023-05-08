@@ -12,12 +12,12 @@
     "@testing-library/user-event": "14.4.3",
     "@types/history": "5.0.0",
     "@types/jest": "29.5.1",
+    "@types/lodash": "4.14.194",
     "@types/node": "18.16.5",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
     "@types/react-modal": "^3.13.1",
     "@types/react-query": "1.2.9",
-    "@types/underscore": "1.11.4",
     "cspell": "6.31.1",
     "eclint": "2.8.1",
     "prettier": "2.8.8"
@@ -26,6 +26,7 @@
     "@tanstack/react-query": "4.29.5",
     "axios": "1.4.0",
     "history": "5.3.0",
+    "lodash": "4.17.21",
     "react": "18.2.0",
     "react-cool-onclickoutside": "1.7.0",
     "react-dom": "18.2.0",
@@ -35,7 +36,6 @@
     "react-router-dom": "6.11.1",
     "react-scripts": "5.0.1",
     "typescript": "5.0.4",
-    "underscore": "1.13.6",
     "web-vitals": "3.3.1"
   },
   "scripts": {
