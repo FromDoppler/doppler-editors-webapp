@@ -72,6 +72,10 @@ export const Campaign = () => {
     setIsExportingAsTemplate(true);
     try {
       const content = await exportContent();
+      if (content?.type !== "unlayer") {
+        console.error("Only Unlayer contents can be saved as templates");
+        return;
+      }
       setContentToExportAsTemplate(content);
       setIsExportAsTemplateModalOpen(true);
     } finally {
