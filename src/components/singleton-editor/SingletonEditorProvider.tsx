@@ -2,10 +2,7 @@ import { useEffect, useState } from "react";
 import { UnlayerEditorWrapper } from "../UnlayerEditorWrapper";
 import { Content } from "../../abstractions/domain/content";
 import { UnlayerEditorObject } from "../../abstractions/domain/editor";
-import {
-  ISingletonDesignContext,
-  SingletonDesignContextProvider,
-} from "./singletonDesignContext";
+import { SingletonDesignContextProvider } from "./singletonDesignContext";
 
 const emptyDesign = {
   body: {
@@ -59,7 +56,7 @@ export const SingletonEditorProvider = ({
     }
   }, [content, unlayerEditorObject]);
 
-  const defaultContext: ISingletonDesignContext = {
+  const defaultContext = {
     hidden,
     setContent,
     unlayerEditorObject,
