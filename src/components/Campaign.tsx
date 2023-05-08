@@ -73,8 +73,8 @@ export const Campaign = () => {
     try {
       const content = await exportContent();
       setContentToExportAsTemplate(content);
-    } finally {
       setIsExportAsTemplateModalOpen(true);
+    } finally {
       setIsExportingAsTemplate(false);
     }
   };
