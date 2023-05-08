@@ -115,33 +115,30 @@ const createTestContext = () => {
   const singletonEditorContext: ISingletonDesignContext = {
     hidden: false,
     setContent: () => {},
-    editorState: {
-      isLoaded: true,
-      unlayer: {
-        addEventListener: (type: string, callback: (data: object) => void) => {
-          switch (type) {
-            case "design:updated":
-              simulateEditorChangeEvent = callback;
-              break;
-            case "design:loaded":
-              simulateEditorLoadedEvent = callback;
-              break;
-          }
-        },
-        removeEventListener: (type: string) => {
-          switch (type) {
-            case "design:updated":
-              simulateEditorChangeEvent = null;
-              break;
-            case "design:loaded":
-              simulateEditorLoadedEvent = null;
-              break;
-          }
-        },
-        exportHtmlAsync,
-        exportImageAsync,
-      } as Partial<UnlayerEditorObject> as UnlayerEditorObject,
-    },
+    unlayerEditorObject: {
+      addEventListener: (type: string, callback: (data: object) => void) => {
+        switch (type) {
+          case "design:updated":
+            simulateEditorChangeEvent = callback;
+            break;
+          case "design:loaded":
+            simulateEditorLoadedEvent = callback;
+            break;
+        }
+      },
+      removeEventListener: (type: string) => {
+        switch (type) {
+          case "design:updated":
+            simulateEditorChangeEvent = null;
+            break;
+          case "design:loaded":
+            simulateEditorLoadedEvent = null;
+            break;
+        }
+      },
+      exportHtmlAsync,
+      exportImageAsync,
+    } as Partial<UnlayerEditorObject> as UnlayerEditorObject,
   };
 
   const TestComponent = ({

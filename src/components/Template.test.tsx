@@ -101,18 +101,15 @@ const createTestContext = () => {
   const singletonEditorContext: ISingletonDesignContext = {
     hidden: false,
     setContent: () => {},
-    editorState: {
-      isLoaded: true,
-      unlayer: {
-        addEventListener: (
-          _type: string,
-          _callback: (data: object) => void
-        ) => {},
-        removeEventListener: (_type: string) => {},
-        exportHtmlAsync,
-        exportImageAsync,
-      } as Partial<UnlayerEditorObject> as UnlayerEditorObject,
-    },
+    unlayerEditorObject: {
+      addEventListener: (
+        _type: string,
+        _callback: (data: object) => void
+      ) => {},
+      removeEventListener: (_type: string) => {},
+      exportHtmlAsync,
+      exportImageAsync,
+    } as Partial<UnlayerEditorObject> as UnlayerEditorObject,
   };
 
   const TestComponent = ({
