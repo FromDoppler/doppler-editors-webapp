@@ -9,7 +9,7 @@ import {
 import { UnlayerEditorWrapper } from "./UnlayerEditorWrapper";
 import { HtmlExport, ImageExport } from "react-email-editor";
 import { Content, UnlayerContent } from "../abstractions/domain/content";
-import { debounce } from "underscore";
+import { debounce } from "lodash";
 import { UnlayerEditorObject } from "../abstractions/domain/editor";
 
 export interface ISingletonDesignContext {
