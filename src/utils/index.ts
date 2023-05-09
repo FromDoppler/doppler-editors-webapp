@@ -27,3 +27,6 @@ export const promisifyProps = <TOut>(
   }
   return obj as TOut;
 };
+
+export const noop = () => {};
+export const noopAsync = () => Promise.resolve(undefined);

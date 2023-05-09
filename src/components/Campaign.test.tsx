@@ -9,10 +9,7 @@ import { Campaign, editorTopBarTestId, errorMessageTestId } from "./Campaign";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { Design } from "react-email-editor";
 import { act, screen, waitFor } from "@testing-library/react";
-import {
-  ISingletonDesignContext,
-  SingletonDesignContext,
-} from "./SingletonEditor";
+import { SingletonDesignContextProvider } from "./singleton-editor/singletonDesignContext";
 import userEvent from "@testing-library/user-event";
 import { Result } from "../abstractions/common/result-types";
 import { CampaignContent } from "../abstractions/domain/content";
@@ -111,7 +108,7 @@ const createTestContext = () => {
     Promise.resolve({ url: editorExportedImageUrl, design: {} as Design });
 
   let simulateEditorChangeEvent = null as any;
-  const singletonEditorContext: ISingletonDesignContext = {
+  const singletonEditorContext = {
     hidden: false,
     setContent: () => {},
     unlayerEditorObject: {
@@ -148,13 +145,13 @@ const createTestContext = () => {
         }}
       >
         <TestDopplerIntlProvider>
-          <SingletonDesignContext.Provider value={singletonEditorContext}>
+          <SingletonDesignContextProvider value={singletonEditorContext}>
             <MemoryRouter initialEntries={[routerInitialEntry]}>
               <Routes>
                 <Route path="/:idCampaign" element={<Campaign />} />
               </Routes>
             </MemoryRouter>
-          </SingletonDesignContext.Provider>
+          </SingletonDesignContextProvider>
         </TestDopplerIntlProvider>
       </AppServicesProvider>
     </QueryClientProvider>

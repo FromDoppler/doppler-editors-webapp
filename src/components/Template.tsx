@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useSingletonEditor } from "./SingletonEditor";
+import { useSingletonEditor } from "./singleton-editor";
 import { EditorTopBar } from "./EditorTopBar";
 import { useGetTemplate, useUpdateTemplate } from "../queries/template-queries";
 import { Header } from "./Header";
@@ -11,6 +11,7 @@ import { useTemplatesContinuationUrls } from "./continuation-urls";
 import { FormattedMessage } from "react-intl";
 import { useNavigateSmart } from "./smart-urls";
 import { SavingMessage } from "./SavingMessage";
+import { useCallback } from "react";
 
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
@@ -23,28 +24,36 @@ export const Template = () => {
   const navigateSmart = useNavigateSmart();
 
   const templateQuery = useGetTemplate(idTemplate);
-  const templateMutation = useUpdateTemplate();
+  const {
+    mutateAsync: updateTemplateMutateAsync,
+    isLoading: updateTemplateIsLoading,
+  } = useUpdateTemplate();
+
+  const onSave = useCallback(
+    async (content: Content) => {
+      if (!templateQuery.data) {
+        console.error(
+          "Template data is not available trying to save template content",
+          content
+        );
+      } else if (content.type !== "unlayer") {
+        console.error("Content type is not supported", content);
+      } else {
+        await updateTemplateMutateAsync({
+          idTemplate,
+          template: { ...templateQuery.data, ...content },
+        });
+      }
+    },
+    [templateQuery.data, updateTemplateMutateAsync, idTemplate]
+  );
 
   const { smartSave } = useSingletonEditor(
     {
       initialContent: templateQuery.data,
-      onSave: async (content: Content) => {
-        if (!templateQuery.data) {
-          console.error(
-            "Template data is not available trying to save template content",
-            content
-          );
-        } else if (content.type !== "unlayer") {
-          console.error("Content type is not supported", content);
-        } else {
-          await templateMutation.mutateAsync({
-            idTemplate,
-            template: { ...templateQuery.data, ...content },
-          });
-        }
-      },
+      onSave,
     },
-    [templateQuery.data, templateMutation.mutate, idTemplate]
+    [templateQuery.data, onSave]
   );
 
   const saveAndNavigateClick = async (to: string) => {
@@ -78,7 +87,7 @@ export const Template = () => {
           </Header>
           <Footer>
             <EditorBottomBar>
-              <SavingMessage show={templateMutation.isLoading} />
+              <SavingMessage show={updateTemplateIsLoading} />
               <button
                 onClick={() => saveAndNavigateClick(continuationUrls.exitUrl)}
                 className="dp-button button-medium secondary-green"

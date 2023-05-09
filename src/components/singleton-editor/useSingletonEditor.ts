@@ -1,34 +1,8 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { UnlayerEditorWrapper } from "./UnlayerEditorWrapper";
+import { useCallback, useEffect, useRef } from "react";
 import { HtmlExport, ImageExport } from "react-email-editor";
-import { Content, UnlayerContent } from "../abstractions/domain/content";
+import { Content, UnlayerContent } from "../../abstractions/domain/content";
 import { debounce } from "lodash";
-import { UnlayerEditorObject } from "../abstractions/domain/editor";
-
-export interface ISingletonDesignContext {
-  hidden: boolean;
-  setContent: (c: Content | undefined) => void;
-  unlayerEditorObject: UnlayerEditorObject | undefined;
-}
-
-export const emptyDesign = {
-  body: {
-    rows: [],
-  },
-};
-
-export const SingletonDesignContext = createContext<ISingletonDesignContext>({
-  hidden: true,
-  setContent: () => {},
-  unlayerEditorObject: undefined,
-});
+import { useSingletonDesignContext } from "./singletonDesignContext";
 
 const AUTO_SAVE_INTERVAL = 6000;
 
@@ -42,9 +16,8 @@ export const useSingletonEditor = (
   },
   deps: any[]
 ) => {
-  const { unlayerEditorObject, setContent } = useContext(
-    SingletonDesignContext
-  );
+  const { unlayerEditorObject, setContent } = useSingletonDesignContext();
+
   const savedCounter = useRef(0);
   const updateCounter = useRef(0);
 
@@ -169,68 +142,4 @@ export const useSingletonEditor = (
     smartSave,
     exportContent,
   };
-};
-
-export const SingletonEditorProvider = ({
-  children,
-  ...props
-}: {
-  children: React.ReactNode;
-}) => {
-  const [content, setContent] = useState<Content | undefined>();
-  const hidden = !content;
-  const [unlayerEditorObject, setUnlayerEditorObject] = useState<
-    UnlayerEditorObject | undefined
-  >(undefined);
-
-  useEffect(() => {
-    if (unlayerEditorObject) {
-      if (!content) {
-        unlayerEditorObject.loadDesign(emptyDesign);
-        return;
-      }
-
-      if (content.type === "unlayer") {
-        unlayerEditorObject.loadDesign(content.design);
-        return;
-      }
-
-      if (content.type === "html") {
-        // Ugly patch because of:
-        // * https://github.com/unlayer/react-email-editor/issues/212
-        // * https://unlayer.canny.io/bug-reports/p/loaddesign-doesnt-reload-for-legacy-templates
-        unlayerEditorObject.loadDesign(emptyDesign);
-
-        // See https://examples.unlayer.com/web/legacy-template
-        unlayerEditorObject.loadDesign({
-          html: content.htmlContent,
-          classic: true,
-        } as any);
-        return;
-      }
-
-      throw new Error(
-        `Not implemented: Content type '${
-          (content as any).type
-        }' is not supported yet.`
-      );
-    }
-  }, [content, unlayerEditorObject]);
-
-  const defaultContext: ISingletonDesignContext = {
-    hidden,
-    setContent,
-    unlayerEditorObject,
-  };
-
-  return (
-    <SingletonDesignContext.Provider value={defaultContext}>
-      {children}
-      <UnlayerEditorWrapper
-        setUnlayerEditorObject={setUnlayerEditorObject}
-        hidden={hidden}
-        {...props}
-      />
-    </SingletonDesignContext.Provider>
-  );
 };

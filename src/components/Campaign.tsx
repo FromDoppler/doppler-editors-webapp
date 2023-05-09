@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useSingletonEditor } from "./SingletonEditor";
+import { useSingletonEditor } from "./singleton-editor";
 import { EditorTopBar } from "./EditorTopBar";
 import {
   useGetCampaignContent,
@@ -13,7 +13,7 @@ import { LoadingScreen } from "./LoadingScreen";
 import { useCampaignContinuationUrls } from "./continuation-urls";
 import { FormattedMessage } from "react-intl";
 import { SaveAsTemplateModal } from "./SaveAsTemplateModal";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useNavigateSmart } from "./smart-urls";
 import { SavingMessage } from "./SavingMessage";
 
@@ -32,16 +32,24 @@ export const Campaign = () => {
   }>;
 
   const campaignContentQuery = useGetCampaignContent(idCampaign);
-  const campaignContentMutation = useUpdateCampaignContent();
+  const {
+    mutateAsync: updateCampaignContentMutateAsync,
+    isLoading: UpdateCampaignContentIsLoading,
+  } = useUpdateCampaignContent();
+
+  const onSave = useCallback(
+    async (content: Content) => {
+      await updateCampaignContentMutateAsync({ idCampaign, content });
+    },
+    [updateCampaignContentMutateAsync, idCampaign]
+  );
 
   const { smartSave, exportContent } = useSingletonEditor(
     {
       initialContent: campaignContentQuery.data,
-      onSave: async (content: Content) => {
-        await campaignContentMutation.mutateAsync({ idCampaign, content });
-      },
+      onSave,
     },
-    [campaignContentQuery.data, campaignContentMutation.mutate, idCampaign]
+    [campaignContentQuery.data, onSave]
   );
 
   const continuationUrls = useCampaignContinuationUrls(idCampaign);
@@ -64,9 +72,13 @@ export const Campaign = () => {
     setIsExportingAsTemplate(true);
     try {
       const content = await exportContent();
+      if (content?.type !== "unlayer") {
+        console.error("Only Unlayer contents can be saved as templates");
+        return;
+      }
       setContentToExportAsTemplate(content);
-    } finally {
       setIsExportAsTemplateModalOpen(true);
+    } finally {
       setIsExportingAsTemplate(false);
     }
   };
@@ -123,7 +135,7 @@ export const Campaign = () => {
           </Header>
           <Footer>
             <EditorBottomBar>
-              <SavingMessage show={campaignContentMutation.isLoading} />
+              <SavingMessage show={UpdateCampaignContentIsLoading} />
               <button
                 onClick={() => saveAndNavigateClick(continuationUrls.exitUrl)}
                 className="dp-button button-medium secondary-green"

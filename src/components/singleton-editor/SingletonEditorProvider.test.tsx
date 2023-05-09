@@ -1,13 +1,13 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
-import { AppServices } from "../abstractions";
-import { SingletonEditorProvider, useSingletonEditor } from "./SingletonEditor";
-import { AppServicesProvider } from "./AppServicesContext";
+import { AppServices } from "../../abstractions";
+import { SingletonEditorProvider, useSingletonEditor } from ".";
+import { AppServicesProvider } from "../AppServicesContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Field } from "../abstractions/doppler-rest-api-client";
-import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
-import { CampaignContent, Content } from "../abstractions/domain/content";
+import { Field } from "../../abstractions/doppler-rest-api-client";
+import { TestDopplerIntlProvider } from "../i18n/TestDopplerIntlProvider";
+import { CampaignContent, Content } from "../../abstractions/domain/content";
 import { useEffect, useState } from "react";
-import { UnlayerEditorObject } from "../abstractions/domain/editor";
+import { UnlayerEditorObject } from "../../abstractions/domain/editor";
 
 let exportHtmlData: any = {
   design: {},
@@ -46,7 +46,7 @@ const DoubleUnlayerEditorWrapper = ({
   return <div style={containerStyle} {...otherProps} />;
 };
 
-jest.mock("./UnlayerEditorWrapper", () => {
+jest.mock("../UnlayerEditorWrapper", () => {
   return { UnlayerEditorWrapper: DoubleUnlayerEditorWrapper };
 });
 
