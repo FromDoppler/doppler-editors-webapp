@@ -4,6 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import { AppServicesProvider } from "./AppServicesContext";
 import { EditorTopBar } from "./EditorTopBar";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
+import { SaveStatus } from "../abstractions/common/save-status";
 
 const appConfiguration = {
   dopplerExternalUrls: {
@@ -35,6 +36,7 @@ describe(EditorTopBar.name, () => {
 
     // Assert
     screen.getByText("exit_editor");
+    expect(screen.queryByTestId("saveStatus")).toBeNull();
   });
 
   it("should render Exit Options after click on Exit Button", async () => {
@@ -58,6 +60,7 @@ describe(EditorTopBar.name, () => {
 
     // Assert
     expect(screen.queryByText("home")).not.toBeNull;
+    expect(screen.queryByTestId("saveStatus")).toBeNull();
   });
 
   it("should Exit to specific url", async () => {
@@ -102,5 +105,89 @@ describe(EditorTopBar.name, () => {
       "href",
       appConfiguration.dopplerExternalUrls.controlPanel
     );
+
+    expect(screen.queryByTestId("saveStatus")).toBeNull();
+  });
+
+  it.each([
+    { saveStatus: "pending" as const },
+    { saveStatus: "saving" as const },
+    { saveStatus: "error" as const },
+  ])(
+    "should render saving content when saveStatus is $saveStatus",
+    async ({ saveStatus }) => {
+      // Arrange
+      const appServices = { appConfiguration } as any;
+      const expectedStatusClass = `state-${saveStatus}`;
+
+      // Act
+      render(
+        <MemoryRouter>
+          <TestDopplerIntlProvider>
+            <AppServicesProvider appServices={appServices}>
+              <EditorTopBar saveStatus={saveStatus} />
+            </AppServicesProvider>
+          </TestDopplerIntlProvider>
+        </MemoryRouter>
+      );
+
+      // Assert
+      const saveStatusElement = screen.getByText("saving");
+      expect(saveStatusElement.parentElement).toHaveAttribute(
+        "title",
+        "saving_details"
+      );
+      expect(saveStatusElement.parentElement).toHaveClass(expectedStatusClass);
+    }
+  );
+
+  it("should no render content when saveStatus is idle", async () => {
+    // Arrange
+    const saveStatus = "idle" as const;
+    const appServices = { appConfiguration } as any;
+
+    // Act
+    render(
+      <MemoryRouter>
+        <TestDopplerIntlProvider>
+          <AppServicesProvider appServices={appServices}>
+            <EditorTopBar saveStatus={saveStatus} />
+          </AppServicesProvider>
+        </TestDopplerIntlProvider>
+      </MemoryRouter>
+    );
+
+    // Assert
+    const saveStatusElement = screen.getByText("saved");
+    expect(saveStatusElement.parentElement).toHaveAttribute(
+      "title",
+      "saved_details"
+    );
+    expect(saveStatusElement.parentElement).toHaveClass("state-idle");
+  });
+
+  it("should render saved content when saveStatus is saved", async () => {
+    // Arrange
+    const saveStatus = "saved" as const;
+    const appServices = { appConfiguration } as any;
+
+    // Act
+    render(
+      <MemoryRouter>
+        <TestDopplerIntlProvider>
+          <AppServicesProvider appServices={appServices}>
+            <EditorTopBar saveStatus={saveStatus} />
+          </AppServicesProvider>
+        </TestDopplerIntlProvider>
+      </MemoryRouter>
+    );
+
+    // Assert
+    const saveStatusElement = screen.getByText("saved");
+    expect(saveStatusElement.parentElement).toHaveAttribute(
+      "title",
+      "saved_details"
+    );
+    expect(saveStatusElement.parentElement).toHaveClass("state-saved");
   });
 });

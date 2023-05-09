@@ -4,15 +4,19 @@ import { useAppServices } from "./AppServicesContext";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ReactNode } from "react";
 import { LinkSmart } from "./smart-urls";
+import { SaveStatus } from "../abstractions/common/save-status";
+import { SaveIndicator } from "./SaveIndicator";
 
 interface EditorTopBarProps {
   title?: string;
+  saveStatus?: SaveStatus;
   children?: ReactNode;
 }
 
 export const EditorTopBar = ({
   title,
   children,
+  saveStatus,
   ...otherProps
 }: EditorTopBarProps) => {
   const {
@@ -45,6 +49,13 @@ export const EditorTopBar = ({
         <li>
           <h2>{title}</h2>
         </li>
+        {saveStatus ? (
+          <li data-testid="saveStatus">
+            <SaveIndicator saveStatus={saveStatus} />
+          </li>
+        ) : (
+          false
+        )}
         <li>
           {
             children
