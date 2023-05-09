@@ -48,7 +48,7 @@ export const Template = () => {
     [templateQuery.data, updateTemplateMutateAsync, idTemplate]
   );
 
-  const { smartSave, doWhenNoPendingUpdates } = useSingletonEditor({
+  const { smartSave, doWhenNoPendingUpdates, saveStatus } = useSingletonEditor({
     initialContent: templateQuery.data,
     onSave,
   });
@@ -80,6 +80,7 @@ export const Template = () => {
                   ? templateQuery.data.templateName
                   : ""
               }
+              saveStatus={saveStatus}
             ></EditorTopBar>
           </Header>
           <Footer>
