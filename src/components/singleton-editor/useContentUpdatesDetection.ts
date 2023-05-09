@@ -3,7 +3,7 @@ import { Action } from "./reducer";
 import { UnlayerEditorObject } from "../../abstractions/domain/editor";
 import { debounce } from "lodash";
 
-const AUTO_SAVE_INTERVAL = 6000;
+const AUTO_SAVE_INTERVAL = 3000;
 
 export function useContentUpdatesDetection({
   dispatch,
