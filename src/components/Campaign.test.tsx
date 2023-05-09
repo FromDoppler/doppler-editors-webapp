@@ -14,6 +14,7 @@ import userEvent from "@testing-library/user-event";
 import { Result } from "../abstractions/common/result-types";
 import { CampaignContent } from "../abstractions/domain/content";
 import { UnlayerEditorObject } from "../abstractions/domain/editor";
+import { noop } from "../utils";
 
 jest.mock("./LoadingScreen", () => ({
   LoadingScreen: () => <div>Loading...</div>,
@@ -131,6 +132,8 @@ const createTestContext = () => {
       },
       exportHtmlAsync,
       exportImageAsync,
+      canUndo: noop,
+      canRedo: noop,
     } as UnlayerEditorObject,
   };
 
