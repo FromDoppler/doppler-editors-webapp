@@ -8,8 +8,11 @@ export function useSingletonEditorState({
     { savedCounter, updateCounter, savingProcessData, onNoPendingUpdates },
     dispatch,
   ] = useReducer(reducer, initialState);
+
+  const areUpdatesPending = savedCounter < updateCounter;
+
   return {
-    areUpdatesPending: savedCounter < updateCounter,
+    areUpdatesPending,
     savingProcessData,
     onNoPendingUpdates,
     dispatch,
