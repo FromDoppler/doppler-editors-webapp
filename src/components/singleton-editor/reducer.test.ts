@@ -18,6 +18,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -28,6 +30,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -41,6 +45,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -55,6 +61,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])(
@@ -83,6 +91,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])(
@@ -119,6 +129,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -133,6 +145,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])(
@@ -167,6 +181,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -181,6 +197,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])(
@@ -209,6 +227,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -219,6 +239,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -229,6 +251,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])(
@@ -259,6 +283,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -269,6 +295,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -282,6 +310,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -296,6 +326,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])(
@@ -328,6 +360,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -338,6 +372,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])(
@@ -363,6 +399,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])(
@@ -390,6 +428,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -404,6 +444,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])(
@@ -429,6 +471,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -442,6 +486,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -456,6 +502,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])(
@@ -495,6 +543,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -505,6 +555,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])(
@@ -537,6 +589,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])(
@@ -564,6 +618,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -578,6 +634,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])(
@@ -603,6 +661,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -616,6 +676,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -630,6 +692,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])(
@@ -676,6 +740,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -690,6 +756,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -703,6 +771,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])(
@@ -736,6 +806,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -746,6 +818,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -759,6 +833,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -773,6 +849,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -787,6 +865,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])("should keep current state($scenario)", ({ initialState }) => {
@@ -823,6 +903,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -837,6 +919,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -847,6 +931,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: null,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])(
@@ -856,6 +942,138 @@ describe(reducer.name, () => {
         const expectedState: State = {
           ...initialState,
           onNoPendingUpdates: newAction,
+        };
+
+        // Act
+        const finalState = reducer(initialState, action);
+
+        // Assert
+        expect(finalState).toEqual(expectedState);
+      }
+    );
+  });
+
+  describe.each([
+    { type: "can-undo-updated" as const, value: false },
+    { type: "can-undo-updated" as const, value: true },
+  ])("$type", (action) => {
+    it.each<{ scenario: string; initialState: State }>([
+      {
+        scenario: "preparing current data, no pending changes",
+        initialState: {
+          savedCounter: 0,
+          updateCounter: 10,
+          savingProcessData: {
+            step: "preparing-content",
+            savingUpdateCounter: 10,
+          },
+          onNoPendingUpdates: randomFunc,
+          errorData,
+          canUndo: true,
+          canRedo: false,
+        },
+      },
+      {
+        scenario:
+          "preparing current data, already saved (probably related to force saving)",
+        initialState: {
+          savedCounter: 10,
+          updateCounter: 10,
+          savingProcessData: {
+            step: "preparing-content",
+            savingUpdateCounter: 10,
+          },
+          onNoPendingUpdates: randomFunc,
+          errorData,
+          canUndo: false,
+          canRedo: false,
+        },
+      },
+      {
+        scenario: "pending updates",
+        initialState: {
+          savedCounter: 0,
+          updateCounter: 11,
+          savingProcessData: null,
+          onNoPendingUpdates: null,
+          errorData,
+          canUndo: true,
+          canRedo: false,
+        },
+      },
+    ])(
+      "should always override canUndo only ($scenario)",
+      ({ initialState }) => {
+        // Arrange
+        const expectedState: State = {
+          ...initialState,
+          canUndo: action.value,
+        };
+
+        // Act
+        const finalState = reducer(initialState, action);
+
+        // Assert
+        expect(finalState).toEqual(expectedState);
+      }
+    );
+  });
+
+  describe.each([
+    { type: "can-redo-updated" as const, value: false },
+    { type: "can-redo-updated" as const, value: true },
+  ])("$type", (action) => {
+    it.each<{ scenario: string; initialState: State }>([
+      {
+        scenario: "preparing current data, no pending changes",
+        initialState: {
+          savedCounter: 0,
+          updateCounter: 10,
+          savingProcessData: {
+            step: "preparing-content",
+            savingUpdateCounter: 10,
+          },
+          onNoPendingUpdates: randomFunc,
+          errorData,
+          canUndo: false,
+          canRedo: false,
+        },
+      },
+      {
+        scenario:
+          "preparing current data, already saved (probably related to force saving)",
+        initialState: {
+          savedCounter: 10,
+          updateCounter: 10,
+          savingProcessData: {
+            step: "preparing-content",
+            savingUpdateCounter: 10,
+          },
+          onNoPendingUpdates: randomFunc,
+          errorData,
+          canUndo: false,
+          canRedo: true,
+        },
+      },
+      {
+        scenario: "pending updates",
+        initialState: {
+          savedCounter: 0,
+          updateCounter: 11,
+          savingProcessData: null,
+          onNoPendingUpdates: null,
+          errorData,
+          canUndo: false,
+          canRedo: false,
+        },
+      },
+    ])(
+      "should always override canUndo only ($scenario)",
+      ({ initialState }) => {
+        // Arrange
+        const expectedState: State = {
+          ...initialState,
+          canRedo: action.value,
         };
 
         // Act
@@ -882,6 +1100,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -895,6 +1115,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -909,6 +1131,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -923,6 +1147,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -933,6 +1159,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -947,6 +1175,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -957,6 +1187,8 @@ describe(reducer.name, () => {
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])("should should keep state when $scenario", ({ initialState }) => {
@@ -989,6 +1221,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
       {
@@ -1003,6 +1237,8 @@ describe(reducer.name, () => {
           },
           onNoPendingUpdates: randomFunc,
           errorData,
+          canUndo: false,
+          canRedo: false,
         },
       },
     ])(
