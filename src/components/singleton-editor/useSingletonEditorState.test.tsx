@@ -3,6 +3,7 @@ import { useSingletonEditorState } from "./useSingletonEditorState";
 import { Action, SavingProcessData, State } from "./reducer";
 import { Dispatch, MutableRefObject } from "react";
 import { Content } from "../../abstractions/domain/content";
+import { SaveStatus } from "../../abstractions/common/save-status";
 
 // It is to test that onNoPendingUpdates is not changed by actions different
 // than when-all-saved-action-requested
@@ -11,6 +12,7 @@ const randomFunc = () => {};
 const createTestContext = ({ initialState }: { initialState?: State }) => {
   const singletonEditorStateRef: MutableRefObject<{
     areUpdatesPending: boolean;
+    saveStatus: SaveStatus;
     savingProcessData: SavingProcessData;
     dispatch: Dispatch<Action>;
   } | null> = {
@@ -86,6 +88,153 @@ describe(useSingletonEditorState.name, () => {
 
       // Assert
       expect(singletonEditorStateRef.current?.areUpdatesPending).toBe(false);
+    }
+  );
+
+  it.each<{
+    scenario: string;
+    expectedSaveStatus: SaveStatus;
+    initialState: State;
+  }>([
+    {
+      scenario: "initial state",
+      expectedSaveStatus: "idle",
+      initialState: {
+        savedCounter: 0,
+        updateCounter: 0,
+        savingProcessData: null,
+        onNoPendingUpdates: randomFunc,
+      },
+    },
+    {
+      scenario: "initial state and saving",
+      expectedSaveStatus: "saving",
+      initialState: {
+        savedCounter: 0,
+        updateCounter: 0,
+        savingProcessData: {
+          step: "preparing-content",
+          savingUpdateCounter: 0,
+        },
+        onNoPendingUpdates: randomFunc,
+      },
+    },
+    {
+      scenario: "no pending updates",
+      expectedSaveStatus: "saved",
+      initialState: {
+        savedCounter: 20,
+        updateCounter: 20,
+        savingProcessData: null,
+        onNoPendingUpdates: randomFunc,
+      },
+    },
+    {
+      scenario: "no pending updates but preparing content to save (forced)",
+      expectedSaveStatus: "saving",
+      initialState: {
+        savedCounter: 20,
+        updateCounter: 20,
+        savingProcessData: {
+          step: "preparing-content",
+          savingUpdateCounter: 20,
+        },
+        onNoPendingUpdates: randomFunc,
+      },
+    },
+    {
+      scenario: "no pending updates but posting (forced)",
+      expectedSaveStatus: "saving",
+      initialState: {
+        savedCounter: 20,
+        updateCounter: 20,
+        savingProcessData: {
+          step: "posting-content",
+          savingUpdateCounter: 20,
+          content: {} as Content,
+        },
+        onNoPendingUpdates: randomFunc,
+      },
+    },
+    {
+      scenario: "pending updates",
+      expectedSaveStatus: "pending",
+      initialState: {
+        savedCounter: 20,
+        updateCounter: 30,
+        savingProcessData: null,
+        onNoPendingUpdates: randomFunc,
+      },
+    },
+    {
+      scenario: "preparing to save current updates",
+      expectedSaveStatus: "saving",
+      initialState: {
+        savedCounter: 20,
+        updateCounter: 30,
+        savingProcessData: {
+          step: "preparing-content",
+          savingUpdateCounter: 30,
+        },
+        onNoPendingUpdates: randomFunc,
+      },
+    },
+    {
+      scenario: "posting current updates",
+      expectedSaveStatus: "saving",
+      initialState: {
+        savedCounter: 20,
+        updateCounter: 30,
+        savingProcessData: {
+          step: "posting-content",
+          savingUpdateCounter: 30,
+          content: {} as Content,
+        },
+        onNoPendingUpdates: randomFunc,
+      },
+    },
+    {
+      scenario: "preparing to save updates and newer",
+      expectedSaveStatus: "saving",
+      initialState: {
+        savedCounter: 20,
+        updateCounter: 40,
+        savingProcessData: {
+          step: "preparing-content",
+          savingUpdateCounter: 30,
+        },
+        onNoPendingUpdates: randomFunc,
+      },
+    },
+    {
+      scenario: "posting updates and newer",
+      expectedSaveStatus: "saving",
+      initialState: {
+        savedCounter: 20,
+        updateCounter: 40,
+        savingProcessData: {
+          step: "posting-content",
+          savingUpdateCounter: 30,
+          content: {} as Content,
+        },
+        onNoPendingUpdates: randomFunc,
+      },
+    },
+  ])(
+    "should resolve saveStatus ($scenario) ",
+    ({ initialState, expectedSaveStatus }) => {
+      // Arrange
+      const { TestComponent, singletonEditorStateRef } = createTestContext({
+        initialState,
+      });
+
+      // Act
+      render(<TestComponent />);
+
+      // Assert
+      expect(singletonEditorStateRef.current?.saveStatus).toBe(
+        expectedSaveStatus
+      );
     }
   );
 

@@ -22,8 +22,13 @@ export const useSingletonEditor = ({
     unlayerEditorObject,
   });
 
-  const { areUpdatesPending, savingProcessData, onNoPendingUpdates, dispatch } =
-    useSingletonEditorState();
+  const {
+    areUpdatesPending,
+    saveStatus,
+    savingProcessData,
+    onNoPendingUpdates,
+    dispatch,
+  } = useSingletonEditorState();
 
   const { smartSave, forceSave, exportContent } = useSaving({
     unlayerEditorObject,
@@ -50,6 +55,7 @@ export const useSingletonEditor = ({
   });
 
   return {
+    saveStatus,
     forceSave,
     smartSave,
     exportContent,
