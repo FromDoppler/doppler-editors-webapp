@@ -41,11 +41,16 @@ export const Campaign = () => {
     [updateCampaignContentMutateAsync, idCampaign]
   );
 
-  const { smartSave, exportContent, doWhenNoPendingUpdates, saveStatus } =
-    useSingletonEditor({
-      initialContent: campaignContentQuery.data,
-      onSave,
-    });
+  const {
+    smartSave,
+    exportContent,
+    doWhenNoPendingUpdates,
+    saveStatus,
+    undoTools,
+  } = useSingletonEditor({
+    initialContent: campaignContentQuery.data,
+    onSave,
+  });
 
   const continuationUrls = useCampaignContinuationUrls(idCampaign);
 
@@ -98,6 +103,7 @@ export const Campaign = () => {
                   : ""
               }
               saveStatus={saveStatus}
+              undoTools={undoTools}
             >
               <ul className="ed-header-list">
                 {campaignContentQuery.data?.type === "unlayer" ? (
