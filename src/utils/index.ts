@@ -28,5 +28,5 @@ export const promisifyProps = <TOut>(
   return obj as TOut;
 };
 
-export const noop = () => {};
-export const noopAsync = () => Promise.resolve(undefined);
+export const noop = (..._args: any[]) => {};
+export const noopAsync = (..._args: any[]) => Promise.resolve(undefined);
