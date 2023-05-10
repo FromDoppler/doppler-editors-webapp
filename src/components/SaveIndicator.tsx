@@ -1,8 +1,24 @@
 import { useIntl } from "react-intl";
 import { SaveStatus } from "../abstractions/common/save-status";
+import { useEffect, useState } from "react";
+
+const SHOW_TEXT_MS = 5000;
 
 export function SaveIndicator({ saveStatus }: { saveStatus: SaveStatus }) {
   const intl = useIntl();
+  const [showText, setShowText] = useState(saveStatus !== "idle");
+
+  useEffect(() => {
+    setShowText(saveStatus !== "idle");
+    if (saveStatus === "saved") {
+      const timeoutId = setTimeout(() => {
+        setShowText(false);
+      }, SHOW_TEXT_MS);
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [saveStatus]);
 
   const { statusClassName, statusText, statusDescription } =
     saveStatus === "idle"
@@ -28,7 +44,7 @@ export function SaveIndicator({ saveStatus }: { saveStatus: SaveStatus }) {
       className={`dp-save-indicator ${statusClassName}`}
       title={statusDescription}
     >
-      <span>{statusText}</span>
+      {showText ? <span>{statusText}</span> : false}
     </div>
   );
 }

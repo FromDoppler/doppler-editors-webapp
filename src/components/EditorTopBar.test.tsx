@@ -158,12 +158,9 @@ describe(EditorTopBar.name, () => {
     );
 
     // Assert
-    const saveStatusElement = screen.getByText("saved");
-    expect(saveStatusElement.parentElement).toHaveAttribute(
-      "title",
-      "saved_details"
-    );
-    expect(saveStatusElement.parentElement).toHaveClass("state-idle");
+    const saveStatusElement = screen.getByTitle("saved_details");
+    expect(saveStatusElement).toHaveClass("state-idle");
+    expect(saveStatusElement).toBeEmptyDOMElement();
   });
 
   it("should render saved content when saveStatus is saved", async () => {
@@ -183,11 +180,11 @@ describe(EditorTopBar.name, () => {
     );
 
     // Assert
-    const saveStatusElement = screen.getByText("saved");
-    expect(saveStatusElement.parentElement).toHaveAttribute(
+    const saveStatusTextElement = screen.getByText("saved");
+    expect(saveStatusTextElement.parentElement).toHaveAttribute(
       "title",
       "saved_details"
     );
-    expect(saveStatusElement.parentElement).toHaveClass("state-saved");
+    expect(saveStatusTextElement.parentElement).toHaveClass("state-saved");
   });
 });
