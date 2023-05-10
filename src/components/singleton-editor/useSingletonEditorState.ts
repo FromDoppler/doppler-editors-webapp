@@ -12,6 +12,8 @@ export function useSingletonEditorState({
       savingProcessData,
       onNoPendingUpdates,
       errorData,
+      canUndo,
+      canRedo,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -31,6 +33,8 @@ export function useSingletonEditorState({
   return {
     areUpdatesPending,
     saveStatus,
+    canUndo,
+    canRedo,
     savingProcessData,
     onNoPendingUpdates,
     dispatch,

@@ -1,2 +1,2 @@
 export { SingletonEditorProvider } from "./SingletonEditorProvider";
-export { useSingletonEditor } from "./useSingletonEditor";
+export { useSingletonEditor, type UndoToolsObject } from "./useSingletonEditor";
