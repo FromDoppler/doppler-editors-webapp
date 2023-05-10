@@ -10,7 +10,6 @@ import { EditorBottomBar } from "./EditorBottomBar";
 import { useTemplatesContinuationUrls } from "./continuation-urls";
 import { FormattedMessage } from "react-intl";
 import { useNavigateSmart } from "./smart-urls";
-import { SavingMessage } from "./SavingMessage";
 import { useCallback } from "react";
 
 export const errorMessageTestId = "error-message";
@@ -24,10 +23,7 @@ export const Template = () => {
   const navigateSmart = useNavigateSmart();
 
   const templateQuery = useGetTemplate(idTemplate);
-  const {
-    mutateAsync: updateTemplateMutateAsync,
-    isLoading: updateTemplateIsLoading,
-  } = useUpdateTemplate();
+  const { mutateAsync: updateTemplateMutateAsync } = useUpdateTemplate();
 
   const onSave = useCallback(
     async (content: Content) => {
@@ -85,7 +81,6 @@ export const Template = () => {
           </Header>
           <Footer>
             <EditorBottomBar>
-              <SavingMessage show={updateTemplateIsLoading} />
               <button
                 onClick={() => saveAndNavigateClick(continuationUrls.exitUrl)}
                 className="dp-button button-medium secondary-green"

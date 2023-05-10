@@ -15,7 +15,6 @@ import { FormattedMessage } from "react-intl";
 import { SaveAsTemplateModal } from "./SaveAsTemplateModal";
 import { useCallback, useState } from "react";
 import { useNavigateSmart } from "./smart-urls";
-import { SavingMessage } from "./SavingMessage";
 
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
@@ -32,10 +31,8 @@ export const Campaign = () => {
   }>;
 
   const campaignContentQuery = useGetCampaignContent(idCampaign);
-  const {
-    mutateAsync: updateCampaignContentMutateAsync,
-    isLoading: UpdateCampaignContentIsLoading,
-  } = useUpdateCampaignContent();
+  const { mutateAsync: updateCampaignContentMutateAsync } =
+    useUpdateCampaignContent();
 
   const onSave = useCallback(
     async (content: Content) => {
@@ -134,7 +131,6 @@ export const Campaign = () => {
           </Header>
           <Footer>
             <EditorBottomBar>
-              <SavingMessage show={UpdateCampaignContentIsLoading} />
               <button
                 onClick={() => saveAndNavigateClick(continuationUrls.exitUrl)}
                 className="dp-button button-medium secondary-green"
