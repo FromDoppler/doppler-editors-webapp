@@ -119,7 +119,10 @@ const createTestContext = () => {
             break;
         }
       },
-      removeEventListener: (type: string) => {
+      removeEventListener: (
+        type: string,
+        _callback: (data: object) => void
+      ) => {
         switch (type) {
           case "design:updated":
             simulateEditorChangeEvent = null;
@@ -128,7 +131,7 @@ const createTestContext = () => {
       },
       exportHtmlAsync,
       exportImageAsync,
-    } as Partial<UnlayerEditorObject> as UnlayerEditorObject,
+    } as UnlayerEditorObject,
   };
 
   const TestComponent = ({

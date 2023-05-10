@@ -25,19 +25,16 @@ export function useContentUpdatesDetection({
       debouncedSave();
     };
 
-    unlayerEditorObject &&
-      unlayerEditorObject.addEventListener(
+    unlayerEditorObject?.addEventListener(
+      "design:updated",
+      updateDesignListener
+    );
+
+    return () => {
+      unlayerEditorObject?.removeEventListener(
         "design:updated",
         updateDesignListener
       );
-
-    return () => {
-      if (unlayerEditorObject) {
-        unlayerEditorObject.removeEventListener(
-          "design:updated",
-          updateDesignListener
-        );
-      }
     };
   }, [debouncedSave, dispatch, unlayerEditorObject]);
 }
