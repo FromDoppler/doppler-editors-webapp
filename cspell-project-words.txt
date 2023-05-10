@@ -29,6 +29,7 @@ mseditor
 mydplr
 socialshare
 spanish
+undoredo
 
 # Technical terms
 automerge
