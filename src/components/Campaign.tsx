@@ -44,13 +44,11 @@ export const Campaign = () => {
     [updateCampaignContentMutateAsync, idCampaign]
   );
 
-  const { smartSave, exportContent } = useSingletonEditor(
-    {
+  const { smartSave, exportContent, doWhenNoPendingUpdates } =
+    useSingletonEditor({
       initialContent: campaignContentQuery.data,
       onSave,
-    },
-    [campaignContentQuery.data, onSave]
-  );
+    });
 
   const continuationUrls = useCampaignContinuationUrls(idCampaign);
 
@@ -84,8 +82,8 @@ export const Campaign = () => {
   };
 
   const saveAndNavigateClick = async (to: string) => {
-    await smartSave();
-    navigateSmart(to);
+    smartSave();
+    doWhenNoPendingUpdates(() => navigateSmart(to));
   };
 
   return (
