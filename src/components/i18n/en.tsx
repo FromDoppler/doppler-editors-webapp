@@ -20,5 +20,4 @@ will not be applied.`,
   save: `Save`,
   save_template: `Convert to Template`,
   saving: `Saving`,
-  saving_changes: `There has been an error saving changes, please try again later.`,
 };

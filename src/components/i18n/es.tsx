@@ -20,5 +20,4 @@ a partir de ahora, no serán aplicados.`,
   save: `Guardar`,
   save_template: `Convertir en plantilla`,
   saving: `Guardando`,
-  saving_changes: `Hubo un error al guardar los cambios. Por favor intente mas tarde.`,
 };
