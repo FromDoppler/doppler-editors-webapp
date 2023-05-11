@@ -4,6 +4,7 @@ import { State, Action, reducer } from "./reducer";
 // It is to test that onNoPendingUpdates is not changed by actions different
 // than when-all-saved-action-requested
 const randomFunc = () => {};
+const errorData = { errorData: true } as any;
 
 describe(reducer.name, () => {
   describe("content-updated", () => {
@@ -16,6 +17,7 @@ describe(reducer.name, () => {
           updateCounter: 0,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -25,6 +27,7 @@ describe(reducer.name, () => {
           updateCounter: 8,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -37,6 +40,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: 8,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -50,6 +54,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: 8,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
     ])(
@@ -77,6 +82,7 @@ describe(reducer.name, () => {
           updateCounter: 8,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
     ])(
@@ -112,6 +118,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: savedDataUpdateCounter,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -125,16 +132,19 @@ describe(reducer.name, () => {
             savingUpdateCounter: savedDataUpdateCounter,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
     ])(
-      "should update saveCounter and clear savingProcessData when no other saving process ($scenario)",
+      "should update saveCounter and clear savingProcessData and errorData" +
+        " when no other saving process ($scenario)",
       ({ initialState }) => {
         // Arrange
         const expectedState: State = {
           ...initialState,
           savedCounter: savedDataUpdateCounter,
           savingProcessData: null,
+          errorData: null,
         };
 
         // Act
@@ -156,6 +166,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: savedDataUpdateCounter + 2,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -169,6 +180,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: savedDataUpdateCounter + 2,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
     ])(
@@ -196,6 +208,7 @@ describe(reducer.name, () => {
           updateCounter: savedDataUpdateCounter + 3,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -205,6 +218,7 @@ describe(reducer.name, () => {
           updateCounter: savedDataUpdateCounter,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -214,16 +228,18 @@ describe(reducer.name, () => {
           updateCounter: savedDataUpdateCounter,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
     ])(
-      "should simply update saveCounter when savingProcessData is empty ($scenario," +
-        " posible related to saveForce)",
+      "should simply update saveCounter and clean errorData when savingProcessData" +
+        " is empty ($scenario, posible related to saveForce)",
       ({ initialState }) => {
         // Arrange
         const expectedState: State = {
           ...initialState,
           savedCounter: savedDataUpdateCounter,
+          errorData: null,
         };
 
         // Act
@@ -242,6 +258,7 @@ describe(reducer.name, () => {
           updateCounter: savedDataUpdateCounter + 20,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -251,6 +268,7 @@ describe(reducer.name, () => {
           updateCounter: savedDataUpdateCounter + 10,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -263,6 +281,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: savedDataUpdateCounter + 15,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -276,6 +295,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: savedDataUpdateCounter + 15,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
     ])(
@@ -307,6 +327,7 @@ describe(reducer.name, () => {
           updateCounter: 0,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -316,6 +337,7 @@ describe(reducer.name, () => {
           updateCounter: 10,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
     ])(
@@ -340,6 +362,7 @@ describe(reducer.name, () => {
           updateCounter: 10,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
     ])(
@@ -366,6 +389,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: 10,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -379,6 +403,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: 10,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
     ])(
@@ -403,6 +428,7 @@ describe(reducer.name, () => {
           updateCounter: 10,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -415,6 +441,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: 7,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -428,10 +455,11 @@ describe(reducer.name, () => {
             savingUpdateCounter: 7,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
     ])(
-      "should change to preparing-content when pending updates ($scenario)",
+      "should change to preparing-content and clean errorData when pending updates ($scenario)",
       ({ initialState }) => {
         // Arrange
         const expectedState: State = {
@@ -440,6 +468,7 @@ describe(reducer.name, () => {
             step: "preparing-content",
             savingUpdateCounter: 10,
           },
+          errorData: null,
         };
 
         // Act
@@ -465,6 +494,7 @@ describe(reducer.name, () => {
           updateCounter: 0,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -474,10 +504,11 @@ describe(reducer.name, () => {
           updateCounter: 10,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
     ])(
-      "should change to preparing-content when no pending updates ($scenario)",
+      "should change to preparing-content and clean errorData when no pending updates ($scenario)",
       ({ initialState }) => {
         // Arrange
         const expectedState: State = {
@@ -486,6 +517,7 @@ describe(reducer.name, () => {
             step: "preparing-content",
             savingUpdateCounter: initialState.updateCounter,
           },
+          errorData: null,
         };
 
         // Act
@@ -504,6 +536,7 @@ describe(reducer.name, () => {
           updateCounter: 10,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
     ])(
@@ -530,6 +563,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: 10,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -543,6 +577,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: 10,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
     ])(
@@ -567,6 +602,7 @@ describe(reducer.name, () => {
           updateCounter: 10,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -579,6 +615,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: 7,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -592,10 +629,11 @@ describe(reducer.name, () => {
             savingUpdateCounter: 7,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
     ])(
-      "should change to preparing-content when pending updates ($scenario)",
+      "should change to preparing-content and clean errorData when pending updates ($scenario)",
       ({ initialState }) => {
         // Arrange
         const expectedState: State = {
@@ -604,6 +642,7 @@ describe(reducer.name, () => {
             step: "preparing-content",
             savingUpdateCounter: 10,
           },
+          errorData: null,
         };
 
         // Act
@@ -636,6 +675,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: preparedDataUpdateCounter,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -649,6 +689,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: preparedDataUpdateCounter,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -661,10 +702,11 @@ describe(reducer.name, () => {
             savingUpdateCounter: preparedDataUpdateCounter,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
     ])(
-      "should start posting-content with the prepared data ($scenario)",
+      "should start posting-content with the prepared data and clean errorData ($scenario)",
       ({ initialState }) => {
         // Arrange
         const expectedState: State = {
@@ -674,6 +716,7 @@ describe(reducer.name, () => {
             content: preparedContent,
             savingUpdateCounter: preparedDataUpdateCounter,
           },
+          errorData: null,
         };
 
         // Act
@@ -692,6 +735,7 @@ describe(reducer.name, () => {
           updateCounter: 0,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -701,6 +745,7 @@ describe(reducer.name, () => {
           updateCounter: 10,
           savingProcessData: null,
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -713,6 +758,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: preparedDataUpdateCounter + 1,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -726,6 +772,7 @@ describe(reducer.name, () => {
             content: {} as Content,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -739,6 +786,7 @@ describe(reducer.name, () => {
             content: {} as Content,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
     ])("should keep current state($scenario)", ({ initialState }) => {
@@ -774,6 +822,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: 10,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -787,6 +836,7 @@ describe(reducer.name, () => {
             savingUpdateCounter: 10,
           },
           onNoPendingUpdates: randomFunc,
+          errorData,
         },
       },
       {
@@ -796,6 +846,7 @@ describe(reducer.name, () => {
           updateCounter: 11,
           savingProcessData: null,
           onNoPendingUpdates: null,
+          errorData,
         },
       },
     ])(
@@ -809,6 +860,175 @@ describe(reducer.name, () => {
 
         // Act
         const finalState = reducer(initialState, action);
+
+        // Assert
+        expect(finalState).toEqual(expectedState);
+      }
+    );
+  });
+
+  describe("save-error-happened", () => {
+    const errorActionSavingCounter = 15;
+
+    it.each<{ scenario: string; initialState: State }>([
+      {
+        scenario: "preparing newer content",
+        initialState: {
+          savedCounter: errorActionSavingCounter - 5,
+          updateCounter: errorActionSavingCounter + 3,
+          savingProcessData: {
+            step: "preparing-content",
+            savingUpdateCounter: errorActionSavingCounter + 3,
+          },
+          onNoPendingUpdates: randomFunc,
+          errorData,
+        },
+      },
+      {
+        scenario: "preparing newer content and and pending updates",
+        initialState: {
+          savedCounter: errorActionSavingCounter - 5,
+          updateCounter: errorActionSavingCounter + 10,
+          savingProcessData: {
+            step: "preparing-content",
+            savingUpdateCounter: errorActionSavingCounter + 3,
+          },
+          onNoPendingUpdates: randomFunc,
+          errorData,
+        },
+      },
+      {
+        scenario: "posting newer content",
+        initialState: {
+          savedCounter: errorActionSavingCounter - 5,
+          updateCounter: errorActionSavingCounter + 3,
+          savingProcessData: {
+            step: "posting-content",
+            savingUpdateCounter: errorActionSavingCounter + 3,
+            content: {} as Content,
+          },
+          onNoPendingUpdates: randomFunc,
+          errorData,
+        },
+      },
+      {
+        scenario: "posting newer content and and pending updates",
+        initialState: {
+          savedCounter: errorActionSavingCounter - 5,
+          updateCounter: errorActionSavingCounter + 10,
+          savingProcessData: {
+            step: "posting-content",
+            savingUpdateCounter: errorActionSavingCounter + 3,
+            content: {} as Content,
+          },
+          onNoPendingUpdates: randomFunc,
+          errorData,
+        },
+      },
+      {
+        scenario: "already saved newer changes",
+        initialState: {
+          savedCounter: errorActionSavingCounter + 3,
+          updateCounter: errorActionSavingCounter + 3,
+          savingProcessData: null,
+          onNoPendingUpdates: randomFunc,
+          errorData,
+        },
+      },
+      {
+        scenario: "already saved newer changes, saving and pending updates",
+        initialState: {
+          savedCounter: errorActionSavingCounter + 3,
+          updateCounter: errorActionSavingCounter + 10,
+          savingProcessData: {
+            step: "posting-content",
+            savingUpdateCounter: errorActionSavingCounter + 5,
+            content: {} as Content,
+          },
+          onNoPendingUpdates: randomFunc,
+          errorData,
+        },
+      },
+      {
+        scenario: "no changes",
+        initialState: {
+          savedCounter: errorActionSavingCounter + 10,
+          updateCounter: errorActionSavingCounter + 10,
+          savingProcessData: null,
+          onNoPendingUpdates: randomFunc,
+          errorData,
+        },
+      },
+    ])("should should keep state when $scenario", ({ initialState }) => {
+      // Arrange
+      const expectedState = { ...initialState };
+      const action: Action = {
+        type: "save-error-happened",
+        error: { error: true },
+        savingUpdateCounter: errorActionSavingCounter,
+        step: "posting-content",
+      };
+
+      // Act
+      const finalState = reducer(initialState as any, action);
+
+      // Assert
+      expect(finalState).toEqual(expectedState);
+    });
+
+    it.each<{ scenario: string; initialState: State }>([
+      {
+        scenario: "saving current updates",
+        initialState: {
+          savedCounter: errorActionSavingCounter - 10,
+          updateCounter: errorActionSavingCounter,
+          savingProcessData: {
+            step: "posting-content",
+            savingUpdateCounter: errorActionSavingCounter,
+            content: {} as Content,
+          },
+          onNoPendingUpdates: randomFunc,
+          errorData,
+        },
+      },
+      {
+        scenario: "saving current updates forced",
+        initialState: {
+          savedCounter: errorActionSavingCounter,
+          updateCounter: errorActionSavingCounter,
+          savingProcessData: {
+            step: "posting-content",
+            savingUpdateCounter: errorActionSavingCounter,
+            content: {} as Content,
+          },
+          onNoPendingUpdates: randomFunc,
+          errorData,
+        },
+      },
+    ])(
+      "should set errorData and clean savingProcessData when $scenario",
+      ({ initialState }) => {
+        // Arrange
+        const error = { error: true };
+        const action: Action = {
+          type: "save-error-happened",
+          error,
+          savingUpdateCounter: errorActionSavingCounter,
+          step: "posting-content",
+        };
+        const expectedState = {
+          ...initialState,
+          savingProcessData: null,
+          errorData: {
+            type: "onSaving",
+            step: action.step,
+            savingUpdateCounter: errorActionSavingCounter,
+            error,
+          },
+        };
+
+        // Act
+        const finalState = reducer(initialState as any, action);
 
         // Assert
         expect(finalState).toEqual(expectedState);

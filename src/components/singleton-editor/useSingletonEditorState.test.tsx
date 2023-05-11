@@ -39,6 +39,7 @@ describe(useSingletonEditorState.name, () => {
         updateCounter: 0,
         savingProcessData: null,
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
     {
@@ -48,6 +49,7 @@ describe(useSingletonEditorState.name, () => {
         updateCounter: 20,
         savingProcessData: null,
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
     {
@@ -60,6 +62,7 @@ describe(useSingletonEditorState.name, () => {
           savingUpdateCounter: 20,
         },
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
     {
@@ -73,6 +76,7 @@ describe(useSingletonEditorState.name, () => {
           content: {} as Content,
         },
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
   ])(
@@ -104,6 +108,7 @@ describe(useSingletonEditorState.name, () => {
         updateCounter: 0,
         savingProcessData: null,
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
     {
@@ -117,6 +122,7 @@ describe(useSingletonEditorState.name, () => {
           savingUpdateCounter: 0,
         },
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
     {
@@ -127,6 +133,7 @@ describe(useSingletonEditorState.name, () => {
         updateCounter: 20,
         savingProcessData: null,
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
     {
@@ -140,6 +147,7 @@ describe(useSingletonEditorState.name, () => {
           savingUpdateCounter: 20,
         },
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
     {
@@ -154,6 +162,7 @@ describe(useSingletonEditorState.name, () => {
           content: {} as Content,
         },
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
     {
@@ -164,6 +173,7 @@ describe(useSingletonEditorState.name, () => {
         updateCounter: 30,
         savingProcessData: null,
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
     {
@@ -177,6 +187,7 @@ describe(useSingletonEditorState.name, () => {
           savingUpdateCounter: 30,
         },
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
     {
@@ -191,6 +202,7 @@ describe(useSingletonEditorState.name, () => {
           content: {} as Content,
         },
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
     {
@@ -204,6 +216,7 @@ describe(useSingletonEditorState.name, () => {
           savingUpdateCounter: 30,
         },
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
     {
@@ -218,6 +231,7 @@ describe(useSingletonEditorState.name, () => {
           content: {} as Content,
         },
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
   ])(
@@ -246,6 +260,7 @@ describe(useSingletonEditorState.name, () => {
         updateCounter: 30,
         savingProcessData: null,
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
     {
@@ -255,6 +270,7 @@ describe(useSingletonEditorState.name, () => {
         updateCounter: 30,
         savingProcessData: null,
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
     {
@@ -267,6 +283,7 @@ describe(useSingletonEditorState.name, () => {
           savingUpdateCounter: 30,
         },
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
     {
@@ -280,6 +297,7 @@ describe(useSingletonEditorState.name, () => {
           content: {} as Content,
         },
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
     {
@@ -292,6 +310,7 @@ describe(useSingletonEditorState.name, () => {
           savingUpdateCounter: 30,
         },
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
     {
@@ -305,6 +324,7 @@ describe(useSingletonEditorState.name, () => {
           content: {} as Content,
         },
         onNoPendingUpdates: randomFunc,
+        errorData: null,
       },
     },
   ])("should set areUpdatesPending = true ($scenario) ", ({ initialState }) => {
@@ -328,6 +348,7 @@ describe(useSingletonEditorState.name, () => {
       updateCounter: 1, // anyone
       savingProcessData,
       onNoPendingUpdates: randomFunc,
+      errorData: null,
     };
 
     const { TestComponent, singletonEditorStateRef } = createTestContext({
@@ -351,6 +372,7 @@ describe(useSingletonEditorState.name, () => {
       updateCounter: initialUpdateCounter,
       savingProcessData: null,
       onNoPendingUpdates: randomFunc,
+      errorData: null,
     };
 
     const { TestComponent, singletonEditorStateRef } = createTestContext({
