@@ -108,7 +108,7 @@ describe(useContentUpdatesDetection.name, () => {
       expect(dispatch).toBeCalledWith({ type: "content-updated" });
     });
 
-    it("should call smartSave after 6 seconds", async () => {
+    it("should call smartSave after 3 seconds", async () => {
       // Arrange
       const { TestComponent, setUnlayerEditorObject, smartSave } =
         createTestContext();
@@ -121,15 +121,15 @@ describe(useContentUpdatesDetection.name, () => {
       // Act
       updateDesignListener();
       expect(smartSave).not.toBeCalled();
-      jest.advanceTimersByTime(5000);
+      jest.advanceTimersByTime(2500);
       expect(smartSave).not.toBeCalled();
-      jest.advanceTimersByTime(1000);
+      jest.advanceTimersByTime(500);
 
       // Assert
       expect(smartSave).toBeCalledWith();
     });
 
-    it("should debounce calls to smartSave within 6 seconds", async () => {
+    it("should debounce calls to smartSave within 3 seconds", async () => {
       // Arrange
       const { TestComponent, setUnlayerEditorObject, smartSave } =
         createTestContext();
@@ -142,14 +142,14 @@ describe(useContentUpdatesDetection.name, () => {
       // Act
       updateDesignListener();
       expect(smartSave).not.toBeCalled();
-      jest.advanceTimersByTime(5000);
+      jest.advanceTimersByTime(2500);
       updateDesignListener();
       expect(smartSave).not.toBeCalled();
-      jest.advanceTimersByTime(1000);
+      jest.advanceTimersByTime(500);
       // Second call
       expect(smartSave).not.toBeCalled();
-      // 11 seconds in total
-      jest.advanceTimersByTime(5000);
+      // 5.5 seconds in total
+      jest.advanceTimersByTime(2500);
 
       // Assert
       expect(smartSave).toBeCalledWith();
