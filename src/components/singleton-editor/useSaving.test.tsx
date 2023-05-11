@@ -4,7 +4,7 @@ import { SavingProcessData } from "./reducer";
 import { UnlayerEditorObject } from "../../abstractions/domain/editor";
 import { Content } from "../../abstractions/domain/content";
 import { act, render, waitFor } from "@testing-library/react";
-import { Design } from "react-email-editor";
+import { Design, HtmlExport, ImageExport } from "react-email-editor";
 import { noop } from "../../utils";
 
 function createUnlayerObjectDouble({
@@ -15,19 +15,29 @@ function createUnlayerObjectDouble({
   exportedDesign?: Design;
   exportedHtml?: string;
   exportedImageUrl?: string;
-} = {}): UnlayerEditorObject {
+} = {}) {
+  const exportHtmlAsync = jest.fn(() =>
+    Promise.resolve({
+      design: exportedDesign,
+      html: exportedHtml,
+    })
+  );
+  const exportImageAsync = jest.fn(() =>
+    Promise.resolve({
+      design: exportedDesign,
+      url: exportedImageUrl,
+    })
+  );
   return {
-    exportHtmlAsync: () =>
-      Promise.resolve({
-        design: exportedDesign,
-        html: exportedHtml,
-      }),
-    exportImageAsync: () =>
-      Promise.resolve({
-        design: exportedDesign,
-        url: exportedImageUrl,
-      }),
-  } as UnlayerEditorObject;
+    unlayerEditorObject: {
+      exportHtmlAsync: exportHtmlAsync as () => Promise<HtmlExport>,
+      exportImageAsync: exportImageAsync as () => Promise<ImageExport>,
+    } as UnlayerEditorObject,
+    mocks: {
+      exportHtmlAsync,
+      exportImageAsync,
+    },
+  };
 }
 
 const createTestContext = () => {
@@ -102,13 +112,12 @@ describe(useSaving.name, () => {
       const exportedImageUrl = "url";
 
       render(<TestComponent />);
-      setUnlayerEditorObject(
-        createUnlayerObjectDouble({
-          exportedDesign,
-          exportedHtml,
-          exportedImageUrl,
-        })
-      );
+      const { unlayerEditorObject } = createUnlayerObjectDouble({
+        exportedDesign,
+        exportedHtml,
+        exportedImageUrl,
+      });
+      setUnlayerEditorObject(unlayerEditorObject);
 
       // Act
       const result = await exportContent();
@@ -131,12 +140,11 @@ describe(useSaving.name, () => {
       const exportedImageUrl = "url";
 
       render(<TestComponent />);
-      setUnlayerEditorObject(
-        createUnlayerObjectDouble({
-          exportedHtml,
-          exportedImageUrl,
-        })
-      );
+      const { unlayerEditorObject } = createUnlayerObjectDouble({
+        exportedHtml,
+        exportedImageUrl,
+      });
+      setUnlayerEditorObject(unlayerEditorObject);
 
       // Act
       const result = await exportContent();
@@ -166,7 +174,8 @@ describe(useSaving.name, () => {
       const command = { forceSave, smartSave }[commandName];
 
       render(<TestComponent />);
-      setUnlayerEditorObject(createUnlayerObjectDouble());
+      const { unlayerEditorObject } = createUnlayerObjectDouble();
+      setUnlayerEditorObject(unlayerEditorObject);
 
       // Act
       command();
@@ -213,13 +222,12 @@ describe(useSaving.name, () => {
       const savingUpdateCounter = 10;
 
       render(<TestComponent />);
-      setUnlayerEditorObject(
-        createUnlayerObjectDouble({
-          exportedDesign,
-          exportedHtml,
-          exportedImageUrl,
-        })
-      );
+      const { unlayerEditorObject } = createUnlayerObjectDouble({
+        exportedDesign,
+        exportedHtml,
+        exportedImageUrl,
+      });
+      setUnlayerEditorObject(unlayerEditorObject);
 
       // Act
       setSavingProcessData({
