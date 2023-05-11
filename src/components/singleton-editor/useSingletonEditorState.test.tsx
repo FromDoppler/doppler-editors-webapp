@@ -234,6 +234,38 @@ describe(useSingletonEditorState.name, () => {
         errorData: null,
       },
     },
+    {
+      scenario: "error on preparing force saving",
+      expectedSaveStatus: "error",
+      initialState: {
+        savedCounter: 10,
+        updateCounter: 10,
+        savingProcessData: null,
+        onNoPendingUpdates: randomFunc,
+        errorData: {
+          type: "onSaving",
+          step: "preparing-content",
+          error: {},
+          savingUpdateCounter: 10,
+        },
+      },
+    },
+    {
+      scenario: "error on posting saving",
+      expectedSaveStatus: "error",
+      initialState: {
+        savedCounter: 10,
+        updateCounter: 30,
+        savingProcessData: null,
+        onNoPendingUpdates: randomFunc,
+        errorData: {
+          type: "onSaving",
+          step: "posting-content",
+          error: {},
+          savingUpdateCounter: 20,
+        },
+      },
+    },
   ])(
     "should resolve saveStatus ($scenario) ",
     ({ initialState, expectedSaveStatus }) => {
