@@ -7,7 +7,9 @@ import {
 
 export interface ExtendedUnlayerOptions extends UnlayerOptions {
   features: ExtendedFeatures;
-  mergeTagsConfig: { sort: boolean };
+  mergeTagsConfig: {
+    sort: boolean; // https://docs.unlayer.com/docs/merge-tags#sorting-merge-tags
+  };
   tabs?: {
     body?: ExtendedUnlayerTabOptions;
     content?: ExtendedUnlayerTabOptions;
@@ -24,20 +26,20 @@ export interface ExtendedUnlayerOptions extends UnlayerOptions {
 }
 
 export interface ExtendedToolConfig extends ToolConfig {
-  icon: string;
+  icon: string; // https://docs.unlayer.com/docs/tools#change-icon
 }
 
 export interface ExtendedUnlayerTabOptions {
-  enabled?: boolean;
-  active?: boolean;
-  position?: number;
+  enabled?: boolean; // https://docs.unlayer.com/docs/tabs#enable--disable-tabs
+  active?: boolean; // https://docs.unlayer.com/docs/tabs#default-active-tab
+  position?: number; // https://docs.unlayer.com/docs/tabs#reposition-tabs
 }
 
 export interface ExtendedEditorConfig extends EditorConfig {
-  autoSelectOnDrop?: boolean;
+  autoSelectOnDrop?: boolean; // https://docs.unlayer.com/docs/auto-select-on-drop
 }
 
 export interface ExtendedFeatures extends Features {
-  sendTestEmail?: boolean;
-  preheaderText?: boolean;
+  sendTestEmail?: boolean; // https://docs.unlayer.com/docs/features#send-test-email
+  preheaderText?: boolean; // https://docs.unlayer.com/docs/features#preheader-text
 }
