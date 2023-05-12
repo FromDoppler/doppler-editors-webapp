@@ -1,12 +1,15 @@
 export const timeout = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-export const promisifyFunctionWithoutError =
+export const promisifyFunctionWithErrorConvention =
   <T>(fn: (callback: (result: T) => void) => void) =>
   () =>
     new Promise((resolve: (result: T) => void, reject) => {
       try {
         fn((result) => {
+          if (result && (result as any).error) {
+            reject((result as any).error);
+          }
           resolve(result);
         });
       } catch (e) {
@@ -14,7 +17,7 @@ export const promisifyFunctionWithoutError =
       }
     });
 
-// TODO: improve this function to add type inference and deal with errors
+// TODO: improve this function to add type inference
 export const promisifyProps = <TOut>(
   obj: any,
   maps: { [prop: string]: string }
@@ -22,7 +25,9 @@ export const promisifyProps = <TOut>(
   for (const newProp in maps) {
     const originalProp = maps[newProp];
     if (!(newProp in obj) && originalProp in obj) {
-      obj[newProp] = promisifyFunctionWithoutError(obj[originalProp].bind(obj));
+      obj[newProp] = promisifyFunctionWithErrorConvention(
+        obj[originalProp].bind(obj)
+      );
     }
   }
   return obj as TOut;

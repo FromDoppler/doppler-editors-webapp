@@ -21,6 +21,12 @@ export type Action = Readonly<
       type: "when-all-saved-action-requested";
       action: () => void;
     }
+  | {
+      type: "save-error-happened";
+      step: "preparing-content" | "posting-content";
+      savingUpdateCounter: number;
+      error: unknown;
+    }
 >;
 
 export type SavingProcessDataPreparingContent = Readonly<{
@@ -39,11 +45,19 @@ export type SavingProcessData =
   | SavingProcessDataPreparingContent
   | SavingProcessDataPostingContent;
 
+type ErrorData = null | {
+  type: "onSaving";
+  step: "preparing-content" | "posting-content";
+  error: unknown;
+  savingUpdateCounter: number;
+};
+
 export type State = Readonly<{
   savedCounter: number;
   updateCounter: number;
   savingProcessData: SavingProcessData;
   onNoPendingUpdates: null | (() => void);
+  errorData: ErrorData;
 }>;
 
 export const reducerInitialState: State = {
@@ -51,10 +65,17 @@ export const reducerInitialState: State = {
   updateCounter: 0,
   savingProcessData: null,
   onNoPendingUpdates: null,
+  errorData: null,
 };
 
 export function reducer(
-  { savedCounter, updateCounter, savingProcessData, onNoPendingUpdates }: State,
+  {
+    savedCounter,
+    updateCounter,
+    savingProcessData,
+    onNoPendingUpdates,
+    errorData,
+  }: State,
   action: Action
 ): State {
   if (
@@ -92,6 +113,7 @@ export function reducer(
             updateCounter,
             savingProcessData,
             onNoPendingUpdates,
+            errorData,
           }
         : newerUpdatesBeingSaved
         ? {
@@ -99,12 +121,14 @@ export function reducer(
             updateCounter,
             savingProcessData,
             onNoPendingUpdates,
+            errorData,
           }
         : {
             savedCounter: action.savingUpdateCounter,
             updateCounter,
             savingProcessData: null,
             onNoPendingUpdates,
+            errorData: null,
           };
     case "content-updated":
       return {
@@ -112,6 +136,7 @@ export function reducer(
         updateCounter: updateCounter + 1,
         savingProcessData,
         onNoPendingUpdates,
+        errorData,
       };
     case "save-requested":
       return savingProcessData &&
@@ -122,6 +147,7 @@ export function reducer(
             updateCounter,
             savingProcessData,
             onNoPendingUpdates,
+            errorData,
           }
         : !action.force && savedCounter === updateCounter
         ? // Current data is already saved and we are not forcing
@@ -130,6 +156,7 @@ export function reducer(
             updateCounter,
             savingProcessData: null,
             onNoPendingUpdates,
+            errorData,
           }
         : // Current data is not saved (nor being saved) or forcing
           {
@@ -140,6 +167,7 @@ export function reducer(
               savingUpdateCounter: updateCounter,
             },
             onNoPendingUpdates,
+            errorData: null,
           };
     case "content-prepared-to-save":
       return newerUpdatesBeingSaved ||
@@ -152,6 +180,7 @@ export function reducer(
             updateCounter,
             savingProcessData,
             onNoPendingUpdates,
+            errorData,
           }
         : // We need to save the prepared data
           {
@@ -163,6 +192,7 @@ export function reducer(
               content: action.content,
             },
             onNoPendingUpdates,
+            errorData: null,
           };
     case "when-all-saved-action-requested":
       return {
@@ -170,6 +200,30 @@ export function reducer(
         updateCounter,
         savingProcessData,
         onNoPendingUpdates: action.action,
+        errorData,
       };
+    case "save-error-happened":
+      return newerUpdatesBeingSaved || newerUpdatesSaved || !savingProcessData
+        ? // Error in an old saving process
+          {
+            savedCounter,
+            updateCounter,
+            savingProcessData,
+            onNoPendingUpdates,
+            errorData,
+          }
+        : // Error in current saving process
+          {
+            savedCounter,
+            updateCounter,
+            savingProcessData: null,
+            onNoPendingUpdates,
+            errorData: {
+              type: "onSaving",
+              step: action.step,
+              savingUpdateCounter: action.savingUpdateCounter,
+              error: action.error,
+            },
+          };
   }
 }

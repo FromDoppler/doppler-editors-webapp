@@ -6,11 +6,19 @@ export function useSingletonEditorState({
   initialState = reducerInitialState,
 } = {}) {
   const [
-    { savedCounter, updateCounter, savingProcessData, onNoPendingUpdates },
+    {
+      savedCounter,
+      updateCounter,
+      savingProcessData,
+      onNoPendingUpdates,
+      errorData,
+    },
     dispatch,
   ] = useReducer(reducer, initialState);
 
-  const saveStatus: SaveStatus = savingProcessData
+  const saveStatus: SaveStatus = errorData
+    ? "error"
+    : savingProcessData
     ? "saving" // It could be a force saving
     : updateCounter === 0
     ? "idle" // Initial state

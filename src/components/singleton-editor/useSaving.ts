@@ -47,13 +47,21 @@ async function preparingContentEffect({
   savingProcessData: SavingProcessDataPreparingContent;
   dispatch: Dispatch<Action>;
 }) {
-  const content = await exportContentFromUnlayer(unlayerEditorObject);
-
-  if (content) {
+  try {
+    const content = await exportContentFromUnlayer(unlayerEditorObject);
+    if (content) {
+      dispatch({
+        type: "content-prepared-to-save",
+        content,
+        savingUpdateCounter,
+      });
+    }
+  } catch (error) {
     dispatch({
-      type: "content-prepared-to-save",
-      content,
+      type: "save-error-happened",
+      step: "preparing-content",
       savingUpdateCounter,
+      error,
     });
   }
 }
@@ -67,11 +75,20 @@ async function postingContentEffect({
   dispatch: Dispatch<Action>;
   onSave: (content: Content) => Promise<void>;
 }) {
-  await onSave(content);
-  dispatch({
-    type: "content-saved",
-    savingUpdateCounter: savingUpdateCounter,
-  });
+  try {
+    await onSave(content);
+    dispatch({
+      type: "content-saved",
+      savingUpdateCounter: savingUpdateCounter,
+    });
+  } catch (error) {
+    dispatch({
+      type: "save-error-happened",
+      step: "posting-content",
+      savingUpdateCounter,
+      error,
+    });
+  }
 }
 
 function isPreparingContent(
