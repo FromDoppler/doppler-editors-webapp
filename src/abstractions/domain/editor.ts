@@ -10,4 +10,9 @@ export type UnlayerEditorObject = Omit<
   Readonly<{
     exportHtmlAsync: () => Promise<HtmlExport>;
     exportImageAsync: () => Promise<ImageExport>;
+    // https://docs.unlayer.com/docs/features#undo--redo
+    canUndo: (callback: (v: boolean) => void) => void;
+    canRedo: (callback: (v: boolean) => void) => void;
+    undo: () => void;
+    redo: () => void;
   }>;

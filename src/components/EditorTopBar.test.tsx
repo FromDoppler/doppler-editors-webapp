@@ -5,6 +5,7 @@ import { AppServicesProvider } from "./AppServicesContext";
 import { EditorTopBar } from "./EditorTopBar";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { SaveStatus } from "../abstractions/common/save-status";
+import userEvent from "@testing-library/user-event";
 
 const appConfiguration = {
   dopplerExternalUrls: {
@@ -17,6 +18,18 @@ const appConfiguration = {
     integrations: "https://external.fromdoppler.net/integrationsUrl",
   },
 };
+
+// TODO: convert it into a custom matcher
+function matchEnabled(element: HTMLElement, enabledExpected: boolean) {
+  enabledExpected
+    ? expect(element).toBeEnabled()
+    : expect(element).toBeDisabled();
+}
+
+// TODO: convert it into a custom matcher
+function matchToBeCalled(fn: jest.Mock, calledExpected: boolean) {
+  calledExpected ? expect(fn).toBeCalled() : expect(fn).not.toBeCalled();
+}
 
 describe(EditorTopBar.name, () => {
   it("should render Exit Button", async () => {
@@ -37,6 +50,7 @@ describe(EditorTopBar.name, () => {
     // Assert
     screen.getByText("exit_editor");
     expect(screen.queryByTestId("saveStatus")).toBeNull();
+    expect(screen.queryByTestId("undoTools")).toBeNull();
   });
 
   it("should render Exit Options after click on Exit Button", async () => {
@@ -61,6 +75,7 @@ describe(EditorTopBar.name, () => {
     // Assert
     expect(screen.queryByText("home")).not.toBeNull;
     expect(screen.queryByTestId("saveStatus")).toBeNull();
+    expect(screen.queryByTestId("undoTools")).toBeNull();
   });
 
   it("should Exit to specific url", async () => {
@@ -107,6 +122,7 @@ describe(EditorTopBar.name, () => {
     );
 
     expect(screen.queryByTestId("saveStatus")).toBeNull();
+    expect(screen.queryByTestId("undoTools")).toBeNull();
   });
 
   it.each([
@@ -187,4 +203,54 @@ describe(EditorTopBar.name, () => {
     );
     expect(saveStatusTextElement.parentElement).toHaveClass("state-saved");
   });
+
+  it.each<{
+    canUndo: boolean;
+    canRedo: boolean;
+  }>([
+    { canUndo: true, canRedo: true },
+    { canUndo: true, canRedo: false },
+    { canUndo: false, canRedo: true },
+    { canUndo: false, canRedo: false },
+  ])(
+    "should work (canUndo: $canUndo, canRedo: $canRedo)",
+    async ({ canUndo, canRedo }) => {
+      // Arrange
+      const undo = jest.fn();
+      const redo = jest.fn();
+      const appServices = { appConfiguration } as any;
+
+      // Act
+      render(
+        <MemoryRouter>
+          <TestDopplerIntlProvider>
+            <AppServicesProvider appServices={appServices}>
+              <EditorTopBar undoTools={{ canUndo, canRedo, undo, redo }} />
+            </AppServicesProvider>
+          </TestDopplerIntlProvider>
+        </MemoryRouter>
+      );
+
+      // Assert
+      const undoButton = screen.getByTitle("undo_description");
+      expect(undoButton).toHaveAttribute("aria-label", "undo_label");
+      matchEnabled(undoButton, canUndo);
+
+      const redoButton = screen.getByTitle("redo_description");
+      expect(redoButton).toHaveAttribute("aria-label", "redo_label");
+      matchEnabled(redoButton, canRedo);
+
+      // Act
+      await userEvent.click(undoButton);
+
+      // Assert
+      matchToBeCalled(undo, canUndo);
+
+      // Act
+      await userEvent.click(redoButton);
+
+      // Assert
+      matchToBeCalled(redo, canRedo);
+    }
+  );
 });

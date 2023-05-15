@@ -37,6 +37,7 @@ export interface ExtendedUnlayerTabOptions {
 
 export interface ExtendedEditorConfig extends EditorConfig {
   autoSelectOnDrop?: boolean; // https://docs.unlayer.com/docs/auto-select-on-drop
+  confirmOnDelete?: boolean; // https://docs.unlayer.com/docs/confirm-on-delete
 }
 
 export interface ExtendedFeatures extends Features {

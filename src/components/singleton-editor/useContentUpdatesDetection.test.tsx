@@ -8,6 +8,8 @@ jest.useFakeTimers();
 function createUnlayerObjectDouble() {
   const addEventListener = jest.fn<void, [string, (data: object) => void]>();
   const removeEventListener = jest.fn<void, [string, (data: object) => void]>();
+  const canUndo = jest.fn<void, [(v: boolean) => void]>();
+  const canRedo = jest.fn<void, [(v: boolean) => void]>();
 
   return {
     unlayerEditorObject: {
@@ -19,10 +21,14 @@ function createUnlayerObjectDouble() {
         type: string,
         callback: (data: object) => void
       ) => void,
+      canUndo: canUndo as (callback: (v: boolean) => void) => void,
+      canRedo: canRedo as (callback: (v: boolean) => void) => void,
     } as UnlayerEditorObject,
     mocks: {
       addEventListener,
       removeEventListener,
+      canUndo,
+      canRedo,
     },
   };
 }
@@ -107,6 +113,61 @@ describe(useContentUpdatesDetection.name, () => {
       // Assert
       expect(dispatch).toBeCalledWith({ type: "content-updated" });
     });
+
+    it.each([
+      { canUndo: false, canRedo: false },
+      { canUndo: false, canRedo: true },
+      { canUndo: true, canRedo: false },
+      { canUndo: true, canRedo: true },
+    ])(
+      "should dispatch can-undo-updated and can-redo-updated actions on unlayer callbacks" +
+        " (canUndo: $canUndo, canRedo: $canRedo)",
+      ({ canUndo, canRedo }) => {
+        // Arrange
+        const { TestComponent, setUnlayerEditorObject, dispatch } =
+          createTestContext();
+        render(<TestComponent />);
+        const { unlayerEditorObject, mocks } = createUnlayerObjectDouble();
+        setUnlayerEditorObject(unlayerEditorObject);
+
+        // Act
+        const updateDesignListener = mocks.addEventListener.mock
+          .calls[0][1] as () => void;
+        updateDesignListener();
+
+        // Assert
+        expect(mocks.canUndo).toBeCalled();
+        expect(mocks.canRedo).toBeCalled();
+        expect(dispatch).toBeCalledTimes(1);
+
+        // Act
+        const canUndoCallback = mocks.canUndo.mock.calls[0][0];
+        act(() => canUndoCallback(canUndo));
+
+        // Assert
+        expect(dispatch).toBeCalledWith({
+          type: "can-undo-updated",
+          value: canUndo,
+        });
+        expect(dispatch).not.toBeCalledWith({
+          type: "can-redo-updated",
+          value: canRedo,
+        });
+        expect(dispatch).toBeCalledTimes(2);
+
+        // Act
+        const canRedoCallback = mocks.canRedo.mock.calls[0][0];
+
+        act(() => canRedoCallback(canRedo));
+
+        // Assert
+        expect(dispatch).toBeCalledWith({
+          type: "can-redo-updated",
+          value: canRedo,
+        });
+        expect(dispatch).toBeCalledTimes(3);
+      }
+    );
 
     it("should call smartSave after 3 seconds", async () => {
       // Arrange

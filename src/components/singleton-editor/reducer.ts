@@ -27,6 +27,14 @@ export type Action = Readonly<
       savingUpdateCounter: number;
       error: unknown;
     }
+  | {
+      type: "can-undo-updated";
+      value: boolean;
+    }
+  | {
+      type: "can-redo-updated";
+      value: boolean;
+    }
 >;
 
 export type SavingProcessDataPreparingContent = Readonly<{
@@ -58,6 +66,8 @@ export type State = Readonly<{
   savingProcessData: SavingProcessData;
   onNoPendingUpdates: null | (() => void);
   errorData: ErrorData;
+  canUndo: boolean;
+  canRedo: boolean;
 }>;
 
 export const reducerInitialState: State = {
@@ -66,6 +76,8 @@ export const reducerInitialState: State = {
   savingProcessData: null,
   onNoPendingUpdates: null,
   errorData: null,
+  canUndo: false,
+  canRedo: false,
 };
 
 export function reducer(
@@ -75,6 +87,8 @@ export function reducer(
     savingProcessData,
     onNoPendingUpdates,
     errorData,
+    canUndo,
+    canRedo,
   }: State,
   action: Action
 ): State {
@@ -106,6 +120,26 @@ export function reducer(
     action.savingUpdateCounter === savingProcessData.savingUpdateCounter;
 
   switch (action.type) {
+    case "can-undo-updated":
+      return {
+        savedCounter,
+        updateCounter,
+        savingProcessData,
+        onNoPendingUpdates,
+        errorData,
+        canUndo: action.value,
+        canRedo,
+      };
+    case "can-redo-updated":
+      return {
+        savedCounter,
+        updateCounter,
+        savingProcessData,
+        onNoPendingUpdates,
+        errorData,
+        canUndo,
+        canRedo: action.value,
+      };
     case "content-saved":
       return newerUpdatesSaved
         ? {
@@ -114,6 +148,8 @@ export function reducer(
             savingProcessData,
             onNoPendingUpdates,
             errorData,
+            canUndo,
+            canRedo,
           }
         : newerUpdatesBeingSaved
         ? {
@@ -122,6 +158,8 @@ export function reducer(
             savingProcessData,
             onNoPendingUpdates,
             errorData,
+            canUndo,
+            canRedo,
           }
         : {
             savedCounter: action.savingUpdateCounter,
@@ -129,6 +167,8 @@ export function reducer(
             savingProcessData: null,
             onNoPendingUpdates,
             errorData: null,
+            canUndo,
+            canRedo,
           };
     case "content-updated":
       return {
@@ -137,6 +177,8 @@ export function reducer(
         savingProcessData,
         onNoPendingUpdates,
         errorData,
+        canUndo,
+        canRedo,
       };
     case "save-requested":
       return savingProcessData &&
@@ -148,6 +190,8 @@ export function reducer(
             savingProcessData,
             onNoPendingUpdates,
             errorData,
+            canUndo,
+            canRedo,
           }
         : !action.force && savedCounter === updateCounter
         ? // Current data is already saved and we are not forcing
@@ -157,6 +201,8 @@ export function reducer(
             savingProcessData: null,
             onNoPendingUpdates,
             errorData,
+            canUndo,
+            canRedo,
           }
         : // Current data is not saved (nor being saved) or forcing
           {
@@ -168,6 +214,8 @@ export function reducer(
             },
             onNoPendingUpdates,
             errorData: null,
+            canUndo,
+            canRedo,
           };
     case "content-prepared-to-save":
       return newerUpdatesBeingSaved ||
@@ -181,6 +229,8 @@ export function reducer(
             savingProcessData,
             onNoPendingUpdates,
             errorData,
+            canUndo,
+            canRedo,
           }
         : // We need to save the prepared data
           {
@@ -193,6 +243,8 @@ export function reducer(
             },
             onNoPendingUpdates,
             errorData: null,
+            canUndo,
+            canRedo,
           };
     case "when-all-saved-action-requested":
       return {
@@ -201,6 +253,8 @@ export function reducer(
         savingProcessData,
         onNoPendingUpdates: action.action,
         errorData,
+        canUndo,
+        canRedo,
       };
     case "save-error-happened":
       return newerUpdatesBeingSaved || newerUpdatesSaved || !savingProcessData
@@ -211,6 +265,8 @@ export function reducer(
             savingProcessData,
             onNoPendingUpdates,
             errorData,
+            canUndo,
+            canRedo,
           }
         : // Error in current saving process
           {
@@ -224,6 +280,8 @@ export function reducer(
               savingUpdateCounter: action.savingUpdateCounter,
               error: action.error,
             },
+            canUndo,
+            canRedo,
           };
   }
 }

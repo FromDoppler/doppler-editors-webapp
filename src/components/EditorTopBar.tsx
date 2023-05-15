@@ -6,15 +6,19 @@ import { ReactNode } from "react";
 import { LinkSmart } from "./smart-urls";
 import { SaveStatus } from "../abstractions/common/save-status";
 import { SaveIndicator } from "./SaveIndicator";
+import { UndoTools } from "./UndoTools";
+import { UndoToolsObject } from "./singleton-editor";
 
 interface EditorTopBarProps {
   title?: string;
   saveStatus?: SaveStatus;
+  undoTools?: UndoToolsObject;
   children?: ReactNode;
 }
 
 export const EditorTopBar = ({
   title,
+  undoTools,
   children,
   saveStatus,
   ...otherProps
@@ -57,11 +61,23 @@ export const EditorTopBar = ({
           false
         )}
         <li>
-          {
-            children
-            // When children is empty or undefined, this li should be render anyway because it is on the right
-            // TODO: restructure header styles and ed-header-list class
-          }
+          <ul className="ed-header-list">
+            {undoTools ? (
+              <li data-testid="undoTools">
+                <UndoTools {...undoTools} />
+              </li>
+            ) : (
+              false
+            )}
+            <li>
+              {
+                children
+                // When children is empty or undefined, this li should be render anyway because
+                // it is on the right
+                // TODO: restructure header styles and ed-header-list class
+              }
+            </li>
+          </ul>
         </li>
       </ul>
     </div>

@@ -22,6 +22,12 @@ export function useContentUpdatesDetection({
   useEffect(() => {
     const updateDesignListener = () => {
       dispatch({ type: "content-updated" });
+      unlayerEditorObject?.canUndo((value) =>
+        dispatch({ type: "can-undo-updated", value })
+      );
+      unlayerEditorObject?.canRedo((value) =>
+        dispatch({ type: "can-redo-updated", value })
+      );
       debouncedSave();
     };
 

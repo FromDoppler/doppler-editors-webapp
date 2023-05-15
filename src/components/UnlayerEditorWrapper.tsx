@@ -111,6 +111,7 @@ export const UnlayerEditorWrapper = ({
     },
     editor: {
       autoSelectOnDrop: true,
+      confirmOnDelete: false, // it is enabled when undoRedo=false
     },
     tools: {
       button: {
@@ -124,6 +125,7 @@ export const UnlayerEditorWrapper = ({
     features: {
       sendTestEmail: true,
       preheaderText: false,
+      undoRedo: false, // it only hides the buttons, undo/redo still works
     },
     mergeTags: mergeTags,
     user: {
