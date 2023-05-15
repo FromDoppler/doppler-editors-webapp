@@ -11,6 +11,7 @@
     ":prConcurrentLimit20",
     "group:dotNetCore"
   ],
+  "platformAutomerge": true,
   "packageRules": [
     {
       "packageRules": [
