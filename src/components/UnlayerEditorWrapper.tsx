@@ -9,6 +9,7 @@ import { useIntl } from "react-intl";
 import { LoadingScreen } from "./LoadingScreen";
 import { useUnlayerEditorExtensionsEntrypoints } from "../queries/unlayer-editor-extensions-entrypoints";
 import { promisifyProps } from "../utils";
+import { useCustomFields } from "./useCustomFields";
 
 const prepareUnlayerEditorObject = (
   editorObject: Editor
@@ -32,6 +33,7 @@ export const UnlayerEditorWrapper = ({
 
   const appSessionState = useAppSessionState();
   const userFieldsQuery = useGetUserFields();
+  const mergeTags = useCustomFields(userFieldsQuery.data);
   const unlayerEditorExtensionsEntrypointsQuery =
     useUnlayerEditorExtensionsEntrypoints();
   const emailEditorRef = useRef<EditorRef>(null);
@@ -92,15 +94,6 @@ export const UnlayerEditorWrapper = ({
 
   const { id, signature } = appSessionState.unlayerUser;
 
-  // TODO: consider translating the name for predefined fields
-  // TODO: consider sorting fields (for example predefined first)
-  // TODO: consider hiding some types of fields
-  // TODO: consider doing all of these transformations in `useGetUserFields` queryFn or in select
-  const mergeTags = userFieldsQuery.data.map((x) => ({
-    name: x.name,
-    value: `[[[${x.name}]]]`,
-  }));
-
   const unlayerOptions: ExtendedUnlayerOptions = {
     tabs: {
       body: {
@@ -128,7 +121,7 @@ export const UnlayerEditorWrapper = ({
       smartMergeTags: false,
       undoRedo: false, // it only hides the buttons, undo/redo still works
     },
-    mergeTags: mergeTags,
+    mergeTags,
     user: {
       // Ugly patch because Unlayer types does not accept string as id
       id: id as unknown as number,
