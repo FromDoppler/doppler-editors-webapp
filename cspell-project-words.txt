@@ -38,6 +38,7 @@ Liskov
 nofile
 webfonts
 entrypoints
+gdpr
 
 # our services and providers
 aspnet

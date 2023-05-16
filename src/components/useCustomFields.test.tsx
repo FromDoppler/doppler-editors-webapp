@@ -93,4 +93,44 @@ describe(useCustomFields.name, () => {
       { name: "ZZZ Custom", value: "[[[ZZZ Custom]]]" },
     ]);
   });
+
+  it("should filter fields by type", () => {
+    // Arrange
+    const { TestComponent, getResult, setFields } = createTestContext();
+    render(<TestComponent />);
+
+    // Act
+    setFields([
+      { name: "consent", predefined: true, type: "cOnsent" },
+      { name: "gender", predefined: true, type: "gEnder" },
+      { name: "number", predefined: true, type: "nUmber" },
+      { name: "permission", predefined: true, type: "pErmission" },
+      { name: "phone", predefined: true, type: "pHone" },
+      { name: "score", predefined: true, type: "SCORE" },
+      { name: "string", predefined: true, type: "STRING" },
+      { name: "unknown", predefined: true, type: "unknown" },
+      { name: "boolean", predefined: false, type: "boolean" },
+      { name: "country", predefined: false, type: "country" },
+      { name: "date", predefined: false, type: "date" },
+      { name: "email", predefined: false, type: "email" },
+      { name: "gdpr", predefined: false, type: "gdpr" },
+      { name: "origin", predefined: false, type: "origin" },
+      { name: "phone", predefined: false, type: "phone" },
+      { name: "real", predefined: false, type: "real" },
+    ] as Field[]);
+
+    // Assert
+    const result = getResult();
+    expect(result).toEqual([
+      { name: "gender", value: "[[[gender]]]" },
+      { name: "number", value: "[[[number]]]" },
+      { name: "phone", value: "[[[phone]]]" },
+      { name: "string", value: "[[[string]]]" },
+      { name: "boolean", value: "[[[boolean]]]" },
+      { name: "country", value: "[[[country]]]" },
+      { name: "date", value: "[[[date]]]" },
+      { name: "email", value: "[[[email]]]" },
+      { name: "phone", value: "[[[phone]]]" },
+    ]);
+  });
 });
