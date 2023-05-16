@@ -30,6 +30,8 @@ mydplr
 socialshare
 spanish
 undoredo
+firstname
+lastname
 
 # Technical terms
 automerge

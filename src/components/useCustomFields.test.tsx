@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { Field } from "../abstractions/doppler-rest-api-client";
 import { useCustomFields } from "./useCustomFields";
 import { act, render } from "@testing-library/react";
+import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
+import { IntlProvider } from "react-intl";
 
 const createTestContext = () => {
   let currentSetFields: (_: Field[] | undefined) => void;
@@ -34,7 +36,11 @@ describe(useCustomFields.name, () => {
     const { TestComponent, getResult } = createTestContext();
 
     // Act
-    render(<TestComponent />);
+    render(
+      <TestDopplerIntlProvider>
+        <TestComponent />
+      </TestDopplerIntlProvider>
+    );
 
     // Assert
     const result = getResult();
@@ -44,7 +50,11 @@ describe(useCustomFields.name, () => {
   it("should return undefined when fields is set as undefined", () => {
     // Arrange
     const { TestComponent, getResult, setFields } = createTestContext();
-    render(<TestComponent />);
+    render(
+      <TestDopplerIntlProvider>
+        <TestComponent />
+      </TestDopplerIntlProvider>
+    );
 
     // Act
     setFields(undefined);
@@ -57,7 +67,11 @@ describe(useCustomFields.name, () => {
   it("should return an empty array when fields is set as empty array", () => {
     // Arrange
     const { TestComponent, getResult, setFields } = createTestContext();
-    render(<TestComponent />);
+    render(
+      <TestDopplerIntlProvider>
+        <TestComponent />
+      </TestDopplerIntlProvider>
+    );
 
     // Act
     setFields([]);
@@ -70,7 +84,11 @@ describe(useCustomFields.name, () => {
   it("should sort names, basic fields alphabetically, custom fields alphabetically", () => {
     // Arrange
     const { TestComponent, getResult, setFields } = createTestContext();
-    render(<TestComponent />);
+    render(
+      <TestDopplerIntlProvider>
+        <TestComponent />
+      </TestDopplerIntlProvider>
+    );
 
     // Act
     setFields([
@@ -85,8 +103,8 @@ describe(useCustomFields.name, () => {
     // Assert
     const result = getResult();
     expect(result).toEqual([
-      { name: "FirstName", value: "[[[FirstName]]]" },
-      { name: "LastName", value: "[[[LastName]]]" },
+      { name: "field_name_firstname", value: "[[[FirstName]]]" },
+      { name: "field_name_lastname", value: "[[[LastName]]]" },
       { name: "AAA Basic", value: "[[[AAA Basic]]]" },
       { name: "ZZZ Basic", value: "[[[ZZZ Basic]]]" },
       { name: "AAA Custom", value: "[[[AAA Custom]]]" },
@@ -94,10 +112,81 @@ describe(useCustomFields.name, () => {
     ]);
   });
 
+  it("should sort fields based on translated names", () => {
+    // Arrange
+    const { TestComponent, getResult, setFields } = createTestContext();
+
+    const messages = {
+      field_name_gender: "A_gender",
+      field_name_birthday: "B_birthday",
+      field_name_firstname: "C_firstName",
+      field_name_lastname: "D_lastName",
+      field_name_email: "E_email",
+      field_name_country: "F_country",
+    };
+
+    const CustomIntlProvider = ({ children }: { children: ReactNode }) => {
+      return (
+        <IntlProvider locale="en" messages={messages}>
+          {children}
+        </IntlProvider>
+      );
+    };
+
+    render(
+      <CustomIntlProvider>
+        <TestComponent />
+      </CustomIntlProvider>
+    );
+
+    // Act
+    setFields([
+      { name: "birthday", predefined: true, type: "date" },
+      { name: "country", predefined: true, type: "country" },
+      { name: "firstname", predefined: true, type: "string" },
+      { name: "lastname", predefined: true, type: "string" },
+      { name: "email", predefined: true, type: "email" },
+      { name: "gender", predefined: true, type: "gender" },
+    ]);
+
+    // Assert
+    const result = getResult();
+    expect(result).toEqual([
+      {
+        name: "C_firstName",
+        value: "[[[firstname]]]",
+      },
+      {
+        name: "D_lastName",
+        value: "[[[lastname]]]",
+      },
+      {
+        name: "A_gender",
+        value: "[[[gender]]]",
+      },
+      {
+        name: "B_birthday",
+        value: "[[[birthday]]]",
+      },
+      {
+        name: "E_email",
+        value: "[[[email]]]",
+      },
+      {
+        name: "F_country",
+        value: "[[[country]]]",
+      },
+    ]);
+  });
+
   it("should filter fields by type", () => {
     // Arrange
     const { TestComponent, getResult, setFields } = createTestContext();
-    render(<TestComponent />);
+    render(
+      <TestDopplerIntlProvider>
+        <TestComponent />
+      </TestDopplerIntlProvider>
+    );
 
     // Act
     setFields([
@@ -122,7 +211,7 @@ describe(useCustomFields.name, () => {
     // Assert
     const result = getResult();
     expect(result).toEqual([
-      { name: "gender", value: "[[[gender]]]" },
+      { name: "field_name_gender", value: "[[[gender]]]" },
       { name: "number", value: "[[[number]]]" },
       { name: "phone", value: "[[[phone]]]" },
       { name: "string", value: "[[[string]]]" },
