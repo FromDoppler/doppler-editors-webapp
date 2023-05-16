@@ -112,7 +112,7 @@ export const Campaign = () => {
                       type="button"
                       onClick={openExportModal}
                       disabled={isExportingAsTemplate}
-                      className={`dp-button button-medium secondary-green m-l-36 ${
+                      className={`dp-button button-medium primary-green m-l-36 ${
                         isExportingAsTemplate ? "button--loading" : ""
                       }`}
                     >
