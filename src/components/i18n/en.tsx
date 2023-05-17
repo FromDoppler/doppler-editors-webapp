@@ -7,6 +7,12 @@ export const messages_en = {
   control_panel: `Control Panel`,
   exit_edit_later: `Exit and edit later`,
   exit_editor: `Exit Editor`,
+  field_name_birthday: `Birthday`,
+  field_name_country: `Country`,
+  field_name_email: `Email`,
+  field_name_firstname: `First name`,
+  field_name_gender: `Gender`,
+  field_name_lastname: `Last name`,
   home: `Home`,
   lists: `Lists`,
   new_template_description: `

@@ -7,6 +7,12 @@ export const messages_es = {
   control_panel: `Panel de Control`,
   exit_edit_later: `Salir y editar luego`,
   exit_editor: `Salir del Editor`,
+  field_name_birthday: `Cumpleaños`,
+  field_name_country: `País`,
+  field_name_email: `Email`,
+  field_name_firstname: `Nombre`,
+  field_name_gender: `Sexo`,
+  field_name_lastname: `Apellido`,
   home: `Inicio`,
   lists: `Listas`,
   new_template_description: `
