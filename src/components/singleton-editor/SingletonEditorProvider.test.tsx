@@ -8,7 +8,7 @@ import { TestDopplerIntlProvider } from "../i18n/TestDopplerIntlProvider";
 import { CampaignContent, Content } from "../../abstractions/domain/content";
 import { useEffect, useState } from "react";
 import { UnlayerEditorObject } from "../../abstractions/domain/editor";
-import { noopAsync } from "../../utils";
+import { noop, noopAsync } from "../../utils";
 
 let exportHtmlData: any = {
   design: {},
@@ -37,6 +37,7 @@ const DoubleUnlayerEditorWrapper = ({
       exportImageAsync: () => Promise.resolve(exportImageData),
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
+      registerCallback: noop,
     } as Partial<UnlayerEditorObject> as UnlayerEditorObject);
   }, []);
 

@@ -12,6 +12,7 @@ import { Result } from "../abstractions/common/result-types";
 import { TemplateContent } from "../abstractions/domain/content";
 import { Design } from "react-email-editor";
 import { UnlayerEditorObject } from "../abstractions/domain/editor";
+import { noop } from '../utils';
 
 jest.mock("./LoadingScreen", () => ({
   LoadingScreen: () => <div>Loading...</div>,
@@ -103,6 +104,7 @@ const createTestContext = () => {
         _callback: (data: object) => void
       ) => {},
       removeEventListener: (_type: string) => {},
+      registerCallback: noop,
       exportHtmlAsync,
       exportImageAsync,
     } as Partial<UnlayerEditorObject> as UnlayerEditorObject,
