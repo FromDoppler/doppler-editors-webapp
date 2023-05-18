@@ -8,6 +8,7 @@ import { TestDopplerIntlProvider } from "../i18n/TestDopplerIntlProvider";
 import { CampaignContent, Content } from "../../abstractions/domain/content";
 import { useEffect, useState } from "react";
 import { UnlayerEditorObject } from "../../abstractions/domain/editor";
+import { ModalProvider } from "react-modal-hook";
 import { noop, noopAsync } from "../../utils";
 
 let exportHtmlData: any = {
@@ -129,9 +130,11 @@ describe(`${SingletonEditorProvider.name}`, () => {
     <QueryClientProvider client={queryClient}>
       <AppServicesProvider appServices={appServices}>
         <TestDopplerIntlProvider>
-          <SingletonEditorProvider data-testid="singleton-editor-test">
-            {children}
-          </SingletonEditorProvider>
+          <ModalProvider>
+            <SingletonEditorProvider data-testid="singleton-editor-test">
+              {children}
+            </SingletonEditorProvider>
+          </ModalProvider>
         </TestDopplerIntlProvider>
       </AppServicesProvider>
     </QueryClientProvider>
