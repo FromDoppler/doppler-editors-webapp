@@ -3,6 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { useCreatePrivateTemplate } from "../queries/template-queries";
 import { UnlayerContent } from "../abstractions/domain/content";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useModal } from "react-modal-hook";
 
 interface SaveAsTemplateModalProps {
   close: () => void;
@@ -128,4 +129,41 @@ export const SaveAsTemplateModal = ({
       </div>
     </ReactModal>
   );
+};
+
+export const useSaveAsTemplateModal = () => {
+  const [state, setState] = useState<{
+    content: UnlayerContent;
+    defaultName?: string;
+  }>();
+  const [showModal, hideModal] = useModal(
+    () =>
+      !state ? (
+        <></>
+      ) : (
+        <SaveAsTemplateModal
+          isOpen
+          content={state.content}
+          defaultName={state.defaultName}
+          close={() => {
+            setState(undefined);
+            hideModal();
+          }}
+        />
+      ),
+    [state]
+  );
+
+  const showSaveAsTemplateModal = ({
+    content,
+    defaultName,
+  }: {
+    content: UnlayerContent;
+    defaultName?: string;
+  }) => {
+    setState({ content, defaultName });
+    showModal();
+  };
+
+  return { showSaveAsTemplateModal };
 };
