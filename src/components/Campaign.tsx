@@ -15,6 +15,7 @@ import { FormattedMessage } from "react-intl";
 import { SaveAsTemplateModal } from "./SaveAsTemplateModal";
 import { useCallback, useState } from "react";
 import { useNavigateSmart } from "./smart-urls";
+import { useModal } from "react-modal-hook";
 
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
@@ -23,14 +24,28 @@ export const Campaign = () => {
   const navigateSmart = useNavigateSmart();
   const [contentToExportAsTemplate, setContentToExportAsTemplate] =
     useState<UnlayerContent>();
-  const [isExportAsTemplateModalOpen, setIsExportAsTemplateModalOpen] =
-    useState(false);
   const [isExportingAsTemplate, setIsExportingAsTemplate] = useState(false);
   const { idCampaign } = useParams() as Readonly<{
     idCampaign: string;
   }>;
 
   const campaignContentQuery = useGetCampaignContent(idCampaign);
+
+  const [showSaveAsTemplateModal, hideSaveAsTemplateModal] = useModal(
+    () => (
+      <SaveAsTemplateModal
+        isOpen
+        content={contentToExportAsTemplate!}
+        defaultName={campaignContentQuery.data?.campaignName}
+        close={() => {
+          setContentToExportAsTemplate(undefined);
+          hideSaveAsTemplateModal();
+        }}
+      />
+    ),
+    [contentToExportAsTemplate, campaignContentQuery.data]
+  );
+
   const { mutateAsync: updateCampaignContentMutateAsync } =
     useUpdateCampaignContent();
 
@@ -63,11 +78,6 @@ export const Campaign = () => {
     );
   }
 
-  const closeExportModal = () => {
-    setIsExportAsTemplateModalOpen(false);
-    setContentToExportAsTemplate(undefined);
-  };
-
   const openExportModal = async () => {
     setIsExportingAsTemplate(true);
     try {
@@ -77,7 +87,7 @@ export const Campaign = () => {
         return;
       }
       setContentToExportAsTemplate(content);
-      setIsExportAsTemplateModalOpen(true);
+      showSaveAsTemplateModal();
     } finally {
       setIsExportingAsTemplate(false);
     }
@@ -118,16 +128,6 @@ export const Campaign = () => {
                     >
                       <FormattedMessage id="save_template" />
                     </button>
-                    {contentToExportAsTemplate ? (
-                      <SaveAsTemplateModal
-                        isOpen={isExportAsTemplateModalOpen}
-                        content={contentToExportAsTemplate}
-                        defaultName={campaignContentQuery.data.campaignName}
-                        close={() => closeExportModal()}
-                      />
-                    ) : (
-                      false
-                    )}
                   </li>
                 ) : (
                   false

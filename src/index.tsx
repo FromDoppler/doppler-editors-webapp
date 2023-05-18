@@ -10,6 +10,7 @@ import { AppSessionStateProvider } from "./components/AppSessionStateContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DopplerIntlProvider } from "./components/i18n/DopplerIntlProvider";
 import ReactModal from "react-modal";
+import { ModalProvider } from "react-modal-hook";
 
 const customConfiguration =
   (window as any)["editors-webapp-configuration"] || {};
@@ -39,7 +40,9 @@ render(
         <AppServicesProvider appServices={appServices}>
           <AppSessionStateProvider>
             <DopplerIntlProvider>
-              <App />
+              <ModalProvider>
+                <App />
+              </ModalProvider>
             </DopplerIntlProvider>
           </AppSessionStateProvider>
         </AppServicesProvider>
