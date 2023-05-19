@@ -8,11 +8,11 @@ import {
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { EditorBottomBar } from "./EditorBottomBar";
-import { Content, UnlayerContent } from "../abstractions/domain/content";
+import { Content } from "../abstractions/domain/content";
 import { LoadingScreen } from "./LoadingScreen";
 import { useCampaignContinuationUrls } from "./continuation-urls";
 import { FormattedMessage } from "react-intl";
-import { SaveAsTemplateModal } from "./SaveAsTemplateModal";
+import { useSaveAsTemplateModal } from "./SaveAsTemplateModal";
 import { useCallback, useState } from "react";
 import { useNavigateSmart } from "./smart-urls";
 
@@ -21,16 +21,15 @@ export const editorTopBarTestId = "editor-top-bar-message";
 
 export const Campaign = () => {
   const navigateSmart = useNavigateSmart();
-  const [contentToExportAsTemplate, setContentToExportAsTemplate] =
-    useState<UnlayerContent>();
-  const [isExportAsTemplateModalOpen, setIsExportAsTemplateModalOpen] =
-    useState(false);
   const [isExportingAsTemplate, setIsExportingAsTemplate] = useState(false);
   const { idCampaign } = useParams() as Readonly<{
     idCampaign: string;
   }>;
 
   const campaignContentQuery = useGetCampaignContent(idCampaign);
+
+  const { showSaveAsTemplateModal } = useSaveAsTemplateModal();
+
   const { mutateAsync: updateCampaignContentMutateAsync } =
     useUpdateCampaignContent();
 
@@ -63,11 +62,6 @@ export const Campaign = () => {
     );
   }
 
-  const closeExportModal = () => {
-    setIsExportAsTemplateModalOpen(false);
-    setContentToExportAsTemplate(undefined);
-  };
-
   const openExportModal = async () => {
     setIsExportingAsTemplate(true);
     try {
@@ -76,8 +70,10 @@ export const Campaign = () => {
         console.error("Only Unlayer contents can be saved as templates");
         return;
       }
-      setContentToExportAsTemplate(content);
-      setIsExportAsTemplateModalOpen(true);
+      showSaveAsTemplateModal({
+        content,
+        defaultName: campaignContentQuery.data?.campaignName,
+      });
     } finally {
       setIsExportingAsTemplate(false);
     }
@@ -118,16 +114,6 @@ export const Campaign = () => {
                     >
                       <FormattedMessage id="save_template" />
                     </button>
-                    {contentToExportAsTemplate ? (
-                      <SaveAsTemplateModal
-                        isOpen={isExportAsTemplateModalOpen}
-                        content={contentToExportAsTemplate}
-                        defaultName={campaignContentQuery.data.campaignName}
-                        close={() => closeExportModal()}
-                      />
-                    ) : (
-                      false
-                    )}
                   </li>
                 ) : (
                   false

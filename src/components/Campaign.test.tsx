@@ -15,6 +15,7 @@ import { Result } from "../abstractions/common/result-types";
 import { CampaignContent } from "../abstractions/domain/content";
 import { UnlayerEditorObject } from "../abstractions/domain/editor";
 import { noop } from "../utils";
+import { ModalProvider } from "react-modal-hook";
 
 jest.mock("./LoadingScreen", () => ({
   LoadingScreen: () => <div>Loading...</div>,
@@ -152,11 +153,13 @@ const createTestContext = () => {
       >
         <TestDopplerIntlProvider>
           <SingletonDesignContextProvider value={singletonEditorContext}>
-            <MemoryRouter initialEntries={[routerInitialEntry]}>
-              <Routes>
-                <Route path="/:idCampaign" element={<Campaign />} />
-              </Routes>
-            </MemoryRouter>
+            <ModalProvider>
+              <MemoryRouter initialEntries={[routerInitialEntry]}>
+                <Routes>
+                  <Route path="/:idCampaign" element={<Campaign />} />
+                </Routes>
+              </MemoryRouter>
+            </ModalProvider>
           </SingletonDesignContextProvider>
         </TestDopplerIntlProvider>
       </AppServicesProvider>
