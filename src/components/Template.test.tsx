@@ -12,6 +12,8 @@ import { Result } from "../abstractions/common/result-types";
 import { TemplateContent } from "../abstractions/domain/content";
 import { Design } from "react-email-editor";
 import { UnlayerEditorObject } from "../abstractions/domain/editor";
+import { ModalProvider } from "react-modal-hook";
+import { noop } from "../utils";
 
 jest.mock("./LoadingScreen", () => ({
   LoadingScreen: () => <div>Loading...</div>,
@@ -103,6 +105,7 @@ const createTestContext = () => {
         _callback: (data: object) => void
       ) => {},
       removeEventListener: (_type: string) => {},
+      registerCallback: noop,
       exportHtmlAsync,
       exportImageAsync,
     } as Partial<UnlayerEditorObject> as UnlayerEditorObject,
@@ -123,11 +126,13 @@ const createTestContext = () => {
       >
         <TestDopplerIntlProvider>
           <SingletonDesignContextProvider value={singletonEditorContext}>
-            <MemoryRouter initialEntries={[routerInitialEntry]}>
-              <Routes>
-                <Route path="/:idTemplate" element={<Template />} />
-              </Routes>
-            </MemoryRouter>
+            <ModalProvider>
+              <MemoryRouter initialEntries={[routerInitialEntry]}>
+                <Routes>
+                  <Route path="/:idTemplate" element={<Template />} />
+                </Routes>
+              </MemoryRouter>
+            </ModalProvider>
           </SingletonDesignContextProvider>
         </TestDopplerIntlProvider>
       </AppServicesProvider>

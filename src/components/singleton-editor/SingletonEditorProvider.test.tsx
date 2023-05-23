@@ -8,7 +8,8 @@ import { TestDopplerIntlProvider } from "../i18n/TestDopplerIntlProvider";
 import { CampaignContent, Content } from "../../abstractions/domain/content";
 import { useEffect, useState } from "react";
 import { UnlayerEditorObject } from "../../abstractions/domain/editor";
-import { noopAsync } from "../../utils";
+import { ModalProvider } from "react-modal-hook";
+import { noop, noopAsync } from "../../utils";
 
 let exportHtmlData: any = {
   design: {},
@@ -37,6 +38,7 @@ const DoubleUnlayerEditorWrapper = ({
       exportImageAsync: () => Promise.resolve(exportImageData),
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
+      registerCallback: noop,
     } as Partial<UnlayerEditorObject> as UnlayerEditorObject);
   }, []);
 
@@ -128,9 +130,11 @@ describe(`${SingletonEditorProvider.name}`, () => {
     <QueryClientProvider client={queryClient}>
       <AppServicesProvider appServices={appServices}>
         <TestDopplerIntlProvider>
-          <SingletonEditorProvider data-testid="singleton-editor-test">
-            {children}
-          </SingletonEditorProvider>
+          <ModalProvider>
+            <SingletonEditorProvider data-testid="singleton-editor-test">
+              {children}
+            </SingletonEditorProvider>
+          </ModalProvider>
         </TestDopplerIntlProvider>
       </AppServicesProvider>
     </QueryClientProvider>
