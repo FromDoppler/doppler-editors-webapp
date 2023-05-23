@@ -17,7 +17,7 @@ but based on manifest files in our CDN in place of Docker images.
 ## Usage of the released packages
 
 Since we are using the _Manifest Loader_, the packages are independent from the hosting service,
-you can see an example of how to use it in [demo.html](./demo/demo.html).
+you can see an example of how to use it in [index.html](./demo/index.html).
 
 ## Application Architecture
 

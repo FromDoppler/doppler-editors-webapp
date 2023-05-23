@@ -5,7 +5,7 @@ print_help () {
     echo "Usage: sh start-demo.sh"
     echo ""
     echo "Starts a localhost server to use online version of Doppler Editors WebApp."
-    echo "You can edit index.html in order to use a different version, see detains in the code."
+    echo "You can edit index.html in order to use a different version, see details in the code."
 }
 
 set -e
