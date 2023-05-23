@@ -4,7 +4,7 @@ import { useModal } from "react-modal-hook";
 import { noop } from "../../utils";
 import { CustomMediaLibrary } from "./CustomMediaLibrary";
 
-export const CustomMediaLibraryModal = ({
+const CustomMediaLibraryModal = ({
   cancel,
   selectImage,
 }: {
