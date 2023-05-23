@@ -4,13 +4,19 @@ const demoImage =
   "https://www.fromdoppler.com/wp-content/themes/doppler_site/img/omnicanalidad-email-marketing.png";
 
 export const CustomMediaLibrary = ({
+  cancel,
   selectImage,
 }: {
   cancel: () => void;
   selectImage: ({ url }: { url: string }) => void;
 }) => (
   <div>
-    <h2 className="modal-title">Custom Media Library</h2>
+    <button
+      className="close dp-button"
+      type="button"
+      name="close-modal"
+      onClick={cancel}
+    ></button>
     <button
       type="button"
       onClick={() =>
