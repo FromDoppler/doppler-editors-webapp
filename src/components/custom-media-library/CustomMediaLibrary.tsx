@@ -18,7 +18,7 @@ export const CustomMediaLibrary = ({
   return (
     <>
       <Header cancel={cancel} />
-      <List images={images} />
+      <List images={images} checkedImages={new Set()} />
       <Footer selectImage={selectCheckedImage} />
     </>
   );
