@@ -1,5 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { List } from "./List";
+import { noop } from "../../utils";
+import userEvent from "@testing-library/user-event";
 
 describe(List.name, () => {
   it.each([
@@ -29,6 +31,7 @@ describe(List.name, () => {
         <List
           images={images}
           checkedImages={new Set()}
+          toggleCheckedImage={noop}
         />
       );
 
@@ -64,6 +67,7 @@ describe(List.name, () => {
       <List
         images={images}
         checkedImages={checkedItems}
+        toggleCheckedImage={noop}
       />
     );
 
@@ -74,6 +78,37 @@ describe(List.name, () => {
     expect(hasACheckedCheckbox(list.children[uncheckedIndex1])).toBe(false);
     expect(hasACheckedCheckbox(list.children[uncheckedIndex2])).toBe(false);
     expect(hasACheckedCheckbox(list.children[uncheckedIndex3])).toBe(false);
+  });
+
+  it("should pass the clicked item to toggleCheckedImage", async () => {
+    // Arrange
+    const images = [
+      { name: "name1", url: "url1" },
+      { name: "name2", url: "url2" },
+      { name: "name3", url: "url3" },
+      { name: "name4", url: "url4" },
+      { name: "name5", url: "url5" },
+    ];
+    const testItemIndex = 3;
+    const testItem = images[3];
+    const toggleCheckedImage = jest.fn();
+
+    // Act
+    render(
+      <List
+        images={images}
+        checkedImages={new Set()}
+        toggleCheckedImage={toggleCheckedImage}
+      />
+    );
+
+    // Assert
+    const list = screen.getByTestId("image-list");
+    const testLi = list.children[testItemIndex];
+    const testCheckbox = testLi.querySelector('input[type="checkbox"]');
+
+    await userEvent.click(testCheckbox!);
+    expect(toggleCheckedImage).toBeCalledWith(testItem);
   });
 });
 

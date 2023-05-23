@@ -1,6 +1,6 @@
 // TODO: implement it based on MSEditor Gallery
 
-import { useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { ImageItem } from "./types";
 
 const baseUrl =
@@ -25,9 +25,30 @@ export const useCustomMediaLibraryBehavior = ({
 }: {
   selectImage: ({ url }: { url: string }) => void;
 }) => {
+  const [checkedImages, setCheckedImages] = useState<ReadonlySet<ImageItem>>(
+    new Set()
+  );
+  const toggleCheckedImage = useCallback(
+    (item: ImageItem) => {
+      const newSet = new Set(checkedImages);
+      if (!newSet.delete(item)) {
+        newSet.add(item);
+      }
+      setCheckedImages(newSet);
+    },
+    [checkedImages]
+  );
+
   const selectCheckedImage = useMemo(
+    // TODO: update it based on checkedImages
     () => () => selectImage({ url: images[0].url }),
     [selectImage]
   );
-  return { images, selectCheckedImage };
+
+  return {
+    images,
+    selectCheckedImage,
+    checkedImages,
+    toggleCheckedImage,
+  };
 };

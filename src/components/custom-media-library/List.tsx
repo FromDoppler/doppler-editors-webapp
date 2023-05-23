@@ -5,9 +5,11 @@ import { ImageItem } from "./types";
 export const List = ({
   images,
   checkedImages,
+  toggleCheckedImage,
 }: {
   images: ImageItem[];
   checkedImages: ReadonlySet<ImageItem>;
+  toggleCheckedImage: (item: ImageItem) => void;
 }) => (
   <div className="gallery__images">
     {/*
@@ -22,7 +24,7 @@ export const List = ({
               type="checkbox"
               style={{ position: "relative" }}
               checked={checkedImages.has(x)}
-              readOnly // Temporarily to avoid warning of missing onChange prop
+              onChange={() => toggleCheckedImage(x)}
             />
           </p>
         </li>
