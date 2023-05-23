@@ -1,7 +1,8 @@
 // TODO: implement it based on MSEditor Gallery
 
-const demoImage =
-  "https://www.fromdoppler.com/wp-content/themes/doppler_site/img/omnicanalidad-email-marketing.png";
+import { Footer } from "./Footer";
+import { Header } from "./Header";
+import { useCustomMediaLibraryBehavior } from "./useCustomMediaLibraryBehavior";
 
 export const CustomMediaLibrary = ({
   cancel,
@@ -9,23 +10,14 @@ export const CustomMediaLibrary = ({
 }: {
   cancel: () => void;
   selectImage: ({ url }: { url: string }) => void;
-}) => (
-  <div>
-    <button
-      className="close dp-button"
-      type="button"
-      name="close-modal"
-      onClick={cancel}
-    ></button>
-    <button
-      type="button"
-      onClick={() =>
-        selectImage({
-          url: demoImage,
-        })
-      }
-    >
-      Select Image
-    </button>
-  </div>
-);
+}) => {
+  const { selectCheckedImage } = useCustomMediaLibraryBehavior({
+    selectImage,
+  });
+  return (
+    <>
+      <Header cancel={cancel} />
+      <Footer selectImage={selectCheckedImage} />
+    </>
+  );
+};
