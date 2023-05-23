@@ -2,6 +2,7 @@
 
 import { Footer } from "./Footer";
 import { Header } from "./Header";
+import { List } from "./List";
 import { useCustomMediaLibraryBehavior } from "./useCustomMediaLibraryBehavior";
 
 export const CustomMediaLibrary = ({
@@ -11,12 +12,13 @@ export const CustomMediaLibrary = ({
   cancel: () => void;
   selectImage: ({ url }: { url: string }) => void;
 }) => {
-  const { selectCheckedImage } = useCustomMediaLibraryBehavior({
+  const { images, selectCheckedImage } = useCustomMediaLibraryBehavior({
     selectImage,
   });
   return (
     <>
       <Header cancel={cancel} />
+      <List images={images} />
       <Footer selectImage={selectCheckedImage} />
     </>
   );
