@@ -1,12 +1,24 @@
 // TODO: implement it based on MSEditor Gallery
 
-export const Footer = ({ selectImage }: { selectImage: () => void }) => {
+// TODO: add tests
+export const Footer = ({
+  selectImage,
+}: {
+  selectImage: (() => void) | null;
+}) => {
+  const selectImageProps = selectImage
+    ? {
+        onClick: selectImage,
+      }
+    : {
+        disabled: true,
+      };
   return (
     <div className="gallery__footer">
       {/*
       TODO: add upload button
     */}
-      <button type="button" onClick={selectImage}>
+      <button type="button" {...selectImageProps}>
         Select Image
       </button>
     </div>
