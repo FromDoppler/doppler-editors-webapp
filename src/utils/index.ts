@@ -54,3 +54,10 @@ export const nameComparison = <T extends { name: string }>(a: T, b: T) =>
   (a as any)?.name?.localeCompare && (b as any)?.name?.localeCompare
     ? a.name.localeCompare(b.name)
     : `${a?.name || ""}`.localeCompare(`${b?.name || ""}`);
+
+export const takeOneValue = <T>(collection: {
+  values: () => IterableIterator<T>;
+}) => {
+  const next = collection.values().next();
+  return next.done ? undefined : next.value;
+};

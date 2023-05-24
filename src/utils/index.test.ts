@@ -1,4 +1,10 @@
-import { promisifyProps, isDefined, spliceBy, nameComparison } from "./index";
+import {
+  promisifyProps,
+  isDefined,
+  spliceBy,
+  nameComparison,
+  takeOneValue,
+} from "./index";
 
 describe(promisifyProps.name, () => {
   it("should add new property promisify-ing the old one", async () => {
@@ -289,6 +295,65 @@ describe(nameComparison.name, () => {
 
       // Assert
       expect(result).toBe(expected);
+    }
+  );
+});
+
+describe(takeOneValue.name, () => {
+  it.each<{
+    collectionType: string;
+    collection: { values: () => IterableIterator<any> };
+  }>([
+    {
+      collectionType: Map.name,
+      collection: new Map(),
+    },
+    {
+      collectionType: Set.name,
+      collection: new Set(),
+    },
+    {
+      collectionType: Array.name,
+      collection: [],
+    },
+  ])(
+    "should return undefined when collection $collectionType is empty",
+    ({ collection }) => {
+      // Act
+      const result = takeOneValue(collection);
+
+      // Assert
+      expect(result).toBeUndefined();
+    }
+  );
+
+  it.each<{
+    collectionType: string;
+    collection: { values: () => IterableIterator<any> };
+  }>([
+    {
+      collectionType: Map.name,
+      collection: new Map([
+        [5, 999],
+        [1, 111],
+      ]),
+    },
+    {
+      collectionType: Set.name,
+      collection: new Set([999, 111]),
+    },
+    {
+      collectionType: Array.name,
+      collection: [999, 111],
+    },
+  ])(
+    "should return first value when collection $collectionType is not empty",
+    ({ collection }) => {
+      // Act
+      const result = takeOneValue(collection);
+
+      // Assert
+      expect(result).toBe(999);
     }
   );
 });
