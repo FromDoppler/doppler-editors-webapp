@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { ImageItem } from "./types";
+import { takeOneValue } from "../../utils";
 
 const baseUrl =
   "https://www.fromdoppler.com/wp-content/themes/doppler_site/img";
@@ -40,9 +41,11 @@ export const useCustomMediaLibraryBehavior = ({
   );
 
   const selectCheckedImage = useMemo(
-    // TODO: update it based on checkedImages
-    () => () => selectImage({ url: images[0].url }),
-    [selectImage]
+    () =>
+      checkedImages.size === 1
+        ? () => selectImage({ url: takeOneValue(checkedImages)!.url })
+        : null,
+    [checkedImages, selectImage]
   );
 
   return {
