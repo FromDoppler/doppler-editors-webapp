@@ -2,6 +2,11 @@ import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useCustomMediaLibraryModal } from "./CustomMediaLibraryModal";
 import { ModalProvider } from "react-modal-hook";
+import { ReactNode } from "react";
+
+const ContextWrapper = ({ children }: { children: ReactNode }) => (
+  <ModalProvider>{children}</ModalProvider>
+);
 
 const createTestContext = () => {
   let currentShowCustomMediaLibraryModal: (
@@ -28,9 +33,9 @@ describe(useCustomMediaLibraryModal.name, () => {
     const { TestComponent, showCustomMediaLibraryModal } = createTestContext();
 
     render(
-      <ModalProvider>
+      <ContextWrapper>
         <TestComponent />
-      </ModalProvider>
+      </ContextWrapper>
     );
     expect(screen.queryAllByRole("dialog")).toEqual([]);
 
@@ -46,9 +51,9 @@ describe(useCustomMediaLibraryModal.name, () => {
     const { TestComponent, showCustomMediaLibraryModal } = createTestContext();
 
     render(
-      <ModalProvider>
+      <ContextWrapper>
         <TestComponent />
-      </ModalProvider>
+      </ContextWrapper>
     );
     showCustomMediaLibraryModal(() => {});
     const dialog = screen.getByRole("dialog");
@@ -66,9 +71,9 @@ describe(useCustomMediaLibraryModal.name, () => {
     const { TestComponent, showCustomMediaLibraryModal } = createTestContext();
 
     render(
-      <ModalProvider>
+      <ContextWrapper>
         <TestComponent />
-      </ModalProvider>
+      </ContextWrapper>
     );
     showCustomMediaLibraryModal(() => {});
     screen.getByRole("dialog");
@@ -88,9 +93,9 @@ describe(useCustomMediaLibraryModal.name, () => {
       "https://www.fromdoppler.com/wp-content/themes/doppler_site/img/omnicanalidad-email-marketing.png";
 
     render(
-      <ModalProvider>
+      <ContextWrapper>
         <TestComponent />
-      </ModalProvider>
+      </ContextWrapper>
     );
     showCustomMediaLibraryModal(callback);
     const selectImageButton = screen.getByText("Select Image");
