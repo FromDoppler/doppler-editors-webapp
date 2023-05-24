@@ -15,6 +15,7 @@ import { HtmlEditorApiClientImpl } from "./implementations/HtmlEditorApiClientIm
 import { DummyDopplerRestApiClient } from "./implementations/dummies/doppler-rest-api-client";
 import { DopplerRestApiClientImpl } from "./implementations/DopplerRestApiClientImpl";
 import { MfeLoaderAssetManifestClientImpl } from "./implementations/MfeLoaderAssetManifestClientImpl";
+import { DopplerLegacyClientImpl } from "./implementations/DopplerLegacyClientImpl";
 import { DummyDopplerLegacyClient } from "./implementations/dummies/doppler-legacy-client";
 
 export const configureApp = (
@@ -47,8 +48,11 @@ export const configureApp = (
         appSessionStateAccessor,
         appConfiguration,
       }),
-    // TODO: replace by a real implementation
-    dopplerLegacyClientFactory: () => new DummyDopplerLegacyClient(),
+    dopplerLegacyClientFactory: ({ axiosStatic, appConfiguration }) =>
+      new DopplerLegacyClientImpl({
+        axiosStatic,
+        appConfiguration,
+      }),
     appSessionStateAccessorFactory: ({ window }: AppServices) =>
       new DopplerSessionMfeAppSessionStateAccessor({ window }),
     appSessionStateMonitorFactory: ({ window }: AppServices) =>
