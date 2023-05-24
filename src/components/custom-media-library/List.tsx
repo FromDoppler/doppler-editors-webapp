@@ -1,6 +1,6 @@
 // TODO: implement it based on MSEditor Gallery
 
-import { ImageItem } from "./types";
+import { ImageItem } from "../../abstractions/domain/image-gallery";
 
 export const List = ({
   images,
