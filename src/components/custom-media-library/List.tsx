@@ -3,10 +3,12 @@
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 
 export const List = ({
+  isLoading,
   images,
   checkedImages,
   toggleCheckedImage,
 }: {
+  isLoading: boolean;
   images: ImageItem[];
   checkedImages: ReadonlySet<ImageItem>;
   toggleCheckedImage: (item: ImageItem) => void;
@@ -15,6 +17,7 @@ export const List = ({
     {/*
       TODO: show the list of images, allow to select and unselect them
     */}
+    {isLoading ? <>Loading...</> : false}
     <ul data-testid="image-list">
       {images.map((x) => (
         <li key={x.name}>

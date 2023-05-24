@@ -3,13 +3,14 @@
 import { useCallback, useMemo, useState } from "react";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { takeOneValue } from "../../utils";
-import { demoImages } from '../../implementations/dummies/doppler-legacy-client';
+import { useGetImageGallery } from "../../queries/image-galleries-queries";
 
 export const useCustomMediaLibraryBehavior = ({
   selectImage,
 }: {
   selectImage: ({ url }: { url: string }) => void;
 }) => {
+  const { isLoading, data } = useGetImageGallery();
   const [checkedImages, setCheckedImages] = useState<ReadonlySet<ImageItem>>(
     new Set()
   );
@@ -33,7 +34,8 @@ export const useCustomMediaLibraryBehavior = ({
   );
 
   return {
-    images: demoImages,
+    isLoading,
+    images: data?.items ?? [],
     selectCheckedImage,
     checkedImages,
     toggleCheckedImage,
