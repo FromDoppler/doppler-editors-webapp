@@ -14,7 +14,7 @@ export const Footer = ({
         disabled: true,
       };
   return (
-    <div className="gallery__footer">
+    <div className="dp-image-gallery-footer">
       {/*
       TODO: add upload button
     */}

@@ -1,0 +1,37 @@
+/* TODO: clean up and move to style guide */
+.dp-library [class*="modal-content--"].modal-content--full {
+  background: #f7f7f7;
+  padding: 50px 50px 20px;
+  overflow: hidden;
+  border-radius: 3px;
+  position: relative;
+  top: 20px;
+  right: 20px;
+  bottom: 20px;
+  left: 20px;
+  height: calc(100% - 40px);
+  width: calc(100% - 40px);
+  margin: unset;
+  transform: unset;
+}
+
+.dp-library [class*="modal-content--"].modal-content--full .close {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+}
+
+.dp-library
+  [class*="modal-content--"].modal-content--full
+  .dp-image-gallery-content {
+  height: calc(100% - 81px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.dp-library
+  [class*="modal-content--"].modal-content--full
+  .dp-image-gallery-footer {
+  padding-top: 20px;
+  border-top: 1px solid #e5e5e5;
+}

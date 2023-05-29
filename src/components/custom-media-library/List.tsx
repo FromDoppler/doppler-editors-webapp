@@ -13,7 +13,7 @@ export const List = ({
   checkedImages: ReadonlySet<ImageItem>;
   toggleCheckedImage: (item: ImageItem) => void;
 }) => (
-  <div className="gallery__images">
+  <div className="dp-image-gallery-content">
     {/*
       TODO: show the list of images, allow to select and unselect them
     */}

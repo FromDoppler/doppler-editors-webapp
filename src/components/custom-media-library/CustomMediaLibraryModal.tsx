@@ -3,6 +3,7 @@ import ReactModal from "react-modal";
 import { useModal } from "react-modal-hook";
 import { noop } from "../../utils";
 import { CustomMediaLibrary } from "./CustomMediaLibrary";
+import "./styles.css";
 
 const CustomMediaLibraryModal = ({
   cancel,
@@ -15,7 +16,7 @@ const CustomMediaLibraryModal = ({
     <ReactModal
       isOpen
       onRequestClose={cancel}
-      className="modal-content--medium"
+      className="modal-content--full"
       overlayClassName="modal"
       portalClassName="dp-library"
     >

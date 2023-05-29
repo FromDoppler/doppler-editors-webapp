@@ -8,7 +8,7 @@ export const Header = ({ cancel }: { cancel: () => void }) => (
       name="close-modal"
       onClick={cancel}
     ></button>
-    <div className="gallery__header">
+    <div className="dp-image-gallery-header">
       {/*
       TODO: Add following tools:
         * Select All
