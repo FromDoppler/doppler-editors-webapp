@@ -94,6 +94,17 @@ describe(useCustomMediaLibraryModal.name, () => {
     );
     showCustomMediaLibraryModal(callback);
     const selectImageButton = screen.getByText("Select Image");
+    const gallery = screen.getByTestId("image-list");
+    const firstCheckbox = gallery.querySelector("input[type=checkbox]");
+
+    // Assert
+    expect(selectImageButton).toBeDisabled();
+
+    // Act
+    await userEvent.click(firstCheckbox!);
+
+    // Assert
+    expect(selectImageButton).toBeEnabled();
 
     // Act
     await userEvent.click(selectImageButton);

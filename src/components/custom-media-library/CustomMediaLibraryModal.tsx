@@ -4,7 +4,7 @@ import { useModal } from "react-modal-hook";
 import { noop } from "../../utils";
 import { CustomMediaLibrary } from "./CustomMediaLibrary";
 
-export const CustomMediaLibraryModal = ({
+const CustomMediaLibraryModal = ({
   cancel,
   selectImage,
 }: {
@@ -19,12 +19,6 @@ export const CustomMediaLibraryModal = ({
       overlayClassName="modal"
       portalClassName="dp-library"
     >
-      <button
-        className="close dp-button"
-        type="button"
-        name="close-modal"
-        onClick={cancel}
-      ></button>
       <CustomMediaLibrary cancel={cancel} selectImage={selectImage} />
     </ReactModal>
   );

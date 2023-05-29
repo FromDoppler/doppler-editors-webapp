@@ -1,25 +1,30 @@
 // TODO: implement it based on MSEditor Gallery
 
-const demoImage =
-  "https://www.fromdoppler.com/wp-content/themes/doppler_site/img/omnicanalidad-email-marketing.png";
+import { Footer } from "./Footer";
+import { Header } from "./Header";
+import { List } from "./List";
+import { useCustomMediaLibraryBehavior } from "./useCustomMediaLibraryBehavior";
 
 export const CustomMediaLibrary = ({
+  cancel,
   selectImage,
 }: {
   cancel: () => void;
   selectImage: ({ url }: { url: string }) => void;
-}) => (
-  <div>
-    <h2 className="modal-title">Custom Media Library</h2>
-    <button
-      type="button"
-      onClick={() =>
-        selectImage({
-          url: demoImage,
-        })
-      }
-    >
-      Select Image
-    </button>
-  </div>
-);
+}) => {
+  const { images, selectCheckedImage, checkedImages, toggleCheckedImage } =
+    useCustomMediaLibraryBehavior({
+      selectImage,
+    });
+  return (
+    <>
+      <Header cancel={cancel} />
+      <List
+        images={images}
+        checkedImages={checkedImages}
+        toggleCheckedImage={toggleCheckedImage}
+      />
+      <Footer selectImage={selectCheckedImage} />
+    </>
+  );
+};

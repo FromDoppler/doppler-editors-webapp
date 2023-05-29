@@ -32,6 +32,8 @@ spanish
 undoredo
 firstname
 lastname
+omnicanalidad
+emailtransaccional
 
 # Technical terms
 automerge
