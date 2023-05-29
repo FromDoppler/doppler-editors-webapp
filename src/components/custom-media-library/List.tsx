@@ -18,18 +18,22 @@ export const List = ({
       TODO: show the list of images, allow to select and unselect them
     */}
     {isLoading ? <>Loading...</> : false}
-    <ul data-testid="image-list">
-      {images.map((x) => (
+    <ul className="dp-image-gallery-list" data-testid="image-list">
+      {images.map((x, i) => (
         <li key={x.name}>
-          <p>{JSON.stringify(x)}</p>
-          <p>
+          <label
+            className="dp-image-gallery-thumbnail"
+            htmlFor={`image-item-${i}-check`}
+          >
+            <img src={x.thumbnailUrl150} alt={x.name} />
             <input
+              id={`image-item-${i}-check`}
               type="checkbox"
-              style={{ position: "relative" }}
               checked={checkedImages.has(x)}
               onChange={() => toggleCheckedImage(x)}
             />
-          </p>
+          </label>
+          <p>{x.name}</p>
         </li>
       ))}
     </ul>
