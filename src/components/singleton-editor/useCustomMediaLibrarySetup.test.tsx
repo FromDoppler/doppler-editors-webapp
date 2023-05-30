@@ -15,6 +15,7 @@ function createUnlayerObjectDouble() {
     void,
     [string, (data: object, done: SelectImageDoneCallback) => void]
   >();
+  const unregisterCallback = jest.fn<void, [string]>();
 
   return {
     unlayerEditorObject: {
@@ -22,9 +23,11 @@ function createUnlayerObjectDouble() {
         type: string,
         callback: (data: object, done: SelectImageDoneCallback) => void
       ) => void,
+      unregisterCallback: unregisterCallback as (type: string) => void,
     } as UnlayerEditorObject,
     mocks: {
       registerCallback,
+      unregisterCallback,
     },
   };
 }
@@ -39,14 +42,21 @@ const createTestContext = () => {
     _: UnlayerEditorObject | undefined
   ) => void;
 
-  const TestComponent = () => {
+  let currentCustomMediaLibraryEnabled: boolean;
+  let currentSetCustomMediaLibraryEnabled: (_: boolean) => void;
+
+  const TestComponent = ({ enabled }: { enabled?: boolean }) => {
     const [unlayerEditorObject, setUnlayerEditorObject] =
       useState<UnlayerEditorObject>();
     currentSetUnlayerEditorObject = setUnlayerEditorObject;
 
-    useCustomMediaLibrarySetup({
-      unlayerEditorObject,
-    });
+    const { customMediaLibraryEnabled, setCustomMediaLibraryEnabled } =
+      useCustomMediaLibrarySetup({
+        unlayerEditorObject,
+        enabled,
+      });
+    currentCustomMediaLibraryEnabled = customMediaLibraryEnabled;
+    currentSetCustomMediaLibraryEnabled = setCustomMediaLibraryEnabled;
 
     return <></>;
   };
@@ -56,6 +66,9 @@ const createTestContext = () => {
     setUnlayerEditorObject: (
       unlayerEditorObject: UnlayerEditorObject | undefined
     ) => act(() => currentSetUnlayerEditorObject(unlayerEditorObject)),
+    getCurrentCustomMediaLibraryEnabled: () => currentCustomMediaLibraryEnabled,
+    setCustomMediaLibraryEnabled: (enabled: boolean) =>
+      act(() => currentSetCustomMediaLibraryEnabled(enabled)),
     mocks: {
       showCustomMediaLibraryModal,
     },
@@ -69,6 +82,7 @@ describe(useCustomMediaLibrarySetup.name, () => {
     const {
       TestComponent,
       setUnlayerEditorObject,
+      getCurrentCustomMediaLibraryEnabled,
       mocks: { showCustomMediaLibraryModal },
     } = createTestContext();
     render(
@@ -86,6 +100,7 @@ describe(useCustomMediaLibrarySetup.name, () => {
     setUnlayerEditorObject(unlayerEditorObject);
 
     // Assert
+    expect(getCurrentCustomMediaLibraryEnabled()).toBe(true);
     expect(registerCallback).toBeCalledWith(
       "selectImage",
       expect.any(Function)
@@ -100,5 +115,64 @@ describe(useCustomMediaLibrarySetup.name, () => {
 
     // Assert
     expect(showCustomMediaLibraryModal).toBeCalledWith(expectedDoneFn);
+  });
+
+  it("should not register showCustomMediaLibraryModal when enabled = false", () => {
+    // Arrange
+    const {
+      TestComponent,
+      setUnlayerEditorObject,
+      getCurrentCustomMediaLibraryEnabled,
+    } = createTestContext();
+
+    render(
+      <ModalProvider>
+        <TestComponent enabled={false} />
+      </ModalProvider>
+    );
+
+    const {
+      unlayerEditorObject,
+      mocks: { registerCallback },
+    } = createUnlayerObjectDouble();
+
+    // Act
+    setUnlayerEditorObject(unlayerEditorObject);
+
+    // Assert
+    expect(getCurrentCustomMediaLibraryEnabled()).toBe(false);
+    expect(registerCallback).not.toBeCalled();
+  });
+
+  it("should unregister showCustomMediaLibraryModal on setCustomMediaLibraryEnabled(false)", () => {
+    // Arrange
+    const {
+      TestComponent,
+      setUnlayerEditorObject,
+      getCurrentCustomMediaLibraryEnabled,
+      setCustomMediaLibraryEnabled,
+    } = createTestContext();
+
+    render(
+      <ModalProvider>
+        <TestComponent />
+      </ModalProvider>
+    );
+
+    const {
+      unlayerEditorObject,
+      mocks: { registerCallback, unregisterCallback },
+    } = createUnlayerObjectDouble();
+
+    setUnlayerEditorObject(unlayerEditorObject);
+    expect(registerCallback).toBeCalled();
+    expect(getCurrentCustomMediaLibraryEnabled()).toBe(true);
+
+    // Act
+    setCustomMediaLibraryEnabled(false);
+
+    // Assert
+    expect(unregisterCallback).toBeCalledWith("selectImage");
+    expect(getCurrentCustomMediaLibraryEnabled()).toBe(false);
   });
 });

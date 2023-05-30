@@ -7,8 +7,7 @@ import { useInitialContent } from "./useInitialContent";
 import { useUnloadWithPendingUpdatesPrevention } from "./useUnloadWithPendingUpdatesPrevention";
 import { useActionWhenNoPendingUpdates } from "./useActionWhenNoPendingUpdates";
 import { useMemo } from "react";
-// TODO: enable it when CustomMediaLibrary component be ready
-// import { useCustomMediaLibrarySetup } from "./useCustomMediaLibrarySetup";
+import { useCustomMediaLibrarySetup } from "./useCustomMediaLibrarySetup";
 
 export type UndoToolsObject = Readonly<{
   canUndo: boolean;
@@ -26,8 +25,11 @@ export const useSingletonEditor = ({
 }) => {
   const { unlayerEditorObject, setContent } = useSingletonDesignContext();
 
-  // TODO: enable it when CustomMediaLibrary component be ready
-  // useCustomMediaLibrarySetup({ unlayerEditorObject });
+  const { setCustomMediaLibraryEnabled } = useCustomMediaLibrarySetup({
+    unlayerEditorObject,
+    // TODO: Remove this flag when the custom media library be ready
+    enabled: false,
+  });
 
   useInitialContent({
     initialContent,
