@@ -11,6 +11,7 @@ export type UnlayerEditorObject = Omit<
     exportHtmlAsync: () => Promise<HtmlExport>;
     exportImageAsync: () => Promise<ImageExport>;
     registerCallback: SelectImageRegisterCallback;
+    unregisterCallback: SelectImageUnregisterCallback;
     // https://docs.unlayer.com/docs/features#undo--redo
     canUndo: (callback: (v: boolean) => void) => void;
     canRedo: (callback: (v: boolean) => void) => void;
@@ -27,3 +28,7 @@ export type SelectImageCallback = (
   done: SelectImageDoneCallback
 ) => void;
 export type SelectImageDoneCallback = (data: { url: string }) => void;
+
+export type SelectImageUnregisterCallback = {
+  (type: "selectImage"): void;
+};
