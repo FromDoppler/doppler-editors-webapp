@@ -15,7 +15,7 @@ const CustomMediaLibraryModal = ({
     <ReactModal
       isOpen
       onRequestClose={cancel}
-      className="modal-content--medium"
+      className="modal-content--full"
       overlayClassName="modal"
       portalClassName="dp-library"
     >

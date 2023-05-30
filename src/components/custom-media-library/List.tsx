@@ -13,23 +13,28 @@ export const List = ({
   checkedImages: ReadonlySet<ImageItem>;
   toggleCheckedImage: (item: ImageItem) => void;
 }) => (
-  <div className="gallery__images">
+  <div className="dp-image-gallery-content">
     {/*
-      TODO: show the list of images, allow to select and unselect them
+      TODO: Infinite scrolling, Upload images, delete images
     */}
     {isLoading ? <>Loading...</> : false}
-    <ul data-testid="image-list">
-      {images.map((x) => (
+    <ul className="dp-image-gallery-list" data-testid="image-list">
+      {images.map((x, i) => (
         <li key={x.name}>
-          <p>{JSON.stringify(x)}</p>
-          <p>
+          <label
+            className="dp-image-gallery-thumbnail"
+            htmlFor={`image-item-${i}-check`}
+          >
+            <img src={x.thumbnailUrl150} alt={x.name} />
+            <div className="dp-image-gallery--mask" />
             <input
+              id={`image-item-${i}-check`}
               type="checkbox"
-              style={{ position: "relative" }}
               checked={checkedImages.has(x)}
               onChange={() => toggleCheckedImage(x)}
             />
-          </p>
+          </label>
+          <p>{x.name}</p>
         </li>
       ))}
     </ul>
