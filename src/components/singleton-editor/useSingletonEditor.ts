@@ -30,6 +30,8 @@ export const useSingletonEditor = ({
     // TODO: Remove this flag when the custom media library be ready
     enabled: false,
   });
+  // Ugly patch to allow enable/disable custom media library for testing
+  (window as any).setCustomMediaLibraryEnabled = setCustomMediaLibraryEnabled;
 
   useInitialContent({
     initialContent,
