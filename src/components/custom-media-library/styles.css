@@ -35,3 +35,10 @@
   padding-top: 20px;
   border-top: 1px solid #e5e5e5;
 }
+
+.dp-library
+  [class*="modal-content--"].modal-content--full
+  .dp-image-gallery-footer
+  button:last-child {
+  float: right;
+}

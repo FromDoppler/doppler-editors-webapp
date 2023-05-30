@@ -18,7 +18,11 @@ export const Footer = ({
       {/*
       TODO: add upload button
     */}
-      <button type="button" {...selectImageProps}>
+      <button
+        type="button"
+        {...selectImageProps}
+        className="dp-button button-medium primary-green"
+      >
         Select Image
       </button>
     </div>
