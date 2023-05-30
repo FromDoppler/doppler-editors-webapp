@@ -26,6 +26,7 @@ export const List = ({
             htmlFor={`image-item-${i}-check`}
           >
             <img src={x.thumbnailUrl150} alt={x.name} />
+            <div className="dp-image-gallery--mask" />
             <input
               id={`image-item-${i}-check`}
               type="checkbox"

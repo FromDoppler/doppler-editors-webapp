@@ -118,3 +118,24 @@
   left: 3px;
   color: #99a1a7;
 }
+
+.dp-library
+  [class*="modal-content--"].modal-content--full
+  .dp-image-gallery-list
+  .dp-image-gallery-thumbnail
+  .dp-image-gallery--mask {
+  background: 0 0;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.dp-library
+  [class*="modal-content--"].modal-content--full
+  .gallery--showcase
+  .dp-image-gallery-thumbnail:hover
+  .dp-image-gallery--mask {
+  background: rgba(0, 0, 0, 0.3);
+}
