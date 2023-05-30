@@ -12,14 +12,20 @@ export const CustomMediaLibrary = ({
   cancel: () => void;
   selectImage: ({ url }: { url: string }) => void;
 }) => {
-  const { images, selectCheckedImage, checkedImages, toggleCheckedImage } =
-    useCustomMediaLibraryBehavior({
-      selectImage,
-    });
+  const {
+    isLoading,
+    images,
+    selectCheckedImage,
+    checkedImages,
+    toggleCheckedImage,
+  } = useCustomMediaLibraryBehavior({
+    selectImage,
+  });
   return (
     <>
       <Header cancel={cancel} />
       <List
+        isLoading={isLoading}
         images={images}
         checkedImages={checkedImages}
         toggleCheckedImage={toggleCheckedImage}

@@ -1,31 +1,16 @@
 // TODO: implement it based on MSEditor Gallery
 
 import { useCallback, useMemo, useState } from "react";
-import { ImageItem } from "./types";
+import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { takeOneValue } from "../../utils";
-
-const baseUrl =
-  "https://www.fromdoppler.com/wp-content/themes/doppler_site/img";
-const images: ImageItem[] = [
-  {
-    name: "omnicanalidad-email-marketing.png",
-    url: `${baseUrl}/omnicanalidad-email-marketing.png`,
-  },
-  {
-    name: "omnicanalidad-sms.png",
-    url: `${baseUrl}/omnicanalidad-sms.png`,
-  },
-  {
-    name: "omnicanalidad-emailtransaccional.png",
-    url: `${baseUrl}/omnicanalidad-emailtransaccional.png`,
-  },
-];
+import { useGetImageGallery } from "../../queries/image-galleries-queries";
 
 export const useCustomMediaLibraryBehavior = ({
   selectImage,
 }: {
   selectImage: ({ url }: { url: string }) => void;
 }) => {
+  const { isLoading, data } = useGetImageGallery();
   const [checkedImages, setCheckedImages] = useState<ReadonlySet<ImageItem>>(
     new Set()
   );
@@ -49,7 +34,8 @@ export const useCustomMediaLibraryBehavior = ({
   );
 
   return {
-    images,
+    isLoading,
+    images: data?.items ?? [],
     selectCheckedImage,
     checkedImages,
     toggleCheckedImage,

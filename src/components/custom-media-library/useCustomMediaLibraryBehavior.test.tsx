@@ -1,6 +1,21 @@
 import { act, render } from "@testing-library/react";
 import { useCustomMediaLibraryBehavior } from "./useCustomMediaLibraryBehavior";
-import { ImageItem } from "./types";
+import { ImageItem } from "../../abstractions/domain/image-gallery";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactNode } from "react";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      cacheTime: 0,
+    },
+  },
+});
+
+const ContextWrapper = ({ children }: { children: ReactNode }) => (
+  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+);
 
 const createTestContext = () => {
   const selectImage = jest.fn();
@@ -34,20 +49,24 @@ describe(useCustomMediaLibraryBehavior.name, () => {
     // Arrange
     const { TestComponent, getCheckedItems, toggleCheckedImage } =
       createTestContext();
-    render(<TestComponent />);
+    render(
+      <ContextWrapper>
+        <TestComponent />
+      </ContextWrapper>
+    );
 
     // Assert
     expect(getCheckedItems()).toEqual([]);
 
     // Act (new item)
-    const item1 = { name: "name1", url: "url1" };
+    const item1 = { name: "name1", url: "url1" } as ImageItem;
     toggleCheckedImage(item1);
 
     // Assert
     expect(getCheckedItems()).toEqual([item1]);
 
     // Act (a new second item)
-    const item2 = { name: "name2", url: "url2" };
+    const item2 = { name: "name2", url: "url2" } as ImageItem;
     toggleCheckedImage(item2);
 
     // Assert
@@ -60,7 +79,7 @@ describe(useCustomMediaLibraryBehavior.name, () => {
     expect(getCheckedItems()).toEqual([item2]);
 
     // Act (a new item similar to previous one)
-    const item3 = { name: "name2", url: "url2" };
+    const item3 = { name: "name2", url: "url2" } as ImageItem;
     toggleCheckedImage(item3);
 
     // Assert
@@ -76,9 +95,13 @@ describe(useCustomMediaLibraryBehavior.name, () => {
       selectCheckedImage,
       selectCheckedIsNull,
     } = createTestContext();
-    render(<TestComponent />);
+    render(
+      <ContextWrapper>
+        <TestComponent />
+      </ContextWrapper>
+    );
     const url = "url";
-    toggleCheckedImage({ name: "name1", url });
+    toggleCheckedImage({ name: "name1", url } as ImageItem);
 
     // Act
     selectCheckedImage();
@@ -92,7 +115,11 @@ describe(useCustomMediaLibraryBehavior.name, () => {
     // Arrange
     const { TestComponent, selectCheckedImage, selectCheckedIsNull } =
       createTestContext();
-    render(<TestComponent />);
+    render(
+      <ContextWrapper>
+        <TestComponent />
+      </ContextWrapper>
+    );
 
     // Act
     selectCheckedImage();
@@ -109,9 +136,13 @@ describe(useCustomMediaLibraryBehavior.name, () => {
       selectCheckedImage,
       selectCheckedIsNull,
     } = createTestContext();
-    render(<TestComponent />);
-    toggleCheckedImage({ name: "name1", url: "url1" });
-    toggleCheckedImage({ name: "name2", url: "url2" });
+    render(
+      <ContextWrapper>
+        <TestComponent />
+      </ContextWrapper>
+    );
+    toggleCheckedImage({ name: "name1", url: "url1" } as ImageItem);
+    toggleCheckedImage({ name: "name2", url: "url2" } as ImageItem);
 
     // Act
     selectCheckedImage();
