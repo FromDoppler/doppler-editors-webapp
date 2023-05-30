@@ -15,7 +15,7 @@ export const List = ({
 }) => (
   <div className="dp-image-gallery-content">
     {/*
-      TODO: show the list of images, allow to select and unselect them
+      TODO: Infinite scrolling, Upload images, delete images
     */}
     {isLoading ? <>Loading...</> : false}
     <ul className="dp-image-gallery-list" data-testid="image-list">
