@@ -1,26 +1,11 @@
 // TODO: implement it based on MSEditor Gallery
 
-// TODO: add tests
-export const Footer = ({
-  selectImage,
-}: {
-  selectImage: (() => void) | null;
-}) => {
-  const selectImageProps = selectImage
-    ? {
-        onClick: selectImage,
-      }
-    : {
-        disabled: true,
-      };
+export const Footer = ({ submitEnabled }: { submitEnabled: boolean }) => {
   return (
     <div className="dp-image-gallery-footer">
-      {/*
-      TODO: add upload button
-    */}
       <button
-        type="button"
-        {...selectImageProps}
+        type="submit"
+        disabled={!submitEnabled}
         className="dp-button button-medium primary-green"
       >
         Select Image

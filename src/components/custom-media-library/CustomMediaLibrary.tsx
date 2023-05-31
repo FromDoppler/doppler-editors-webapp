@@ -36,7 +36,15 @@ export const CustomMediaLibraryUI = ({
   checkedImages: ReadonlySet<ImageItem>;
   toggleCheckedImage: (item: ImageItem) => void;
 }) => (
-  <>
+  <form
+    onSubmit={(e) => {
+      if (selectCheckedImage) {
+        selectCheckedImage();
+      }
+      e.preventDefault();
+      return false;
+    }}
+  >
     <Header cancel={cancel} />
     <List
       isLoading={isLoading}
@@ -44,6 +52,6 @@ export const CustomMediaLibraryUI = ({
       checkedImages={checkedImages}
       toggleCheckedImage={toggleCheckedImage}
     />
-    <Footer selectImage={selectCheckedImage} />
-  </>
+    <Footer submitEnabled={!!selectCheckedImage} />
+  </form>
 );

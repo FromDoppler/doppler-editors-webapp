@@ -49,6 +49,26 @@ describe(CustomMediaLibraryUI.name, () => {
     expect(selectCheckedImage).toBeCalled();
   });
 
+  it("should call selectCheckedImage on submit", async () => {
+    // Arrange
+    const selectCheckedImage = jest.fn();
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <CustomMediaLibraryUI
+        {...baseProps}
+        selectCheckedImage={selectCheckedImage}
+      />
+    );
+
+    // Act
+    document.querySelector("form")?.submit();
+
+    // Assert
+    expect(selectCheckedImage).toBeCalled();
+  });
+
   it.each([
     {
       scenario: "an empty array",
