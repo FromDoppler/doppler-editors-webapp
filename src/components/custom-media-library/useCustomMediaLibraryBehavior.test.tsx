@@ -2,7 +2,6 @@ import { act, render } from "@testing-library/react";
 import { useCustomMediaLibraryBehavior } from "./useCustomMediaLibraryBehavior";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactNode } from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -12,10 +11,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-
-const ContextWrapper = ({ children }: { children: ReactNode }) => (
-  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-);
 
 const createTestContext = () => {
   const selectImage = jest.fn();
@@ -34,26 +29,28 @@ const createTestContext = () => {
   };
 
   return {
-    TestComponent,
-    selectImage,
+    Component: () => (
+      <QueryClientProvider client={queryClient}>
+        <TestComponent />
+      </QueryClientProvider>
+    ),
     toggleCheckedImage: (item: ImageItem) =>
       act(() => currentToggleCheckedImage(item)),
     getCheckedItems: () => Array.from(currentCheckedItems),
     selectCheckedIsNull: () => currentSelectCheckedImage === null,
     selectCheckedImage: () => act(() => currentSelectCheckedImage?.()),
+    mocks: {
+      selectImage,
+    },
   };
 };
 
 describe(useCustomMediaLibraryBehavior.name, () => {
   it("should toggle checked items", () => {
     // Arrange
-    const { TestComponent, getCheckedItems, toggleCheckedImage } =
+    const { Component, getCheckedItems, toggleCheckedImage } =
       createTestContext();
-    render(
-      <ContextWrapper>
-        <TestComponent />
-      </ContextWrapper>
-    );
+    render(<Component />);
 
     // Assert
     expect(getCheckedItems()).toEqual([]);
@@ -89,17 +86,13 @@ describe(useCustomMediaLibraryBehavior.name, () => {
   it("should define selectCheckedImage when there is only one checked image", () => {
     // Arrange
     const {
-      TestComponent,
+      Component,
       toggleCheckedImage,
-      selectImage,
       selectCheckedImage,
       selectCheckedIsNull,
+      mocks: { selectImage },
     } = createTestContext();
-    render(
-      <ContextWrapper>
-        <TestComponent />
-      </ContextWrapper>
-    );
+    render(<Component />);
     const url = "url";
     toggleCheckedImage({ name: "name1", url } as ImageItem);
 
@@ -113,13 +106,9 @@ describe(useCustomMediaLibraryBehavior.name, () => {
 
   it("should make selectCheckedImage null when there are no checked images", () => {
     // Arrange
-    const { TestComponent, selectCheckedImage, selectCheckedIsNull } =
+    const { Component, selectCheckedImage, selectCheckedIsNull } =
       createTestContext();
-    render(
-      <ContextWrapper>
-        <TestComponent />
-      </ContextWrapper>
-    );
+    render(<Component />);
 
     // Act
     selectCheckedImage();
@@ -131,16 +120,12 @@ describe(useCustomMediaLibraryBehavior.name, () => {
   it("should make selectCheckedImage null when there are more than a checked image", () => {
     // Arrange
     const {
-      TestComponent,
+      Component,
       toggleCheckedImage,
       selectCheckedImage,
       selectCheckedIsNull,
     } = createTestContext();
-    render(
-      <ContextWrapper>
-        <TestComponent />
-      </ContextWrapper>
-    );
+    render(<Component />);
     toggleCheckedImage({ name: "name1", url: "url1" } as ImageItem);
     toggleCheckedImage({ name: "name2", url: "url2" } as ImageItem);
 
