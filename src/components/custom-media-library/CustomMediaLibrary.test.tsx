@@ -1,9 +1,54 @@
 import { render, screen } from "@testing-library/react";
-import { List } from "./List";
+import { CustomMediaLibraryUI } from "./CustomMediaLibrary";
 import { noop } from "../../utils";
+import { ImageItem } from "../../abstractions/domain/image-gallery";
 import userEvent from "@testing-library/user-event";
 
-describe(List.name, () => {
+describe(CustomMediaLibraryUI.name, () => {
+  it("should disable button when selectCheckedImage is null", () => {
+    // Arrange
+    const selectCheckedImage = null;
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <CustomMediaLibraryUI
+        {...baseProps}
+        selectCheckedImage={selectCheckedImage}
+      />
+    );
+
+    // Assert
+    const selectButton = screen.getByText("Select Image");
+    expect(selectButton).toBeDisabled();
+    expect(selectButton.onclick).toBeNull();
+  });
+
+  it("should enable button when selectCheckedImage is a function and call it on click", () => {
+    // Arrange
+    const selectCheckedImage = jest.fn();
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <CustomMediaLibraryUI
+        {...baseProps}
+        selectCheckedImage={selectCheckedImage}
+      />
+    );
+
+    // Assert
+    const selectButton = screen.getByText("Select Image");
+    expect(selectButton).not.toBeDisabled();
+    expect(selectCheckedImage).not.toBeCalled();
+
+    // Act
+    selectButton.click();
+
+    // Assert
+    expect(selectCheckedImage).toBeCalled();
+  });
+
   it.each([
     {
       scenario: "an empty array",
@@ -26,13 +71,12 @@ describe(List.name, () => {
   ])(
     "should have an item by each image when images is {scenario}",
     ({ images }) => {
+      // Arrange
+      const baseProps = createBaseProps();
+
       // Act
       render(
-        <List
-          images={images}
-          checkedImages={new Set()}
-          toggleCheckedImage={noop}
-        />
+        <CustomMediaLibraryUI {...baseProps} images={images as ImageItem[]} />
       );
 
       // Assert
@@ -62,12 +106,14 @@ describe(List.name, () => {
       images[checkedIndex2],
     ]);
 
+    const baseProps = createBaseProps();
+
     // Act
     render(
-      <List
-        images={images}
-        checkedImages={checkedItems}
-        toggleCheckedImage={noop}
+      <CustomMediaLibraryUI
+        {...baseProps}
+        images={images as ImageItem[]}
+        checkedImages={checkedItems as Set<ImageItem>}
       />
     );
 
@@ -93,11 +139,13 @@ describe(List.name, () => {
     const testItem = images[3];
     const toggleCheckedImage = jest.fn();
 
+    const baseProps = createBaseProps();
+
     // Act
     render(
-      <List
-        images={images}
-        checkedImages={new Set()}
+      <CustomMediaLibraryUI
+        {...baseProps}
+        images={images as ImageItem[]}
         toggleCheckedImage={toggleCheckedImage}
       />
     );
@@ -112,7 +160,16 @@ describe(List.name, () => {
   });
 });
 
-function hasACheckedCheckbox(element: Element) {
+const createBaseProps = () => ({
+  selectCheckedImage: noop,
+  cancel: noop,
+  isLoading: false,
+  images: [],
+  checkedImages: new Set([]),
+  toggleCheckedImage: noop,
+});
+
+const hasACheckedCheckbox = (element: Element) => {
   const checkbox = element.querySelector('input[type="checkbox"]');
   return !!(checkbox && "checked" in checkbox && checkbox.checked);
-}
+};
