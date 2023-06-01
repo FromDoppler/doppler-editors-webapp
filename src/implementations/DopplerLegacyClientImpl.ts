@@ -34,6 +34,20 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
       value: { items: response.data.images.map(parseImageItem) },
     };
   }
+
+  async uploadImage(file: File): Promise<Result> {
+    // TODO: deal with server errors for example:
+    //   {"success":false,"error":"Tamaño inválido","maxSize":3145728}
+    // TODO: do client side validations like this:
+    //   https://github.com/MakingSense/MSEditor/blob/v1.4.0/app/controllers/mseditorImageGalleryCtrl.js
+    //   Lines #L95-L105
+    await this.axios.postForm("/Campaigns/Editor/UploadImage", {
+      file,
+    });
+    return {
+      success: true,
+    };
+  }
 }
 
 function parseImageItem({

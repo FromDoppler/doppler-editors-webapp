@@ -48,4 +48,12 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     console.log("End getImageGallery", { result });
     return result;
   };
+
+  uploadImage: () => Promise<Result> = async () => {
+    console.log("Begin uploadImage...");
+    await timeout(1000);
+    demoImages.unshift({ ...demoImages[0], name: `new_image_${Date.now()}` });
+    console.log("End uploadImage");
+    return { success: true };
+  };
 }

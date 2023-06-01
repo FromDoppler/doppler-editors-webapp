@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAppServices } from "../components/AppServicesContext";
 
 const queryKey = ["image-gallery"] as const;
@@ -17,4 +17,18 @@ export const useGetImageGallery = () => {
   });
 
   return query;
+};
+
+export const useUploadImage = () => {
+  const { dopplerLegacyClient } = useAppServices();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (file: File) => {
+      return dopplerLegacyClient.uploadImage(file);
+    },
+    onSuccess: () => {
+      return queryClient.invalidateQueries(queryKey);
+    },
+  });
 };
