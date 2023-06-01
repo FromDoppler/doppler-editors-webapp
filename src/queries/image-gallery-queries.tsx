@@ -1,31 +1,14 @@
-import { QueryFunction, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useAppServices } from "../components/AppServicesContext";
-import { ImageItem } from "../abstractions/domain/image-gallery";
 
-type GetImageGalleryQueryKey = {
-  scope: string;
-}[];
+const queryKey = ["image-gallery"] as const;
 
 export const useGetImageGallery = () => {
   const { dopplerLegacyClient } = useAppServices();
 
-  const queryKey: GetImageGalleryQueryKey = [
-    {
-      scope: "image-gallery",
-    },
-  ];
-
-  const queryFn: QueryFunction<
-    { items: ImageItem[] },
-    GetImageGalleryQueryKey
-  > = async () => {
-    const result = await dopplerLegacyClient.getImageGallery();
-    return result.value;
-  };
-
   const query = useQuery({
     queryKey,
-    queryFn,
+    queryFn: async () => (await dopplerLegacyClient.getImageGallery()).value,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
