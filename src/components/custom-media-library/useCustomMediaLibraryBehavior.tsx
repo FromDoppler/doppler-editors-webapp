@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { takeOneValue } from "../../utils";
-import { useGetImageGallery } from "../../queries/image-galleries-queries";
+import { useGetImageGallery } from "../../queries/image-gallery-queries";
 
 export const useCustomMediaLibraryBehavior = ({
   selectImage,
