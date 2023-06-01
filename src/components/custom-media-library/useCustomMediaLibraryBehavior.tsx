@@ -3,13 +3,17 @@
 import { useCallback, useMemo, useState } from "react";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { takeOneValue, toggleItemInSet } from "../../utils";
-import { useGetImageGallery } from "../../queries/image-gallery-queries";
+import {
+  useGetImageGallery,
+  useUploadImage,
+} from "../../queries/image-gallery-queries";
 
 export const useCustomMediaLibraryBehavior = ({
   selectImage,
 }: {
   selectImage: ({ url }: { url: string }) => void;
 }) => {
+  const { mutate: uploadImage } = useUploadImage();
   const { isLoading, data } = useGetImageGallery();
   const [checkedImages, setCheckedImages] = useState<ReadonlySet<ImageItem>>(
     new Set()
@@ -33,5 +37,6 @@ export const useCustomMediaLibraryBehavior = ({
     selectCheckedImage,
     checkedImages,
     toggleCheckedImage,
+    uploadImage,
   };
 };
