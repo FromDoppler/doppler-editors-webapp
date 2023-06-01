@@ -3,16 +3,16 @@ import { useCustomMediaLibraryBehavior } from "./useCustomMediaLibraryBehavior";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-      cacheTime: 0,
-    },
-  },
-});
-
 const createTestContext = () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        cacheTime: 0,
+      },
+    },
+  });
+
   const selectImage = jest.fn();
   let currentCheckedItems: ReadonlySet<ImageItem>;
   let currentToggleCheckedImage: (item: ImageItem) => void;

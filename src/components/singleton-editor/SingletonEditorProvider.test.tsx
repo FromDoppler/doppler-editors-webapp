@@ -74,15 +74,6 @@ const defaultAppServices = {
   },
 };
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-      cacheTime: 0,
-    },
-  },
-});
-
 let generatedContentCounter = 0;
 const generateNewContent: () => CampaignContent = () => ({
   htmlContent: `Content #${generatedContentCounter++}`,
@@ -125,6 +116,15 @@ describe(`${SingletonEditorProvider.name}`, () => {
       </>
     );
   };
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        cacheTime: 0,
+      },
+    },
+  });
 
   const WrapperSingletonProviderTest = ({ children }: any) => (
     <QueryClientProvider client={queryClient}>
