@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { App } from "./App";
 import { MemoryRouter } from "react-router-dom";
 import { AppServicesProvider } from "./AppServicesContext";
@@ -25,17 +25,19 @@ const baseAppServices = {
   },
 } as AppServices;
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-      cacheTime: 0,
+const createQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        cacheTime: 0,
+      },
     },
-  },
-});
+  });
 
 test("root URL should not render invoices or expenses content", async () => {
   // Arrange & Act
+  const queryClient = createQueryClient();
   const initialURL = rootURL;
   render(
     <QueryClientProvider client={queryClient}>
@@ -60,6 +62,7 @@ test("root URL should not render invoices or expenses content", async () => {
 
 test("Wrong URL should render expected content", async () => {
   // Arrange & Act
+  const queryClient = createQueryClient();
   const initialURL = wrongURL;
   const expectedContent = notFoundContent;
   render(
@@ -80,6 +83,7 @@ test("Wrong URL should render expected content", async () => {
 
 test("expenses URL should render expected content", async () => {
   // Arrange & Act
+  const queryClient = createQueryClient();
   const initialURL = expensesURL;
   const expectedContent = "Expenses content";
   render(
@@ -100,6 +104,7 @@ test("expenses URL should render expected content", async () => {
 
 test("invoices URL should render expected content", async () => {
   // Arrange & Act
+  const queryClient = createQueryClient();
   const initialURL = invoicesURL;
   const expectedContent = "Invoices content";
   render(

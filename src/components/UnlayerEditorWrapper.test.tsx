@@ -29,18 +29,20 @@ const authenticatedSession: AuthenticatedAppSessionState = {
   lang: "en",
 };
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-      cacheTime: 0,
+const createQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        cacheTime: 0,
+      },
     },
-  },
-});
+  });
 
 describe(UnlayerEditorWrapper.name, () => {
   it("should render EmailEditor with the right props when the session is authenticated", async () => {
     // Arrange
+    const queryClient = createQueryClient();
     const unlayerEditorExtensionsEntrypoints = ["a.js", "b.css", "c", "d.js"];
     const expectedCustomCSS = ["b.css"];
     const expectedCustomJS = ["a.js", "d.js"];
@@ -123,6 +125,7 @@ describe(UnlayerEditorWrapper.name, () => {
     "should not render the EmailEditor when the session is not authenticated ($sessionStatus)",
     ({ sessionStatus }) => {
       // Arrange
+      const queryClient = createQueryClient();
       const appServices = {
         appConfiguration: {
           unlayerProjectId,

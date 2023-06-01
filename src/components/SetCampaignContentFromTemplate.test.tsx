@@ -41,14 +41,7 @@ function createTestContext() {
 
   const destinationPageText = "DestinationPage";
 
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-        cacheTime: 0,
-      },
-    },
-  });
+  const queryClient = new QueryClient();
 
   const renderTest = (initialUrl: InitialEntry) =>
     render(
