@@ -30,5 +30,11 @@ export const useUploadImage = () => {
     onSuccess: () => {
       return queryClient.invalidateQueries(queryKey);
     },
+    onError: (error: Error) =>
+      console.error(
+        "Error in useUploadImage",
+        { message: error.message, cause: error.cause },
+        error
+      ),
   });
 };

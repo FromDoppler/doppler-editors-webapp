@@ -41,9 +41,14 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     // TODO: do client side validations like this:
     //   https://github.com/MakingSense/MSEditor/blob/v1.4.0/app/controllers/mseditorImageGalleryCtrl.js
     //   Lines #L95-L105
-    await this.axios.postForm("/Campaigns/Editor/UploadImage", {
+    const result = await this.axios.postForm("/Campaigns/Editor/UploadImage", {
       file,
     });
+
+    if (!result.data.success) {
+      throw new Error("Error uploading image", { cause: result.data });
+    }
+
     return {
       success: true,
     };

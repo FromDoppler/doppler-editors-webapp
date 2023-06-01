@@ -128,7 +128,9 @@ describe(DopplerLegacyClientImpl.name, () => {
         dopplerLegacyBaseUrl,
       } as AppConfiguration;
 
-      const postForm = jest.fn(() => Promise.resolve());
+      const postForm = jest.fn(() =>
+        Promise.resolve({ data: { success: true } })
+      );
 
       const create = jest.fn(() => ({
         postForm,
