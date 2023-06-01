@@ -4,14 +4,7 @@ import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const createTestContext = () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-        cacheTime: 0,
-      },
-    },
-  });
+  const queryClient = new QueryClient();
 
   const selectImage = jest.fn();
   let currentCheckedItems: ReadonlySet<ImageItem>;

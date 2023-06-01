@@ -8,14 +8,7 @@ import { demoImages } from "../../implementations/dummies/doppler-legacy-client"
 import { AppServicesProvider } from "../AppServicesContext";
 import { ReactNode } from "react";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-      cacheTime: 0,
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 const baseAppServices: Partial<AppServices> = {
   dopplerLegacyClient: {

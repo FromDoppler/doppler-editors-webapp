@@ -19,14 +19,7 @@ const baseAppServices = {
 
 describe("Main.name", () => {
   it("renders learn react link", () => {
-    const queryClient = new QueryClient({
-      defaultOptions: {
-        queries: {
-          retry: false,
-          cacheTime: 0,
-        },
-      },
-    });
+    const queryClient = new QueryClient();
     render(
       <QueryClientProvider client={queryClient}>
         <AppServicesProvider appServices={baseAppServices}>
