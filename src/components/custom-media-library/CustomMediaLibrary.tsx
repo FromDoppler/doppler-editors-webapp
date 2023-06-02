@@ -37,6 +37,7 @@ export const CustomMediaLibraryUI = ({
   toggleCheckedImage: (item: ImageItem) => void;
 }) => (
   <form
+    className="dp-image-gallery"
     onSubmit={(e) => {
       if (selectCheckedImage) {
         selectCheckedImage();
