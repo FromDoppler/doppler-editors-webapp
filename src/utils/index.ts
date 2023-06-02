@@ -1,3 +1,6 @@
+import { useMemo, useEffect, useState } from "react";
+import { debounce } from "lodash";
+
 export const timeout = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -68,4 +71,25 @@ export const toggleItemInSet = <T>(iterable: Iterable<T>, item: T) => {
     newSet.add(item);
   }
   return newSet;
+};
+
+export const useDebounce = <T>(value: T, delay: number) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  const debouncedSet = useMemo(
+    () => debounce((v: T) => setDebouncedValue(v), delay),
+    [delay]
+  );
+
+  useEffect(() => {
+    return () => {
+      debouncedSet.cancel();
+    };
+  }, [debouncedSet]);
+
+  useEffect(() => {
+    debouncedSet(value);
+  }, [value, debouncedSet]);
+
+  return debouncedValue;
 };
