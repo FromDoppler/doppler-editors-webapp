@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
-import { takeOneValue } from "../../utils";
+import { takeOneValue, toggleItemInSet } from "../../utils";
 import { useGetImageGallery } from "../../queries/image-gallery-queries";
 
 export const useCustomMediaLibraryBehavior = ({
@@ -15,13 +15,7 @@ export const useCustomMediaLibraryBehavior = ({
     new Set()
   );
   const toggleCheckedImage = useCallback(
-    (item: ImageItem) => {
-      const newSet = new Set(checkedImages);
-      if (!newSet.delete(item)) {
-        newSet.add(item);
-      }
-      setCheckedImages(newSet);
-    },
+    (item: ImageItem) => setCheckedImages(toggleItemInSet(checkedImages, item)),
     [checkedImages]
   );
 
