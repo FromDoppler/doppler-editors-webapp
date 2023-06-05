@@ -4,6 +4,8 @@ import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppServicesProvider } from "../AppServicesContext";
 
+jest.useFakeTimers();
+
 const createTestContext = () => {
   const queryClient = new QueryClient();
   const dopplerLegacyClient = {
@@ -41,6 +43,9 @@ const createTestContext = () => {
       }),
     getImages: () => currentHookValues.images,
     invalidateQueries: () => queryClient.invalidateQueries(),
+    getSearchTerm: () => currentHookValues.searchTerm,
+    setSearchTerm: (value: string) =>
+      act(() => currentHookValues.setSearchTerm(value)),
     mocks: {
       selectImage,
       dopplerLegacyClient,
@@ -324,6 +329,60 @@ describe(useCustomMediaLibraryBehavior.name, () => {
 
     // Assert
     expect(getCheckedItems()).toEqual([]);
+  });
+
+  it("should make honor to the debounced searchTerm", async () => {
+    // Arrange
+    const {
+      Component,
+      getSearchTerm,
+      setSearchTerm,
+      mocks: { dopplerLegacyClient },
+    } = createTestContext();
+
+    render(<Component />);
+
+    // Assert - Default value
+    expect(getSearchTerm()).toBe("");
+    expect(dopplerLegacyClient.getImageGallery).toBeCalledWith({
+      searchTerm: "",
+    });
+
+    // Act
+    setSearchTerm("test1");
+    act(() => {
+      jest.advanceTimersByTime(100);
+    });
+
+    // Assert - Before debounce time
+    expect(getSearchTerm()).toBe("test1");
+    expect(dopplerLegacyClient.getImageGallery).not.toBeCalledWith({
+      searchTerm: "test1",
+    });
+
+    // Act
+    setSearchTerm("test2");
+    act(() => {
+      jest.advanceTimersByTime(250);
+    });
+
+    // Assert
+    expect(getSearchTerm()).toBe("test2");
+    expect(dopplerLegacyClient.getImageGallery).not.toBeCalledWith({
+      searchTerm: "test2",
+    });
+
+    // Act
+    act(() => {
+      jest.advanceTimersByTime(50);
+    });
+
+    // Assert - After debounce time
+    expect(getSearchTerm()).toBe("test2");
+    expect(dopplerLegacyClient.getImageGallery).toBeCalledWith({
+      searchTerm: "test2",
+    });
+    expect(dopplerLegacyClient.getImageGallery).toBeCalledTimes(2);
   });
 });
 

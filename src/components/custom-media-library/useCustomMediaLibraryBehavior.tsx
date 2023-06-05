@@ -1,7 +1,7 @@
 // TODO: implement it based on MSEditor Gallery
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { takeOneValue, toggleItemInSet } from "../../utils";
+import { takeOneValue, toggleItemInSet, useDebounce } from "../../utils";
 import {
   useGetImageGallery,
   useUploadImage,
@@ -13,7 +13,11 @@ export const useCustomMediaLibraryBehavior = ({
   selectImage: ({ url }: { url: string }) => void;
 }) => {
   const { mutate: uploadImage } = useUploadImage();
-  const { isLoading, isFetching, images } = useGetImageGallery();
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const { isLoading, isFetching, images } = useGetImageGallery({
+    searchTerm: debouncedSearchTerm,
+  });
   const [checkedImages, setCheckedImages] = useState<ReadonlySet<string>>(
     new Set()
   );
@@ -59,5 +63,7 @@ export const useCustomMediaLibraryBehavior = ({
     checkedImages,
     toggleCheckedImage,
     uploadImage,
+    searchTerm,
+    setSearchTerm,
   };
 };
