@@ -7,6 +7,7 @@ import { AppServices } from "../../abstractions";
 import { demoImages } from "../../implementations/dummies/doppler-legacy-client";
 import { AppServicesProvider } from "../AppServicesContext";
 import { ReactNode } from "react";
+import { DopplerLegacyClient } from "../../abstractions/doppler-legacy-client";
 
 const queryClient = new QueryClient();
 
@@ -14,7 +15,7 @@ const baseAppServices: Partial<AppServices> = {
   dopplerLegacyClient: {
     getImageGallery: () =>
       Promise.resolve({ success: true, value: { items: demoImages } }),
-  },
+  } as DopplerLegacyClient,
 };
 
 const ContextWrapper = ({ children }: { children: ReactNode }) => (
