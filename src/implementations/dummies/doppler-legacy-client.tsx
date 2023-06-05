@@ -36,12 +36,18 @@ export const demoImages: ImageItem[] = [
 ];
 
 export class DummyDopplerLegacyClient implements DopplerLegacyClient {
-  getImageGallery: () => Promise<Result<{ items: ImageItem[] }>> = async () => {
-    console.log("Begin getImageGallery...");
+  getImageGallery: ({
+    searchTerm,
+  }: {
+    searchTerm: string;
+  }) => Promise<Result<{ items: ImageItem[] }>> = async ({ searchTerm }) => {
+    console.log(`Begin getImageGallery.searching by ${searchTerm}...`);
     await timeout(1000);
 
-    // Deep cloning images to change the identity of each object
-    const items = demoImages.map((x) => ({ ...x }));
+    const items = demoImages
+      // Deep cloning images to change the identity of each object
+      .filter((x) => x.name.includes(searchTerm))
+      .map((x) => ({ ...x }));
 
     const result = {
       success: true as const,

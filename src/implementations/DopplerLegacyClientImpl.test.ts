@@ -9,6 +9,7 @@ describe(DopplerLegacyClientImpl.name, () => {
     it("Should request backend and parse response", async () => {
       // Arrange
       const dopplerLegacyBaseUrl = "dopplerLegacyBaseUrl";
+      const searchTerm = "searchTerm";
 
       // cSpell:disable
       const apiResponse = {
@@ -101,7 +102,7 @@ describe(DopplerLegacyClientImpl.name, () => {
       });
 
       // Act
-      const result = await sut.getImageGallery();
+      const result = await sut.getImageGallery({ searchTerm });
 
       // Assert
       expect(create).toBeCalledWith({
@@ -109,13 +110,43 @@ describe(DopplerLegacyClientImpl.name, () => {
         withCredentials: true,
       });
       expect(get).toBeCalledWith(
-        "/Campaigns/Editor/GetImageGallery?offset=50&position=0&query=&sortingCriteria=DATE"
+        "/Campaigns/Editor/GetImageGallery?offset=50&position=0&query=searchTerm&sortingCriteria=DATE"
       );
 
       expect(result).toEqual({
         success: true,
         value: expectedResultValue,
       });
+    });
+
+    it("Should accept empty search terms", async () => {
+      // Arrange
+      const searchTerm = "";
+      const expectedUrl =
+        "/Campaigns/Editor/GetImageGallery?offset=50&position=0&query=&sortingCriteria=DATE";
+
+      const get = jest.fn(() =>
+        Promise.resolve({
+          data: { images: [] },
+        })
+      );
+
+      const axiosStatic = {
+        create: jest.fn(() => ({
+          get,
+        })),
+      } as unknown as AxiosStatic;
+
+      const sut = new DopplerLegacyClientImpl({
+        axiosStatic,
+        appConfiguration: {},
+      });
+
+      // Act
+      await sut.getImageGallery({ searchTerm });
+
+      // Assert
+      expect(get).toBeCalledWith(expectedUrl);
     });
   });
 

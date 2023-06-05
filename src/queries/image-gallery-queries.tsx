@@ -4,12 +4,15 @@ import { useMemo } from "react";
 
 const queryKey = ["image-gallery"] as const;
 
-export const useGetImageGallery = () => {
+export const useGetImageGallery = ({
+  searchTerm = "",
+}: { searchTerm?: string } = {}) => {
   const { dopplerLegacyClient } = useAppServices();
 
   const query = useQuery({
-    queryKey,
-    queryFn: async () => (await dopplerLegacyClient.getImageGallery()).value,
+    queryKey: [...queryKey, searchTerm],
+    queryFn: async () =>
+      (await dopplerLegacyClient.getImageGallery({ searchTerm })).value,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
