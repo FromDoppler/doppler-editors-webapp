@@ -23,6 +23,7 @@ export const CustomMediaLibrary = ({
 
 export const CustomMediaLibraryUI = ({
   selectCheckedImage,
+  uploadImage,
   cancel,
   isLoading,
   images,
@@ -30,6 +31,7 @@ export const CustomMediaLibraryUI = ({
   toggleCheckedImage,
 }: {
   selectCheckedImage: (() => void) | null;
+  uploadImage: (file: File) => void;
   cancel: () => void;
   isLoading: boolean;
   images: ImageItem[];
@@ -53,6 +55,6 @@ export const CustomMediaLibraryUI = ({
       checkedImages={checkedImages}
       toggleCheckedImage={toggleCheckedImage}
     />
-    <Footer submitEnabled={!!selectCheckedImage} />
+    <Footer submitEnabled={!!selectCheckedImage} uploadImage={uploadImage} />
   </form>
 );

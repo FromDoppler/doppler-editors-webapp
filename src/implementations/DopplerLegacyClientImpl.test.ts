@@ -118,4 +118,49 @@ describe(DopplerLegacyClientImpl.name, () => {
       });
     });
   });
+
+  describe("uploadFile", () => {
+    it("Should request backend", async () => {
+      // Arrange
+      const dopplerLegacyBaseUrl = "dopplerLegacyBaseUrl";
+
+      const appConfiguration = {
+        dopplerLegacyBaseUrl,
+      } as AppConfiguration;
+
+      const postForm = jest.fn(() =>
+        Promise.resolve({ data: { success: true } })
+      );
+
+      const create = jest.fn(() => ({
+        postForm,
+      }));
+
+      const axiosStatic = {
+        create,
+      } as unknown as AxiosStatic;
+
+      const sut = new DopplerLegacyClientImpl({
+        axiosStatic,
+        appConfiguration,
+      });
+
+      const file = { my: "file" } as any;
+
+      // Act
+      const result = await sut.uploadImage(file);
+
+      // Assert
+      expect(create).toBeCalledWith({
+        baseURL: dopplerLegacyBaseUrl,
+        withCredentials: true,
+      });
+      expect(postForm).toBeCalledWith("/Campaigns/Editor/UploadImage", {
+        file,
+      });
+      expect(result).toEqual({
+        success: true,
+      });
+    });
+  });
 });

@@ -1,22 +1,40 @@
-import { act, render } from "@testing-library/react";
+import { act, render, waitFor } from "@testing-library/react";
 import { useCustomMediaLibraryBehavior } from "./useCustomMediaLibraryBehavior";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+  UseMutateFunction,
+} from "@tanstack/react-query";
+import { Result } from "../../abstractions/common/result-types";
+import { AppServicesProvider } from "../AppServicesContext";
 
 const createTestContext = () => {
   const queryClient = new QueryClient();
+  const dopplerLegacyClient = {
+    getImageGallery: jest.fn(() =>
+      Promise.resolve({ success: true, value: { items: [] } })
+    ),
+    uploadImage: jest.fn(() => Promise.resolve({ success: true })),
+  };
 
   const selectImage = jest.fn();
   let currentCheckedItems: ReadonlySet<ImageItem>;
   let currentToggleCheckedImage: (item: ImageItem) => void;
   let currentSelectCheckedImage: (() => void) | null;
+  let currentUploadImage: UseMutateFunction<Result, unknown, File, unknown>;
 
   const TestComponent = () => {
-    const { checkedImages, toggleCheckedImage, selectCheckedImage } =
-      useCustomMediaLibraryBehavior({ selectImage });
+    const {
+      checkedImages,
+      toggleCheckedImage,
+      selectCheckedImage,
+      uploadImage,
+    } = useCustomMediaLibraryBehavior({ selectImage });
     currentToggleCheckedImage = toggleCheckedImage;
     currentCheckedItems = checkedImages;
     currentSelectCheckedImage = selectCheckedImage;
+    currentUploadImage = uploadImage;
 
     return <></>;
   };
@@ -24,7 +42,9 @@ const createTestContext = () => {
   return {
     Component: () => (
       <QueryClientProvider client={queryClient}>
-        <TestComponent />
+        <AppServicesProvider appServices={{ dopplerLegacyClient } as any}>
+          <TestComponent />
+        </AppServicesProvider>
       </QueryClientProvider>
     ),
     toggleCheckedImage: (item: ImageItem) =>
@@ -32,8 +52,13 @@ const createTestContext = () => {
     getCheckedItems: () => Array.from(currentCheckedItems),
     selectCheckedIsNull: () => currentSelectCheckedImage === null,
     selectCheckedImage: () => act(() => currentSelectCheckedImage?.()),
+    uploadImage: (file: File) =>
+      act(() => {
+        currentUploadImage(file);
+      }),
     mocks: {
       selectImage,
+      dopplerLegacyClient,
     },
   };
 };
@@ -127,5 +152,28 @@ describe(useCustomMediaLibraryBehavior.name, () => {
 
     // Assert
     expect(selectCheckedIsNull()).toBe(true);
+  });
+
+  it("should upload image and then reload", async () => {
+    // Arrange
+    const {
+      Component,
+      uploadImage,
+      mocks: { dopplerLegacyClient },
+    } = createTestContext();
+
+    render(<Component />);
+    const file = { my: "file" } as any;
+    expect(dopplerLegacyClient.getImageGallery).toHaveBeenCalledTimes(1);
+    expect(dopplerLegacyClient.uploadImage).not.toBeCalled();
+
+    // Act
+    uploadImage(file);
+
+    // Assert
+    await waitFor(() => {
+      expect(dopplerLegacyClient.uploadImage).toBeCalledWith(file);
+    });
+    expect(dopplerLegacyClient.getImageGallery).toBeCalledTimes(2);
   });
 });

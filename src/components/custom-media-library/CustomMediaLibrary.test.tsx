@@ -182,6 +182,7 @@ describe(CustomMediaLibraryUI.name, () => {
 
 const createBaseProps = () => ({
   selectCheckedImage: noop,
+  uploadImage: noop,
   cancel: noop,
   isLoading: false,
   images: [],
