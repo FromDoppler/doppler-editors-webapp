@@ -61,3 +61,11 @@ export const takeOneValue = <T>(collection: {
   const next = collection.values().next();
   return next.done ? undefined : next.value;
 };
+
+export const toggleItemInSet = <T>(iterable: Iterable<T>, item: T) => {
+  const newSet = new Set(iterable);
+  if (!newSet.delete(item)) {
+    newSet.add(item);
+  }
+  return newSet;
+};
