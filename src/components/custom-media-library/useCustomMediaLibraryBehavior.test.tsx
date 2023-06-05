@@ -1,12 +1,7 @@
 import { act, render, waitFor } from "@testing-library/react";
 import { useCustomMediaLibraryBehavior } from "./useCustomMediaLibraryBehavior";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
-import {
-  QueryClient,
-  QueryClientProvider,
-  UseMutateFunction,
-} from "@tanstack/react-query";
-import { Result } from "../../abstractions/common/result-types";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppServicesProvider } from "../AppServicesContext";
 
 const createTestContext = () => {
@@ -19,23 +14,10 @@ const createTestContext = () => {
   };
 
   const selectImage = jest.fn();
-  let currentCheckedItems: ReadonlySet<ImageItem>;
-  let currentToggleCheckedImage: (item: ImageItem) => void;
-  let currentSelectCheckedImage: (() => void) | null;
-  let currentUploadImage: UseMutateFunction<Result, unknown, File, unknown>;
+  let currentHookValues: ReturnType<typeof useCustomMediaLibraryBehavior>;
 
   const TestComponent = () => {
-    const {
-      checkedImages,
-      toggleCheckedImage,
-      selectCheckedImage,
-      uploadImage,
-    } = useCustomMediaLibraryBehavior({ selectImage });
-    currentToggleCheckedImage = toggleCheckedImage;
-    currentCheckedItems = checkedImages;
-    currentSelectCheckedImage = selectCheckedImage;
-    currentUploadImage = uploadImage;
-
+    currentHookValues = useCustomMediaLibraryBehavior({ selectImage });
     return <></>;
   };
 
@@ -48,13 +30,14 @@ const createTestContext = () => {
       </QueryClientProvider>
     ),
     toggleCheckedImage: (item: ImageItem) =>
-      act(() => currentToggleCheckedImage(item)),
-    getCheckedItems: () => Array.from(currentCheckedItems),
-    selectCheckedIsNull: () => currentSelectCheckedImage === null,
-    selectCheckedImage: () => act(() => currentSelectCheckedImage?.()),
+      act(() => currentHookValues?.toggleCheckedImage(item)),
+    getCheckedItems: () => Array.from(currentHookValues.checkedImages),
+    selectCheckedIsNull: () => currentHookValues.selectCheckedImage === null,
+    selectCheckedImage: () =>
+      act(() => currentHookValues.selectCheckedImage?.()),
     uploadImage: (file: File) =>
       act(() => {
-        currentUploadImage(file);
+        currentHookValues.uploadImage(file);
       }),
     mocks: {
       selectImage,
