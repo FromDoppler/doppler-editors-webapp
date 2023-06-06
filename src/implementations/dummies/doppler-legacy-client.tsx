@@ -40,9 +40,12 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     console.log("Begin getImageGallery...");
     await timeout(1000);
 
+    // Deep cloning images to change the identity of each object
+    const items = demoImages.map((x) => ({ ...x }));
+
     const result = {
       success: true as const,
-      value: { items: demoImages },
+      value: { items },
     };
 
     console.log("End getImageGallery", { result });

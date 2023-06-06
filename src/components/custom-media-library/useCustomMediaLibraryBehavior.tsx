@@ -14,7 +14,7 @@ export const useCustomMediaLibraryBehavior = ({
   selectImage: ({ url }: { url: string }) => void;
 }) => {
   const { mutate: uploadImage } = useUploadImage();
-  const { isLoading, data } = useGetImageGallery();
+  const { isLoading, images } = useGetImageGallery();
   const [checkedImages, setCheckedImages] = useState<ReadonlySet<ImageItem>>(
     new Set()
   );
@@ -33,7 +33,7 @@ export const useCustomMediaLibraryBehavior = ({
 
   return {
     isLoading,
-    images: data?.items ?? [],
+    images,
     selectCheckedImage,
     checkedImages,
     toggleCheckedImage,

@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAppServices } from "../components/AppServicesContext";
+import { useMemo } from "react";
 
 const queryKey = ["image-gallery"] as const;
 
@@ -16,7 +17,9 @@ export const useGetImageGallery = () => {
     cacheTime: 0,
   });
 
-  return query;
+  const images = useMemo(() => query.data?.items ?? [], [query.data?.items]);
+
+  return { ...query, images };
 };
 
 export const useUploadImage = () => {
