@@ -17,7 +17,11 @@ export const CustomMediaLibrary = ({
     selectImage,
   });
   return (
-    <CustomMediaLibraryUI cancel={cancel} {...customMediaLibraryUIProps} />
+    <CustomMediaLibraryUI
+      cancel={cancel}
+      selectImage={selectImage}
+      {...customMediaLibraryUIProps}
+    />
   );
 };
 
@@ -25,6 +29,7 @@ export const CustomMediaLibraryUI = ({
   selectCheckedImage,
   uploadImage,
   cancel,
+  selectImage,
   isLoading,
   images,
   checkedImages,
@@ -33,6 +38,7 @@ export const CustomMediaLibraryUI = ({
   selectCheckedImage: (() => void) | null;
   uploadImage: (file: File) => void;
   cancel: () => void;
+  selectImage: ({ url }: { url: string }) => void;
   isLoading: boolean;
   images: ImageItem[];
   checkedImages: ReadonlySet<string>;
@@ -54,6 +60,7 @@ export const CustomMediaLibraryUI = ({
       images={images}
       checkedImages={checkedImages}
       toggleCheckedImage={toggleCheckedImage}
+      selectImage={selectImage}
     />
     <Footer submitEnabled={!!selectCheckedImage} uploadImage={uploadImage} />
   </form>
