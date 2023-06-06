@@ -122,8 +122,8 @@ describe(CustomMediaLibraryUI.name, () => {
     ];
 
     const checkedItems = new Set([
-      images[checkedIndex1],
-      images[checkedIndex2],
+      images[checkedIndex1].name,
+      images[checkedIndex2].name,
     ]);
 
     const baseProps = createBaseProps();
@@ -133,7 +133,7 @@ describe(CustomMediaLibraryUI.name, () => {
       <CustomMediaLibraryUI
         {...baseProps}
         images={images as ImageItem[]}
-        checkedImages={checkedItems as Set<ImageItem>}
+        checkedImages={checkedItems}
       />
     );
 
@@ -176,7 +176,9 @@ describe(CustomMediaLibraryUI.name, () => {
     const testCheckbox = testLi.querySelector('input[type="checkbox"]');
 
     await userEvent.click(testCheckbox!);
-    expect(toggleCheckedImage).toBeCalledWith(testItem);
+    expect(toggleCheckedImage).toBeCalledWith(
+      expect.objectContaining({ url: testItem.url })
+    );
   });
 });
 

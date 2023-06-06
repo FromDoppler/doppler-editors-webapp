@@ -1,7 +1,6 @@
 // TODO: implement it based on MSEditor Gallery
 
-import { useCallback, useMemo, useState } from "react";
-import { ImageItem } from "../../abstractions/domain/image-gallery";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { takeOneValue, toggleItemInSet } from "../../utils";
 import {
   useGetImageGallery,
@@ -14,22 +13,44 @@ export const useCustomMediaLibraryBehavior = ({
   selectImage: ({ url }: { url: string }) => void;
 }) => {
   const { mutate: uploadImage } = useUploadImage();
-  const { isLoading, images } = useGetImageGallery();
-  const [checkedImages, setCheckedImages] = useState<ReadonlySet<ImageItem>>(
+  const { isLoading, isFetching, images } = useGetImageGallery();
+  const [checkedImages, setCheckedImages] = useState<ReadonlySet<string>>(
     new Set()
   );
+
+  // Sanitize checkedImages based on existing images
+  useEffect(() => {
+    if (isFetching) {
+      return;
+    }
+    const newCheckedImages = images.filter((x) => checkedImages.has(x.name));
+    // It is only different when we should sanitize
+    if (newCheckedImages.length !== checkedImages.size) {
+      setCheckedImages(new Set(newCheckedImages.map((x) => x.name)));
+    }
+  }, [isFetching, images, checkedImages]);
+
   const toggleCheckedImage = useCallback(
-    (item: ImageItem) => setCheckedImages(toggleItemInSet(checkedImages, item)),
+    ({ name }: { name: string }) =>
+      setCheckedImages(toggleItemInSet(checkedImages, name)),
     [checkedImages]
   );
 
-  const selectCheckedImage = useMemo(
-    () =>
-      checkedImages.size === 1
-        ? () => selectImage({ url: takeOneValue(checkedImages)!.url })
-        : null,
-    [checkedImages, selectImage]
-  );
+  const selectCheckedImage = useMemo(() => {
+    if (checkedImages.size !== 1) {
+      return null;
+    }
+
+    const selectedImage = images.find(
+      (x) => x.name === takeOneValue(checkedImages)
+    );
+
+    if (!selectedImage) {
+      return null;
+    }
+
+    return () => selectImage(selectedImage);
+  }, [checkedImages, selectImage, images]);
 
   return {
     isLoading,

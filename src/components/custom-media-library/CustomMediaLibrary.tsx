@@ -35,8 +35,8 @@ export const CustomMediaLibraryUI = ({
   cancel: () => void;
   isLoading: boolean;
   images: ImageItem[];
-  checkedImages: ReadonlySet<ImageItem>;
-  toggleCheckedImage: (item: ImageItem) => void;
+  checkedImages: ReadonlySet<string>;
+  toggleCheckedImage: ({ name }: { name: string }) => void;
 }) => (
   <form
     className="dp-image-gallery"

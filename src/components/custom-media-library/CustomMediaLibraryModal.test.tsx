@@ -141,8 +141,10 @@ describe(useCustomMediaLibraryModal.name, () => {
 
     // Assert
     expect(screen.queryAllByRole("dialog")).toEqual([]);
-    expect(callback).toBeCalledWith({
-      url: expectedImageUrl,
-    });
+    expect(callback).toBeCalledWith(
+      expect.objectContaining({
+        url: expectedImageUrl,
+      })
+    );
   });
 });
