@@ -241,6 +241,90 @@ describe(useCustomMediaLibraryBehavior.name, () => {
     expect(checkedItems).toHaveLength(1);
     expect(checkedItems).toContain(image1b.name);
   });
+
+  it("should keep checkedImages when the name is still present after reloading", async () => {
+    // Arrange
+    const {
+      Component,
+      invalidateQueries,
+      getImages,
+      toggleCheckedImage,
+      getCheckedItems,
+      mocks: { dopplerLegacyClient },
+    } = createTestContext();
+
+    const image1 = createImageItem({ name: "image1.png" });
+    const image2 = createImageItem({ name: "image2.png" });
+    const imagesA = [image1, image2];
+    dopplerLegacyClient.getImageGallery.mockResolvedValue({
+      success: true,
+      value: { items: imagesA },
+    });
+
+    render(<Component />);
+
+    await waitFor(() => {
+      expect(getImages()).toEqual(imagesA);
+    });
+
+    toggleCheckedImage(image1);
+    toggleCheckedImage(image2);
+
+    const image0 = createImageItem({ name: "image0.png" });
+    const image2b = createImageItem({ name: "image2.png" });
+    const image3 = createImageItem({ name: "image3.png" });
+    const imagesB = [image0, image2b, image3];
+    dopplerLegacyClient.getImageGallery.mockResolvedValue({
+      success: true,
+      value: { items: imagesB },
+    });
+
+    // Act
+    invalidateQueries();
+    // Wait for the update related to the query response
+    await waitFor(() => {
+      expect(getImages()).toEqual(imagesB);
+    });
+
+    // Assert
+    expect(dopplerLegacyClient.getImageGallery).toBeCalledTimes(2);
+    const checkedItems = getCheckedItems();
+    const imageNames = getImages().map((x) => x.name);
+    expect(imageNames).toEqual(expect.arrayContaining(checkedItems));
+    expect(checkedItems).toHaveLength(1);
+  });
+
+  it("should not check image if it is not present in image list", async () => {
+    // Arrange
+    const {
+      Component,
+      invalidateQueries,
+      getImages,
+      toggleCheckedImage,
+      getCheckedItems,
+      mocks: { dopplerLegacyClient },
+    } = createTestContext();
+
+    const image1 = createImageItem({ name: "image1.png" });
+    const image2 = createImageItem({ name: "image2.png" });
+    const imagesA = [image1, image2];
+    dopplerLegacyClient.getImageGallery.mockResolvedValue({
+      success: true,
+      value: { items: imagesA },
+    });
+
+    render(<Component />);
+
+    await waitFor(() => {
+      expect(getImages()).toEqual(imagesA);
+    });
+
+    // Act
+    toggleCheckedImage({ name: "non-existent-image.png" });
+
+    // Assert
+    expect(getCheckedItems()).toEqual([]);
+  });
 });
 
 const createImageItem = ({ name }: { name: string }) => ({

@@ -1,6 +1,6 @@
 // TODO: implement it based on MSEditor Gallery
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { takeOneValue, toggleItemInSet } from "../../utils";
 import {
   useGetImageGallery,
@@ -17,6 +17,16 @@ export const useCustomMediaLibraryBehavior = ({
   const [checkedImages, setCheckedImages] = useState<ReadonlySet<string>>(
     new Set()
   );
+
+  // Sanitize checkedImages based on existing images
+  useEffect(() => {
+    const newCheckedImages = images.filter((x) => checkedImages.has(x.name));
+    // It is only different when we should sanitize
+    if (newCheckedImages.length !== checkedImages.size) {
+      setCheckedImages(new Set(newCheckedImages.map((x) => x.name)));
+    }
+  }, [images, checkedImages]);
+
   const toggleCheckedImage = useCallback(
     ({ name }: { name: string }) =>
       setCheckedImages(toggleItemInSet(checkedImages, name)),
