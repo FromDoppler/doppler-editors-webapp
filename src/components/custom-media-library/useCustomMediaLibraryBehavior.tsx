@@ -1,7 +1,6 @@
 // TODO: implement it based on MSEditor Gallery
 
 import { useCallback, useMemo, useState } from "react";
-import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { takeOneValue, toggleItemInSet } from "../../utils";
 import {
   useGetImageGallery,
@@ -15,20 +14,25 @@ export const useCustomMediaLibraryBehavior = ({
 }) => {
   const { mutate: uploadImage } = useUploadImage();
   const { isLoading, images } = useGetImageGallery();
-  const [checkedImages, setCheckedImages] = useState<ReadonlySet<ImageItem>>(
+  const [checkedImages, setCheckedImages] = useState<ReadonlySet<string>>(
     new Set()
   );
   const toggleCheckedImage = useCallback(
-    (item: ImageItem) => setCheckedImages(toggleItemInSet(checkedImages, item)),
+    ({ name }: { name: string }) =>
+      setCheckedImages(toggleItemInSet(checkedImages, name)),
     [checkedImages]
   );
 
   const selectCheckedImage = useMemo(
     () =>
       checkedImages.size === 1
-        ? () => selectImage({ url: takeOneValue(checkedImages)!.url })
+        ? () =>
+            selectImage({
+              url: images.find((x) => x.name === takeOneValue(checkedImages))!
+                .url,
+            })
         : null,
-    [checkedImages, selectImage]
+    [checkedImages, selectImage, images]
   );
 
   return {

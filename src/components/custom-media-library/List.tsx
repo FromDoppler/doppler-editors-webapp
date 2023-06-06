@@ -10,8 +10,8 @@ export const List = ({
 }: {
   isLoading: boolean;
   images: ImageItem[];
-  checkedImages: ReadonlySet<ImageItem>;
-  toggleCheckedImage: (item: ImageItem) => void;
+  checkedImages: ReadonlySet<string>;
+  toggleCheckedImage: ({ name }: { name: string }) => void;
 }) => (
   <div className="dp-image-gallery-content">
     {/*
@@ -30,7 +30,7 @@ export const List = ({
             <input
               id={`image-item-${i}-check`}
               type="checkbox"
-              checked={checkedImages.has(x)}
+              checked={checkedImages.has(x.name)}
               onChange={() => toggleCheckedImage(x)}
             />
           </label>
