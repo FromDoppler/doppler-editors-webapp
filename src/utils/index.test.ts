@@ -291,7 +291,6 @@ describe(nameComparison.name, () => {
     ({ a, b, expected }) => {
       // Act
       const result = nameComparison(a as any, b as any);
-      console.log(`${a?.name}.localeCompare(${b?.name}`);
 
       // Assert
       expect(result).toBe(expected);
