@@ -34,6 +34,8 @@ export const CustomMediaLibraryUI = ({
   images,
   checkedImages,
   toggleCheckedImage,
+  searchTerm,
+  setSearchTerm,
 }: {
   selectCheckedImage: (() => void) | null;
   uploadImage: (file: File) => void;
@@ -43,6 +45,8 @@ export const CustomMediaLibraryUI = ({
   images: ImageItem[];
   checkedImages: ReadonlySet<string>;
   toggleCheckedImage: ({ name }: { name: string }) => void;
+  searchTerm: string;
+  setSearchTerm: (value: string) => void;
 }) => (
   <form
     className="dp-image-gallery"
@@ -54,7 +58,11 @@ export const CustomMediaLibraryUI = ({
       return false;
     }}
   >
-    <Header cancel={cancel} />
+    <Header
+      cancel={cancel}
+      searchTerm={searchTerm}
+      setSearchTerm={setSearchTerm}
+    />
     <List
       isLoading={isLoading}
       images={images}
