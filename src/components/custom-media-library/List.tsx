@@ -7,11 +7,13 @@ export const List = ({
   images,
   checkedImages,
   toggleCheckedImage,
+  selectImage,
 }: {
   isLoading: boolean;
   images: ImageItem[];
   checkedImages: ReadonlySet<string>;
   toggleCheckedImage: ({ name }: { name: string }) => void;
+  selectImage: ({ url }: { url: string }) => void;
 }) => (
   <div className="dp-image-gallery-content">
     {/*
@@ -24,6 +26,7 @@ export const List = ({
           <label
             className="dp-image-gallery-thumbnail"
             htmlFor={`image-item-${i}-check`}
+            onDoubleClick={() => selectImage(x)}
           >
             <img src={x.thumbnailUrl150} alt={x.name} />
             <div className="dp-image-gallery--mask" />

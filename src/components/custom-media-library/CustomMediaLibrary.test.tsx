@@ -180,12 +180,48 @@ describe(CustomMediaLibraryUI.name, () => {
       expect.objectContaining({ url: testItem.url })
     );
   });
+
+  it("should pass the double clicked item to selectImage", async () => {
+    // Arrange
+    const images = [
+      { name: "name1", url: "url1" },
+      { name: "name2", url: "url2" },
+      { name: "name3", url: "url3" },
+      { name: "name4", url: "url4" },
+      { name: "name5", url: "url5" },
+    ];
+    const testItemIndex = 3;
+    const testItem = images[3];
+    const selectImage = jest.fn();
+
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <CustomMediaLibraryUI
+        {...baseProps}
+        images={images as ImageItem[]}
+        selectImage={selectImage}
+      />
+    );
+
+    // Assert
+    const list = screen.getByTestId("image-list");
+    const testLi = list.children[testItemIndex];
+    const testCheckbox = testLi.querySelector('input[type="checkbox"]');
+
+    await userEvent.dblClick(testCheckbox!);
+    expect(selectImage).toBeCalledWith(
+      expect.objectContaining({ url: testItem.url })
+    );
+  });
 });
 
 const createBaseProps = () => ({
   selectCheckedImage: noop,
   uploadImage: noop,
   cancel: noop,
+  selectImage: noop,
   isLoading: false,
   images: [],
   checkedImages: new Set([]),
