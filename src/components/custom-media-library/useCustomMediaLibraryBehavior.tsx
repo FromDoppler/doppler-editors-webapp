@@ -13,19 +13,22 @@ export const useCustomMediaLibraryBehavior = ({
   selectImage: ({ url }: { url: string }) => void;
 }) => {
   const { mutate: uploadImage } = useUploadImage();
-  const { isLoading, images } = useGetImageGallery();
+  const { isLoading, isFetching, images } = useGetImageGallery();
   const [checkedImages, setCheckedImages] = useState<ReadonlySet<string>>(
     new Set()
   );
 
   // Sanitize checkedImages based on existing images
   useEffect(() => {
+    if (isFetching) {
+      return;
+    }
     const newCheckedImages = images.filter((x) => checkedImages.has(x.name));
     // It is only different when we should sanitize
     if (newCheckedImages.length !== checkedImages.size) {
       setCheckedImages(new Set(newCheckedImages.map((x) => x.name)));
     }
-  }, [images, checkedImages]);
+  }, [isFetching, images, checkedImages]);
 
   const toggleCheckedImage = useCallback(
     ({ name }: { name: string }) =>
