@@ -176,7 +176,9 @@ describe(CustomMediaLibraryUI.name, () => {
     const testCheckbox = testLi.querySelector('input[type="checkbox"]');
 
     await userEvent.click(testCheckbox!);
-    expect(toggleCheckedImage).toBeCalledWith(testItem);
+    expect(toggleCheckedImage).toBeCalledWith(
+      expect.objectContaining({ url: testItem.url })
+    );
   });
 });
 

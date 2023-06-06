@@ -134,7 +134,9 @@ describe(useCustomMediaLibraryBehavior.name, () => {
 
     // Assert
     expect(selectCheckedIsNull()).toBe(false);
-    expect(selectImage).toBeCalledWith({ url: images[0].url });
+    expect(selectImage).toBeCalledWith(
+      expect.objectContaining({ url: images[0].url })
+    );
   });
 
   it("should make selectCheckedImage null when there are no checked images", () => {

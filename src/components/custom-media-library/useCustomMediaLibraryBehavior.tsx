@@ -23,17 +23,21 @@ export const useCustomMediaLibraryBehavior = ({
     [checkedImages]
   );
 
-  const selectCheckedImage = useMemo(
-    () =>
-      checkedImages.size === 1
-        ? () =>
-            selectImage({
-              url: images.find((x) => x.name === takeOneValue(checkedImages))!
-                .url,
-            })
-        : null,
-    [checkedImages, selectImage, images]
-  );
+  const selectCheckedImage = useMemo(() => {
+    if (checkedImages.size !== 1) {
+      return null;
+    }
+
+    const selectedImage = images.find(
+      (x) => x.name === takeOneValue(checkedImages)
+    );
+
+    if (!selectedImage) {
+      return null;
+    }
+
+    return () => selectImage(selectedImage);
+  }, [checkedImages, selectImage, images]);
 
   return {
     isLoading,
