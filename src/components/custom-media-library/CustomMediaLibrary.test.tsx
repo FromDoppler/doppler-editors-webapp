@@ -3,6 +3,7 @@ import { CustomMediaLibraryUI } from "./CustomMediaLibrary";
 import { noop } from "../../utils";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 import userEvent from "@testing-library/user-event";
+import { TestDopplerIntlProvider } from "../i18n/TestDopplerIntlProvider";
 
 describe(CustomMediaLibraryUI.name, () => {
   it("should disable button when selectCheckedImage is null", () => {
@@ -12,14 +13,16 @@ describe(CustomMediaLibraryUI.name, () => {
 
     // Act
     render(
-      <CustomMediaLibraryUI
-        {...baseProps}
-        selectCheckedImage={selectCheckedImage}
-      />
+      <TestDopplerIntlProvider>
+        <CustomMediaLibraryUI
+          {...baseProps}
+          selectCheckedImage={selectCheckedImage}
+        />
+      </TestDopplerIntlProvider>
     );
 
     // Assert
-    const selectButton = screen.getByText("Select Image");
+    const selectButton = screen.getByText("select_image");
     expect(selectButton).toBeDisabled();
     expect(selectButton.onclick).toBeNull();
   });
@@ -31,14 +34,16 @@ describe(CustomMediaLibraryUI.name, () => {
 
     // Act
     render(
-      <CustomMediaLibraryUI
-        {...baseProps}
-        selectCheckedImage={selectCheckedImage}
-      />
+      <TestDopplerIntlProvider>
+        <CustomMediaLibraryUI
+          {...baseProps}
+          selectCheckedImage={selectCheckedImage}
+        />
+      </TestDopplerIntlProvider>
     );
 
     // Assert
-    const selectButton = screen.getByText("Select Image");
+    const selectButton = screen.getByText("select_image");
     expect(selectButton).not.toBeDisabled();
     expect(selectCheckedImage).not.toBeCalled();
 
@@ -56,10 +61,12 @@ describe(CustomMediaLibraryUI.name, () => {
 
     // Act
     render(
-      <CustomMediaLibraryUI
-        {...baseProps}
-        selectCheckedImage={selectCheckedImage}
-      />
+      <TestDopplerIntlProvider>
+        <CustomMediaLibraryUI
+          {...baseProps}
+          selectCheckedImage={selectCheckedImage}
+        />
+      </TestDopplerIntlProvider>
     );
 
     // Act
@@ -96,7 +103,9 @@ describe(CustomMediaLibraryUI.name, () => {
 
       // Act
       render(
-        <CustomMediaLibraryUI {...baseProps} images={images as ImageItem[]} />
+        <TestDopplerIntlProvider>
+          <CustomMediaLibraryUI {...baseProps} images={images as ImageItem[]} />
+        </TestDopplerIntlProvider>
       );
 
       // Assert
@@ -130,11 +139,13 @@ describe(CustomMediaLibraryUI.name, () => {
 
     // Act
     render(
-      <CustomMediaLibraryUI
-        {...baseProps}
-        images={images as ImageItem[]}
-        checkedImages={checkedItems}
-      />
+      <TestDopplerIntlProvider>
+        <CustomMediaLibraryUI
+          {...baseProps}
+          images={images as ImageItem[]}
+          checkedImages={checkedItems}
+        />
+      </TestDopplerIntlProvider>
     );
 
     // Assert
@@ -163,11 +174,13 @@ describe(CustomMediaLibraryUI.name, () => {
 
     // Act
     render(
-      <CustomMediaLibraryUI
-        {...baseProps}
-        images={images as ImageItem[]}
-        toggleCheckedImage={toggleCheckedImage}
-      />
+      <TestDopplerIntlProvider>
+        <CustomMediaLibraryUI
+          {...baseProps}
+          images={images as ImageItem[]}
+          toggleCheckedImage={toggleCheckedImage}
+        />
+      </TestDopplerIntlProvider>
     );
 
     // Assert
@@ -198,11 +211,13 @@ describe(CustomMediaLibraryUI.name, () => {
 
     // Act
     render(
-      <CustomMediaLibraryUI
-        {...baseProps}
-        images={images as ImageItem[]}
-        selectImage={selectImage}
-      />
+      <TestDopplerIntlProvider>
+        <CustomMediaLibraryUI
+          {...baseProps}
+          images={images as ImageItem[]}
+          selectImage={selectImage}
+        />
+      </TestDopplerIntlProvider>
     );
 
     // Assert
