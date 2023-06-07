@@ -230,6 +230,26 @@ describe(CustomMediaLibraryUI.name, () => {
       expect.objectContaining({ url: testItem.url })
     );
   });
+
+  it("should have the upload button", () => {
+    // Arrange
+    const selectCheckedImage = jest.fn();
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <TestDopplerIntlProvider>
+        <CustomMediaLibraryUI
+          {...baseProps}
+          selectCheckedImage={selectCheckedImage}
+        />
+      </TestDopplerIntlProvider>
+    );
+
+    // Assert
+    const uploadButton = screen.getByText("upload_image");
+    expect(uploadButton).not.toBeDisabled();
+  });
 });
 
 const createBaseProps = () => ({
