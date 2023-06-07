@@ -199,6 +199,32 @@ describe(useCustomMediaLibraryBehavior.name, () => {
     expect(dopplerLegacyClient.getImageGallery).toBeCalledTimes(2);
   });
 
+  it("should clean searchTerms after upload", async () => {
+    // Arrange
+    const {
+      Component,
+      uploadImage,
+      getSearchTerm,
+      setSearchTerm,
+      mocks: { dopplerLegacyClient },
+    } = createTestContext();
+
+    render(<Component />);
+    setSearchTerm("This value will be removed");
+    const file = { my: "file" } as any;
+    expect(getSearchTerm()).not.toBe("");
+
+    // Act
+    uploadImage(file);
+
+    // Assert
+    await waitFor(() => {
+      expect(dopplerLegacyClient.uploadImage).toBeCalledWith(file);
+    });
+    expect(getSearchTerm()).toBe("");
+    expect(dopplerLegacyClient.getImageGallery).toBeCalledTimes(2);
+  });
+
   it("should keep checkedImages when the name is still present after reloading", async () => {
     // Arrange
     const {
@@ -303,7 +329,6 @@ describe(useCustomMediaLibraryBehavior.name, () => {
     // Arrange
     const {
       Component,
-      invalidateQueries,
       getImages,
       toggleCheckedImage,
       getCheckedItems,
