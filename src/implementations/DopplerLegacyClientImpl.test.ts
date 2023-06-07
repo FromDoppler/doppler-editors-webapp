@@ -119,6 +119,38 @@ describe(DopplerLegacyClientImpl.name, () => {
       });
     });
 
+    it("Should encode the search terms", async () => {
+      // Arrange
+      const searchTerm = '%search "term"!';
+      const expectedSearchTerm = "%25search%20%22term%22!";
+      const expectedUrl =
+        `/Campaigns/Editor/GetImageGallery?` +
+        `offset=50&position=0&query=${expectedSearchTerm}&sortingCriteria=DATE`;
+
+      const get = jest.fn(() =>
+        Promise.resolve({
+          data: { images: [] },
+        })
+      );
+
+      const axiosStatic = {
+        create: jest.fn(() => ({
+          get,
+        })),
+      } as unknown as AxiosStatic;
+
+      const sut = new DopplerLegacyClientImpl({
+        axiosStatic,
+        appConfiguration: {},
+      });
+
+      // Act
+      await sut.getImageGallery({ searchTerm });
+
+      // Assert
+      expect(get).toBeCalledWith(expectedUrl);
+    });
+
     it("Should accept empty search terms", async () => {
       // Arrange
       const searchTerm = "";
