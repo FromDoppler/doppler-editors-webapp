@@ -120,11 +120,11 @@ describe(useCustomMediaLibraryModal.name, () => {
     );
     showCustomMediaLibraryModal(callback);
     const gallery = screen.getByTestId("image-list");
-    screen.getByText("loading");
+    screen.getByTestId("loading");
 
     // Waiting for loading the images
     await waitFor(() => {
-      expect(screen.queryByText("loading")).toBeFalsy();
+      expect(screen.queryByTestId("loading")).toBeFalsy();
     });
 
     const selectImageButton = screen.getByText("select_image");

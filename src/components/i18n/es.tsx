@@ -15,7 +15,6 @@ export const messages_es = {
   field_name_lastname: `Apellido`,
   home: `Inicio`,
   lists: `Listas`,
-  loading: `Cargando...`,
   new_template_description: `
 ¿Ya has editado tu Plantilla? Guárdala en la sección "Mis Plantillas" para poder acceder a esta
 versión cuando quieras volver a utilizarla.`,
