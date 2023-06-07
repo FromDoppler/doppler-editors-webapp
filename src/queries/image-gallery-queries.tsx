@@ -1,4 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useInfiniteQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useAppServices } from "../components/AppServicesContext";
 import { useMemo } from "react";
 
@@ -9,18 +13,23 @@ export const useGetImageGallery = ({
 }: { searchTerm?: string } = {}) => {
   const { dopplerLegacyClient } = useAppServices();
 
-  const query = useQuery({
+  const query = useInfiniteQuery({
     queryKey: [...queryKey, searchTerm],
-    queryFn: async () =>
-      (await dopplerLegacyClient.getImageGallery({ searchTerm })).value,
+    queryFn: async ({ pageParam: continuation }: { pageParam?: string }) =>
+      (await dopplerLegacyClient.getImageGallery({ searchTerm, continuation }))
+        .value,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     // Force reloading each time
     cacheTime: 0,
+    getNextPageParam: (lastPage) => lastPage.continuation,
   });
 
-  const images = useMemo(() => query.data?.items ?? [], [query.data?.items]);
+  const images = useMemo(
+    () => query.data?.pages.flatMap((x) => x.items) ?? [],
+    [query.data?.pages]
+  );
 
   return { ...query, images };
 };
