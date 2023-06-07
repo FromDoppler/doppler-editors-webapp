@@ -17,7 +17,7 @@ export const useCustomMediaLibraryBehavior = ({
   const { mutate: uploadImageMutation } = useUploadImage();
   const [searchTerm, setSearchTerm] = useState(defaultSearchTerm);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
-  const { isLoading, isFetching, images } = useGetImageGallery({
+  const { isFetching, images } = useGetImageGallery({
     searchTerm: debouncedSearchTerm,
   });
   const [checkedImages, setCheckedImages] = useState<ReadonlySet<string>>(
@@ -68,7 +68,7 @@ export const useCustomMediaLibraryBehavior = ({
   }, [checkedImages, selectImage, images]);
 
   return {
-    isLoading,
+    isFetching,
     images,
     selectCheckedImage,
     checkedImages,

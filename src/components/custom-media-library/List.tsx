@@ -4,13 +4,13 @@ import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { Loading } from "./Loading";
 
 export const List = ({
-  isLoading,
+  isFetching,
   images,
   checkedImages,
   toggleCheckedImage,
   selectImage,
 }: {
-  isLoading: boolean;
+  isFetching: boolean;
   images: ImageItem[];
   checkedImages: ReadonlySet<string>;
   toggleCheckedImage: ({ name }: { name: string }) => void;
@@ -41,6 +41,6 @@ export const List = ({
         </li>
       ))}
     </ul>
-    {isLoading ? <Loading /> : false}
+    {isFetching ? <Loading /> : false}
   </div>
 );
