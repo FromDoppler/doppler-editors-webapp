@@ -15,6 +15,7 @@ export const messages_es = {
   field_name_lastname: `Apellido`,
   home: `Inicio`,
   lists: `Listas`,
+  loading: `Cargando...`,
   new_template_description: `
 ¿Ya has editado tu Plantilla? Guárdala en la sección "Mis Plantillas" para poder acceder a esta
 versión cuando quieras volver a utilizarla.`,
@@ -31,6 +32,8 @@ a partir de ahora, no serán aplicados.`,
   saved_details: `Todos los cambios están guardados`,
   saving: `Guardando...`,
   saving_details: `Se están guardando los cambios`,
+  select_image: `Seleccionar imagen`,
   undo_description: `Deshacer cambios`,
   undo_label: `Deshacer`,
+  upload_image: `Subir imagen`,
 };

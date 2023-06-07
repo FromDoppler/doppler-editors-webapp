@@ -15,6 +15,7 @@ export const messages_en = {
   field_name_lastname: `Last name`,
   home: `Home`,
   lists: `Lists`,
+  loading: `Loading...`,
   new_template_description: `
 Have you finished editing your Template? Save it in the "My Templates" section to be able to use this
 version as many times as you want.`,
@@ -31,6 +32,8 @@ will not be applied.`,
   saved_details: `All changes are saved`,
   saving: `Saving...`,
   saving_details: `Changes are being saved`,
+  select_image: `Select Image`,
   undo_description: `Undo changes`,
   undo_label: `Undo`,
+  upload_image: `Upload image`,
 };
