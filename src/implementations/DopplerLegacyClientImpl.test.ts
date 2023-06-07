@@ -41,6 +41,9 @@ describe(DopplerLegacyClientImpl.name, () => {
       // Arrange
       const dopplerLegacyBaseUrl = "dopplerLegacyBaseUrl";
       const searchTerm = "searchTerm";
+      const continuation = "5";
+      const expectedUrl =
+        "/Campaigns/Editor/GetImageGallery?offset=50&position=5&query=searchTerm&sortingCriteria=DATE";
 
       // cSpell:disable
       const getApiResponse = {
@@ -73,7 +76,7 @@ describe(DopplerLegacyClientImpl.name, () => {
             thumbnailUrl150: `${baseUrl}/mcith/2022-02-22_15-49-20.png`,
           },
         ],
-        count: 3,
+        count: 8,
       };
 
       const expectedResultValue = {
@@ -116,16 +119,17 @@ describe(DopplerLegacyClientImpl.name, () => {
       axiosGet.mockResolvedValue({ data: getApiResponse });
 
       // Act
-      const result = await sut.getImageGallery({ searchTerm });
+      const result = await sut.getImageGallery({
+        searchTerm,
+        continuation,
+      });
 
       // Assert
       expect(axiosCreate).toBeCalledWith({
         baseURL: dopplerLegacyBaseUrl,
         withCredentials: true,
       });
-      expect(axiosGet).toBeCalledWith(
-        "/Campaigns/Editor/GetImageGallery?offset=50&position=0&query=searchTerm&sortingCriteria=DATE"
-      );
+      expect(axiosGet).toBeCalledWith(expectedUrl);
 
       expect(result).toEqual({
         success: true,
@@ -160,6 +164,23 @@ describe(DopplerLegacyClientImpl.name, () => {
 
       // Act
       await sut.getImageGallery({ searchTerm });
+
+      // Assert
+      expect(axiosGet).toBeCalledWith(expectedUrl);
+    });
+
+    it("Should accept undefined continuation", async () => {
+      // Arrange
+      const searchTerm = "searchTerm";
+      const expectedUrl =
+        "/Campaigns/Editor/GetImageGallery?offset=50&position=0&query=searchTerm&sortingCriteria=DATE";
+
+      const { sut, axiosGet } = createTestContext();
+
+      // Act
+      await sut.getImageGallery({
+        searchTerm,
+      });
 
       // Assert
       expect(axiosGet).toBeCalledWith(expectedUrl);

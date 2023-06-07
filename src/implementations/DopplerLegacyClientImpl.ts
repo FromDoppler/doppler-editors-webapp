@@ -22,14 +22,16 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
 
   async getImageGallery({
     searchTerm,
+    continuation,
   }: {
     searchTerm: string;
+    continuation?: string | undefined;
   }): Promise<Result<{ items: ImageItem[] }>> {
     const take = 50;
-    const skip = 0;
+    const position = continuation ? parseInt(continuation) : 0;
     const sortCriteria = "DATE";
     const queryString =
-      `offset=${take}&position=${skip}` +
+      `offset=${take}&position=${position}` +
       `&query=${encodeURIComponent(searchTerm)}` +
       `&sortingCriteria=${sortCriteria}`;
     const path = "/Campaigns/Editor/GetImageGallery";
