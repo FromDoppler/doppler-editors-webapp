@@ -1,4 +1,5 @@
 // TODO: implement it based on MSEditor Gallery
+import { FormattedMessage } from "react-intl";
 import { UploadButton } from "../UploadButton";
 
 export const Footer = ({
@@ -15,14 +16,14 @@ export const Footer = ({
         onFile={uploadImage}
         accept=".jpg, .jpeg, .png"
       >
-        Upload Image
+        <FormattedMessage id="upload_image" />
       </UploadButton>
       <button
         type="submit"
         disabled={!submitEnabled}
         className="dp-button button-medium primary-green"
       >
-        Select Image
+        <FormattedMessage id="select_image" />
       </button>
     </div>
   );

@@ -1,5 +1,6 @@
 // TODO: implement it based on MSEditor Gallery
 
+import { FormattedMessage } from "react-intl";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 
 export const List = ({
@@ -19,7 +20,7 @@ export const List = ({
     {/*
       TODO: Infinite scrolling, delete images
     */}
-    {isLoading ? <>Loading...</> : false}
+    {isLoading ? <FormattedMessage id="loading" /> : false}
     <ul className="dp-image-gallery-list" data-testid="image-list">
       {images.map((x, i) => (
         <li key={x.name}>

@@ -8,6 +8,7 @@ import { demoImages } from "../../implementations/dummies/doppler-legacy-client"
 import { AppServicesProvider } from "../AppServicesContext";
 import { ReactNode } from "react";
 import { DopplerLegacyClient } from "../../abstractions/doppler-legacy-client";
+import { TestDopplerIntlProvider } from "../i18n/TestDopplerIntlProvider";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +22,9 @@ const baseAppServices: Partial<AppServices> = {
 const ContextWrapper = ({ children }: { children: ReactNode }) => (
   <QueryClientProvider client={queryClient}>
     <AppServicesProvider appServices={baseAppServices as AppServices}>
-      <ModalProvider>{children}</ModalProvider>
+      <TestDopplerIntlProvider>
+        <ModalProvider>{children}</ModalProvider>
+      </TestDopplerIntlProvider>
     </AppServicesProvider>
   </QueryClientProvider>
 );
@@ -117,14 +120,14 @@ describe(useCustomMediaLibraryModal.name, () => {
     );
     showCustomMediaLibraryModal(callback);
     const gallery = screen.getByTestId("image-list");
-    screen.getByText("Loading...");
+    screen.getByText("loading");
 
     // Waiting for loading the images
     await waitFor(() => {
-      expect(screen.queryByText("Loading...")).toBeFalsy();
+      expect(screen.queryByText("loading")).toBeFalsy();
     });
 
-    const selectImageButton = screen.getByText("Select Image");
+    const selectImageButton = screen.getByText("select_image");
     const firstCheckbox = gallery.querySelector("input[type=checkbox]");
 
     // Assert
