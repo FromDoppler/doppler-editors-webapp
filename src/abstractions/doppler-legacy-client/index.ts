@@ -8,6 +8,8 @@ export interface DopplerLegacyClient {
   }: {
     searchTerm: string;
     continuation?: string | undefined;
-  }) => Promise<Result<{ items: ImageItem[] }>>;
+  }) => Promise<
+    Result<{ items: ImageItem[]; continuation: string | undefined }>
+  >;
   uploadImage: (file: File) => Promise<Result>;
 }

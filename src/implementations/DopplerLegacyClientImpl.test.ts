@@ -109,6 +109,7 @@ describe(DopplerLegacyClientImpl.name, () => {
             url: `${baseUrl}/2022-02-22_15-49-20.png`,
           },
         ],
+        continuation: undefined,
       };
       // cSpell:enable
 
@@ -167,6 +168,34 @@ describe(DopplerLegacyClientImpl.name, () => {
 
       // Assert
       expect(axiosGet).toBeCalledWith(expectedUrl);
+    });
+
+    it("Should calculate next continuation based on current continuation, items and count", async () => {
+      // Arrange
+      const continuation = "20";
+      const responseImages = [{}, {}, {}];
+      const responseCount = 50;
+      const apiResponse = {
+        images: responseImages,
+        count: responseCount,
+      };
+      const expectedContinuation = "23";
+
+      const { sut, axiosGet } = createTestContext();
+
+      axiosGet.mockResolvedValue({ data: apiResponse });
+
+      // Act
+      const result = await sut.getImageGallery({
+        searchTerm: "searchTerm",
+        continuation,
+      });
+
+      expect(result.value).toEqual(
+        expect.objectContaining({
+          continuation: expectedContinuation,
+        })
+      );
     });
 
     it("Should accept undefined continuation", async () => {

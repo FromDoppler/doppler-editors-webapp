@@ -42,10 +42,9 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
   }: {
     searchTerm: string;
     continuation?: string | undefined;
-  }) => Promise<Result<{ items: ImageItem[] }>> = async ({
-    searchTerm,
-    continuation,
-  }) => {
+  }) => Promise<
+    Result<{ items: ImageItem[]; continuation: string | undefined }>
+  > = async ({ searchTerm, continuation }) => {
     console.log(`Begin getImageGallery.searching by ${searchTerm}...`);
     await timeout(1000);
 
@@ -58,9 +57,13 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
       .slice(start, end)
       .map((x) => ({ ...x }));
 
+    const newContinuation = demoImages.length > end ? `${end}` : undefined;
     const result = {
       success: true as const,
-      value: { items },
+      value: {
+        items,
+        continuation: newContinuation,
+      },
     };
 
     console.log("End getImageGallery", { result });
