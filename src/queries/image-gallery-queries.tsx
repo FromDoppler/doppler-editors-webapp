@@ -45,7 +45,9 @@ export const useUploadImage = () => {
     onSuccess: () => {
       // Resetting the query with searchTerm = "" to avoid double request after
       // cleaning search input.
-      return queryClient.invalidateQueries([...queryKey, ""]);
+      // Using resetQueries in place of invalidateQueries to load only the
+      // first page in an infinite scroll.
+      return queryClient.resetQueries([...queryKey, ""]);
     },
     onError: (error: Error) =>
       console.error(
