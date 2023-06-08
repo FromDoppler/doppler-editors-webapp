@@ -17,11 +17,19 @@ export const useCustomMediaLibraryBehavior = ({
   const [searchTerm, setSearchTerm] = useState(
     defaultQueryParameters.searchTerm
   );
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const [sortingCriteria, setSortingCriteria] = useState(
+    defaultQueryParameters.sortingCriteria
+  );
+  const [sortingDirection, setSortingDirection] = useState(
+    defaultQueryParameters.sortingDirection
+  );
+  const parametersToDebounce = useMemo(
+    () => ({ searchTerm, sortingCriteria, sortingDirection }),
+    [searchTerm, sortingCriteria, sortingDirection]
+  );
+  const debouncedQueryParameters = useDebounce(parametersToDebounce, 300);
   const { isFetching, images, hasNextPage, fetchNextPage } = useGetImageGallery(
-    {
-      searchTerm: debouncedSearchTerm,
-    }
+    debouncedQueryParameters
   );
   const [checkedImages, setCheckedImages] = useState<ReadonlySet<string>>(
     new Set()
@@ -31,7 +39,11 @@ export const useCustomMediaLibraryBehavior = ({
     (file: File) =>
       uploadImageMutation(file, {
         // It is to ensure to show the uploaded image, besides it is filtered or not
-        onSuccess: () => setSearchTerm(defaultQueryParameters.searchTerm),
+        onSuccess: () => {
+          setSearchTerm(defaultQueryParameters.searchTerm);
+          setSortingCriteria(defaultQueryParameters.sortingCriteria);
+          setSortingDirection(defaultQueryParameters.sortingDirection);
+        },
       }),
     [uploadImageMutation]
   );
@@ -79,6 +91,10 @@ export const useCustomMediaLibraryBehavior = ({
     uploadImage,
     searchTerm,
     setSearchTerm,
+    sortingCriteria,
+    setSortingCriteria,
+    sortingDirection,
+    setSortingDirection,
     hasNextPage,
     fetchNextPage,
   };
