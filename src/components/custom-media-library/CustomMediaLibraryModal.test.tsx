@@ -14,7 +14,7 @@ const queryClient = new QueryClient();
 
 const baseAppServices: Partial<AppServices> = {
   dopplerLegacyClient: {
-    getImageGallery: () =>
+    getImageGallery: (_) =>
       Promise.resolve({ success: true, value: { items: demoImages } }),
   } as DopplerLegacyClient,
 };

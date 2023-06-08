@@ -1,21 +1,36 @@
 // TODO: implement it based on MSEditor Gallery
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { takeOneValue, toggleItemInSet } from "../../utils";
+import { takeOneValue, toggleItemInSet, useDebounce } from "../../utils";
 import {
   useGetImageGallery,
   useUploadImage,
 } from "../../queries/image-gallery-queries";
+
+const defaultSearchTerm = "";
 
 export const useCustomMediaLibraryBehavior = ({
   selectImage,
 }: {
   selectImage: ({ url }: { url: string }) => void;
 }) => {
-  const { mutate: uploadImage } = useUploadImage();
-  const { isLoading, isFetching, images } = useGetImageGallery();
+  const { mutate: uploadImageMutation } = useUploadImage();
+  const [searchTerm, setSearchTerm] = useState(defaultSearchTerm);
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const { isLoading, isFetching, images } = useGetImageGallery({
+    searchTerm: debouncedSearchTerm,
+  });
   const [checkedImages, setCheckedImages] = useState<ReadonlySet<string>>(
     new Set()
+  );
+
+  const uploadImage = useCallback(
+    (file: File) =>
+      uploadImageMutation(file, {
+        // It is to ensure to show the uploaded image, besides it is filtered or not
+        onSuccess: () => setSearchTerm(defaultSearchTerm),
+      }),
+    [uploadImageMutation]
   );
 
   // Sanitize checkedImages based on existing images
@@ -59,5 +74,7 @@ export const useCustomMediaLibraryBehavior = ({
     checkedImages,
     toggleCheckedImage,
     uploadImage,
+    searchTerm,
+    setSearchTerm,
   };
 };

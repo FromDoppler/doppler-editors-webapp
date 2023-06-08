@@ -250,9 +250,56 @@ describe(CustomMediaLibraryUI.name, () => {
     const uploadButton = screen.getByText("upload_image");
     expect(uploadButton).not.toBeDisabled();
   });
+
+  it("should call setSearchTerm on edit", async () => {
+    // Arrange
+    const testSearchTerm = "test search term";
+    const setSearchTerm = jest.fn();
+
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <TestDopplerIntlProvider>
+        <CustomMediaLibraryUI {...baseProps} setSearchTerm={setSearchTerm} />
+      </TestDopplerIntlProvider>
+    );
+
+    // Assert
+    const input = screen.getByPlaceholderText("search_placeholder");
+
+    await userEvent.click(input);
+    await userEvent.keyboard(testSearchTerm);
+    expect(setSearchTerm).toBeCalledTimes(testSearchTerm.length);
+    expect(setSearchTerm).toBeCalledWith(testSearchTerm[0]);
+    expect(setSearchTerm).toBeCalledWith(
+      testSearchTerm[testSearchTerm.length - 1]
+    );
+  });
+
+  it("should use searchTerm as input value", async () => {
+    // Arrange
+    const testSearchTerm = "test search term";
+
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <TestDopplerIntlProvider>
+        <CustomMediaLibraryUI {...baseProps} searchTerm={testSearchTerm} />
+      </TestDopplerIntlProvider>
+    );
+
+    // Assert
+    const input = screen.getByPlaceholderText("search_placeholder");
+
+    expect(input).toHaveValue(testSearchTerm);
+  });
 });
 
-const createBaseProps = () => ({
+const createBaseProps: () => Parameters<
+  typeof CustomMediaLibraryUI
+>[0] = () => ({
   selectCheckedImage: noop,
   uploadImage: noop,
   cancel: noop,
@@ -261,6 +308,8 @@ const createBaseProps = () => ({
   images: [],
   checkedImages: new Set([]),
   toggleCheckedImage: noop,
+  searchTerm: "",
+  setSearchTerm: noop,
 });
 
 const hasACheckedCheckbox = (element: Element) => {
