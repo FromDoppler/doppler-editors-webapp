@@ -34,7 +34,9 @@ export const useUploadImage = () => {
       return dopplerLegacyClient.uploadImage(file);
     },
     onSuccess: () => {
-      return queryClient.invalidateQueries(queryKey);
+      // Resetting the query with searchTerm = "" to avoid double request after
+      // cleaning search input.
+      return queryClient.invalidateQueries([...queryKey, ""]);
     },
     onError: (error: Error) =>
       console.error(
