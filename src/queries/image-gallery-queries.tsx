@@ -6,16 +6,20 @@ import {
 import { useAppServices } from "../components/AppServicesContext";
 import { useMemo } from "react";
 
-export const defaultQueryParameters = {
+type QueryParameters = {
+  searchTerm: string;
+};
+
+export const defaultQueryParameters: QueryParameters = {
   searchTerm: "",
 };
 const getQueryKey = ({
   searchTerm = defaultQueryParameters.searchTerm,
-}: { searchTerm?: string } = {}) => ["image-gallery", searchTerm] as const;
+}: Partial<QueryParameters> = {}) => ["image-gallery", searchTerm] as const;
 
 export const useGetImageGallery = ({
   searchTerm = defaultQueryParameters.searchTerm,
-}: { searchTerm?: string } = {}) => {
+}: Partial<QueryParameters> = {}) => {
   const { dopplerLegacyClient } = useAppServices();
 
   const query = useInfiniteQuery({
@@ -52,7 +56,7 @@ export const useUploadImage = () => {
       // cleaning search input.
       // Using resetQueries in place of invalidateQueries to load only the
       // first page in an infinite scroll.
-      return queryClient.resetQueries(getQueryKey);
+      return queryClient.resetQueries(getQueryKey());
     },
     onError: (error: Error) =>
       console.error(
