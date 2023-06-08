@@ -30,7 +30,7 @@ export const CustomMediaLibraryUI = ({
   uploadImage,
   cancel,
   selectImage,
-  isLoading,
+  isFetching,
   images,
   checkedImages,
   toggleCheckedImage,
@@ -41,7 +41,7 @@ export const CustomMediaLibraryUI = ({
   uploadImage: (file: File) => void;
   cancel: () => void;
   selectImage: ({ url }: { url: string }) => void;
-  isLoading: boolean;
+  isFetching: boolean;
   images: ImageItem[];
   checkedImages: ReadonlySet<string>;
   toggleCheckedImage: ({ name }: { name: string }) => void;
@@ -64,7 +64,7 @@ export const CustomMediaLibraryUI = ({
       setSearchTerm={setSearchTerm}
     />
     <List
-      isLoading={isLoading}
+      isFetching={isFetching}
       images={images}
       checkedImages={checkedImages}
       toggleCheckedImage={toggleCheckedImage}
