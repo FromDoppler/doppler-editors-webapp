@@ -369,9 +369,11 @@ describe(useCustomMediaLibraryBehavior.name, () => {
 
     // Assert - Default value
     expect(getSearchTerm()).toBe("");
-    expect(dopplerLegacyClient.getImageGallery).toBeCalledWith({
-      searchTerm: "",
-    });
+    expect(dopplerLegacyClient.getImageGallery).toBeCalledWith(
+      expect.objectContaining({
+        searchTerm: "",
+      })
+    );
 
     // Act
     setSearchTerm("test1");
@@ -404,9 +406,11 @@ describe(useCustomMediaLibraryBehavior.name, () => {
 
     // Assert - After debounce time
     expect(getSearchTerm()).toBe("test2");
-    expect(dopplerLegacyClient.getImageGallery).toBeCalledWith({
-      searchTerm: "test2",
-    });
+    expect(dopplerLegacyClient.getImageGallery).toBeCalledWith(
+      expect.objectContaining({
+        searchTerm: "test2",
+      })
+    );
     expect(dopplerLegacyClient.getImageGallery).toBeCalledTimes(2);
   });
 });

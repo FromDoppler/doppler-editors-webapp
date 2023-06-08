@@ -5,28 +5,52 @@ import {
 } from "@tanstack/react-query";
 import { useAppServices } from "../components/AppServicesContext";
 import { useMemo } from "react";
+import {
+  SortingCriteria,
+  SortingDirection,
+} from "../abstractions/doppler-legacy-client";
 
 type QueryParameters = {
   searchTerm: string;
+  sortingCriteria: SortingCriteria;
+  sortingDirection: SortingDirection;
 };
 
 export const defaultQueryParameters: QueryParameters = {
   searchTerm: "",
+  sortingCriteria: "DATE",
+  sortingDirection: "DESCENDING",
 };
+
 const getQueryKey = ({
   searchTerm = defaultQueryParameters.searchTerm,
-}: Partial<QueryParameters> = {}) => ["image-gallery", searchTerm] as const;
+  sortingCriteria = defaultQueryParameters.sortingCriteria,
+  sortingDirection = defaultQueryParameters.sortingDirection,
+}: Partial<QueryParameters> = {}) =>
+  [
+    "image-gallery",
+    searchTerm,
+    `${sortingCriteria}_${sortingDirection}`,
+  ] as const;
 
 export const useGetImageGallery = ({
   searchTerm = defaultQueryParameters.searchTerm,
+  sortingCriteria = defaultQueryParameters.sortingCriteria,
+  sortingDirection = defaultQueryParameters.sortingDirection,
 }: Partial<QueryParameters> = {}) => {
   const { dopplerLegacyClient } = useAppServices();
 
   const query = useInfiniteQuery({
-    queryKey: getQueryKey({ searchTerm }),
+    queryKey: getQueryKey({ searchTerm, sortingCriteria, sortingDirection }),
     queryFn: async ({ pageParam: continuation }: { pageParam?: string }) =>
-      (await dopplerLegacyClient.getImageGallery({ searchTerm, continuation }))
-        .value,
+      (
+        await dopplerLegacyClient.getImageGallery({
+          searchTerm,
+          sortingCriteria,
+          sortingDirection,
+          continuation,
+        })
+      ).value,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,

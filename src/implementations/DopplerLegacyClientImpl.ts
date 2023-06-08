@@ -1,6 +1,10 @@
 import { Result } from "../abstractions/common/result-types";
 import { AppConfiguration } from "../abstractions";
-import { DopplerLegacyClient } from "../abstractions/doppler-legacy-client";
+import {
+  DopplerLegacyClient,
+  SortingCriteria,
+  SortingDirection,
+} from "../abstractions/doppler-legacy-client";
 import { AxiosStatic } from "axios";
 import { ImageItem } from "../abstractions/domain/image-gallery";
 
@@ -22,21 +26,25 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
 
   async getImageGallery({
     searchTerm,
+    sortingCriteria,
+    sortingDirection,
     continuation,
   }: {
     searchTerm: string;
+    sortingCriteria: SortingCriteria;
+    sortingDirection: SortingDirection;
     continuation?: string | undefined;
   }): Promise<
     Result<{ items: ImageItem[]; continuation: string | undefined }>
   > {
     const take = 50;
     const position = continuation ? parseInt(continuation) : 0;
-    const sortCriteria = "DATE";
     const queryString = new URLSearchParams({
+      isAscending: sortingDirection === "ASCENDING" ? "true" : "false",
       offset: `${take}`,
       position: `${position}`,
       query: searchTerm,
-      sortingCriteria: sortCriteria,
+      sortingCriteria: sortingCriteria,
     });
     const path = "/Campaigns/Editor/GetImageGallery";
     const response = await this.axios.get(`${path}?${queryString}`);
