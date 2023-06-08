@@ -33,6 +33,15 @@ export const demoImages: ImageItem[] = [
     thumbnailUrl: `${baseUrl}/omnicanalidad-emailtransaccional.png`,
     thumbnailUrl150: `${baseUrl}/omnicanalidad-emailtransaccional.png`,
   },
+  ...Array.from({ length: 500 }, (_, i) => ({
+    name: `name-${i}.png`,
+    lastModifiedDate: new Date(2023, 1, 2),
+    size: 678,
+    extension: ".png",
+    url: `${baseUrl}/omnicanalidad-emailtransaccional.png`,
+    thumbnailUrl: `${baseUrl}/omnicanalidad-emailtransaccional.png`,
+    thumbnailUrl150: `${baseUrl}/omnicanalidad-emailtransaccional.png`,
+  })),
 ];
 
 export class DummyDopplerLegacyClient implements DopplerLegacyClient {
@@ -48,16 +57,17 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     console.log(`Begin getImageGallery.searching by ${searchTerm}...`);
     await timeout(1000);
 
+    const pageSize = 50;
     const start = (continuation && parseInt(continuation)) || 0;
-    const end = start + 2;
+    const end = start + pageSize;
 
-    const items = demoImages
-      // Deep cloning images to change the identity of each object
-      .filter((x) => x.name.includes(searchTerm))
+    const filteredItems = demoImages.filter((x) => x.name.includes(searchTerm));
+    const items = filteredItems
       .slice(start, end)
+      // Deep cloning images to change the identity of each object
       .map((x) => ({ ...x }));
 
-    const newContinuation = demoImages.length > end ? `${end}` : undefined;
+    const newContinuation = filteredItems.length > end ? `${end}` : undefined;
     const result = {
       success: true as const,
       value: {
