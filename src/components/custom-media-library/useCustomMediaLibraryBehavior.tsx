@@ -3,11 +3,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { takeOneValue, toggleItemInSet, useDebounce } from "../../utils";
 import {
+  defaultQueryParameters,
   useGetImageGallery,
   useUploadImage,
 } from "../../queries/image-gallery-queries";
-
-const defaultSearchTerm = "";
 
 export const useCustomMediaLibraryBehavior = ({
   selectImage,
@@ -15,7 +14,9 @@ export const useCustomMediaLibraryBehavior = ({
   selectImage: ({ url }: { url: string }) => void;
 }) => {
   const { mutate: uploadImageMutation } = useUploadImage();
-  const [searchTerm, setSearchTerm] = useState(defaultSearchTerm);
+  const [searchTerm, setSearchTerm] = useState(
+    defaultQueryParameters.searchTerm
+  );
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const { isFetching, images, hasNextPage, fetchNextPage } = useGetImageGallery(
     {
@@ -30,7 +31,7 @@ export const useCustomMediaLibraryBehavior = ({
     (file: File) =>
       uploadImageMutation(file, {
         // It is to ensure to show the uploaded image, besides it is filtered or not
-        onSuccess: () => setSearchTerm(defaultSearchTerm),
+        onSuccess: () => setSearchTerm(defaultQueryParameters.searchTerm),
       }),
     [uploadImageMutation]
   );

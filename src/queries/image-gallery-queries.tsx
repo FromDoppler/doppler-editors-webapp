@@ -6,7 +6,7 @@ import {
 import { useAppServices } from "../components/AppServicesContext";
 import { useMemo } from "react";
 
-const defaultQueryParameters = {
+export const defaultQueryParameters = {
   searchTerm: "",
 };
 const queryKey = ["image-gallery"] as const;
