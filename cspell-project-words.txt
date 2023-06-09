@@ -34,6 +34,7 @@ firstname
 lastname
 omnicanalidad
 emailtransaccional
+dp-rowflex
 
 # Technical terms
 automerge
