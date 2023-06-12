@@ -22,21 +22,34 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
 
   async getImageGallery({
     searchTerm,
+    continuation,
   }: {
     searchTerm: string;
-  }): Promise<Result<{ items: ImageItem[] }>> {
+    continuation?: string | undefined;
+  }): Promise<
+    Result<{ items: ImageItem[]; continuation: string | undefined }>
+  > {
     const take = 50;
-    const skip = 0;
+    const position = continuation ? parseInt(continuation) : 0;
     const sortCriteria = "DATE";
     const queryString =
-      `offset=${take}&position=${skip}` +
+      `offset=${take}&position=${position}` +
       `&query=${encodeURIComponent(searchTerm)}` +
       `&sortingCriteria=${sortCriteria}`;
     const path = "/Campaigns/Editor/GetImageGallery";
     const response = await this.axios.get(`${path}?${queryString}`);
+
+    const items = response.data.images.map(parseImageItem);
+    const total = parseInt(response.data.count);
+    const end = position + items.length;
+    const newContinuation = total > end ? `${end}` : undefined;
+
     return {
       success: true,
-      value: { items: response.data.images.map(parseImageItem) },
+      value: {
+        items,
+        continuation: newContinuation,
+      },
     };
   }
 

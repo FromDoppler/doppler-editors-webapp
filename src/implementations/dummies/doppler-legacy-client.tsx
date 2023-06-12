@@ -33,25 +33,47 @@ export const demoImages: ImageItem[] = [
     thumbnailUrl: `${baseUrl}/omnicanalidad-emailtransaccional.png`,
     thumbnailUrl150: `${baseUrl}/omnicanalidad-emailtransaccional.png`,
   },
+  ...Array.from({ length: 500 }, (_, i) => ({
+    name: `name-${i}.png`,
+    lastModifiedDate: new Date(2023, 1, 2),
+    size: 678,
+    extension: ".png",
+    url: `${baseUrl}/omnicanalidad-emailtransaccional.png`,
+    thumbnailUrl: `${baseUrl}/omnicanalidad-emailtransaccional.png`,
+    thumbnailUrl150: `${baseUrl}/omnicanalidad-emailtransaccional.png`,
+  })),
 ];
 
 export class DummyDopplerLegacyClient implements DopplerLegacyClient {
   getImageGallery: ({
     searchTerm,
+    continuation,
   }: {
     searchTerm: string;
-  }) => Promise<Result<{ items: ImageItem[] }>> = async ({ searchTerm }) => {
+    continuation?: string | undefined;
+  }) => Promise<
+    Result<{ items: ImageItem[]; continuation: string | undefined }>
+  > = async ({ searchTerm, continuation }) => {
     console.log(`Begin getImageGallery.searching by ${searchTerm}...`);
     await timeout(1000);
 
-    const items = demoImages
+    const pageSize = 50;
+    const start = (continuation && parseInt(continuation)) || 0;
+    const end = start + pageSize;
+
+    const filteredItems = demoImages.filter((x) => x.name.includes(searchTerm));
+    const items = filteredItems
+      .slice(start, end)
       // Deep cloning images to change the identity of each object
-      .filter((x) => x.name.includes(searchTerm))
       .map((x) => ({ ...x }));
 
+    const newContinuation = filteredItems.length > end ? `${end}` : undefined;
     const result = {
       success: true as const,
-      value: { items },
+      value: {
+        items,
+        continuation: newContinuation,
+      },
     };
 
     console.log("End getImageGallery", { result });

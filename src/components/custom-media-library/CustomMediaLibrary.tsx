@@ -36,6 +36,8 @@ export const CustomMediaLibraryUI = ({
   toggleCheckedImage,
   searchTerm,
   setSearchTerm,
+  hasNextPage,
+  fetchNextPage,
 }: {
   selectCheckedImage: (() => void) | null;
   uploadImage: (file: File) => void;
@@ -47,6 +49,8 @@ export const CustomMediaLibraryUI = ({
   toggleCheckedImage: ({ name }: { name: string }) => void;
   searchTerm: string;
   setSearchTerm: (value: string) => void;
+  hasNextPage: boolean | undefined;
+  fetchNextPage: () => void;
 }) => (
   <form
     className="dp-image-gallery"
@@ -69,6 +73,8 @@ export const CustomMediaLibraryUI = ({
       checkedImages={checkedImages}
       toggleCheckedImage={toggleCheckedImage}
       selectImage={selectImage}
+      hasNextPage={hasNextPage}
+      fetchNextPage={fetchNextPage}
     />
     <Footer submitEnabled={!!selectCheckedImage} uploadImage={uploadImage} />
   </form>

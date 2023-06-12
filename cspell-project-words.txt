@@ -74,3 +74,4 @@ ttionya
 unlayer
 whatsapp
 xunit
+react-infinite-scroller

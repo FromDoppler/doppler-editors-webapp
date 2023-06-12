@@ -4,8 +4,12 @@ import { ImageItem } from "../domain/image-gallery";
 export interface DopplerLegacyClient {
   getImageGallery: ({
     searchTerm,
+    continuation,
   }: {
     searchTerm: string;
-  }) => Promise<Result<{ items: ImageItem[] }>>;
+    continuation?: string | undefined;
+  }) => Promise<
+    Result<{ items: ImageItem[]; continuation: string | undefined }>
+  >;
   uploadImage: (file: File) => Promise<Result>;
 }
