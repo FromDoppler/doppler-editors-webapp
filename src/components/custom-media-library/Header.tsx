@@ -6,6 +6,7 @@ import {
 } from "../../abstractions/doppler-legacy-client";
 import { FieldGroup, FieldGroupItem } from "../dp-components/FieldGroup";
 import { SortDropdown } from "./SortDropdown";
+import { SearchInput } from "../dp-components/SearchInput";
 
 export const Header = ({
   cancel,
@@ -44,11 +45,10 @@ export const Header = ({
             />
           </FieldGroupItem>
           <FieldGroupItem className="col-flex--1">
-            <input
-              type="search"
+            <SearchInput
               placeholder={intl.formatMessage({ id: "search_placeholder" })}
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChangeValue={setSearchTerm}
             />
             {/*
             TODO: Add following tools:
