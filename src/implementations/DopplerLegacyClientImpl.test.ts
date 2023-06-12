@@ -141,7 +141,7 @@ describe(DopplerLegacyClientImpl.name, () => {
     it("Should encode the search terms", async () => {
       // Arrange
       const searchTerm = '%search "term"!';
-      const expectedSearchTerm = "%25search%20%22term%22!";
+      const expectedSearchTerm = "%25search+%22term%22%21";
       const expectedUrl =
         `/Campaigns/Editor/GetImageGallery?` +
         `offset=50&position=0&query=${expectedSearchTerm}&sortingCriteria=DATE`;
