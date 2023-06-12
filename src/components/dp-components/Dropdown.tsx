@@ -12,12 +12,9 @@ export type DropdownItemProps = {
 };
 
 export const Dropdown = ({ children, ...rest }: DropdownProps) => (
-  // Ugly patch because dropdown-arrow requires dp-search-list
-  <div className="dp-search-list">
-    <div className="dp-dropdown-wrapper">
-      <span className="dropdown-arrow"></span>
-      <select {...rest}>{children}</select>
-    </div>
+  <div className="dp-select">
+    <span className="dropdown-arrow"></span>
+    <select {...rest}>{children}</select>
   </div>
 );
 

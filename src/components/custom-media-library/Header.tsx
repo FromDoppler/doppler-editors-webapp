@@ -35,7 +35,7 @@ export const Header = ({
         onClick={cancel}
       ></button>
       <div className="dp-image-gallery-header">
-        <FieldGroup className="dp-rowflex">
+        <FieldGroup className="dp-rowflex awa-form">
           <FieldGroupItem className="col-fixed--240">
             <SortDropdown
               sortingCriteria={sortingCriteria}

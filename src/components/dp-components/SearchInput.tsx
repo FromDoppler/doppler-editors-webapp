@@ -10,10 +10,12 @@ export const SearchInput = ({
   value,
   onChangeValue,
 }: SearchInputProps) => (
-  <input
-    type="search"
-    placeholder={placeholder}
-    value={value}
-    onChange={(e) => onChangeValue(e.target.value)}
-  />
+  <div className="dp-wrap-search dp-bg-search">
+    <input
+      type="search"
+      placeholder={placeholder}
+      value={value}
+      onChange={(e) => onChangeValue(e.target.value)}
+    />
+  </div>
 );
