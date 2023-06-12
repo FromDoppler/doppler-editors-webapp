@@ -6,15 +6,24 @@ import {
 import { useAppServices } from "../components/AppServicesContext";
 import { useMemo } from "react";
 
-const queryKey = ["image-gallery"] as const;
+type QueryParameters = {
+  searchTerm: string;
+};
+
+export const defaultQueryParameters: QueryParameters = {
+  searchTerm: "",
+};
+const getQueryKey = ({
+  searchTerm = defaultQueryParameters.searchTerm,
+}: Partial<QueryParameters> = {}) => ["image-gallery", searchTerm] as const;
 
 export const useGetImageGallery = ({
-  searchTerm = "",
-}: { searchTerm?: string } = {}) => {
+  searchTerm = defaultQueryParameters.searchTerm,
+}: Partial<QueryParameters> = {}) => {
   const { dopplerLegacyClient } = useAppServices();
 
   const query = useInfiniteQuery({
-    queryKey: [...queryKey, searchTerm],
+    queryKey: getQueryKey({ searchTerm }),
     queryFn: async ({ pageParam: continuation }: { pageParam?: string }) =>
       (await dopplerLegacyClient.getImageGallery({ searchTerm, continuation }))
         .value,
@@ -43,11 +52,11 @@ export const useUploadImage = () => {
       return dopplerLegacyClient.uploadImage(file);
     },
     onSuccess: () => {
-      // Resetting the query with searchTerm = "" to avoid double request after
+      // Resetting the query with default values to avoid double request after
       // cleaning search input.
       // Using resetQueries in place of invalidateQueries to load only the
       // first page in an infinite scroll.
-      return queryClient.resetQueries([...queryKey, ""]);
+      return queryClient.resetQueries(getQueryKey());
     },
     onError: (error: Error) =>
       console.error(
