@@ -14,7 +14,7 @@ export const Footer = ({
       <UploadButton
         className="dp-button button-medium secondary-green"
         onFile={uploadImage}
-        accept=".jpg, .jpeg, .png"
+        accept=".jpg, .jpeg, .png, .gif"
       >
         <FormattedMessage id="upload_image" />
       </UploadButton>
