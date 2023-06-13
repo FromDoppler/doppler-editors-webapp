@@ -18,7 +18,13 @@ async function exportContentFromUnlayer(
 
   const [htmlExport, imageExport] = await Promise.all([
     unlayerEditorObject.exportHtmlAsync(),
-    unlayerEditorObject.exportImageAsync(),
+    unlayerEditorObject.exportImageAsync().catch((e) => {
+      console.log("Error generating image", e);
+      return {
+        design: {},
+        url: "https://cdn.fromdoppler.com/empty-300x240.jpg",
+      };
+    }),
   ]);
 
   const content: Content = !htmlExport.design
