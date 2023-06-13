@@ -1,5 +1,9 @@
-import { timeout } from "../../utils";
-import { DopplerLegacyClient } from "../../abstractions/doppler-legacy-client";
+import { nameComparison, timeout } from "../../utils";
+import {
+  DopplerLegacyClient,
+  SortingCriteria,
+  SortingDirection,
+} from "../../abstractions/doppler-legacy-client";
 import { Result } from "../../abstractions/common/result-types";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 
@@ -47,13 +51,22 @@ export const demoImages: ImageItem[] = [
 export class DummyDopplerLegacyClient implements DopplerLegacyClient {
   getImageGallery: ({
     searchTerm,
+    sortingCriteria,
+    sortingDirection,
     continuation,
   }: {
     searchTerm: string;
+    sortingCriteria: SortingCriteria;
+    sortingDirection: SortingDirection;
     continuation?: string | undefined;
   }) => Promise<
     Result<{ items: ImageItem[]; continuation: string | undefined }>
-  > = async ({ searchTerm, continuation }) => {
+  > = async ({
+    searchTerm,
+    sortingCriteria,
+    sortingDirection,
+    continuation,
+  }) => {
     console.log(`Begin getImageGallery.searching by ${searchTerm}...`);
     await timeout(1000);
 
@@ -62,12 +75,20 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     const end = start + pageSize;
 
     const filteredItems = demoImages.filter((x) => x.name.includes(searchTerm));
-    const items = filteredItems
+    const sortFn =
+      sortingCriteria === "DATE"
+        ? (a: { lastModifiedDate: Date }, b: { lastModifiedDate: Date }) =>
+            a.lastModifiedDate.valueOf() - b.lastModifiedDate.valueOf()
+        : nameComparison;
+    const ascDescSortFn = (a: ImageItem, b: ImageItem) =>
+      sortingDirection === "ASCENDING" ? sortFn(a, b) : sortFn(b, a);
+    const sortedItems = filteredItems.sort(ascDescSortFn);
+    const items = sortedItems
       .slice(start, end)
       // Deep cloning images to change the identity of each object
       .map((x) => ({ ...x }));
 
-    const newContinuation = filteredItems.length > end ? `${end}` : undefined;
+    const newContinuation = sortedItems.length > end ? `${end}` : undefined;
     const result = {
       success: true as const,
       value: {
@@ -83,7 +104,11 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
   uploadImage: () => Promise<Result> = async () => {
     console.log("Begin uploadImage...");
     await timeout(1000);
-    demoImages.unshift({ ...demoImages[0], name: `new_image_${Date.now()}` });
+    demoImages.unshift({
+      ...demoImages[0],
+      name: `new_image_${Date.now()}`,
+      lastModifiedDate: new Date(),
+    });
     console.log("End uploadImage");
     return { success: true };
   };

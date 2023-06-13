@@ -3,6 +3,10 @@ import { useCustomMediaLibraryBehavior } from "./useCustomMediaLibraryBehavior";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppServicesProvider } from "../AppServicesContext";
+import {
+  SortingCriteria,
+  SortingDirection,
+} from "../../abstractions/doppler-legacy-client";
 
 jest.useFakeTimers();
 
@@ -46,6 +50,12 @@ const createTestContext = () => {
     getSearchTerm: () => currentHookValues.searchTerm,
     setSearchTerm: (value: string) =>
       act(() => currentHookValues.setSearchTerm(value)),
+    getSortingCriteria: () => currentHookValues.sortingCriteria,
+    setSortingCriteria: (value: SortingCriteria) =>
+      act(() => currentHookValues.setSortingCriteria(value)),
+    getSortingDirection: () => currentHookValues.sortingDirection,
+    setSortingDirection: (value: SortingDirection) =>
+      act(() => currentHookValues.setSortingDirection(value)),
     mocks: {
       selectImage,
       dopplerLegacyClient,
@@ -176,6 +186,51 @@ describe(useCustomMediaLibraryBehavior.name, () => {
     expect(selectCheckedIsNull()).toBe(true);
   });
 
+  it("should send parameters on change", async () => {
+    // Arrange
+    const {
+      Component,
+      getSearchTerm,
+      setSearchTerm,
+      getSortingCriteria,
+      setSortingCriteria,
+      getSortingDirection,
+      setSortingDirection,
+      mocks: { dopplerLegacyClient },
+    } = createTestContext();
+
+    render(<Component />);
+    await waitFor(() => {
+      expect(dopplerLegacyClient.getImageGallery).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          searchTerm: "",
+          sortingCriteria: "DATE",
+          sortingDirection: "DESCENDING",
+        })
+      );
+    });
+
+    // Act
+    setSearchTerm("This value will be removed");
+    setSortingCriteria("FILENAME");
+    setSortingDirection("ASCENDING");
+
+    // Assert
+    expect(getSearchTerm()).not.toBe("");
+    expect(getSortingCriteria()).toBe("FILENAME");
+    expect(getSortingDirection()).toBe("ASCENDING");
+    await waitFor(() => {
+      expect(dopplerLegacyClient.getImageGallery).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          searchTerm: "This value will be removed",
+          sortingCriteria: "FILENAME",
+          sortingDirection: "ASCENDING",
+        })
+      );
+    });
+    expect(dopplerLegacyClient.getImageGallery).toBeCalledTimes(2);
+  });
+
   it("should upload image and then reload", async () => {
     // Arrange
     const {
@@ -199,20 +254,38 @@ describe(useCustomMediaLibraryBehavior.name, () => {
     expect(dopplerLegacyClient.getImageGallery).toBeCalledTimes(2);
   });
 
-  it("should clean searchTerms after upload", async () => {
+  it("should clean parameters after upload", async () => {
     // Arrange
     const {
       Component,
       uploadImage,
       getSearchTerm,
       setSearchTerm,
+      getSortingCriteria,
+      setSortingCriteria,
+      getSortingDirection,
+      setSortingDirection,
       mocks: { dopplerLegacyClient },
     } = createTestContext();
 
     render(<Component />);
     setSearchTerm("This value will be removed");
-    const file = { my: "file" } as any;
+    setSortingCriteria("FILENAME");
+    setSortingDirection("ASCENDING");
     expect(getSearchTerm()).not.toBe("");
+    expect(getSortingCriteria()).toBe("FILENAME");
+    expect(getSortingDirection()).toBe("ASCENDING");
+    await waitFor(() => {
+      expect(dopplerLegacyClient.getImageGallery).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          searchTerm: "This value will be removed",
+          sortingCriteria: "FILENAME",
+          sortingDirection: "ASCENDING",
+        })
+      );
+    });
+    expect(dopplerLegacyClient.getImageGallery).toBeCalledTimes(2);
+    const file = { my: "file" } as any;
 
     // Act
     uploadImage(file);
@@ -222,7 +295,19 @@ describe(useCustomMediaLibraryBehavior.name, () => {
       expect(dopplerLegacyClient.uploadImage).toBeCalledWith(file);
     });
     expect(getSearchTerm()).toBe("");
-    expect(dopplerLegacyClient.getImageGallery).toBeCalledTimes(2);
+    expect(getSortingCriteria()).toBe("DATE");
+    expect(getSortingDirection()).toBe("DESCENDING");
+
+    await waitFor(() => {
+      expect(dopplerLegacyClient.getImageGallery).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          searchTerm: "",
+          sortingCriteria: "DATE",
+          sortingDirection: "DESCENDING",
+        })
+      );
+    });
+    expect(dopplerLegacyClient.getImageGallery).toBeCalledTimes(3);
   });
 
   it("should keep checkedImages when the name is still present after reloading", async () => {
@@ -369,9 +454,11 @@ describe(useCustomMediaLibraryBehavior.name, () => {
 
     // Assert - Default value
     expect(getSearchTerm()).toBe("");
-    expect(dopplerLegacyClient.getImageGallery).toBeCalledWith({
-      searchTerm: "",
-    });
+    expect(dopplerLegacyClient.getImageGallery).toBeCalledWith(
+      expect.objectContaining({
+        searchTerm: "",
+      })
+    );
 
     // Act
     setSearchTerm("test1");
@@ -404,9 +491,11 @@ describe(useCustomMediaLibraryBehavior.name, () => {
 
     // Assert - After debounce time
     expect(getSearchTerm()).toBe("test2");
-    expect(dopplerLegacyClient.getImageGallery).toBeCalledWith({
-      searchTerm: "test2",
-    });
+    expect(dopplerLegacyClient.getImageGallery).toBeCalledWith(
+      expect.objectContaining({
+        searchTerm: "test2",
+      })
+    );
     expect(dopplerLegacyClient.getImageGallery).toBeCalledTimes(2);
   });
 });

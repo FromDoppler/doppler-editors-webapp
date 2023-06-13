@@ -1,6 +1,10 @@
 import { AppConfiguration } from "../abstractions";
 import { AxiosStatic } from "axios";
 import { DopplerLegacyClientImpl } from "./DopplerLegacyClientImpl";
+import {
+  SortingCriteria,
+  SortingDirection,
+} from "../abstractions/doppler-legacy-client";
 
 const baseUrl = "https://app2.dopplerfiles.com/Users/88469/Originals";
 
@@ -41,9 +45,12 @@ describe(DopplerLegacyClientImpl.name, () => {
       // Arrange
       const dopplerLegacyBaseUrl = "dopplerLegacyBaseUrl";
       const searchTerm = "searchTerm";
+      const sortingCriteria = "DATE";
+      const sortingDirection = "DESCENDING";
       const continuation = "5";
       const expectedUrl =
-        "/Campaigns/Editor/GetImageGallery?offset=50&position=5&query=searchTerm&sortingCriteria=DATE";
+        "/Campaigns/Editor/GetImageGallery" +
+        "?isAscending=false&offset=50&position=5&query=searchTerm&sortingCriteria=DATE";
 
       // cSpell:disable
       const getApiResponse = {
@@ -122,6 +129,8 @@ describe(DopplerLegacyClientImpl.name, () => {
       // Act
       const result = await sut.getImageGallery({
         searchTerm,
+        sortingCriteria,
+        sortingDirection,
         continuation,
       });
 
@@ -138,37 +147,61 @@ describe(DopplerLegacyClientImpl.name, () => {
       });
     });
 
-    it("Should encode the search terms", async () => {
-      // Arrange
-      const searchTerm = '%search "term"!';
-      const expectedSearchTerm = "%25search+%22term%22%21";
-      const expectedUrl =
-        `/Campaigns/Editor/GetImageGallery?` +
-        `offset=50&position=0&query=${expectedSearchTerm}&sortingCriteria=DATE`;
+    it.each<{
+      searchTerm: string;
+      sortingCriteria: SortingCriteria;
+      sortingDirection: SortingDirection;
+      expectedQueryString: string;
+    }>([
+      {
+        searchTerm: '%search "term"!',
+        sortingCriteria: "DATE",
+        sortingDirection: "DESCENDING",
+        expectedQueryString:
+          "?isAscending=false&offset=50&position=0&query=%25search+%22term%22%21&sortingCriteria=DATE",
+      },
+      {
+        searchTerm: "",
+        sortingCriteria: "DATE",
+        sortingDirection: "DESCENDING",
+        expectedQueryString:
+          "?isAscending=false&offset=50&position=0&query=&sortingCriteria=DATE",
+      },
+      {
+        searchTerm: "",
+        sortingCriteria: "DATE",
+        sortingDirection: "ASCENDING",
+        expectedQueryString:
+          "?isAscending=true&offset=50&position=0&query=&sortingCriteria=DATE",
+      },
+      {
+        searchTerm: "",
+        sortingCriteria: "FILENAME",
+        sortingDirection: "DESCENDING",
+        expectedQueryString:
+          "?isAscending=false&offset=50&position=0&query=&sortingCriteria=FILENAME",
+      },
+      {
+        searchTerm: "",
+        sortingCriteria: "FILENAME",
+        sortingDirection: "ASCENDING",
+        expectedQueryString:
+          "?isAscending=true&offset=50&position=0&query=&sortingCriteria=FILENAME",
+      },
+    ])(
+      "Should accept parameters",
+      async ({ expectedQueryString, ...parameters }) => {
+        const { sut, axiosGet } = createTestContext();
 
-      const { sut, axiosGet } = createTestContext();
+        // Act
+        await sut.getImageGallery(parameters);
 
-      // Act
-      await sut.getImageGallery({ searchTerm });
-
-      // Assert
-      expect(axiosGet).toBeCalledWith(expectedUrl);
-    });
-
-    it("Should accept empty search terms", async () => {
-      // Arrange
-      const searchTerm = "";
-      const expectedUrl =
-        "/Campaigns/Editor/GetImageGallery?offset=50&position=0&query=&sortingCriteria=DATE";
-
-      const { sut, axiosGet } = createTestContext();
-
-      // Act
-      await sut.getImageGallery({ searchTerm });
-
-      // Assert
-      expect(axiosGet).toBeCalledWith(expectedUrl);
-    });
+        // Assert
+        expect(axiosGet).toBeCalledWith(
+          expect.stringContaining(expectedQueryString)
+        );
+      }
+    );
 
     it("Should calculate next continuation based on current continuation, items and count", async () => {
       // Arrange
@@ -188,6 +221,8 @@ describe(DopplerLegacyClientImpl.name, () => {
       // Act
       const result = await sut.getImageGallery({
         searchTerm: "searchTerm",
+        sortingCriteria: "DATE",
+        sortingDirection: "DESCENDING",
         continuation,
       });
 
@@ -201,14 +236,19 @@ describe(DopplerLegacyClientImpl.name, () => {
     it("Should accept undefined continuation", async () => {
       // Arrange
       const searchTerm = "searchTerm";
+      const sortingCriteria = "DATE";
+      const sortingDirection = "DESCENDING";
       const expectedUrl =
-        "/Campaigns/Editor/GetImageGallery?offset=50&position=0&query=searchTerm&sortingCriteria=DATE";
+        "/Campaigns/Editor/GetImageGallery" +
+        "?isAscending=false&offset=50&position=0&query=searchTerm&sortingCriteria=DATE";
 
       const { sut, axiosGet } = createTestContext();
 
       // Act
       await sut.getImageGallery({
         searchTerm,
+        sortingCriteria,
+        sortingDirection,
       });
 
       // Assert
