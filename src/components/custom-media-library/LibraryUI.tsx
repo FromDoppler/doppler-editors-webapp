@@ -5,7 +5,8 @@ import {
 } from "../../abstractions/doppler-legacy-client";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
-import { List } from "./List";
+import { Content } from "./Content";
+import { ContentList } from "./ContentList";
 
 export const LibraryUI = ({
   selectCheckedImage,
@@ -61,15 +62,16 @@ export const LibraryUI = ({
       sortingDirection={sortingDirection}
       setSortingDirection={setSortingDirection}
     />
-    <List
-      isFetching={isFetching}
-      images={images}
-      checkedImages={checkedImages}
-      toggleCheckedImage={toggleCheckedImage}
-      selectImage={selectImage}
-      hasNextPage={hasNextPage}
-      fetchNextPage={fetchNextPage}
-    />
+    <Content isFetching={isFetching}>
+      <ContentList
+        images={images}
+        checkedImages={checkedImages}
+        toggleCheckedImage={toggleCheckedImage}
+        selectImage={selectImage}
+        hasNextPage={hasNextPage}
+        fetchNextPage={fetchNextPage}
+      />
+    </Content>
     <Footer submitEnabled={!!selectCheckedImage} uploadImage={uploadImage} />
   </form>
 );
