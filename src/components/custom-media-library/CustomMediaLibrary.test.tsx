@@ -305,11 +305,14 @@ const createBaseProps: () => Parameters<
   cancel: noop,
   selectImage: noop,
   isLoading: false,
+  isFetching: false,
   images: [],
   checkedImages: new Set([]),
   toggleCheckedImage: noop,
   searchTerm: "",
   setSearchTerm: noop,
+  hasNextPage: false,
+  fetchNextPage: noop,
 });
 
 const hasACheckedCheckbox = (element: Element) => {
