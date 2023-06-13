@@ -20,6 +20,7 @@ export const LibraryUI = ({
   checkedImages,
   toggleCheckedImage,
   searchTerm,
+  debouncedSearchTerm,
   setSearchTerm,
   sorting,
   setSorting,
@@ -35,6 +36,7 @@ export const LibraryUI = ({
   checkedImages: ReadonlySet<string>;
   toggleCheckedImage: ({ name }: { name: string }) => void;
   searchTerm: string;
+  debouncedSearchTerm: string;
   setSearchTerm: (value: string) => void;
   sorting: SortingPair;
   setSorting: (value: SortingPair) => void;
@@ -54,7 +56,7 @@ export const LibraryUI = ({
     </Header>
     <Content
       isFetching={isFetching}
-      filterApplied={!!searchTerm}
+      searchTerm={debouncedSearchTerm}
       emptyResults={images.length === 0}
     >
       <ContentList

@@ -299,6 +299,21 @@ describe(LibraryUI.name, () => {
     screen.getByText("image_gallery_empty_title");
     screen.getByText("image_gallery_empty_message");
   });
+
+  it("should show welcome message when there are no results and searchTerm is empty", () => {
+    // Arrange
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <TestDopplerIntlProvider>
+        <LibraryUI {...baseProps} debouncedSearchTerm="search term" />
+      </TestDopplerIntlProvider>
+    );
+
+    // Assert
+    screen.getByText("image_gallery_search_no_results_message");
+  });
 });
 
 const createBaseProps: () => Parameters<typeof LibraryUI>[0] = () => ({
@@ -311,6 +326,7 @@ const createBaseProps: () => Parameters<typeof LibraryUI>[0] = () => ({
   checkedImages: new Set([]),
   toggleCheckedImage: noop,
   searchTerm: "",
+  debouncedSearchTerm: "",
   setSearchTerm: noop,
   sorting: { criteria: "DATE", direction: "DESCENDING" },
   setSorting: noop,

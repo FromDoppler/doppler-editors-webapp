@@ -1,20 +1,27 @@
 import { ReactNode } from "react";
 import { ContentLoading } from "./ContentLoading";
+import { ContentNoResult } from "./ContentNoResult";
 import { ContentEmpty } from "./ContentEmpty";
 
 export const Content = ({
   isFetching,
-  filterApplied,
+  searchTerm,
   emptyResults,
   children,
 }: {
   isFetching: boolean;
-  filterApplied: boolean;
+  searchTerm: string;
   emptyResults: boolean;
   children: ReactNode;
 }) => (
   <div className="dp-image-gallery-content">
-    {emptyResults && !isFetching && !filterApplied ? <ContentEmpty /> : <></>}
+    {emptyResults && !isFetching && !searchTerm ? (
+      <ContentEmpty />
+    ) : emptyResults && !isFetching && searchTerm ? (
+      <ContentNoResult searchTerm={searchTerm} />
+    ) : (
+      <></>
+    )}
     {children}
     {isFetching ? <ContentLoading /> : false}
   </div>

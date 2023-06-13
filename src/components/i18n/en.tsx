@@ -16,6 +16,7 @@ export const messages_en = {
   home: `Home`,
   image_gallery_empty_message: `You can upload images in .jpg, .png, or .gif format until 3 mb.`,
   image_gallery_empty_title: `You don't have images yet`,
+  image_gallery_search_no_results_message: `There's no image with name "{searchTerm}"`,
   lists: `Lists`,
   new_template_description: `
 Have you finished editing your Template? Save it in the "My Templates" section to be able to use this

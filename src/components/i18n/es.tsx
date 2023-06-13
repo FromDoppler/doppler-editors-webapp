@@ -16,6 +16,7 @@ export const messages_es = {
   home: `Inicio`,
   image_gallery_empty_message: `Puedes subir imágenes con formato .jpg, .png o .gif hasta un tamaño de 3 mb.`,
   image_gallery_empty_title: `Aún no tienes imágenes`,
+  image_gallery_search_no_results_message: `Ninguna de tus imágenes posee el nombre "{searchTerm}"`,
   lists: `Listas`,
   new_template_description: `
 ¿Ya has editado tu Plantilla? Guárdala en la sección "Mis Plantillas" para poder acceder a esta
