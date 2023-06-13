@@ -32,10 +32,12 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     const take = 50;
     const position = continuation ? parseInt(continuation) : 0;
     const sortCriteria = "DATE";
-    const queryString =
-      `offset=${take}&position=${position}` +
-      `&query=${encodeURIComponent(searchTerm)}` +
-      `&sortingCriteria=${sortCriteria}`;
+    const queryString = new URLSearchParams({
+      offset: `${take}`,
+      position: `${position}`,
+      query: searchTerm,
+      sortingCriteria: sortCriteria,
+    });
     const path = "/Campaigns/Editor/GetImageGallery";
     const response = await this.axios.get(`${path}?${queryString}`);
 
