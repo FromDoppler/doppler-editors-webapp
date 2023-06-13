@@ -52,7 +52,11 @@ export const LibraryUI = ({
           * View as mosaic
       */}
     </Header>
-    <Content isFetching={isFetching}>
+    <Content
+      isFetching={isFetching}
+      filterApplied={!!searchTerm}
+      emptyResults={images.length === 0}
+    >
       <ContentList
         images={images}
         checkedImages={checkedImages}

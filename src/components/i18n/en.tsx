@@ -14,6 +14,8 @@ export const messages_en = {
   field_name_gender: `Gender`,
   field_name_lastname: `Last name`,
   home: `Home`,
+  image_gallery_empty_message: `You can upload images in .jpg, .png, or .gif format until 3 mb.`,
+  image_gallery_empty_title: `You don't have images yet`,
   lists: `Lists`,
   new_template_description: `
 Have you finished editing your Template? Save it in the "My Templates" section to be able to use this

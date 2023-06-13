@@ -36,6 +36,8 @@ omnicanalidad
 emailtransaccional
 dp-btnsearch
 dp-rowflex
+dpicon
+iconapp
 
 # Technical terms
 automerge

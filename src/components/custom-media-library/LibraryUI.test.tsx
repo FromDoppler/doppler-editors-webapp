@@ -283,6 +283,22 @@ describe(LibraryUI.name, () => {
 
     expect(input).toHaveValue(testSearchTerm);
   });
+
+  it("should show no-results message when there are not results and searchTerm is set", () => {
+    // Arrange
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <TestDopplerIntlProvider>
+        <LibraryUI {...baseProps} />
+      </TestDopplerIntlProvider>
+    );
+
+    // Assert
+    screen.getByText("image_gallery_empty_title");
+    screen.getByText("image_gallery_empty_message");
+  });
 });
 
 const createBaseProps: () => Parameters<typeof LibraryUI>[0] = () => ({
