@@ -39,6 +39,7 @@ const DoubleUnlayerEditorWrapper = ({
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
       registerCallback: noop,
+      unregisterCallback: noop,
     } as Partial<UnlayerEditorObject> as UnlayerEditorObject);
   }, []);
 

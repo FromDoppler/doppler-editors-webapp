@@ -106,6 +106,7 @@ const createTestContext = () => {
       ) => {},
       removeEventListener: (_type: string) => {},
       registerCallback: noop,
+      unregisterCallback: noop,
       exportHtmlAsync,
       exportImageAsync,
     } as Partial<UnlayerEditorObject> as UnlayerEditorObject,

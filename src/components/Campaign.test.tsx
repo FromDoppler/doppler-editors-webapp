@@ -134,6 +134,7 @@ const createTestContext = () => {
       exportHtmlAsync,
       exportImageAsync,
       registerCallback: noop,
+      unregisterCallback: noop,
       canUndo: noop,
       canRedo: noop,
     } as UnlayerEditorObject,
