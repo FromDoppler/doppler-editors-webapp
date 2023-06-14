@@ -27,10 +27,8 @@ export const useSingletonEditor = ({
 
   const { setCustomMediaLibraryEnabled } = useCustomMediaLibrarySetup({
     unlayerEditorObject,
-    // TODO: Remove this flag when the custom media library be ready
-    enabled: false,
   });
-  // Ugly patch to allow enable/disable custom media library for testing
+  // Ugly patch to allow enable/disable custom media library
   (window as any).setCustomMediaLibraryEnabled = setCustomMediaLibraryEnabled;
 
   useInitialContent({
