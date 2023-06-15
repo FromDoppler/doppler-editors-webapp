@@ -11,6 +11,12 @@ const baseUrl = "https://app2.dopplerfiles.com/Users/88469/Originals";
 function createTestContext({
   dopplerLegacyBaseUrl = "",
 }: { dopplerLegacyBaseUrl?: string } = {}) {
+  const windowDouble = {
+    console: {
+      error: jest.fn(),
+    },
+  };
+
   const appConfiguration = {
     dopplerLegacyBaseUrl,
   } as AppConfiguration;
@@ -37,8 +43,15 @@ function createTestContext({
   const sut = new DopplerLegacyClientImpl({
     axiosStatic,
     appConfiguration,
-  });
-  return { sut, axiosCreate: create, axiosGet: get, axiosPostForm: postForm };
+    window: windowDouble as any,
+  } as any);
+  return {
+    sut,
+    axiosCreate: create,
+    axiosGet: get,
+    axiosPostForm: postForm,
+    windowDouble,
+  };
 }
 
 describe(DopplerLegacyClientImpl.name, () => {
@@ -326,7 +339,7 @@ describe(DopplerLegacyClientImpl.name, () => {
     it("should continue on errors", async () => {
       // Arrange
       const dopplerLegacyBaseUrl = "dopplerLegacyBaseUrl";
-      const { sut, axiosCreate, axiosPostForm } =
+      const { sut, axiosCreate, axiosPostForm, windowDouble } =
         createTestContext({
           dopplerLegacyBaseUrl,
         });
@@ -348,6 +361,7 @@ describe(DopplerLegacyClientImpl.name, () => {
         withCredentials: true,
       });
       expect(axiosPostForm).toBeCalledTimes(3);
+      expect(windowDouble.console.error).toBeCalledTimes(2);
       expect(result).toEqual({
         success: true,
       });

@@ -1,23 +1,22 @@
 import { Result } from "../abstractions/common/result-types";
-import { AppConfiguration } from "../abstractions";
+import { AppServices } from "../abstractions";
 import {
   DopplerLegacyClient,
   SortingCriteria,
   SortingDirection,
 } from "../abstractions/doppler-legacy-client";
-import { AxiosStatic } from "axios";
 import { ImageItem } from "../abstractions/domain/image-gallery";
 
 export class DopplerLegacyClientImpl implements DopplerLegacyClient {
   private axios;
+  private window;
 
   constructor({
     axiosStatic,
     appConfiguration: { dopplerLegacyBaseUrl },
-  }: {
-    axiosStatic: AxiosStatic;
-    appConfiguration: Partial<AppConfiguration>;
-  }) {
+    window,
+  }: AppServices) {
+    this.window = window;
     this.axios = axiosStatic.create({
       baseURL: dopplerLegacyBaseUrl,
       withCredentials: true,
@@ -102,7 +101,11 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
 
   async deleteImages(items: readonly { name: string }[]): Promise<Result> {
     for (const { name } of items) {
-      await this.deleteImage({ name });
+      const result = await this.deleteImage({ name });
+      if (!result.success) {
+        // Ignoring individual errors
+        this.window.console.error("Error deleting image", result.error);
+      }
     }
     return {
       success: true,
