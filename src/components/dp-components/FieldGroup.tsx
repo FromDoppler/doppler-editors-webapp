@@ -8,7 +8,7 @@ export const FieldGroup = ({
   className,
   ...rest
 }: FieldGroupProps) => (
-  <ul className={`field-group ${className}`} {...rest}>
+  <ul className={`field-group ${className ?? ""}`} {...rest}>
     {children}
   </ul>
 );
@@ -18,7 +18,7 @@ export const FieldGroupItem = ({
   className,
   ...rest
 }: FieldGroupItemProps) => (
-  <li className={`field-item ${className}`} {...rest}>
+  <li className={`field-item ${className ?? ""}`} {...rest}>
     {children}
   </li>
 );
