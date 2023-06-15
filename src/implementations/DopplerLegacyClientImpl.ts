@@ -81,6 +81,33 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
       success: true,
     };
   }
+
+  async deleteImage({ name }: { name: string }): Promise<Result<void, any>> {
+    try {
+      // Using postForm to avoid the preflight request
+      const result = await this.axios.postForm(
+        "/Campaigns/Editor/RemoveImage",
+        {
+          fileName: name,
+        }
+      );
+      if (!result.data.success) {
+        return { success: false, error: { cause: result.data } };
+      }
+    } catch (e) {
+      return { success: false, error: { cause: e } };
+    }
+    return { success: true };
+  }
+
+  async deleteImages(items: readonly { name: string }[]): Promise<Result> {
+    for (const { name } of items) {
+      await this.deleteImage({ name });
+    }
+    return {
+      success: true,
+    };
+  }
 }
 
 function parseImageItem({

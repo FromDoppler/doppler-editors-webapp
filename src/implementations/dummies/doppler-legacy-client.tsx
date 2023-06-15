@@ -112,4 +112,18 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     console.log("End uploadImage");
     return { success: true };
   };
+
+  deleteImages: (items: readonly { name: string }[]) => Promise<Result> =
+    async (items) => {
+      console.log("Begin deleteImages...");
+      await timeout(1000);
+
+      for (const { name } of items) {
+        const indexToRemove = demoImages.findIndex((x) => x.name === name);
+        demoImages.splice(indexToRemove, 1);
+      }
+
+      console.log("End deleteImages");
+      return { success: true };
+    };
 }
