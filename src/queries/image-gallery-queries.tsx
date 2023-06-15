@@ -99,3 +99,24 @@ export const useUploadImage = () => {
       ),
   });
 };
+
+export const useDeleteImages = () => {
+  const { dopplerLegacyClient } = useAppServices();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (items: readonly { name: string }[]) => {
+      return dopplerLegacyClient.deleteImages(items);
+    },
+    onSuccess: () => {
+      // Using invalidateQueries to try to show exactly the same data than before
+      return queryClient.invalidateQueries(getBaseQueryKey());
+    },
+    onError: (error: Error) =>
+      console.error(
+        "Error in useDeletesImage",
+        { message: error.message, cause: error.cause },
+        error
+      ),
+  });
+};
