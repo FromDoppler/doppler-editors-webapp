@@ -11,6 +11,7 @@ import { FooterUploadButton } from "./FooterUploadButton";
 import { FooterSubmitButton } from "./FooterSubmitButton";
 import { HeaderSortDropdown } from "./HeaderSortDropdown";
 import { HeaderSearchInput } from "./HeaderSearchInput";
+import { Form } from "./Form";
 
 export const LibraryUI = ({
   selectCheckedImage,
@@ -47,16 +48,7 @@ export const LibraryUI = ({
   hasNextPage: boolean | undefined;
   fetchNextPage: () => void;
 }) => (
-  <form
-    className="dp-image-gallery"
-    onSubmit={(e) => {
-      if (selectCheckedImage) {
-        selectCheckedImage();
-      }
-      e.preventDefault();
-      return false;
-    }}
-  >
+  <Form selectCheckedImage={selectCheckedImage}>
     <Header cancel={cancel}>
       <HeaderSortDropdown
         sortingCriteria={sortingCriteria}
@@ -89,5 +81,5 @@ export const LibraryUI = ({
       <FooterUploadButton uploadImage={uploadImage} />
       <FooterSubmitButton submitEnabled={!!selectCheckedImage} />
     </Footer>
-  </form>
+  </Form>
 );
