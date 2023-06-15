@@ -7,6 +7,8 @@ import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { Content } from "./Content";
 import { ContentList } from "./ContentList";
+import { FooterUploadButton } from "./FooterUploadButton";
+import { FooterSubmitButton } from "./FooterSubmitButton";
 
 export const LibraryUI = ({
   selectCheckedImage,
@@ -72,6 +74,9 @@ export const LibraryUI = ({
         fetchNextPage={fetchNextPage}
       />
     </Content>
-    <Footer submitEnabled={!!selectCheckedImage} uploadImage={uploadImage} />
+    <Footer>
+      <FooterUploadButton uploadImage={uploadImage} />
+      <FooterSubmitButton submitEnabled={!!selectCheckedImage} />
+    </Footer>
   </form>
 );
