@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { TestDopplerIntlProvider } from "../i18n/TestDopplerIntlProvider";
-import { SortDropdown, SortDropdownProps } from "./SortDropdown";
+import { HeaderSortDropdown, SortDropdownProps } from "./HeaderSortDropdown";
 import { noop } from "../../utils";
 import userEvent from "@testing-library/user-event";
 
@@ -27,7 +27,7 @@ const renderSUT = (sortDropdownProps: SortDropdownProps) => {
 
   render(
     <TestDopplerIntlProvider>
-      <SortDropdown data-testid={testId} {...sortDropdownProps} />
+      <HeaderSortDropdown data-testid={testId} {...sortDropdownProps} />
     </TestDopplerIntlProvider>
   );
 
@@ -35,7 +35,7 @@ const renderSUT = (sortDropdownProps: SortDropdownProps) => {
   return dropdown;
 };
 
-describe(SortDropdown.name, () => {
+describe(HeaderSortDropdown.name, () => {
   it("should have 4 items with the right values and labels", () => {
     // Arrange
     const baseProps = createBaseProps();

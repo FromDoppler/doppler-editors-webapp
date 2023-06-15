@@ -9,6 +9,8 @@ import { Content } from "./Content";
 import { ContentList } from "./ContentList";
 import { FooterUploadButton } from "./FooterUploadButton";
 import { FooterSubmitButton } from "./FooterSubmitButton";
+import { HeaderSortDropdown } from "./HeaderSortDropdown";
+import { HeaderSearchInput } from "./HeaderSearchInput";
 
 export const LibraryUI = ({
   selectCheckedImage,
@@ -55,15 +57,24 @@ export const LibraryUI = ({
       return false;
     }}
   >
-    <Header
-      cancel={cancel}
-      searchTerm={searchTerm}
-      setSearchTerm={setSearchTerm}
-      sortingCriteria={sortingCriteria}
-      setSortingCriteria={setSortingCriteria}
-      sortingDirection={sortingDirection}
-      setSortingDirection={setSortingDirection}
-    />
+    <Header cancel={cancel}>
+      <HeaderSortDropdown
+        sortingCriteria={sortingCriteria}
+        setSortingCriteria={setSortingCriteria}
+        sortingDirection={sortingDirection}
+        setSortingDirection={setSortingDirection}
+      />
+      <HeaderSearchInput
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+      />
+      {/*
+        TODO: Add following tools:
+          * Select All
+          * View as list
+          * View as mosaic
+      */}
+    </Header>
     <Content isFetching={isFetching}>
       <ContentList
         images={images}

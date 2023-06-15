@@ -8,6 +8,7 @@ import {
   DropdownItem,
   DropdownProps,
 } from "../dp-components/Dropdown";
+import { FieldGroupItem } from "../dp-components/FieldGroup";
 
 export type SortingValue = `${SortingCriteria}_${SortingDirection}`;
 
@@ -33,7 +34,7 @@ const sortingValues: {
   FILENAME_ASCENDING: { criteria: "FILENAME", direction: "ASCENDING" },
 };
 
-export const SortDropdown = ({
+export const HeaderSortDropdown = ({
   sortingCriteria,
   setSortingCriteria,
   sortingDirection,
@@ -44,23 +45,25 @@ export const SortDropdown = ({
   const sortingValue: SortingValue = `${sortingCriteria}_${sortingDirection}`;
 
   return (
-    <Dropdown
-      value={sortingValue}
-      onChange={(e) => {
-        const { criteria, direction } =
-          sortingValues[e.target.value as SortingValue];
-        setSortingCriteria(criteria);
-        setSortingDirection(direction);
-      }}
-      {...rest}
-    >
-      {Object.keys(sortingValues).map((value) => (
-        <DropdownItem
-          key={value}
-          value={value}
-          label={intl.formatMessage({ id: `sort_criteria_${value}` })}
-        />
-      ))}
-    </Dropdown>
+    <FieldGroupItem className="col-fixed--240">
+      <Dropdown
+        value={sortingValue}
+        onChange={(e) => {
+          const { criteria, direction } =
+            sortingValues[e.target.value as SortingValue];
+          setSortingCriteria(criteria);
+          setSortingDirection(direction);
+        }}
+        {...rest}
+      >
+        {Object.keys(sortingValues).map((value) => (
+          <DropdownItem
+            key={value}
+            value={value}
+            label={intl.formatMessage({ id: `sort_criteria_${value}` })}
+          />
+        ))}
+      </Dropdown>
+    </FieldGroupItem>
   );
 };
