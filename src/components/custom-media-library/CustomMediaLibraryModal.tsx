@@ -2,7 +2,21 @@ import { useCallback, useState } from "react";
 import ReactModal from "react-modal";
 import { useModal } from "react-modal-hook";
 import { noop } from "../../utils";
-import { CustomMediaLibrary } from "./CustomMediaLibrary";
+import { LibraryUI } from "./LibraryUI";
+import { useLibraryBehavior } from "./useLibraryBehavior";
+
+const CustomMediaLibrary = ({
+  cancel,
+  selectImage,
+}: {
+  cancel: () => void;
+  selectImage: ({ url }: { url: string }) => void;
+}) => {
+  const props = useLibraryBehavior({
+    selectImage,
+  });
+  return <LibraryUI cancel={cancel} selectImage={selectImage} {...props} />;
+};
 
 const CustomMediaLibraryModal = ({
   cancel,

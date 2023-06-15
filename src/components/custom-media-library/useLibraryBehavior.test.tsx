@@ -1,5 +1,5 @@
 import { act, render, waitFor } from "@testing-library/react";
-import { useCustomMediaLibraryBehavior } from "./useCustomMediaLibraryBehavior";
+import { useLibraryBehavior } from "./useLibraryBehavior";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppServicesProvider } from "../AppServicesContext";
@@ -20,10 +20,10 @@ const createTestContext = () => {
   };
 
   const selectImage = jest.fn();
-  let currentHookValues: ReturnType<typeof useCustomMediaLibraryBehavior>;
+  let currentHookValues: ReturnType<typeof useLibraryBehavior>;
 
   const TestComponent = () => {
-    currentHookValues = useCustomMediaLibraryBehavior({ selectImage });
+    currentHookValues = useLibraryBehavior({ selectImage });
     return <></>;
   };
 
@@ -63,7 +63,7 @@ const createTestContext = () => {
   };
 };
 
-describe(useCustomMediaLibraryBehavior.name, () => {
+describe(useLibraryBehavior.name, () => {
   it("should toggle checked items", async () => {
     // Arrange
     const {

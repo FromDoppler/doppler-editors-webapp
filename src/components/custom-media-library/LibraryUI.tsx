@@ -1,5 +1,3 @@
-// TODO: implement it based on MSEditor Gallery
-
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 import {
   SortingCriteria,
@@ -8,28 +6,8 @@ import {
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { List } from "./List";
-import { useCustomMediaLibraryBehavior } from "./useCustomMediaLibraryBehavior";
 
-export const CustomMediaLibrary = ({
-  cancel,
-  selectImage,
-}: {
-  cancel: () => void;
-  selectImage: ({ url }: { url: string }) => void;
-}) => {
-  const customMediaLibraryUIProps = useCustomMediaLibraryBehavior({
-    selectImage,
-  });
-  return (
-    <CustomMediaLibraryUI
-      cancel={cancel}
-      selectImage={selectImage}
-      {...customMediaLibraryUIProps}
-    />
-  );
-};
-
-export const CustomMediaLibraryUI = ({
+export const LibraryUI = ({
   selectCheckedImage,
   uploadImage,
   cancel,

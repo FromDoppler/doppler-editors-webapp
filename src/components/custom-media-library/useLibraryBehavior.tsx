@@ -1,5 +1,3 @@
-// TODO: implement it based on MSEditor Gallery
-
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { takeOneValue, toggleItemInSet, useDebounce } from "../../utils";
 import {
@@ -8,7 +6,7 @@ import {
   useUploadImage,
 } from "../../queries/image-gallery-queries";
 
-export const useCustomMediaLibraryBehavior = ({
+export const useLibraryBehavior = ({
   selectImage,
 }: {
   selectImage: ({ url }: { url: string }) => void;

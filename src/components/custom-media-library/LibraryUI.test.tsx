@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
-import { CustomMediaLibraryUI } from "./CustomMediaLibrary";
+import { LibraryUI } from "./LibraryUI";
 import { noop } from "../../utils";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 import userEvent from "@testing-library/user-event";
 import { TestDopplerIntlProvider } from "../i18n/TestDopplerIntlProvider";
 
-describe(CustomMediaLibraryUI.name, () => {
+describe(LibraryUI.name, () => {
   it("should disable button when selectCheckedImage is null", () => {
     // Arrange
     const selectCheckedImage = null;
@@ -14,10 +14,7 @@ describe(CustomMediaLibraryUI.name, () => {
     // Act
     render(
       <TestDopplerIntlProvider>
-        <CustomMediaLibraryUI
-          {...baseProps}
-          selectCheckedImage={selectCheckedImage}
-        />
+        <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
       </TestDopplerIntlProvider>
     );
 
@@ -35,10 +32,7 @@ describe(CustomMediaLibraryUI.name, () => {
     // Act
     render(
       <TestDopplerIntlProvider>
-        <CustomMediaLibraryUI
-          {...baseProps}
-          selectCheckedImage={selectCheckedImage}
-        />
+        <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
       </TestDopplerIntlProvider>
     );
 
@@ -62,10 +56,7 @@ describe(CustomMediaLibraryUI.name, () => {
     // Act
     render(
       <TestDopplerIntlProvider>
-        <CustomMediaLibraryUI
-          {...baseProps}
-          selectCheckedImage={selectCheckedImage}
-        />
+        <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
       </TestDopplerIntlProvider>
     );
 
@@ -104,7 +95,7 @@ describe(CustomMediaLibraryUI.name, () => {
       // Act
       render(
         <TestDopplerIntlProvider>
-          <CustomMediaLibraryUI {...baseProps} images={images as ImageItem[]} />
+          <LibraryUI {...baseProps} images={images as ImageItem[]} />
         </TestDopplerIntlProvider>
       );
 
@@ -140,7 +131,7 @@ describe(CustomMediaLibraryUI.name, () => {
     // Act
     render(
       <TestDopplerIntlProvider>
-        <CustomMediaLibraryUI
+        <LibraryUI
           {...baseProps}
           images={images as ImageItem[]}
           checkedImages={checkedItems}
@@ -175,7 +166,7 @@ describe(CustomMediaLibraryUI.name, () => {
     // Act
     render(
       <TestDopplerIntlProvider>
-        <CustomMediaLibraryUI
+        <LibraryUI
           {...baseProps}
           images={images as ImageItem[]}
           toggleCheckedImage={toggleCheckedImage}
@@ -212,7 +203,7 @@ describe(CustomMediaLibraryUI.name, () => {
     // Act
     render(
       <TestDopplerIntlProvider>
-        <CustomMediaLibraryUI
+        <LibraryUI
           {...baseProps}
           images={images as ImageItem[]}
           selectImage={selectImage}
@@ -239,10 +230,7 @@ describe(CustomMediaLibraryUI.name, () => {
     // Act
     render(
       <TestDopplerIntlProvider>
-        <CustomMediaLibraryUI
-          {...baseProps}
-          selectCheckedImage={selectCheckedImage}
-        />
+        <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
       </TestDopplerIntlProvider>
     );
 
@@ -261,7 +249,7 @@ describe(CustomMediaLibraryUI.name, () => {
     // Act
     render(
       <TestDopplerIntlProvider>
-        <CustomMediaLibraryUI {...baseProps} setSearchTerm={setSearchTerm} />
+        <LibraryUI {...baseProps} setSearchTerm={setSearchTerm} />
       </TestDopplerIntlProvider>
     );
 
@@ -286,7 +274,7 @@ describe(CustomMediaLibraryUI.name, () => {
     // Act
     render(
       <TestDopplerIntlProvider>
-        <CustomMediaLibraryUI {...baseProps} searchTerm={testSearchTerm} />
+        <LibraryUI {...baseProps} searchTerm={testSearchTerm} />
       </TestDopplerIntlProvider>
     );
 
@@ -297,9 +285,7 @@ describe(CustomMediaLibraryUI.name, () => {
   });
 });
 
-const createBaseProps: () => Parameters<
-  typeof CustomMediaLibraryUI
->[0] = () => ({
+const createBaseProps: () => Parameters<typeof LibraryUI>[0] = () => ({
   selectCheckedImage: noop,
   uploadImage: noop,
   cancel: noop,
