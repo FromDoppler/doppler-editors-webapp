@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Loading } from "./Loading";
+import { ContentLoading } from "./ContentLoading";
 
 export const Content = ({
   isFetching,
@@ -10,6 +10,6 @@ export const Content = ({
 }) => (
   <div className="dp-image-gallery-content">
     {children}
-    {isFetching ? <Loading /> : false}
+    {isFetching ? <ContentLoading /> : false}
   </div>
 );
