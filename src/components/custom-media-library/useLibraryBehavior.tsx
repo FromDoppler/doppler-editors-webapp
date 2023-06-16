@@ -5,6 +5,10 @@ import {
   useGetImageGallery,
   useUploadImage,
 } from "../../queries/image-gallery-queries";
+import {
+  SortingCriteria,
+  SortingDirection,
+} from "../../abstractions/doppler-legacy-client";
 
 export const useLibraryBehavior = ({
   selectImage,
@@ -80,6 +84,24 @@ export const useLibraryBehavior = ({
     return () => selectImage(selectedImage);
   }, [checkedImages, selectImage, images]);
 
+  const sorting = useMemo(
+    () => ({ criteria: sortingCriteria, direction: sortingDirection }),
+    [sortingCriteria, sortingDirection]
+  );
+  const setSorting = useCallback(
+    ({
+      criteria,
+      direction,
+    }: {
+      criteria: SortingCriteria;
+      direction: SortingDirection;
+    }) => {
+      setSortingCriteria(criteria);
+      setSortingDirection(direction);
+    },
+    [setSortingCriteria, setSortingDirection]
+  );
+
   return {
     isFetching,
     images,
@@ -93,6 +115,8 @@ export const useLibraryBehavior = ({
     setSortingCriteria,
     sortingDirection,
     setSortingDirection,
+    sorting,
+    setSorting,
     hasNextPage,
     fetchNextPage,
   };

@@ -24,10 +24,8 @@ export const LibraryUI = ({
   toggleCheckedImage,
   searchTerm,
   setSearchTerm,
-  sortingCriteria,
-  setSortingCriteria,
-  sortingDirection,
-  setSortingDirection,
+  sorting,
+  setSorting,
   hasNextPage,
   fetchNextPage,
 }: {
@@ -41,22 +39,17 @@ export const LibraryUI = ({
   toggleCheckedImage: ({ name }: { name: string }) => void;
   searchTerm: string;
   setSearchTerm: (value: string) => void;
-  sortingCriteria: SortingCriteria;
-  setSortingCriteria: (value: SortingCriteria) => void;
-  sortingDirection: SortingDirection;
-  setSortingDirection: (value: SortingDirection) => void;
+  sorting: { criteria: SortingCriteria; direction: SortingDirection };
+  setSorting: (value: {
+    criteria: SortingCriteria;
+    direction: SortingDirection;
+  }) => void;
   hasNextPage: boolean | undefined;
   fetchNextPage: () => void;
 }) => (
   <Form onSubmit={selectCheckedImage} onCancel={cancel}>
     <Header>
-      <HeaderSortDropdown
-        value={{ criteria: sortingCriteria, direction: sortingDirection }}
-        setValue={({ criteria, direction }) => {
-          setSortingCriteria(criteria);
-          setSortingDirection(direction);
-        }}
-      />
+      <HeaderSortDropdown value={sorting} setValue={setSorting} />
       <HeaderSearchInput value={searchTerm} setValue={setSearchTerm} />
       {/*
         TODO: Add following tools:
