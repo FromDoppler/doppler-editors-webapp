@@ -1,5 +1,5 @@
 import { act, render, waitFor } from "@testing-library/react";
-import { SortingPair, useLibraryBehavior } from "./useLibraryBehavior";
+import { SortingPair, useLibraryBehavior } from "./behavior";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppServicesProvider } from "../AppServicesContext";

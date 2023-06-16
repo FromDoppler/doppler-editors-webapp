@@ -1,5 +1,5 @@
 import { useIntl } from "react-intl";
-import type { SortingPair } from "./useLibraryBehavior";
+import type { SortingPair } from "./behavior";
 import {
   Dropdown,
   DropdownItem,

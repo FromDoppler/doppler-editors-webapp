@@ -1,5 +1,5 @@
 import { ImageItem } from "../../abstractions/domain/image-gallery";
-import { SortingPair } from "./useLibraryBehavior";
+import { SortingPair } from "./behavior";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { Content } from "./Content";

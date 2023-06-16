@@ -3,7 +3,7 @@ import ReactModal from "react-modal";
 import { useModal } from "react-modal-hook";
 import { noop } from "../../utils";
 import { LibraryUI } from "./LibraryUI";
-import { useLibraryBehavior } from "./useLibraryBehavior";
+import { useLibraryBehavior } from "./behavior";
 
 const CustomMediaLibrary = ({
   cancel,
