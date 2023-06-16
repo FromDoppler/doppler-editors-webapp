@@ -10,6 +10,11 @@ import {
   SortingDirection,
 } from "../../abstractions/doppler-legacy-client";
 
+export type SortingPair = {
+  criteria: SortingCriteria;
+  direction: SortingDirection;
+};
+
 export const useLibraryBehavior = ({
   selectImage,
 }: {

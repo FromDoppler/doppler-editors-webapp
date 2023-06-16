@@ -1,8 +1,5 @@
 import { useIntl } from "react-intl";
-import {
-  SortingCriteria,
-  SortingDirection,
-} from "../../abstractions/doppler-legacy-client";
+import type { SortingPair } from "./useLibraryBehavior";
 import {
   Dropdown,
   DropdownItem,
@@ -10,11 +7,8 @@ import {
 } from "../dp-components/Dropdown";
 import { FieldGroupItem } from "../dp-components/FieldGroup";
 
-export type SortingPair = {
-  criteria: SortingCriteria;
-  direction: SortingDirection;
-};
-export type SortingValue = `${SortingCriteria}_${SortingDirection}`;
+export type SortingValue =
+  `${SortingPair["criteria"]}_${SortingPair["direction"]}`;
 
 export type SortDropdownProps = Omit<
   DropdownProps,

@@ -1,8 +1,5 @@
 import { ImageItem } from "../../abstractions/domain/image-gallery";
-import {
-  SortingCriteria,
-  SortingDirection,
-} from "../../abstractions/doppler-legacy-client";
+import { SortingPair } from "./useLibraryBehavior";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { Content } from "./Content";
@@ -39,11 +36,8 @@ export const LibraryUI = ({
   toggleCheckedImage: ({ name }: { name: string }) => void;
   searchTerm: string;
   setSearchTerm: (value: string) => void;
-  sorting: { criteria: SortingCriteria; direction: SortingDirection };
-  setSorting: (value: {
-    criteria: SortingCriteria;
-    direction: SortingDirection;
-  }) => void;
+  sorting: SortingPair;
+  setSorting: (value: SortingPair) => void;
   hasNextPage: boolean | undefined;
   fetchNextPage: () => void;
 }) => (
