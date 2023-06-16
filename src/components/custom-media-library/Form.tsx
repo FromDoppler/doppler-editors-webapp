@@ -2,9 +2,11 @@ import { ReactNode } from "react";
 
 export const Form = ({
   selectCheckedImage,
+  cancel,
   children,
 }: {
   selectCheckedImage: (() => void) | null;
+  cancel: () => void;
   children: ReactNode;
 }) => (
   <form
@@ -17,6 +19,12 @@ export const Form = ({
       return false;
     }}
   >
+    <button
+      className="close dp-button"
+      type="button"
+      name="close-modal"
+      onClick={cancel}
+    ></button>
     {children}
   </form>
 );

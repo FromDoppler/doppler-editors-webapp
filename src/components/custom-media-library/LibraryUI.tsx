@@ -48,8 +48,8 @@ export const LibraryUI = ({
   hasNextPage: boolean | undefined;
   fetchNextPage: () => void;
 }) => (
-  <Form selectCheckedImage={selectCheckedImage}>
-    <Header cancel={cancel}>
+  <Form selectCheckedImage={selectCheckedImage} cancel={cancel}>
+    <Header>
       <HeaderSortDropdown
         sortingCriteria={sortingCriteria}
         setSortingCriteria={setSortingCriteria}
