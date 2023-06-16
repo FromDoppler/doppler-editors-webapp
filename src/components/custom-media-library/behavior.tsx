@@ -4,6 +4,7 @@ import {
   defaultQueryParameters,
   useGetImageGallery,
   useUploadImage,
+  useDeleteImages,
 } from "../../queries/image-gallery-queries";
 import {
   SortingCriteria,
@@ -21,6 +22,7 @@ export const useLibraryBehavior = ({
   selectImage: ({ url }: { url: string }) => void;
 }) => {
   const { mutate: uploadImageMutation } = useUploadImage();
+  const { mutate: deleteImages } = useDeleteImages();
   const [searchTerm, setSearchTerm] = useState(
     defaultQueryParameters.searchTerm
   );
@@ -107,10 +109,15 @@ export const useLibraryBehavior = ({
     [setSortingCriteria, setSortingDirection]
   );
 
+  const deleteCheckedImages = useCallback(() => {
+    deleteImages(Array.from(checkedImages).map((x) => ({ name: x })));
+  }, [checkedImages, deleteImages]);
+
   return {
     isFetching,
     images,
     selectCheckedImage,
+    deleteCheckedImages,
     checkedImages,
     toggleCheckedImage,
     uploadImage,
