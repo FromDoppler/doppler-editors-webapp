@@ -3,19 +3,20 @@ import { FieldGroupItem } from "../dp-components/FieldGroup";
 import { SearchInput } from "../dp-components/SearchInput";
 
 export const HeaderSearchInput = ({
-  searchTerm,
-  setSearchTerm,
+  value,
+  setValue,
 }: {
-  searchTerm: string;
-  setSearchTerm: (value: string) => void;
+  value: string;
+  setValue: (value: string) => void;
 }) => {
   const intl = useIntl();
   return (
     <FieldGroupItem className="col-flex--1">
       <SearchInput
+        type="search"
         placeholder={intl.formatMessage({ id: "search_placeholder" })}
-        value={searchTerm}
-        onChangeValue={setSearchTerm}
+        value={value}
+        onChangeValue={setValue}
       />
     </FieldGroupItem>
   );

@@ -48,7 +48,7 @@ export const LibraryUI = ({
   hasNextPage: boolean | undefined;
   fetchNextPage: () => void;
 }) => (
-  <Form selectCheckedImage={selectCheckedImage} cancel={cancel}>
+  <Form onSubmit={selectCheckedImage} onCancel={cancel}>
     <Header>
       <HeaderSortDropdown
         sortingCriteria={sortingCriteria}
@@ -56,10 +56,7 @@ export const LibraryUI = ({
         sortingDirection={sortingDirection}
         setSortingDirection={setSortingDirection}
       />
-      <HeaderSearchInput
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-      />
+      <HeaderSearchInput value={searchTerm} setValue={setSearchTerm} />
       {/*
         TODO: Add following tools:
           * Select All
@@ -78,8 +75,8 @@ export const LibraryUI = ({
       />
     </Content>
     <Footer>
-      <FooterUploadButton uploadImage={uploadImage} />
-      <FooterSubmitButton submitEnabled={!!selectCheckedImage} />
+      <FooterUploadButton onClick={uploadImage} />
+      <FooterSubmitButton isEnabled={!!selectCheckedImage} />
     </Footer>
   </Form>
 );

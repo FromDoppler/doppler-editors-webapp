@@ -1,19 +1,19 @@
 import { ReactNode } from "react";
 
 export const Form = ({
-  selectCheckedImage,
-  cancel,
+  onSubmit,
+  onCancel,
   children,
 }: {
-  selectCheckedImage: (() => void) | null;
-  cancel: () => void;
+  onSubmit: (() => void) | null;
+  onCancel: () => void;
   children: ReactNode;
 }) => (
   <form
     className="dp-image-gallery"
     onSubmit={(e) => {
-      if (selectCheckedImage) {
-        selectCheckedImage();
+      if (onSubmit) {
+        onSubmit();
       }
       e.preventDefault();
       return false;
@@ -23,7 +23,7 @@ export const Form = ({
       className="close dp-button"
       type="button"
       name="close-modal"
-      onClick={cancel}
+      onClick={onCancel}
     ></button>
     {children}
   </form>
