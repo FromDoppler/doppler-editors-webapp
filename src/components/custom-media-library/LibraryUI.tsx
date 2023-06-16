@@ -51,10 +51,11 @@ export const LibraryUI = ({
   <Form onSubmit={selectCheckedImage} onCancel={cancel}>
     <Header>
       <HeaderSortDropdown
-        sortingCriteria={sortingCriteria}
-        setSortingCriteria={setSortingCriteria}
-        sortingDirection={sortingDirection}
-        setSortingDirection={setSortingDirection}
+        value={{ criteria: sortingCriteria, direction: sortingDirection }}
+        setValue={({ criteria, direction }) => {
+          setSortingCriteria(criteria);
+          setSortingDirection(direction);
+        }}
       />
       <HeaderSearchInput value={searchTerm} setValue={setSearchTerm} />
       {/*

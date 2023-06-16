@@ -10,23 +10,22 @@ import {
 } from "../dp-components/Dropdown";
 import { FieldGroupItem } from "../dp-components/FieldGroup";
 
+export type SortingPair = {
+  criteria: SortingCriteria;
+  direction: SortingDirection;
+};
 export type SortingValue = `${SortingCriteria}_${SortingDirection}`;
 
 export type SortDropdownProps = Omit<
   DropdownProps,
   "children" | "value" | "onChange"
 > & {
-  sortingCriteria: SortingCriteria;
-  setSortingCriteria: (value: SortingCriteria) => void;
-  sortingDirection: SortingDirection;
-  setSortingDirection: (value: SortingDirection) => void;
+  value: SortingPair;
+  setValue: (value: SortingPair) => void;
 };
 
 const sortingValues: {
-  [key in SortingValue]: {
-    criteria: SortingCriteria;
-    direction: SortingDirection;
-  };
+  [key in SortingValue]: SortingPair;
 } = {
   DATE_DESCENDING: { criteria: "DATE", direction: "DESCENDING" },
   DATE_ASCENDING: { criteria: "DATE", direction: "ASCENDING" },
@@ -35,25 +34,20 @@ const sortingValues: {
 };
 
 export const HeaderSortDropdown = ({
-  sortingCriteria,
-  setSortingCriteria,
-  sortingDirection,
-  setSortingDirection,
+  value,
+  setValue,
   ...rest
 }: SortDropdownProps) => {
   const intl = useIntl();
-  const sortingValue: SortingValue = `${sortingCriteria}_${sortingDirection}`;
+  const sortingValue: SortingValue = `${value.criteria}_${value.direction}`;
 
   return (
     <FieldGroupItem className="col-fixed--240">
       <Dropdown
         value={sortingValue}
-        onChange={(e) => {
-          const { criteria, direction } =
-            sortingValues[e.target.value as SortingValue];
-          setSortingCriteria(criteria);
-          setSortingDirection(direction);
-        }}
+        onChange={(e) =>
+          setValue(sortingValues[e.target.value as SortingValue])
+        }
         {...rest}
       >
         {Object.keys(sortingValues).map((value) => (
