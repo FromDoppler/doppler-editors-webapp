@@ -115,6 +115,7 @@ export const useLibraryBehavior = ({
     toggleCheckedImage,
     uploadImage,
     searchTerm,
+    debouncedSearchTerm: debouncedQueryParameters.searchTerm,
     setSearchTerm,
     sorting,
     setSorting,

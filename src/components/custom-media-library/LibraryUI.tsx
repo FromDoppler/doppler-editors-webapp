@@ -20,6 +20,7 @@ export const LibraryUI = ({
   checkedImages,
   toggleCheckedImage,
   searchTerm,
+  debouncedSearchTerm,
   setSearchTerm,
   sorting,
   setSorting,
@@ -35,6 +36,7 @@ export const LibraryUI = ({
   checkedImages: ReadonlySet<string>;
   toggleCheckedImage: ({ name }: { name: string }) => void;
   searchTerm: string;
+  debouncedSearchTerm: string;
   setSearchTerm: (value: string) => void;
   sorting: SortingPair;
   setSorting: (value: SortingPair) => void;
@@ -52,7 +54,11 @@ export const LibraryUI = ({
           * View as mosaic
       */}
     </Header>
-    <Content isFetching={isFetching}>
+    <Content
+      isFetching={isFetching}
+      searchTerm={debouncedSearchTerm}
+      emptyResults={images.length === 0}
+    >
       <ContentList
         images={images}
         checkedImages={checkedImages}
