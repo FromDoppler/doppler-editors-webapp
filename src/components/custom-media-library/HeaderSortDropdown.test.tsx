@@ -1,14 +1,12 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { TestDopplerIntlProvider } from "../i18n/TestDopplerIntlProvider";
-import { SortDropdown, SortDropdownProps } from "./SortDropdown";
+import { HeaderSortDropdown, SortDropdownProps } from "./HeaderSortDropdown";
 import { noop } from "../../utils";
 import userEvent from "@testing-library/user-event";
 
 const createBaseProps: () => SortDropdownProps = () => ({
-  sortingCriteria: "DATE",
-  setSortingCriteria: noop,
-  sortingDirection: "DESCENDING",
-  setSortingDirection: noop,
+  value: { criteria: "DATE", direction: "DESCENDING" },
+  setValue: noop,
 });
 
 const expectToHaveOptionWith = (
@@ -27,7 +25,7 @@ const renderSUT = (sortDropdownProps: SortDropdownProps) => {
 
   render(
     <TestDopplerIntlProvider>
-      <SortDropdown data-testid={testId} {...sortDropdownProps} />
+      <HeaderSortDropdown data-testid={testId} {...sortDropdownProps} />
     </TestDopplerIntlProvider>
   );
 
@@ -35,7 +33,7 @@ const renderSUT = (sortDropdownProps: SortDropdownProps) => {
   return dropdown;
 };
 
-describe(SortDropdown.name, () => {
+describe(HeaderSortDropdown.name, () => {
   it("should have 4 items with the right values and labels", () => {
     // Arrange
     const baseProps = createBaseProps();
@@ -74,8 +72,7 @@ describe(SortDropdown.name, () => {
     // Act
     const dropdown = renderSUT({
       ...baseProps,
-      sortingCriteria,
-      sortingDirection,
+      value: { criteria: sortingCriteria, direction: sortingDirection },
     });
 
     // Assert
@@ -87,16 +84,14 @@ describe(SortDropdown.name, () => {
   it("should execute setSortingCriteria and setSortingDirection based on selected option", async () => {
     // Arrange
     const baseProps = createBaseProps();
-    const setSortingCriteria = jest.fn();
-    const setSortingDirection = jest.fn();
+    const setValue = jest.fn();
     const optionLabel = "sort_criteria_FILENAME_ASCENDING";
     const expectedSetCriteria = "FILENAME";
     const expectedSetDirection = "ASCENDING";
 
     const dropdown = renderSUT({
       ...baseProps,
-      setSortingCriteria,
-      setSortingDirection,
+      setValue,
     });
     const filenameAscendingOption = dropdown.querySelector<HTMLOptionElement>(
       `option[label=${optionLabel}]`
@@ -106,7 +101,9 @@ describe(SortDropdown.name, () => {
     await userEvent.selectOptions(dropdown, filenameAscendingOption!);
 
     // Assert
-    expect(setSortingCriteria).toBeCalledWith(expectedSetCriteria);
-    expect(setSortingDirection).toBeCalledWith(expectedSetDirection);
+    expect(setValue).toBeCalledWith({
+      criteria: expectedSetCriteria,
+      direction: expectedSetDirection,
+    });
   });
 });

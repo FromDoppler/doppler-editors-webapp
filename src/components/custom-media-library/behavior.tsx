@@ -1,5 +1,3 @@
-// TODO: implement it based on MSEditor Gallery
-
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { takeOneValue, toggleItemInSet, useDebounce } from "../../utils";
 import {
@@ -7,8 +5,17 @@ import {
   useGetImageGallery,
   useUploadImage,
 } from "../../queries/image-gallery-queries";
+import {
+  SortingCriteria,
+  SortingDirection,
+} from "../../abstractions/doppler-legacy-client";
 
-export const useCustomMediaLibraryBehavior = ({
+export type SortingPair = {
+  criteria: SortingCriteria;
+  direction: SortingDirection;
+};
+
+export const useLibraryBehavior = ({
   selectImage,
 }: {
   selectImage: ({ url }: { url: string }) => void;
@@ -82,6 +89,24 @@ export const useCustomMediaLibraryBehavior = ({
     return () => selectImage(selectedImage);
   }, [checkedImages, selectImage, images]);
 
+  const sorting = useMemo(
+    () => ({ criteria: sortingCriteria, direction: sortingDirection }),
+    [sortingCriteria, sortingDirection]
+  );
+  const setSorting = useCallback(
+    ({
+      criteria,
+      direction,
+    }: {
+      criteria: SortingCriteria;
+      direction: SortingDirection;
+    }) => {
+      setSortingCriteria(criteria);
+      setSortingDirection(direction);
+    },
+    [setSortingCriteria, setSortingDirection]
+  );
+
   return {
     isFetching,
     images,
@@ -91,10 +116,8 @@ export const useCustomMediaLibraryBehavior = ({
     uploadImage,
     searchTerm,
     setSearchTerm,
-    sortingCriteria,
-    setSortingCriteria,
-    sortingDirection,
-    setSortingDirection,
+    sorting,
+    setSorting,
     hasNextPage,
     fetchNextPage,
   };

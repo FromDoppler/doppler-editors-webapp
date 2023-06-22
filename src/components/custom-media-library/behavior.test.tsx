@@ -1,12 +1,8 @@
 import { act, render, waitFor } from "@testing-library/react";
-import { useCustomMediaLibraryBehavior } from "./useCustomMediaLibraryBehavior";
+import { SortingPair, useLibraryBehavior } from "./behavior";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppServicesProvider } from "../AppServicesContext";
-import {
-  SortingCriteria,
-  SortingDirection,
-} from "../../abstractions/doppler-legacy-client";
 
 jest.useFakeTimers();
 
@@ -20,10 +16,10 @@ const createTestContext = () => {
   };
 
   const selectImage = jest.fn();
-  let currentHookValues: ReturnType<typeof useCustomMediaLibraryBehavior>;
+  let currentHookValues: ReturnType<typeof useLibraryBehavior>;
 
   const TestComponent = () => {
-    currentHookValues = useCustomMediaLibraryBehavior({ selectImage });
+    currentHookValues = useLibraryBehavior({ selectImage });
     return <></>;
   };
 
@@ -50,12 +46,9 @@ const createTestContext = () => {
     getSearchTerm: () => currentHookValues.searchTerm,
     setSearchTerm: (value: string) =>
       act(() => currentHookValues.setSearchTerm(value)),
-    getSortingCriteria: () => currentHookValues.sortingCriteria,
-    setSortingCriteria: (value: SortingCriteria) =>
-      act(() => currentHookValues.setSortingCriteria(value)),
-    getSortingDirection: () => currentHookValues.sortingDirection,
-    setSortingDirection: (value: SortingDirection) =>
-      act(() => currentHookValues.setSortingDirection(value)),
+    getSorting: () => currentHookValues.sorting,
+    setSorting: (value: SortingPair) =>
+      act(() => currentHookValues.setSorting(value)),
     mocks: {
       selectImage,
       dopplerLegacyClient,
@@ -63,7 +56,7 @@ const createTestContext = () => {
   };
 };
 
-describe(useCustomMediaLibraryBehavior.name, () => {
+describe(useLibraryBehavior.name, () => {
   it("should toggle checked items", async () => {
     // Arrange
     const {
@@ -192,10 +185,8 @@ describe(useCustomMediaLibraryBehavior.name, () => {
       Component,
       getSearchTerm,
       setSearchTerm,
-      getSortingCriteria,
-      setSortingCriteria,
-      getSortingDirection,
-      setSortingDirection,
+      getSorting,
+      setSorting,
       mocks: { dopplerLegacyClient },
     } = createTestContext();
 
@@ -212,13 +203,14 @@ describe(useCustomMediaLibraryBehavior.name, () => {
 
     // Act
     setSearchTerm("This value will be removed");
-    setSortingCriteria("FILENAME");
-    setSortingDirection("ASCENDING");
+    setSorting({ criteria: "FILENAME", direction: "ASCENDING" });
 
     // Assert
     expect(getSearchTerm()).not.toBe("");
-    expect(getSortingCriteria()).toBe("FILENAME");
-    expect(getSortingDirection()).toBe("ASCENDING");
+    expect(getSorting()).toEqual({
+      criteria: "FILENAME",
+      direction: "ASCENDING",
+    });
     await waitFor(() => {
       expect(dopplerLegacyClient.getImageGallery).toHaveBeenLastCalledWith(
         expect.objectContaining({
@@ -261,20 +253,19 @@ describe(useCustomMediaLibraryBehavior.name, () => {
       uploadImage,
       getSearchTerm,
       setSearchTerm,
-      getSortingCriteria,
-      setSortingCriteria,
-      getSortingDirection,
-      setSortingDirection,
+      getSorting,
+      setSorting,
       mocks: { dopplerLegacyClient },
     } = createTestContext();
 
     render(<Component />);
     setSearchTerm("This value will be removed");
-    setSortingCriteria("FILENAME");
-    setSortingDirection("ASCENDING");
+    setSorting({ criteria: "FILENAME", direction: "ASCENDING" });
     expect(getSearchTerm()).not.toBe("");
-    expect(getSortingCriteria()).toBe("FILENAME");
-    expect(getSortingDirection()).toBe("ASCENDING");
+    expect(getSorting()).toEqual({
+      criteria: "FILENAME",
+      direction: "ASCENDING",
+    });
     await waitFor(() => {
       expect(dopplerLegacyClient.getImageGallery).toHaveBeenLastCalledWith(
         expect.objectContaining({
@@ -295,8 +286,7 @@ describe(useCustomMediaLibraryBehavior.name, () => {
       expect(dopplerLegacyClient.uploadImage).toBeCalledWith(file);
     });
     expect(getSearchTerm()).toBe("");
-    expect(getSortingCriteria()).toBe("DATE");
-    expect(getSortingDirection()).toBe("DESCENDING");
+    expect(getSorting()).toEqual({ criteria: "DATE", direction: "DESCENDING" });
 
     await waitFor(() => {
       expect(dopplerLegacyClient.getImageGallery).toHaveBeenLastCalledWith(
