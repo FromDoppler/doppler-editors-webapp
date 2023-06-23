@@ -10,7 +10,7 @@ import { HeaderSortDropdown } from "./HeaderSortDropdown";
 import { HeaderSearchInput } from "./HeaderSearchInput";
 import { Form } from "./Form";
 import { HeaderDeleteButton } from "./HeaderDeleteButton";
-import { useDeleteConfirmationModal } from "./DeleteConfirmationModal";
+import { useDeleteConfirmationModal } from "../confirmation/DeleteConfirmationModal";
 
 export const LibraryUI = ({
   selectCheckedImage,
