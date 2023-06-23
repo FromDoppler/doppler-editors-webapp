@@ -1,8 +1,9 @@
 import { act, render, waitFor } from "@testing-library/react";
-import { SortingPair, useLibraryBehavior } from "./behavior";
+import { ConfirmProps, SortingPair, useLibraryBehavior } from "./behavior";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppServicesProvider } from "../AppServicesContext";
+import { noop } from "../../utils";
 
 jest.useFakeTimers();
 
@@ -17,10 +18,11 @@ const createTestContext = () => {
   };
 
   const selectImage = jest.fn();
+  const confirm = jest.fn((_: ConfirmProps) => {});
   let currentHookValues: ReturnType<typeof useLibraryBehavior>;
 
   const TestComponent = () => {
-    currentHookValues = useLibraryBehavior({ selectImage });
+    currentHookValues = useLibraryBehavior({ selectImage, confirm });
     return <></>;
   };
 
@@ -54,6 +56,7 @@ const createTestContext = () => {
       act(() => currentHookValues.setSorting(value)),
     mocks: {
       selectImage,
+      confirm,
       dopplerLegacyClient,
     },
   };
@@ -499,13 +502,14 @@ describe(useLibraryBehavior.name, () => {
       toggleCheckedImage,
       deleteCheckedImages,
       getImages,
-      mocks: { dopplerLegacyClient },
+      mocks: { dopplerLegacyClient, confirm },
     } = createTestContext();
     const images = [createImageItem({ name: "name1" })];
     dopplerLegacyClient.getImageGallery.mockResolvedValue({
       success: true,
       value: { items: images },
     });
+    confirm.mockImplementation(({ onConfirm }) => onConfirm());
     render(<Component />);
     await waitFor(() => {
       expect(getImages()).toEqual(images);
@@ -515,6 +519,7 @@ describe(useLibraryBehavior.name, () => {
     deleteCheckedImages();
 
     // Assert
+    expect(confirm).toBeCalled();
     await waitFor(() => {
       expect(dopplerLegacyClient.deleteImages).toBeCalledTimes(1);
       expect(dopplerLegacyClient.deleteImages).toBeCalledWith([]);
@@ -542,7 +547,7 @@ describe(useLibraryBehavior.name, () => {
       toggleCheckedImage,
       deleteCheckedImages,
       getImages,
-      mocks: { dopplerLegacyClient },
+      mocks: { dopplerLegacyClient, confirm },
     } = createTestContext();
     const images = [
       createImageItem({ name: "name1" }),
@@ -553,6 +558,7 @@ describe(useLibraryBehavior.name, () => {
       success: true,
       value: { items: images },
     });
+    confirm.mockImplementation(({ onConfirm }) => onConfirm());
 
     // Act
     render(<Component />);
@@ -567,12 +573,61 @@ describe(useLibraryBehavior.name, () => {
     deleteCheckedImages();
 
     // Assert
+    expect(confirm).toBeCalled();
     await waitFor(() => {
       expect(dopplerLegacyClient.deleteImages).toBeCalledWith([
         { name: images[0].name },
         { name: images[1].name },
       ]);
     });
+  });
+
+  it("should ask for confirmation when deleteCheckedImages is called", async () => {
+    // Arrange
+    const {
+      Component,
+      toggleCheckedImage,
+      deleteCheckedImages,
+      getImages,
+      mocks: { dopplerLegacyClient, confirm },
+    } = createTestContext();
+    const images = [
+      createImageItem({ name: "name1" }),
+      createImageItem({ name: "name2" }),
+      createImageItem({ name: "name3" }),
+    ];
+    dopplerLegacyClient.getImageGallery.mockResolvedValue({
+      success: true,
+      value: { items: images },
+    });
+    confirm.mockImplementation(noop);
+
+    // Act
+    render(<Component />);
+    await waitFor(() => {
+      expect(getImages()).toEqual(images);
+    });
+
+    toggleCheckedImage(images[0]);
+    toggleCheckedImage(images[1]);
+
+    // Act
+    deleteCheckedImages();
+
+    // Assert
+    expect(confirm).toBeCalledWith({
+      confirmationButtonDescriptorId: "delete",
+      confirmationButtonStyles: {
+        backgroundColor: "#E2574C",
+      },
+      messageDescriptorId: "delete_images_confirmation_multiple",
+      onConfirm: expect.any(Function),
+      values: {
+        firstName: images[0].name,
+        itemsCount: 2,
+      },
+    });
+    expect(dopplerLegacyClient.deleteImages).not.toBeCalled();
   });
 });
 
