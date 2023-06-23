@@ -338,6 +338,7 @@ const createBaseProps: () => Parameters<typeof LibraryUI>[0] = () => ({
   setSearchTerm: noop,
   sorting: { criteria: "DATE", direction: "DESCENDING" },
   setSorting: noop,
+  deleteCheckedImages: noop,
   hasNextPage: false,
   fetchNextPage: noop,
 });

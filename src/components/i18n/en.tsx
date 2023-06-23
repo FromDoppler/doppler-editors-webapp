@@ -12,6 +12,7 @@ This operation cannot be undone. Are you sure you want to proceed?`,
   delete_images_confirmation_single: `
 The image "{name}" will be deleted.
 This operation cannot be undone. Are you sure you want to proceed?`,
+  delete_selected_items: `Delete selected items`,
   exit_edit_later: `Exit and edit later`,
   exit_editor: `Exit Editor`,
   field_name_birthday: `Birthday`,
