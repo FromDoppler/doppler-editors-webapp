@@ -4,6 +4,14 @@ import { noop } from "../../utils";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 import userEvent from "@testing-library/user-event";
 import { TestDopplerIntlProvider } from "../i18n/TestDopplerIntlProvider";
+import { ModalProvider } from "react-modal-hook";
+import { ReactNode } from "react";
+
+const TestContextWrapper = ({ children }: { children: ReactNode }) => (
+  <TestDopplerIntlProvider>
+    <ModalProvider>{children}</ModalProvider>
+  </TestDopplerIntlProvider>
+);
 
 describe(LibraryUI.name, () => {
   it("should disable button when selectCheckedImage is null", () => {
@@ -13,9 +21,9 @@ describe(LibraryUI.name, () => {
 
     // Act
     render(
-      <TestDopplerIntlProvider>
+      <TestContextWrapper>
         <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
-      </TestDopplerIntlProvider>
+      </TestContextWrapper>
     );
 
     // Assert
@@ -31,9 +39,9 @@ describe(LibraryUI.name, () => {
 
     // Act
     render(
-      <TestDopplerIntlProvider>
+      <TestContextWrapper>
         <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
-      </TestDopplerIntlProvider>
+      </TestContextWrapper>
     );
 
     // Assert
@@ -55,9 +63,9 @@ describe(LibraryUI.name, () => {
 
     // Act
     render(
-      <TestDopplerIntlProvider>
+      <TestContextWrapper>
         <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
-      </TestDopplerIntlProvider>
+      </TestContextWrapper>
     );
 
     // Act
@@ -94,9 +102,9 @@ describe(LibraryUI.name, () => {
 
       // Act
       render(
-        <TestDopplerIntlProvider>
+        <TestContextWrapper>
           <LibraryUI {...baseProps} images={images as ImageItem[]} />
-        </TestDopplerIntlProvider>
+        </TestContextWrapper>
       );
 
       // Assert
@@ -130,13 +138,13 @@ describe(LibraryUI.name, () => {
 
     // Act
     render(
-      <TestDopplerIntlProvider>
+      <TestContextWrapper>
         <LibraryUI
           {...baseProps}
           images={images as ImageItem[]}
           checkedImages={checkedItems}
         />
-      </TestDopplerIntlProvider>
+      </TestContextWrapper>
     );
 
     // Assert
@@ -165,13 +173,13 @@ describe(LibraryUI.name, () => {
 
     // Act
     render(
-      <TestDopplerIntlProvider>
+      <TestContextWrapper>
         <LibraryUI
           {...baseProps}
           images={images as ImageItem[]}
           toggleCheckedImage={toggleCheckedImage}
         />
-      </TestDopplerIntlProvider>
+      </TestContextWrapper>
     );
 
     // Assert
@@ -202,13 +210,13 @@ describe(LibraryUI.name, () => {
 
     // Act
     render(
-      <TestDopplerIntlProvider>
+      <TestContextWrapper>
         <LibraryUI
           {...baseProps}
           images={images as ImageItem[]}
           selectImage={selectImage}
         />
-      </TestDopplerIntlProvider>
+      </TestContextWrapper>
     );
 
     // Assert
@@ -229,9 +237,9 @@ describe(LibraryUI.name, () => {
 
     // Act
     render(
-      <TestDopplerIntlProvider>
+      <TestContextWrapper>
         <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
-      </TestDopplerIntlProvider>
+      </TestContextWrapper>
     );
 
     // Assert
@@ -248,9 +256,9 @@ describe(LibraryUI.name, () => {
 
     // Act
     render(
-      <TestDopplerIntlProvider>
+      <TestContextWrapper>
         <LibraryUI {...baseProps} setSearchTerm={setSearchTerm} />
-      </TestDopplerIntlProvider>
+      </TestContextWrapper>
     );
 
     // Assert
@@ -273,9 +281,9 @@ describe(LibraryUI.name, () => {
 
     // Act
     render(
-      <TestDopplerIntlProvider>
+      <TestContextWrapper>
         <LibraryUI {...baseProps} searchTerm={testSearchTerm} />
-      </TestDopplerIntlProvider>
+      </TestContextWrapper>
     );
 
     // Assert
@@ -290,9 +298,9 @@ describe(LibraryUI.name, () => {
 
     // Act
     render(
-      <TestDopplerIntlProvider>
+      <TestContextWrapper>
         <LibraryUI {...baseProps} />
-      </TestDopplerIntlProvider>
+      </TestContextWrapper>
     );
 
     // Assert
@@ -306,9 +314,9 @@ describe(LibraryUI.name, () => {
 
     // Act
     render(
-      <TestDopplerIntlProvider>
+      <TestContextWrapper>
         <LibraryUI {...baseProps} debouncedSearchTerm="search term" />
-      </TestDopplerIntlProvider>
+      </TestContextWrapper>
     );
 
     // Assert
