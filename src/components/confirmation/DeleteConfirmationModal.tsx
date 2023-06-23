@@ -2,57 +2,12 @@ import { CSSProperties, useCallback, useState } from "react";
 import ReactModal from "react-modal";
 import { useModal } from "react-modal-hook";
 import { noop, takeOneValue } from "../../utils";
-import { FormattedMessage } from "react-intl";
+import { Confirmation } from "./Confirmation";
 
 // TODO: consider moving these styles to classes in the Style Guide
 const deleteButtonStyles: CSSProperties = { backgroundColor: "#E2574C" };
 const modalOverlayStyles: CSSProperties = { background: "rgba(34,34,34,.5)" };
 const modalContentStyles: CSSProperties = { padding: 20 };
-
-const DeleteConfirmation = ({
-  checkedImages,
-  onCancel,
-  onOk,
-}: {
-  checkedImages: ReadonlySet<string>;
-  onCancel: () => void;
-  onOk: () => void;
-}) => (
-  <div className="form-request">
-    {checkedImages.size === 1 ? (
-      <FormattedMessage
-        id="delete_images_confirmation_single"
-        values={{ name: takeOneValue(checkedImages) }}
-        tagName="p"
-      />
-    ) : (
-      <FormattedMessage
-        id="delete_images_confirmation_multiple"
-        values={{ count: checkedImages.size }}
-        tagName="p"
-      />
-    )}
-    <div className="container-buttons">
-      <button
-        type="button"
-        name="cancel"
-        className="dp-button button-medium primary-grey"
-        onClick={onCancel}
-      >
-        <FormattedMessage id="cancel" />
-      </button>
-      <button
-        type="button"
-        name="submit"
-        className="dp-button button-medium primary-green"
-        onClick={onOk}
-        style={deleteButtonStyles}
-      >
-        <FormattedMessage id="delete" />
-      </button>
-    </div>
-  </div>
-);
 
 const DeleteConfirmationModal = ({
   checkedImages,
@@ -63,6 +18,14 @@ const DeleteConfirmationModal = ({
   onCancel: () => void;
   onOk: () => void;
 }) => {
+  const messageDescriptorId =
+    checkedImages.size === 1
+      ? "delete_images_confirmation_single"
+      : "delete_images_confirmation_multiple";
+  const values = {
+    firstName: takeOneValue(checkedImages),
+    itemsCount: checkedImages.size,
+  };
   return (
     <ReactModal
       isOpen
@@ -75,10 +38,14 @@ const DeleteConfirmationModal = ({
       }}
       portalClassName="dp-library"
     >
-      <DeleteConfirmation
-        checkedImages={checkedImages}
+      <Confirmation
+        messageDescriptorId={messageDescriptorId}
+        values={values}
+        cancelationButtonDescriptorId="cancel"
+        confirmationButtonDescriptorId="delete"
+        confirmationButtonStyles={deleteButtonStyles}
         onCancel={onCancel}
-        onOk={onOk}
+        onConfirm={onOk}
       />
     </ReactModal>
   );
