@@ -1,4 +1,6 @@
-export const messages_en = {
+import { IntlMessages } from "../../abstractions/i18n";
+
+export const messages_en: IntlMessages = {
   accept: `Accept`,
   campaign: `Campaign`,
   campaigns: `Campaigns`,
