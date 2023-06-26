@@ -53,7 +53,7 @@ const DopplerIntlProviderTestWrapper = ({ initialEntries }: any) => (
         path="/campaigns/:idCampaign"
         element={
           <DopplerIntlProvider>
-            <FormattedMessage id="lang" />
+            <FormattedMessage id={"lang" as any} />
           </DopplerIntlProvider>
         }
       />

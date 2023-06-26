@@ -79,3 +79,4 @@ unlayer
 whatsapp
 xunit
 react-infinite-scroller
+FormatjsIntl

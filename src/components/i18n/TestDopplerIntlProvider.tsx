@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { IntlProvider } from "react-intl";
 import { messages_en } from "./en";
+import { IntlMessages } from "../../abstractions/i18n";
 
 const messages = Object.keys(messages_en).reduce(
   (accumulator, currentValue) => ({
@@ -8,7 +9,7 @@ const messages = Object.keys(messages_en).reduce(
     [currentValue]: currentValue,
   }),
   {}
-);
+) as IntlMessages;
 
 export const TestDopplerIntlProvider = ({
   children,

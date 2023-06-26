@@ -1,6 +1,10 @@
-export const defaultLanguage = "es";
+import {
+  AvailableLanguage,
+  availableLanguages,
+  defaultLanguage,
+} from "./setup";
 
-export const sanitizeLanguageOrDefault = (
-  lang: string,
-  availableLanguages: string[]
-) => (availableLanguages.includes(lang) ? lang : defaultLanguage);
+export const sanitizeLanguageOrDefault = (lang: string) =>
+  availableLanguages.includes(lang as any)
+    ? (lang as AvailableLanguage)
+    : defaultLanguage;
