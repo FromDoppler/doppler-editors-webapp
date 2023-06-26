@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import React from "react";
 import { DopplerIntlProvider } from "./DopplerIntlProvider";
 import { FormattedMessage } from "react-intl";
 import {
@@ -7,7 +6,6 @@ import {
   useAppSessionState,
 } from "../AppSessionStateContext";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { Campaign } from "../Campaign";
 
 jest.mock("../AppSessionStateContext");
 jest.mock("./en", () => ({
@@ -53,7 +51,7 @@ const DopplerIntlProviderTestWrapper = ({ initialEntries }: any) => (
         path="/campaigns/:idCampaign"
         element={
           <DopplerIntlProvider>
-            <FormattedMessage id="lang" />
+            <FormattedMessage id={"lang" as any} />
           </DopplerIntlProvider>
         }
       />

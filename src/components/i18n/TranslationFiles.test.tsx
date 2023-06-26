@@ -1,14 +1,11 @@
 import "jest";
 import { messages_es } from "./es";
 import { messages_en } from "./en";
-import { flattenMessages } from "./utils";
 
-const flattenEs = flattenMessages(messages_es);
-const flattenEn = flattenMessages(messages_en);
-const messageKeysEn = Object.keys(flattenEn);
-const messageKeysEs = Object.keys(flattenEs);
-const sortedKeysEn = Object.keys(flattenEn).sort();
-const sortedKeysEs = Object.keys(flattenEs).sort();
+const messageKeysEn = Object.keys(messages_en);
+const messageKeysEs = Object.keys(messages_es);
+const sortedKeysEn = Object.keys(messages_en).sort();
+const sortedKeysEs = Object.keys(messages_es).sort();
 
 describe("language files", () => {
   it("should have the same number of keys", () => {

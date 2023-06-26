@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { IntlProvider } from "react-intl";
-import { messages_en } from "./en";
-import { messages_es } from "./es";
-import { flattenMessages, sanitizeLanguageOrDefault } from "./utils";
+import { sanitizeLanguageOrDefault } from "./utils";
 import { useAppSessionState } from "../AppSessionStateContext";
 import { useSearchParams } from "react-router-dom";
-
-const messages = {
-  es: messages_es,
-  en: messages_en,
-};
+import { AvailableLanguage, messages } from "./setup";
 
 interface DopplerIntlProviderProps {
   children: React.ReactNode;
@@ -18,30 +12,23 @@ interface DopplerIntlProviderProps {
 export const DopplerIntlProvider = ({ children }: DopplerIntlProviderProps) => {
   const [searchParams] = useSearchParams();
   const appSessionState = useAppSessionState();
-  const [locale, setLocale] = useState("es");
+  const [locale, setLocale] = useState<AvailableLanguage>("es");
 
   const langQueryParam = searchParams.get("lang");
 
   useEffect(() => {
     if (langQueryParam) {
-      setLocale(
-        sanitizeLanguageOrDefault(langQueryParam, Object.keys(messages))
-      );
+      setLocale(sanitizeLanguageOrDefault(langQueryParam));
     } else if (
       appSessionState.status === "authenticated" &&
       appSessionState.lang
     ) {
-      setLocale(
-        sanitizeLanguageOrDefault(appSessionState.lang, Object.keys(messages))
-      );
+      setLocale(sanitizeLanguageOrDefault(appSessionState.lang));
     }
   }, [appSessionState, langQueryParam]);
 
   return (
-    <IntlProvider
-      locale={locale}
-      messages={flattenMessages(messages[locale as keyof typeof messages])}
-    >
+    <IntlProvider locale={locale} messages={messages[locale]}>
       {children}
     </IntlProvider>
   );
