@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IntlProvider } from "react-intl";
 import { messages_en } from "./en";
 import { messages_es } from "./es";
-import { flattenMessages, sanitizeLanguageOrDefault } from "./utils";
+import { sanitizeLanguageOrDefault } from "./utils";
 import { useAppSessionState } from "../AppSessionStateContext";
 import { useSearchParams } from "react-router-dom";
 
@@ -40,7 +40,7 @@ export const DopplerIntlProvider = ({ children }: DopplerIntlProviderProps) => {
   return (
     <IntlProvider
       locale={locale}
-      messages={flattenMessages(messages[locale as keyof typeof messages])}
+      messages={messages[locale as keyof typeof messages]}
     >
       {children}
     </IntlProvider>

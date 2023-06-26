@@ -1,9 +1,8 @@
 import { ReactNode } from "react";
 import { IntlProvider } from "react-intl";
 import { messages_en } from "./en";
-import { flattenMessages } from "./utils";
 
-const messages = Object.keys(flattenMessages(messages_en)).reduce(
+const messages = Object.keys(messages_en).reduce(
   (accumulator, currentValue) => ({
     ...accumulator,
     [currentValue]: currentValue,
