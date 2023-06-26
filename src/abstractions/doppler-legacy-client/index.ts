@@ -19,4 +19,5 @@ export interface DopplerLegacyClient {
     Result<{ items: ImageItem[]; continuation: string | undefined }>
   >;
   uploadImage: (file: File) => Promise<Result>;
+  deleteImages: (items: readonly { name: string }[]) => Promise<Result>;
 }

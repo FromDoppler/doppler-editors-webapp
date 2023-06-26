@@ -9,6 +9,8 @@ import { FooterSubmitButton } from "./FooterSubmitButton";
 import { HeaderSortDropdown } from "./HeaderSortDropdown";
 import { HeaderSearchInput } from "./HeaderSearchInput";
 import { Form } from "./Form";
+import { HeaderDeleteButton } from "./HeaderDeleteButton";
+import { useDeleteConfirmationModal } from "./DeleteConfirmationModal";
 
 export const LibraryUI = ({
   selectCheckedImage,
@@ -24,6 +26,7 @@ export const LibraryUI = ({
   setSearchTerm,
   sorting,
   setSorting,
+  deleteCheckedImages,
   hasNextPage,
   fetchNextPage,
 }: {
@@ -40,37 +43,51 @@ export const LibraryUI = ({
   setSearchTerm: (value: string) => void;
   sorting: SortingPair;
   setSorting: (value: SortingPair) => void;
+  deleteCheckedImages: () => void;
   hasNextPage: boolean | undefined;
   fetchNextPage: () => void;
-}) => (
-  <Form onSubmit={selectCheckedImage} onCancel={cancel}>
-    <Header>
-      <HeaderSortDropdown value={sorting} setValue={setSorting} />
-      <HeaderSearchInput value={searchTerm} setValue={setSearchTerm} />
-      {/*
+}) => {
+  const { showDeleteConfirmationModal } = useDeleteConfirmationModal();
+
+  return (
+    <Form onSubmit={selectCheckedImage} onCancel={cancel}>
+      <Header>
+        <HeaderDeleteButton
+          isVisible={checkedImages.size > 0}
+          onClick={() =>
+            showDeleteConfirmationModal({
+              checkedImages,
+              onConfirm: deleteCheckedImages,
+            })
+          }
+        />
+        <HeaderSortDropdown value={sorting} setValue={setSorting} />
+        <HeaderSearchInput value={searchTerm} setValue={setSearchTerm} />
+        {/*
         TODO: Add following tools:
           * Select All
           * View as list
           * View as mosaic
       */}
-    </Header>
-    <Content
-      isFetching={isFetching}
-      searchTerm={debouncedSearchTerm}
-      emptyResults={images.length === 0}
-    >
-      <ContentList
-        images={images}
-        checkedImages={checkedImages}
-        toggleCheckedImage={toggleCheckedImage}
-        selectImage={selectImage}
-        hasNextPage={hasNextPage}
-        fetchNextPage={fetchNextPage}
-      />
-    </Content>
-    <Footer>
-      <FooterUploadButton onClick={uploadImage} />
-      <FooterSubmitButton isEnabled={!!selectCheckedImage} />
-    </Footer>
-  </Form>
-);
+      </Header>
+      <Content
+        isFetching={isFetching}
+        searchTerm={debouncedSearchTerm}
+        emptyResults={images.length === 0}
+      >
+        <ContentList
+          images={images}
+          checkedImages={checkedImages}
+          toggleCheckedImage={toggleCheckedImage}
+          selectImage={selectImage}
+          hasNextPage={hasNextPage}
+          fetchNextPage={fetchNextPage}
+        />
+      </Content>
+      <Footer>
+        <FooterUploadButton onClick={uploadImage} />
+        <FooterSubmitButton isEnabled={!!selectCheckedImage} />
+      </Footer>
+    </Form>
+  );
+};

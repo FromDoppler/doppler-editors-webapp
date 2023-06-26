@@ -13,6 +13,7 @@ const createTestContext = () => {
       Promise.resolve({ success: true, value: { items: [] as ImageItem[] } })
     ),
     uploadImage: jest.fn(() => Promise.resolve({ success: true })),
+    deleteImages: jest.fn(() => Promise.resolve({ success: true })),
   };
 
   const selectImage = jest.fn();
@@ -41,6 +42,8 @@ const createTestContext = () => {
       act(() => {
         currentHookValues.uploadImage(file);
       }),
+    deleteCheckedImages: () =>
+      act(() => currentHookValues.deleteCheckedImages()),
     getImages: () => currentHookValues.images,
     invalidateQueries: () => queryClient.invalidateQueries(),
     getSearchTerm: () => currentHookValues.searchTerm,
@@ -487,6 +490,89 @@ describe(useLibraryBehavior.name, () => {
       })
     );
     expect(dopplerLegacyClient.getImageGallery).toBeCalledTimes(2);
+  });
+
+  it("should call deleteCheckedImages with empty array parameter when no images checked", async () => {
+    // Arrange
+    const {
+      Component,
+      toggleCheckedImage,
+      deleteCheckedImages,
+      getImages,
+      mocks: { dopplerLegacyClient },
+    } = createTestContext();
+    const images = [createImageItem({ name: "name1" })];
+    dopplerLegacyClient.getImageGallery.mockResolvedValue({
+      success: true,
+      value: { items: images },
+    });
+    render(<Component />);
+    await waitFor(() => {
+      expect(getImages()).toEqual(images);
+    });
+
+    // Act
+    deleteCheckedImages();
+
+    // Assert
+    await waitFor(() => {
+      expect(dopplerLegacyClient.deleteImages).toBeCalledTimes(1);
+      expect(dopplerLegacyClient.deleteImages).toBeCalledWith([]);
+    });
+
+    // Arrange
+    dopplerLegacyClient.deleteImages.mockReset();
+    toggleCheckedImage(images[0]);
+    toggleCheckedImage(images[0]);
+
+    // Act
+    deleteCheckedImages();
+
+    // Assert
+    await waitFor(() => {
+      expect(dopplerLegacyClient.deleteImages).toBeCalledTimes(1);
+      expect(dopplerLegacyClient.deleteImages).toBeCalledWith([]);
+    });
+  });
+
+  it("should delete checked images when deleteCheckedImages is called", async () => {
+    // Arrange
+    const {
+      Component,
+      toggleCheckedImage,
+      deleteCheckedImages,
+      getImages,
+      mocks: { dopplerLegacyClient },
+    } = createTestContext();
+    const images = [
+      createImageItem({ name: "name1" }),
+      createImageItem({ name: "name2" }),
+      createImageItem({ name: "name3" }),
+    ];
+    dopplerLegacyClient.getImageGallery.mockResolvedValue({
+      success: true,
+      value: { items: images },
+    });
+
+    // Act
+    render(<Component />);
+    await waitFor(() => {
+      expect(getImages()).toEqual(images);
+    });
+
+    toggleCheckedImage(images[0]);
+    toggleCheckedImage(images[1]);
+
+    // Act
+    deleteCheckedImages();
+
+    // Assert
+    await waitFor(() => {
+      expect(dopplerLegacyClient.deleteImages).toBeCalledWith([
+        { name: images[0].name },
+        { name: images[1].name },
+      ]);
+    });
   });
 });
 

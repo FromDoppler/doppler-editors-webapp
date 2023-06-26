@@ -5,6 +5,14 @@ export const messages_es = {
   cancel: `Cancelar`,
   continue: `Continuar`,
   control_panel: `Panel de Control`,
+  delete: `Eliminar`,
+  delete_images_confirmation_multiple: `
+Las {count} imágenes seleccionadas serán eliminadas de forma permanente.
+Ten en cuenta que no podrás deshacer esta acción. ¿Estás seguro?`,
+  delete_images_confirmation_single: `
+La imagen "{name}" será eliminada de forma permanente.
+Ten en cuenta que no podrás deshacer esta acción. ¿Estás seguro?`,
+  delete_selected_items: `Eliminar items seleccionados`,
   exit_edit_later: `Salir y editar luego`,
   exit_editor: `Salir del Editor`,
   field_name_birthday: `Cumpleaños`,

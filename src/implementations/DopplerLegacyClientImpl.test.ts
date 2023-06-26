@@ -11,6 +11,12 @@ const baseUrl = "https://app2.dopplerfiles.com/Users/88469/Originals";
 function createTestContext({
   dopplerLegacyBaseUrl = "",
 }: { dopplerLegacyBaseUrl?: string } = {}) {
+  const windowDouble = {
+    console: {
+      error: jest.fn(),
+    },
+  };
+
   const appConfiguration = {
     dopplerLegacyBaseUrl,
   } as AppConfiguration;
@@ -21,7 +27,9 @@ function createTestContext({
     })
   );
 
-  const postForm = jest.fn(() => Promise.resolve({ data: { success: true } }));
+  const postForm = jest.fn((_url: string, _data?: any) =>
+    Promise.resolve({ data: { success: true } })
+  );
 
   const create = jest.fn(() => ({
     get,
@@ -35,8 +43,15 @@ function createTestContext({
   const sut = new DopplerLegacyClientImpl({
     axiosStatic,
     appConfiguration,
-  });
-  return { sut, axiosCreate: create, axiosGet: get, axiosPostForm: postForm };
+    window: windowDouble as any,
+  } as any);
+  return {
+    sut,
+    axiosCreate: create,
+    axiosGet: get,
+    axiosPostForm: postForm,
+    windowDouble,
+  };
 }
 
 describe(DopplerLegacyClientImpl.name, () => {
@@ -276,6 +291,77 @@ describe(DopplerLegacyClientImpl.name, () => {
       expect(axiosPostForm).toBeCalledWith("/Campaigns/Editor/UploadImage", {
         file,
       });
+      expect(result).toEqual({
+        success: true,
+      });
+    });
+  });
+
+  describe("deleteImages", () => {
+    it("should request backend", async () => {
+      // Arrange
+      const dopplerLegacyBaseUrl = "dopplerLegacyBaseUrl";
+      const { sut, axiosCreate, axiosPostForm } = createTestContext({
+        dopplerLegacyBaseUrl,
+      });
+      const items = [{ name: "file1" }, { name: "file2" }, { name: "file3" }];
+      const expectedRequestsURL = "/Campaigns/Editor/RemoveImage";
+      const expectedRequestBody1 = { fileName: "file1" };
+      const expectedRequestBody2 = { fileName: "file2" };
+      const expectedRequestBody3 = { fileName: "file3" };
+
+      // Act
+      const result = await sut.deleteImages(items);
+
+      // Assert
+      expect(axiosCreate).toBeCalledWith({
+        baseURL: dopplerLegacyBaseUrl,
+        withCredentials: true,
+      });
+      expect(axiosPostForm).toBeCalledTimes(3);
+      expect(axiosPostForm).toBeCalledWith(
+        expectedRequestsURL,
+        expectedRequestBody1
+      );
+      expect(axiosPostForm).toBeCalledWith(
+        expectedRequestsURL,
+        expectedRequestBody2
+      );
+      expect(axiosPostForm).toBeCalledWith(
+        expectedRequestsURL,
+        expectedRequestBody3
+      );
+      expect(result).toEqual({
+        success: true,
+      });
+    });
+
+    it("should continue on errors", async () => {
+      // Arrange
+      const dopplerLegacyBaseUrl = "dopplerLegacyBaseUrl";
+      const { sut, axiosCreate, axiosPostForm, windowDouble } =
+        createTestContext({
+          dopplerLegacyBaseUrl,
+        });
+      const items = [{ name: "file1" }, { name: "file2" }, { name: "file3" }];
+      const filenameOk = "file3";
+
+      axiosPostForm.mockImplementation((_url, data) =>
+        data.fileName === filenameOk
+          ? Promise.resolve({ data: { success: true } })
+          : Promise.reject()
+      );
+
+      // Act
+      const result = await sut.deleteImages(items);
+
+      // Assert
+      expect(axiosCreate).toBeCalledWith({
+        baseURL: dopplerLegacyBaseUrl,
+        withCredentials: true,
+      });
+      expect(axiosPostForm).toBeCalledTimes(3);
+      expect(windowDouble.console.error).toBeCalledTimes(2);
       expect(result).toEqual({
         success: true,
       });

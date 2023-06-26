@@ -1,23 +1,22 @@
 import { Result } from "../abstractions/common/result-types";
-import { AppConfiguration } from "../abstractions";
+import { AppServices } from "../abstractions";
 import {
   DopplerLegacyClient,
   SortingCriteria,
   SortingDirection,
 } from "../abstractions/doppler-legacy-client";
-import { AxiosStatic } from "axios";
 import { ImageItem } from "../abstractions/domain/image-gallery";
 
 export class DopplerLegacyClientImpl implements DopplerLegacyClient {
   private axios;
+  private window;
 
   constructor({
     axiosStatic,
     appConfiguration: { dopplerLegacyBaseUrl },
-  }: {
-    axiosStatic: AxiosStatic;
-    appConfiguration: Partial<AppConfiguration>;
-  }) {
+    window,
+  }: AppServices) {
+    this.window = window;
     this.axios = axiosStatic.create({
       baseURL: dopplerLegacyBaseUrl,
       withCredentials: true,
@@ -77,6 +76,37 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
       throw new Error("Error uploading image", { cause: result.data });
     }
 
+    return {
+      success: true,
+    };
+  }
+
+  async deleteImage({ name }: { name: string }): Promise<Result<void, any>> {
+    try {
+      // Using postForm to avoid the preflight request
+      const result = await this.axios.postForm(
+        "/Campaigns/Editor/RemoveImage",
+        {
+          fileName: name,
+        }
+      );
+      if (!result.data.success) {
+        return { success: false, error: { cause: result.data } };
+      }
+    } catch (e) {
+      return { success: false, error: { cause: e } };
+    }
+    return { success: true };
+  }
+
+  async deleteImages(items: readonly { name: string }[]): Promise<Result> {
+    for (const { name } of items) {
+      const result = await this.deleteImage({ name });
+      if (!result.success) {
+        // Ignoring individual errors
+        this.window.console.error("Error deleting image", result.error);
+      }
+    }
     return {
       success: true,
     };

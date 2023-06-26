@@ -22,16 +22,25 @@ export const defaultQueryParameters: QueryParameters = {
   sortingDirection: "DESCENDING",
 };
 
+const getBaseQueryKey = () => ["image-gallery"] as const;
+
 const getQueryKey = ({
-  searchTerm = defaultQueryParameters.searchTerm,
-  sortingCriteria = defaultQueryParameters.sortingCriteria,
-  sortingDirection = defaultQueryParameters.sortingDirection,
-}: Partial<QueryParameters> = {}) =>
+  searchTerm,
+  sortingCriteria,
+  sortingDirection,
+}: QueryParameters) =>
   [
-    "image-gallery",
+    ...getBaseQueryKey(),
     searchTerm,
     `${sortingCriteria}_${sortingDirection}`,
   ] as const;
+
+const getDefaultQueryKey = () =>
+  getQueryKey({
+    searchTerm: defaultQueryParameters.searchTerm,
+    sortingCriteria: defaultQueryParameters.sortingCriteria,
+    sortingDirection: defaultQueryParameters.sortingDirection,
+  });
 
 export const useGetImageGallery = ({
   searchTerm = defaultQueryParameters.searchTerm,
@@ -80,11 +89,32 @@ export const useUploadImage = () => {
       // cleaning search input.
       // Using resetQueries in place of invalidateQueries to load only the
       // first page in an infinite scroll.
-      return queryClient.resetQueries(getQueryKey());
+      return queryClient.resetQueries(getDefaultQueryKey());
     },
     onError: (error: Error) =>
       console.error(
         "Error in useUploadImage",
+        { message: error.message, cause: error.cause },
+        error
+      ),
+  });
+};
+
+export const useDeleteImages = () => {
+  const { dopplerLegacyClient } = useAppServices();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (items: readonly { name: string }[]) => {
+      return dopplerLegacyClient.deleteImages(items);
+    },
+    onSuccess: () => {
+      // Using invalidateQueries to try to show exactly the same data than before
+      return queryClient.invalidateQueries(getBaseQueryKey());
+    },
+    onError: (error: Error) =>
+      console.error(
+        "Error in useDeletesImage",
         { message: error.message, cause: error.cause },
         error
       ),
