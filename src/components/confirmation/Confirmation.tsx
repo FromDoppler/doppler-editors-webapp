@@ -2,6 +2,7 @@ import { FormattedMessage } from "react-intl";
 import { IntlMessageId } from "../../abstractions/i18n";
 
 export const Confirmation = ({
+  titleDescriptorId,
   messageDescriptorId,
   confirmationButtonDescriptorId,
   cancelationButtonDescriptorId,
@@ -9,6 +10,7 @@ export const Confirmation = ({
   onCancel,
   onConfirm,
 }: {
+  titleDescriptorId: IntlMessageId;
   messageDescriptorId: IntlMessageId;
   confirmationButtonDescriptorId: IntlMessageId;
   cancelationButtonDescriptorId: IntlMessageId;
@@ -17,6 +19,7 @@ export const Confirmation = ({
   onConfirm: () => void;
 }) => (
   <div className="form-request">
+    <FormattedMessage id={titleDescriptorId} values={values} tagName="h2" />
     <FormattedMessage id={messageDescriptorId} values={values} tagName="p" />
     <div className="container-buttons">
       <button

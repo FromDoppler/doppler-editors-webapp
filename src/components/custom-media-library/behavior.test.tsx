@@ -619,6 +619,7 @@ describe(useLibraryBehavior.name, () => {
       confirmationButtonDescriptorId: "delete",
       messageDescriptorId: "delete_images_confirmation_multiple",
       onConfirm: expect.any(Function),
+      titleDescriptorId: "delete_images_confirmation_title_multiple",
       values: {
         firstName: images[0].name,
         itemsCount: 2,

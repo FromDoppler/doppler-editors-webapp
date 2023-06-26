@@ -3,6 +3,7 @@ import { Confirmation } from "./Confirmation";
 import { IntlMessageId } from "../../abstractions/i18n";
 
 export const ConfirmationModal = ({
+  titleDescriptorId,
   messageDescriptorId,
   confirmationButtonDescriptorId,
   cancelationButtonDescriptorId,
@@ -10,6 +11,7 @@ export const ConfirmationModal = ({
   onCancel,
   onConfirm,
 }: {
+  titleDescriptorId: IntlMessageId;
   messageDescriptorId: IntlMessageId;
   confirmationButtonDescriptorId: IntlMessageId;
   cancelationButtonDescriptorId: IntlMessageId;
@@ -25,6 +27,7 @@ export const ConfirmationModal = ({
     portalClassName="dp-library"
   >
     <Confirmation
+      titleDescriptorId={titleDescriptorId}
       messageDescriptorId={messageDescriptorId}
       values={values}
       cancelationButtonDescriptorId={cancelationButtonDescriptorId}

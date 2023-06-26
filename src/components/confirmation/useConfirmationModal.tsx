@@ -6,6 +6,7 @@ import { IntlMessageId } from "../../abstractions/i18n";
 
 type ConfirmationModalProps = {
   onConfirm: () => void;
+  titleDescriptorId: IntlMessageId;
   messageDescriptorId: IntlMessageId;
   confirmationButtonDescriptorId: IntlMessageId;
   cancelationButtonDescriptorId?: IntlMessageId;
@@ -14,6 +15,8 @@ type ConfirmationModalProps = {
 
 const defaultProps = {
   onConfirm: noop,
+  // TODO: define a generic title message
+  titleDescriptorId: "" as IntlMessageId,
   // TODO: define a generic confirmation message
   messageDescriptorId: "" as IntlMessageId,
   confirmationButtonDescriptorId: "accept",
@@ -24,6 +27,7 @@ export const useConfirmationModal = () => {
   const [
     {
       onConfirm,
+      titleDescriptorId,
       messageDescriptorId,
       confirmationButtonDescriptorId,
       cancelationButtonDescriptorId,
@@ -37,6 +41,7 @@ export const useConfirmationModal = () => {
   const [showModal, hideModal] = useModal(
     () => (
       <ConfirmationModal
+        titleDescriptorId={titleDescriptorId}
         messageDescriptorId={messageDescriptorId}
         confirmationButtonDescriptorId={confirmationButtonDescriptorId}
         cancelationButtonDescriptorId={cancelationButtonDescriptorId}

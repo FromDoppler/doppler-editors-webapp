@@ -14,6 +14,7 @@ import { IntlMessageId } from "../../abstractions/i18n";
 
 export type ConfirmProps = {
   onConfirm: () => void;
+  titleDescriptorId: IntlMessageId;
   messageDescriptorId: IntlMessageId;
   confirmationButtonDescriptorId: IntlMessageId;
   cancelationButtonDescriptorId?: IntlMessageId;
@@ -122,6 +123,10 @@ export const useLibraryBehavior = ({
 
   const deleteCheckedImages = useCallback(() => {
     confirm({
+      titleDescriptorId:
+        checkedImages.size === 1
+          ? "delete_images_confirmation_title_single"
+          : "delete_images_confirmation_title_multiple",
       messageDescriptorId:
         checkedImages.size === 1
           ? "delete_images_confirmation_single"
