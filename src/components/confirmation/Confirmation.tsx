@@ -1,4 +1,3 @@
-import { CSSProperties } from "react";
 import { FormattedMessage } from "react-intl";
 import { IntlMessageId } from "../../abstractions/i18n";
 
@@ -6,7 +5,6 @@ export const Confirmation = ({
   messageDescriptorId,
   confirmationButtonDescriptorId,
   cancelationButtonDescriptorId,
-  confirmationButtonStyles,
   values,
   onCancel,
   onConfirm,
@@ -14,7 +12,6 @@ export const Confirmation = ({
   messageDescriptorId: IntlMessageId;
   confirmationButtonDescriptorId: IntlMessageId;
   cancelationButtonDescriptorId: IntlMessageId;
-  confirmationButtonStyles?: CSSProperties;
   values?: Record<string, any>;
   onCancel: () => void;
   onConfirm: () => void;
@@ -25,7 +22,7 @@ export const Confirmation = ({
       <button
         type="button"
         name="cancel"
-        className="dp-button button-medium primary-grey"
+        className="dp-button button-medium secondary-grey"
         onClick={onCancel}
       >
         <FormattedMessage id={cancelationButtonDescriptorId} values={values} />
@@ -33,9 +30,8 @@ export const Confirmation = ({
       <button
         type="button"
         name="submit"
-        className="dp-button button-medium primary-green"
+        className="dp-button button-medium primary-grey"
         onClick={onConfirm}
-        style={confirmationButtonStyles}
       >
         <FormattedMessage id={confirmationButtonDescriptorId} values={values} />
       </button>

@@ -1,10 +1,4 @@
-import {
-  CSSProperties,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { takeOneValue, toggleItemInSet, useDebounce } from "../../utils";
 import {
   defaultQueryParameters,
@@ -23,12 +17,8 @@ export type ConfirmProps = {
   messageDescriptorId: IntlMessageId;
   confirmationButtonDescriptorId: IntlMessageId;
   cancelationButtonDescriptorId?: IntlMessageId;
-  confirmationButtonStyles?: CSSProperties;
   values?: Record<string, any>;
 };
-
-// TODO: consider moving these styles to classes in the Style Guide
-const deleteButtonStyles: CSSProperties = { backgroundColor: "#E2574C" };
 
 export type SortingPair = {
   criteria: SortingCriteria;
@@ -137,7 +127,6 @@ export const useLibraryBehavior = ({
           ? "delete_images_confirmation_single"
           : "delete_images_confirmation_multiple",
       confirmationButtonDescriptorId: "delete",
-      confirmationButtonStyles: deleteButtonStyles,
       values: {
         firstName: takeOneValue(checkedImages),
         itemsCount: checkedImages.size,

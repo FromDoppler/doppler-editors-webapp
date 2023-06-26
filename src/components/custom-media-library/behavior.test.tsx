@@ -617,9 +617,6 @@ describe(useLibraryBehavior.name, () => {
     // Assert
     expect(confirm).toBeCalledWith({
       confirmationButtonDescriptorId: "delete",
-      confirmationButtonStyles: {
-        backgroundColor: "#E2574C",
-      },
       messageDescriptorId: "delete_images_confirmation_multiple",
       onConfirm: expect.any(Function),
       values: {

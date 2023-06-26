@@ -1,4 +1,4 @@
-import { CSSProperties, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { useModal } from "react-modal-hook";
 import { noop } from "../../utils";
 import { ConfirmationModal } from "./ConfirmationModal";
@@ -9,7 +9,6 @@ type ConfirmationModalProps = {
   messageDescriptorId: IntlMessageId;
   confirmationButtonDescriptorId: IntlMessageId;
   cancelationButtonDescriptorId?: IntlMessageId;
-  confirmationButtonStyles?: CSSProperties;
   values?: Record<string, any>;
 };
 
@@ -28,7 +27,6 @@ export const useConfirmationModal = () => {
       messageDescriptorId,
       confirmationButtonDescriptorId,
       cancelationButtonDescriptorId,
-      confirmationButtonStyles,
       values,
     },
     setProps,
@@ -42,7 +40,6 @@ export const useConfirmationModal = () => {
         messageDescriptorId={messageDescriptorId}
         confirmationButtonDescriptorId={confirmationButtonDescriptorId}
         cancelationButtonDescriptorId={cancelationButtonDescriptorId}
-        confirmationButtonStyles={confirmationButtonStyles}
         values={values}
         onCancel={hideModal}
         onConfirm={() => {
@@ -56,7 +53,6 @@ export const useConfirmationModal = () => {
       messageDescriptorId,
       confirmationButtonDescriptorId,
       cancelationButtonDescriptorId,
-      confirmationButtonStyles,
       values,
     ]
   );
