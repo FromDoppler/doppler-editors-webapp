@@ -3,11 +3,13 @@ import { Notification } from "./Notification";
 import { IntlMessageId } from "../../abstractions/i18n";
 
 export const NotificationModal = ({
+  titleDescriptorId,
   messageDescriptorId,
   closeButtonDescriptorId,
   values,
   onClose,
 }: {
+  titleDescriptorId: IntlMessageId;
   messageDescriptorId: IntlMessageId;
   closeButtonDescriptorId: IntlMessageId;
   values?: Record<string, any>;
@@ -21,6 +23,7 @@ export const NotificationModal = ({
     portalClassName="dp-library"
   >
     <Notification
+      titleDescriptorId={titleDescriptorId}
       messageDescriptorId={messageDescriptorId}
       values={values}
       closeButtonDescriptorId={closeButtonDescriptorId}

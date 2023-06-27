@@ -15,6 +15,7 @@ Ten en cuenta que no podrás deshacer esta acción. ¿Estás seguro?`,
   delete_images_confirmation_title_multiple: `¿Eliminar {itemsCount} imágenes?`,
   delete_images_confirmation_title_single: `¿Eliminar imagen?`,
   delete_selected_items: `Eliminar items seleccionados`,
+  error_uploading_image: `Error al subir imagen`,
   error_uploading_image_max_size_exceeded: `
 El tamaño del archivo "{filename}" supera el máximo permitido de 3 mb.`,
   error_uploading_image_unexpected: `Error inesperado subiendo el archivo "{filename}".`,

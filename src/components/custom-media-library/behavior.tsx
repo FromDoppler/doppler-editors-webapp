@@ -22,6 +22,7 @@ export type ConfirmProps = {
 };
 
 export type NotificationProps = {
+  titleDescriptorId: IntlMessageId;
   messageDescriptorId: IntlMessageId;
   closeButtonDescriptorId?: IntlMessageId;
   values?: Record<string, any>;
@@ -75,11 +76,12 @@ export const useLibraryBehavior = ({
         },
         onError: (error, file) => {
           const values = { filename: file.name };
+          const titleDescriptorId = "error_uploading_image";
           const messageDescriptorId =
             error.reason === "maxSizeExceeded"
               ? "error_uploading_image_max_size_exceeded"
               : "error_uploading_image_unexpected";
-          notify({ messageDescriptorId, values });
+          notify({ titleDescriptorId, messageDescriptorId, values });
           console.error(error);
         },
       }),
