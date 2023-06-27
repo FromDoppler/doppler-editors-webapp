@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  CSSProperties,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { takeOneValue, toggleItemInSet, useDebounce } from "../../utils";
 import {
   defaultQueryParameters,
@@ -10,6 +16,19 @@ import {
   SortingCriteria,
   SortingDirection,
 } from "../../abstractions/doppler-legacy-client";
+import { IntlMessageId } from "../../abstractions/i18n";
+
+export type ConfirmProps = {
+  onConfirm: () => void;
+  messageDescriptorId: IntlMessageId;
+  confirmationButtonDescriptorId: IntlMessageId;
+  cancelationButtonDescriptorId?: IntlMessageId;
+  confirmationButtonStyles?: CSSProperties;
+  values?: Record<string, any>;
+};
+
+// TODO: consider moving these styles to classes in the Style Guide
+const deleteButtonStyles: CSSProperties = { backgroundColor: "#E2574C" };
 
 export type SortingPair = {
   criteria: SortingCriteria;
@@ -18,8 +37,10 @@ export type SortingPair = {
 
 export const useLibraryBehavior = ({
   selectImage,
+  confirm,
 }: {
   selectImage: ({ url }: { url: string }) => void;
+  confirm: (props: ConfirmProps) => void;
 }) => {
   const { mutate: uploadImageMutation } = useUploadImage();
   const { mutate: deleteImages } = useDeleteImages();
@@ -110,8 +131,21 @@ export const useLibraryBehavior = ({
   );
 
   const deleteCheckedImages = useCallback(() => {
-    deleteImages(Array.from(checkedImages).map((x) => ({ name: x })));
-  }, [checkedImages, deleteImages]);
+    confirm({
+      messageDescriptorId:
+        checkedImages.size === 1
+          ? "delete_images_confirmation_single"
+          : "delete_images_confirmation_multiple",
+      confirmationButtonDescriptorId: "delete",
+      confirmationButtonStyles: deleteButtonStyles,
+      values: {
+        firstName: takeOneValue(checkedImages),
+        itemsCount: checkedImages.size,
+      },
+      onConfirm: () =>
+        deleteImages(Array.from(checkedImages).map((x) => ({ name: x }))),
+    });
+  }, [checkedImages, deleteImages, confirm]);
 
   return {
     isFetching,

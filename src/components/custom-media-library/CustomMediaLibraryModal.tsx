@@ -4,6 +4,7 @@ import { useModal } from "react-modal-hook";
 import { noop } from "../../utils";
 import { LibraryUI } from "./LibraryUI";
 import { useLibraryBehavior } from "./behavior";
+import { useConfirmationModal } from "../confirmation";
 
 const CustomMediaLibrary = ({
   cancel,
@@ -12,8 +13,10 @@ const CustomMediaLibrary = ({
   cancel: () => void;
   selectImage: ({ url }: { url: string }) => void;
 }) => {
+  const { showConfirmationModal } = useConfirmationModal();
   const props = useLibraryBehavior({
     selectImage,
+    confirm: showConfirmationModal,
   });
   return <LibraryUI cancel={cancel} selectImage={selectImage} {...props} />;
 };

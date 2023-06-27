@@ -9,10 +9,10 @@ export const messages_en: IntlMessages = {
   control_panel: `Control Panel`,
   delete: `Delete`,
   delete_images_confirmation_multiple: `
-The {count} selected images will be deleted.
+The {itemsCount} selected images will be deleted.
 This operation cannot be undone. Are you sure you want to proceed?`,
   delete_images_confirmation_single: `
-The image "{name}" will be deleted.
+The image "{firstName}" will be deleted.
 This operation cannot be undone. Are you sure you want to proceed?`,
   delete_selected_items: `Delete selected items`,
   exit_edit_later: `Exit and edit later`,
