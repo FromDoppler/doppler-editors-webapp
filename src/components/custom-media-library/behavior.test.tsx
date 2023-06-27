@@ -1,5 +1,10 @@
 import { act, render, waitFor } from "@testing-library/react";
-import { ConfirmProps, SortingPair, useLibraryBehavior } from "./behavior";
+import {
+  ConfirmProps,
+  NotificationProps,
+  SortingPair,
+  useLibraryBehavior,
+} from "./behavior";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppServicesProvider } from "../AppServicesContext";
@@ -19,10 +24,11 @@ const createTestContext = () => {
 
   const selectImage = jest.fn();
   const confirm = jest.fn((_: ConfirmProps) => {});
+  const notify = jest.fn((_: NotificationProps) => {});
   let currentHookValues: ReturnType<typeof useLibraryBehavior>;
 
   const TestComponent = () => {
-    currentHookValues = useLibraryBehavior({ selectImage, confirm });
+    currentHookValues = useLibraryBehavior({ selectImage, confirm, notify });
     return <></>;
   };
 

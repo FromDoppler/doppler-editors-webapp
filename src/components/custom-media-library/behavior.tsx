@@ -21,6 +21,12 @@ export type ConfirmProps = {
   values?: Record<string, any>;
 };
 
+export type NotificationProps = {
+  messageDescriptorId: IntlMessageId;
+  closeButtonDescriptorId?: IntlMessageId;
+  values?: Record<string, any>;
+};
+
 export type SortingPair = {
   criteria: SortingCriteria;
   direction: SortingDirection;
@@ -29,9 +35,11 @@ export type SortingPair = {
 export const useLibraryBehavior = ({
   selectImage,
   confirm,
+  notify,
 }: {
   selectImage: ({ url }: { url: string }) => void;
   confirm: (props: ConfirmProps) => void;
+  notify: (props: NotificationProps) => void;
 }) => {
   const { mutate: uploadImageMutation } = useUploadImage();
   const { mutate: deleteImages } = useDeleteImages();
@@ -66,10 +74,16 @@ export const useLibraryBehavior = ({
           setSortingDirection(defaultQueryParameters.sortingDirection);
         },
         onError: (error, file) => {
+          const values = { filename: file.name };
+          const messageDescriptorId =
+            error.reason === "maxSizeExceeded"
+              ? "error_uploading_image_max_size_exceeded"
+              : "error_uploading_image_unexpected";
+          notify({ messageDescriptorId, values });
           console.error(error);
         },
       }),
-    [uploadImageMutation]
+    [uploadImageMutation, notify]
   );
 
   // Sanitize checkedImages based on existing images
