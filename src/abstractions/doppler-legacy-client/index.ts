@@ -4,6 +4,11 @@ import { ImageItem } from "../domain/image-gallery";
 export type SortingCriteria = "DATE" | "FILENAME";
 export type SortingDirection = "ASCENDING" | "DESCENDING";
 
+export type UploadImageError =
+  | { reason: "maxSizeExceeded"; currentSize: number; maxSize: number }
+  | { reason: "unexpected"; details: unknown };
+export type UploadImageResult = Result<void, UploadImageError>;
+
 export interface DopplerLegacyClient {
   getImageGallery: ({
     searchTerm,
@@ -18,6 +23,6 @@ export interface DopplerLegacyClient {
   }) => Promise<
     Result<{ items: ImageItem[]; continuation: string | undefined }>
   >;
-  uploadImage: (file: File) => Promise<Result>;
+  uploadImage: (file: File) => Promise<UploadImageResult>;
   deleteImages: (items: readonly { name: string }[]) => Promise<Result>;
 }

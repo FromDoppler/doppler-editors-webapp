@@ -65,6 +65,9 @@ export const useLibraryBehavior = ({
           setSortingCriteria(defaultQueryParameters.sortingCriteria);
           setSortingDirection(defaultQueryParameters.sortingDirection);
         },
+        onError: (error, file) => {
+          console.error(error);
+        },
       }),
     [uploadImageMutation]
   );

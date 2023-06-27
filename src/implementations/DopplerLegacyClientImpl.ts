@@ -4,6 +4,7 @@ import {
   DopplerLegacyClient,
   SortingCriteria,
   SortingDirection,
+  UploadImageResult,
 } from "../abstractions/doppler-legacy-client";
 import { ImageItem } from "../abstractions/domain/image-gallery";
 
@@ -62,23 +63,43 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     };
   }
 
-  async uploadImage(file: File): Promise<Result> {
+  async uploadImage(file: File): Promise<UploadImageResult> {
     // TODO: deal with server errors for example:
     //   {"success":false,"error":"Tamaño inválido","maxSize":3145728}
     // TODO: do client side validations like this:
     //   https://github.com/MakingSense/MSEditor/blob/v1.4.0/app/controllers/mseditorImageGalleryCtrl.js
     //   Lines #L95-L105
-    const result = await this.axios.postForm("/Campaigns/Editor/UploadImage", {
-      file,
-    });
 
-    if (!result.data.success) {
-      throw new Error("Error uploading image", { cause: result.data });
+    try {
+      const result = await this.axios.postForm(
+        "/Campaigns/Editor/UploadImage",
+        {
+          file,
+        }
+      );
+
+      if (result.data?.success) {
+        return { success: true };
+      }
+
+      if (result.data && "maxSize" in result.data) {
+        return {
+          success: false,
+          error: {
+            reason: "maxSizeExceeded",
+            currentSize: file.size,
+            maxSize: result.data.maxSize,
+          },
+        };
+      }
+
+      return {
+        success: false,
+        error: { reason: "unexpected", details: result.data },
+      };
+    } catch (e) {
+      return { success: false, error: { reason: "unexpected", details: e } };
     }
-
-    return {
-      success: true,
-    };
   }
 
   async deleteImage({ name }: { name: string }): Promise<Result<void, any>> {
