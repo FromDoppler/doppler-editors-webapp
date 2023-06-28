@@ -4,6 +4,7 @@ import { NotificationModal } from "./NotificationModal";
 import { IntlMessageId } from "../../abstractions/i18n";
 
 type NotificationModalProps = {
+  contentType?: "error";
   titleDescriptorId: IntlMessageId;
   messageDescriptorId: IntlMessageId;
   closeButtonDescriptorId?: IntlMessageId;
@@ -19,7 +20,13 @@ const defaultProps = {
 
 export const useNotificationModal = () => {
   const [
-    { titleDescriptorId, messageDescriptorId, closeButtonDescriptorId, values },
+    {
+      contentType,
+      titleDescriptorId,
+      messageDescriptorId,
+      closeButtonDescriptorId,
+      values,
+    },
     setProps,
   ] = useState<
     NotificationModalProps & { closeButtonDescriptorId: IntlMessageId }
@@ -28,6 +35,7 @@ export const useNotificationModal = () => {
   const [showModal, hideModal] = useModal(
     () => (
       <NotificationModal
+        contentType={contentType}
         titleDescriptorId={titleDescriptorId}
         messageDescriptorId={messageDescriptorId}
         closeButtonDescriptorId={closeButtonDescriptorId}
