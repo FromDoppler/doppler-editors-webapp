@@ -7,13 +7,11 @@ export const messages_es = {
   control_panel: `Panel de Control`,
   delete: `Eliminar`,
   delete_images_confirmation_multiple: `
-Las {itemsCount} imágenes seleccionadas serán eliminadas de forma permanente.
-Ten en cuenta que no podrás deshacer esta acción. ¿Estás seguro?`,
+Las {itemsCount} imágenes seleccionadas serán eliminadas de forma permanente.`,
   delete_images_confirmation_single: `
-La imagen "{firstName}" será eliminada de forma permanente.
-Ten en cuenta que no podrás deshacer esta acción. ¿Estás seguro?`,
-  delete_images_confirmation_title_multiple: `¿Eliminar {itemsCount} imágenes?`,
-  delete_images_confirmation_title_single: `¿Eliminar imagen?`,
+La imagen "{firstName}" será eliminada de forma permanente.`,
+  delete_images_confirmation_title_multiple: `Eliminar imágenes`,
+  delete_images_confirmation_title_single: `Eliminar imagen`,
   delete_selected_items: `Eliminar items seleccionados`,
   error_uploading_image: `Error al subir imagen`,
   error_uploading_image_max_size_exceeded: `
