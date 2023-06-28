@@ -17,8 +17,9 @@ Ten en cuenta que no podrás deshacer esta acción. ¿Estás seguro?`,
   delete_selected_items: `Eliminar items seleccionados`,
   error_uploading_image: `Error al subir imagen`,
   error_uploading_image_max_size_exceeded: `
-El tamaño del archivo "{filename}" supera el máximo permitido de 3 mb.`,
-  error_uploading_image_unexpected: `Error inesperado subiendo el archivo "{filename}".`,
+El tamaño del archivo "{filename}" supera el máximo permitido. Elige una imagen menor a 3MB.`,
+  error_uploading_image_unexpected: `
+Se produjo un error al subir el archivo "{filename}". Inténtalo nuevamente.`,
   exit_edit_later: `Salir y editar luego`,
   exit_editor: `Salir del Editor`,
   field_name_birthday: `Cumpleaños`,

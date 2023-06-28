@@ -18,8 +18,10 @@ This operation cannot be undone. Are you sure you want to proceed?`,
   delete_images_confirmation_title_single: `Delete image?`,
   delete_selected_items: `Delete selected items`,
   error_uploading_image: `Error uploading image`,
-  error_uploading_image_max_size_exceeded: `The file "{filename}" is bigger than allowed (3 mb).`,
-  error_uploading_image_unexpected: `Unexpected error uploading "{filename}".`,
+  error_uploading_image_max_size_exceeded: `
+The file size "{filename} exceeds the maximum allowed. Please choose an image smaller than 3MB.`,
+  error_uploading_image_unexpected: `
+An error occurred while uploading the file "{filename}". Please try again.`,
   exit_edit_later: `Exit and edit later`,
   exit_editor: `Exit Editor`,
   field_name_birthday: `Birthday`,
