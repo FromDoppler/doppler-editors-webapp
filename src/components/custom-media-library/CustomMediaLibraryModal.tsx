@@ -5,6 +5,7 @@ import { noop } from "../../utils";
 import { LibraryUI } from "./LibraryUI";
 import { useLibraryBehavior } from "./behavior";
 import { useConfirmationModal } from "../confirmation";
+import { useNotificationModal } from "../notification";
 
 const CustomMediaLibrary = ({
   cancel,
@@ -14,9 +15,11 @@ const CustomMediaLibrary = ({
   selectImage: ({ url }: { url: string }) => void;
 }) => {
   const { showConfirmationModal } = useConfirmationModal();
+  const { showNotificationModal } = useNotificationModal();
   const props = useLibraryBehavior({
     selectImage,
     confirm: showConfirmationModal,
+    notify: showNotificationModal,
   });
   return <LibraryUI cancel={cancel} selectImage={selectImage} {...props} />;
 };

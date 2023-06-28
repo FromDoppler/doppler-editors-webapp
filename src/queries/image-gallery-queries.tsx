@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import {
   SortingCriteria,
   SortingDirection,
+  UploadImageError,
 } from "../abstractions/doppler-legacy-client";
 
 type QueryParameters = {
@@ -80,9 +81,12 @@ export const useUploadImage = () => {
   const { dopplerLegacyClient } = useAppServices();
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (file: File) => {
-      return dopplerLegacyClient.uploadImage(file);
+  return useMutation<void, UploadImageError, File, unknown>({
+    mutationFn: async (file: File) => {
+      const result = await dopplerLegacyClient.uploadImage(file);
+      if (!result.success) {
+        throw result.error;
+      }
     },
     onSuccess: () => {
       // Resetting the query with default values to avoid double request after
@@ -91,12 +95,6 @@ export const useUploadImage = () => {
       // first page in an infinite scroll.
       return queryClient.resetQueries(getDefaultQueryKey());
     },
-    onError: (error: Error) =>
-      console.error(
-        "Error in useUploadImage",
-        { message: error.message, cause: error.cause },
-        error
-      ),
   });
 };
 

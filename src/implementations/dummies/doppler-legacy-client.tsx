@@ -3,6 +3,7 @@ import {
   DopplerLegacyClient,
   SortingCriteria,
   SortingDirection,
+  UploadImageResult,
 } from "../../abstractions/doppler-legacy-client";
 import { Result } from "../../abstractions/common/result-types";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
@@ -101,16 +102,20 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     return result;
   };
 
-  uploadImage: () => Promise<Result> = async () => {
+  uploadImage: () => Promise<UploadImageResult> = async () => {
     console.log("Begin uploadImage...");
     await timeout(1000);
-    demoImages.unshift({
-      ...demoImages[0],
-      name: `new_image_${Date.now()}`,
-      lastModifiedDate: new Date(),
-    });
+    // demoImages.unshift({
+    //   ...demoImages[0],
+    //   name: `new_image_${Date.now()}`,
+    //   lastModifiedDate: new Date(),
+    // });
     console.log("End uploadImage");
-    return { success: true };
+    // return { success: true };
+    return {
+      success: false,
+      error: { reason: "unexpected", details: { unexpected: "error" } },
+    };
   };
 
   deleteImages: (items: readonly { name: string }[]) => Promise<Result> =
