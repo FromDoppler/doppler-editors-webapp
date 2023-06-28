@@ -4,6 +4,8 @@ import { NotificationModal } from "./NotificationModal";
 import { IntlMessageId } from "../../abstractions/i18n";
 
 type NotificationModalProps = {
+  contentType?: "error";
+  titleDescriptorId: IntlMessageId;
   messageDescriptorId: IntlMessageId;
   closeButtonDescriptorId?: IntlMessageId;
   values?: Record<string, any>;
@@ -11,19 +13,30 @@ type NotificationModalProps = {
 
 const defaultProps = {
   // TODO: define a generic close message
+  titleDescriptorId: "" as IntlMessageId,
   messageDescriptorId: "" as IntlMessageId,
   closeButtonDescriptorId: "accept",
 } as const;
 
 export const useNotificationModal = () => {
-  const [{ messageDescriptorId, closeButtonDescriptorId, values }, setProps] =
-    useState<
-      NotificationModalProps & { closeButtonDescriptorId: IntlMessageId }
-    >(defaultProps);
+  const [
+    {
+      contentType,
+      titleDescriptorId,
+      messageDescriptorId,
+      closeButtonDescriptorId,
+      values,
+    },
+    setProps,
+  ] = useState<
+    NotificationModalProps & { closeButtonDescriptorId: IntlMessageId }
+  >(defaultProps);
 
   const [showModal, hideModal] = useModal(
     () => (
       <NotificationModal
+        contentType={contentType}
+        titleDescriptorId={titleDescriptorId}
         messageDescriptorId={messageDescriptorId}
         closeButtonDescriptorId={closeButtonDescriptorId}
         values={values}
