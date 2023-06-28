@@ -15,7 +15,7 @@ const defaultProps = {
   // TODO: define a generic close message
   titleDescriptorId: "" as IntlMessageId,
   messageDescriptorId: "" as IntlMessageId,
-  closeButtonDescriptorId: "accept",
+  closeButtonDescriptorId: "understood",
 } as const;
 
 export const useNotificationModal = () => {

@@ -9,17 +9,17 @@ export const messages_en: IntlMessages = {
   control_panel: `Control Panel`,
   delete: `Delete`,
   delete_images_confirmation_multiple: `
-The {itemsCount} selected images will be deleted.
-This operation cannot be undone. Are you sure you want to proceed?`,
+The {itemsCount} selected images will be permanently deleted.`,
   delete_images_confirmation_single: `
-The image "{firstName}" will be deleted.
-This operation cannot be undone. Are you sure you want to proceed?`,
-  delete_images_confirmation_title_multiple: `Delete {itemsCount} images?`,
-  delete_images_confirmation_title_single: `Delete image?`,
+The image "{firstName}" will be permanently deleted.`,
+  delete_images_confirmation_title_multiple: `Delete images`,
+  delete_images_confirmation_title_single: `Delete image`,
   delete_selected_items: `Delete selected items`,
   error_uploading_image: `Error uploading image`,
-  error_uploading_image_max_size_exceeded: `The file "{filename}" is bigger than allowed (3 mb).`,
-  error_uploading_image_unexpected: `Unexpected error uploading "{filename}".`,
+  error_uploading_image_max_size_exceeded: `
+The file size "{filename} exceeds the maximum allowed. Please choose an image smaller than 3MB.`,
+  error_uploading_image_unexpected: `
+An error occurred while uploading the file "{filename}". Please try again.`,
   exit_edit_later: `Exit and edit later`,
   exit_editor: `Exit Editor`,
   field_name_birthday: `Birthday`,
@@ -55,6 +55,7 @@ will not be applied.`,
   sort_criteria_DATE_DESCENDING: `Order by date descendant`,
   sort_criteria_FILENAME_ASCENDING: `Order by name ascendant`,
   sort_criteria_FILENAME_DESCENDING: `Order by name descendant`,
+  understood: `Understood`,
   undo_description: `Undo changes`,
   undo_label: `Undo`,
   upload_image: `Upload image`,

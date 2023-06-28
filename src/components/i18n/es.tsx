@@ -7,18 +7,17 @@ export const messages_es = {
   control_panel: `Panel de Control`,
   delete: `Eliminar`,
   delete_images_confirmation_multiple: `
-Las {itemsCount} imágenes seleccionadas serán eliminadas de forma permanente.
-Ten en cuenta que no podrás deshacer esta acción. ¿Estás seguro?`,
+Las {itemsCount} imágenes seleccionadas serán eliminadas de forma permanente.`,
   delete_images_confirmation_single: `
-La imagen "{firstName}" será eliminada de forma permanente.
-Ten en cuenta que no podrás deshacer esta acción. ¿Estás seguro?`,
-  delete_images_confirmation_title_multiple: `¿Eliminar {itemsCount} imágenes?`,
-  delete_images_confirmation_title_single: `¿Eliminar imagen?`,
+La imagen "{firstName}" será eliminada de forma permanente.`,
+  delete_images_confirmation_title_multiple: `Eliminar imágenes`,
+  delete_images_confirmation_title_single: `Eliminar imagen`,
   delete_selected_items: `Eliminar items seleccionados`,
   error_uploading_image: `Error al subir imagen`,
   error_uploading_image_max_size_exceeded: `
-El tamaño del archivo "{filename}" supera el máximo permitido de 3 mb.`,
-  error_uploading_image_unexpected: `Error inesperado subiendo el archivo "{filename}".`,
+El tamaño del archivo "{filename}" supera el máximo permitido. Elige una imagen menor a 3MB.`,
+  error_uploading_image_unexpected: `
+Se produjo un error al subir el archivo "{filename}". Inténtalo nuevamente.`,
   exit_edit_later: `Salir y editar luego`,
   exit_editor: `Salir del Editor`,
   field_name_birthday: `Cumpleaños`,
@@ -54,6 +53,7 @@ a partir de ahora, no serán aplicados.`,
   sort_criteria_DATE_DESCENDING: `Ordenar por fecha descendente`,
   sort_criteria_FILENAME_ASCENDING: `Ordenar por nombre ascendente`,
   sort_criteria_FILENAME_DESCENDING: `Ordenar por nombre descendente`,
+  understood: `Entendido`,
   undo_description: `Deshacer cambios`,
   undo_label: `Deshacer`,
   upload_image: `Subir imagen`,
