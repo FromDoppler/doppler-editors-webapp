@@ -7,6 +7,7 @@ import {
   UploadImageResult,
 } from "../abstractions/doppler-legacy-client";
 import { ImageItem } from "../abstractions/domain/image-gallery";
+import { DopplerEditorSettings } from "../abstractions/domain/DopplerEditorSettings";
 
 export class DopplerLegacyClientImpl implements DopplerLegacyClient {
   private axios;
@@ -132,6 +133,50 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
       success: true,
     };
   }
+
+  async getEditorSettings() {
+    const response = await this.axios.get(
+      "/MSEditor/Editor/GetStaticUserSettings"
+    );
+    const value = parseDopplerEditorSettings(response.data);
+    return { success: true, value } as const;
+  }
+}
+
+const INTEGRATIONS_WITH_PROMOTIONS = ["MercadoShops"];
+
+function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
+  // See:
+  // Doppler.Application.ControlPanelModule.DTO/DtoEditorSetting.cs
+  // Doppler.Presentation.MVC/Areas/MSEditor/Controllers/EditorController.cs #GetSettings
+  // Doppler.Application.ControlPanelModule/Services/Classes/AccountPreferencesService.cs #GetEditorSettings
+  // Doppler.Application.ActionsModule/Services/CampaignService.cs #GetEditorSettings
+  // https://github.com/MakingSense/Doppler/pull/10148
+  const d = objectOrEmptyObject(data);
+  const promotionCodeEnabled = !!d.promotionCodeEnabled;
+  const stores =
+    arrayOrEmptyArray(d.stores)
+      .filter(hasName)
+      .map((x) => ({
+        name: x.name,
+        promotionCodeEnabled:
+          promotionCodeEnabled && INTEGRATIONS_WITH_PROMOTIONS.includes(x.name),
+      })) ?? [];
+  return {
+    stores,
+  };
+}
+
+function objectOrEmptyObject(value: any): { [key: string]: unknown } {
+  return value && typeof value === "object" ? value : {};
+}
+
+function arrayOrEmptyArray(value: any): unknown[] {
+  return Array.isArray(value) ? value : [];
+}
+
+function hasName(x: unknown): x is { name: any } {
+  return !!(x && (x as any).name);
 }
 
 function parseImageItem({

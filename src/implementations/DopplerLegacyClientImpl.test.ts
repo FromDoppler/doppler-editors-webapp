@@ -367,4 +367,139 @@ describe(DopplerLegacyClientImpl.name, () => {
       });
     });
   });
+
+  describe("getEditorSettings", () => {
+    it("Should do the right request", async () => {
+      // Arrange
+      const dopplerLegacyBaseUrl = "dopplerLegacyBaseUrl";
+
+      const { sut, axiosCreate, axiosGet } = createTestContext({
+        dopplerLegacyBaseUrl,
+      });
+
+      axiosGet.mockResolvedValue({ data: {} });
+
+      // Act
+      await sut.getEditorSettings();
+
+      // Assert
+      expect(axiosCreate).toBeCalledWith({
+        baseURL: dopplerLegacyBaseUrl,
+        withCredentials: true,
+      });
+      expect(axiosGet).toBeCalledWith("/MSEditor/Editor/GetStaticUserSettings");
+    });
+
+    it.each([
+      { data: undefined },
+      { data: null },
+      { data: {} },
+      { data: false },
+      { data: 5 },
+      { data: "ERROR" },
+    ])("Should parse invalid responses", async ({ data }) => {
+      // Arrange
+      const dopplerLegacyBaseUrl = "dopplerLegacyBaseUrl";
+
+      const { sut, axiosGet } = createTestContext({
+        dopplerLegacyBaseUrl,
+      });
+
+      axiosGet.mockResolvedValue({ data });
+
+      // Act
+      const result = await sut.getEditorSettings();
+
+      // Assert
+      expect(result).toEqual({
+        success: true,
+        value: { stores: [] },
+      });
+    });
+
+    it.each([
+      {
+        data: {
+          stores: [],
+          promotionCodeEnabled: false,
+        },
+        expectedResult: {
+          stores: [],
+        },
+      },
+      {
+        data: {
+          stores: [
+            {
+              name: "MercadoShops",
+              accessToken: "123",
+              storeId: "456",
+            },
+            {
+              name: "Tiendanube",
+              accessToken: "789",
+              storeId: "101112",
+            },
+          ],
+          promotionCodeEnabled: false,
+        },
+        expectedResult: {
+          stores: [
+            {
+              name: "MercadoShops",
+              promotionCodeEnabled: false,
+            },
+            {
+              name: "Tiendanube",
+              promotionCodeEnabled: false,
+            },
+          ],
+        },
+      },
+      {
+        data: {
+          stores: [
+            {
+              name: "MercadoShops",
+              accessToken: "123",
+              storeId: "456",
+            },
+            {
+              name: "Tiendanube",
+              accessToken: "789",
+              storeId: "101112",
+            },
+          ],
+          promotionCodeEnabled: true,
+        },
+        expectedResult: {
+          stores: [
+            {
+              name: "MercadoShops",
+              promotionCodeEnabled: true,
+            },
+            {
+              name: "Tiendanube",
+              promotionCodeEnabled: false,
+            },
+          ],
+        },
+      },
+    ])("Should parse valid responses", async ({ data, expectedResult }) => {
+      // Arrange
+      const dopplerLegacyBaseUrl = "dopplerLegacyBaseUrl";
+
+      const { sut, axiosGet } = createTestContext({
+        dopplerLegacyBaseUrl,
+      });
+
+      axiosGet.mockResolvedValue({ data });
+
+      // Act
+      const result = await sut.getEditorSettings();
+
+      // Assert
+      expect(result).toEqual({ success: true, value: expectedResult });
+    });
+  });
 });

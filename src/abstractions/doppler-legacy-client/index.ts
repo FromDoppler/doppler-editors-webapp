@@ -1,4 +1,5 @@
 import { Result } from "../common/result-types";
+import { DopplerEditorSettings } from "../domain/DopplerEditorSettings";
 import { ImageItem } from "../domain/image-gallery";
 
 export type SortingCriteria = "DATE" | "FILENAME";
@@ -25,4 +26,5 @@ export interface DopplerLegacyClient {
   >;
   uploadImage: (file: File) => Promise<UploadImageResult>;
   deleteImages: (items: readonly { name: string }[]) => Promise<Result>;
+  getEditorSettings: () => Promise<Result<DopplerEditorSettings>>;
 }

@@ -7,6 +7,7 @@ import {
 } from "../../abstractions/doppler-legacy-client";
 import { Result } from "../../abstractions/common/result-types";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
+import { DopplerEditorSettings } from "../../abstractions/domain/DopplerEditorSettings";
 
 const baseUrl =
   "https://www.fromdoppler.com/wp-content/themes/doppler_site/img";
@@ -131,4 +132,14 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
       console.log("End deleteImages");
       return { success: true };
     };
+
+  getEditorSettings = async () => {
+    console.log("Begin getEditorSettings...");
+    await timeout(1000);
+    const value: DopplerEditorSettings = {
+      stores: [{ name: "MercadoShops", promotionCodeEnabled: true }],
+    } as const;
+    console.log("End getEditorSettings", value);
+    return { success: true, value } as const;
+  };
 }
