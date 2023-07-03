@@ -8,7 +8,7 @@ export const defaultAppConfiguration: AppConfiguration = {
   // necessary to specify the domain, and the path is shared across environments
   loginPageUrl: "/login",
   unlayerEditorManifestUrl:
-    "https://cdn.fromdoppler.com/unlayer-editor/asset-manifest-v2.json",
+    "https://cdn.fromdoppler.com/unlayer-editor/asset-manifest-main.json",
   unlayerCDN: "https://cdn.fromdoppler.com/unlayer-editor",
   unlayerProjectId: 32092,
   dopplerLegacyBaseUrl: "https://appint.fromdoppler.net",
