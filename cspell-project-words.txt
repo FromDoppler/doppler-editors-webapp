@@ -80,3 +80,4 @@ whatsapp
 xunit
 react-infinite-scroller
 FormatjsIntl
+Tiendanube

@@ -10,6 +10,8 @@ import { UnlayerEditorWrapper } from "./UnlayerEditorWrapper";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { AssetManifestClient } from "../abstractions/asset-manifest-client";
 import { MfeLoaderAssetManifestClientImpl } from "../implementations/MfeLoaderAssetManifestClientImpl";
+import { DopplerEditorSettings } from "../abstractions/domain/DopplerEditorSettings";
+import { DopplerLegacyClient } from "../abstractions/doppler-legacy-client";
 
 const emailEditorPropsTestId = "EmailEditor_props";
 
@@ -46,6 +48,13 @@ describe(UnlayerEditorWrapper.name, () => {
     const unlayerEditorExtensionsEntrypoints = ["a.js", "b.css", "c", "d.js"];
     const expectedCustomCSS = ["b.css"];
     const expectedCustomJS = ["a.js", "d.js"];
+    const editorSettings = {
+      stores: [{ name: "MercadoShops", promotionCodeEnabled: true }],
+    };
+    const expectedExtensionsConfiguration =
+      'window["unlayer-extensions-configuration"] = ' +
+      '{"locale":"en","baseAssetsUrl":"https://app2.dopplerfiles.com/MSEditor/images",' +
+      '"stores":[{"name":"MercadoShops","promotionCodeEnabled":true}]};';
     const getEntrypoints = jest.fn(() =>
       Promise.resolve(unlayerEditorExtensionsEntrypoints)
     );
@@ -65,6 +74,10 @@ describe(UnlayerEditorWrapper.name, () => {
         getFields: () =>
           Promise.resolve({ success: true, value: [] as Field[] }),
       },
+      dopplerLegacyClient: {
+        getEditorSettings: () =>
+          Promise.resolve({ success: true, value: editorSettings }),
+      } as unknown,
       assetManifestClient,
     } as AppServices;
 
@@ -101,12 +114,7 @@ describe(UnlayerEditorWrapper.name, () => {
         projectId: unlayerProjectId,
         options: expect.objectContaining({
           customCSS: expectedCustomCSS,
-          customJS: [
-            expect.stringContaining(
-              'window["unlayer-extensions-configuration"] = {'
-            ),
-            ...expectedCustomJS,
-          ],
+          customJS: [expectedExtensionsConfiguration, ...expectedCustomJS],
           user: {
             id: unlayerUserId,
             signature: unlayerUserSignature,

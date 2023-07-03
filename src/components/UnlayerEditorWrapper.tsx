@@ -10,6 +10,7 @@ import { LoadingScreen } from "./LoadingScreen";
 import { useUnlayerEditorExtensionsEntrypoints } from "../queries/unlayer-editor-extensions-entrypoints";
 import { promisifyProps } from "../utils";
 import { useCustomFields } from "./useCustomFields";
+import { useGetEditorSettings } from "../queries/editor-settings-queries";
 
 const prepareUnlayerEditorObject = (
   editorObject: Editor
@@ -32,6 +33,7 @@ export const UnlayerEditorWrapper = ({
   } = useAppServices();
 
   const appSessionState = useAppSessionState();
+  const editorSettings = useGetEditorSettings();
   const userFieldsQuery = useGetUserFields();
   const mergeTags = useCustomFields(userFieldsQuery.data);
   const unlayerEditorExtensionsEntrypointsQuery =
@@ -71,7 +73,8 @@ export const UnlayerEditorWrapper = ({
 
   if (
     userFieldsQuery.isLoading ||
-    unlayerEditorExtensionsEntrypointsQuery.isLoading
+    unlayerEditorExtensionsEntrypointsQuery.isLoading ||
+    editorSettings.isLoading
   ) {
     return <LoadingScreen />;
   }
@@ -93,6 +96,12 @@ export const UnlayerEditorWrapper = ({
   }
 
   const { id, signature } = appSessionState.unlayerUser;
+
+  const unlayerExtensionsConfiguration = JSON.stringify({
+    locale: intl.locale,
+    baseAssetsUrl: "https://app2.dopplerfiles.com/MSEditor/images",
+    ...editorSettings.data!,
+  });
 
   const unlayerOptions: ExtendedUnlayerOptions = {
     tabs: {
@@ -133,10 +142,7 @@ export const UnlayerEditorWrapper = ({
     },
     customCSS: unlayerEditorExtensionsEntrypointsQuery.data.css,
     customJS: [
-      `window["unlayer-extensions-configuration"] = {
-        locale: "${intl.locale}",
-        baseAssetsUrl : "https://app2.dopplerfiles.com/MSEditor/images"
-      };`,
+      `window["unlayer-extensions-configuration"] = ${unlayerExtensionsConfiguration};`,
       ...unlayerEditorExtensionsEntrypointsQuery.data.js,
     ],
     appearance: {
