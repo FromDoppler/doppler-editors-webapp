@@ -63,7 +63,7 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
   }
 
   async getCampaignContent(
-    campaignId: string
+    campaignId: string,
   ): Promise<Result<CampaignContent>> {
     const response = await this.GET<any>(`/campaigns/${campaignId}/content`);
 
@@ -96,7 +96,7 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
 
   async updateCampaignContent(
     campaignId: string,
-    content: Content
+    content: Content,
   ): Promise<Result> {
     const body =
       content.type === "html"
@@ -118,12 +118,12 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
 
   async updateCampaignContentFromTemplate(
     campaignId: string,
-    templateId: string
+    templateId: string,
   ): Promise<Result> {
     const body = {};
     await this.POST(
       `/campaigns/${campaignId}/content/from-template/${templateId}`,
-      body
+      body,
     );
     return { success: true };
   }
@@ -149,7 +149,7 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
 
   async updateTemplate(
     templateId: string,
-    template: TemplateContent
+    template: TemplateContent,
   ): Promise<Result> {
     const body = {
       templateName: template.templateName,
@@ -164,13 +164,13 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
   }
 
   async createTemplateFromTemplate(
-    baseTemplateId: string
+    baseTemplateId: string,
   ): Promise<Result<{ newTemplateId: string }>> {
     const body = {};
 
     const result = await this.POST(
       `/templates/from-template/${baseTemplateId}`,
-      body
+      body,
     );
 
     return {
@@ -180,7 +180,7 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
   }
 
   async createPrivateTemplate(
-    content: TemplateContent
+    content: TemplateContent,
   ): Promise<Result<{ newTemplateId: string }>> {
     const body = {
       meta: content.design,

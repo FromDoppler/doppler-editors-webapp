@@ -14,7 +14,7 @@ describe(Header.name, () => {
       </Header>,
       {
         container: document.body.appendChild(componentToRender),
-      }
+      },
     );
 
     // Assert

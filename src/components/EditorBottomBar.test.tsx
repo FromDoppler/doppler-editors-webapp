@@ -18,7 +18,7 @@ describe(EditorBottomBar.name, () => {
             <a href={exitUrl}>exitUrl</a>
           </EditorBottomBar>
         </TestDopplerIntlProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     // Assert

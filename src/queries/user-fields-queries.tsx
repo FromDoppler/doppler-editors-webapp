@@ -26,7 +26,7 @@ export const useGetUserFields = () => {
   ];
 
   const queryFn: QueryFunction<Field[], GetUserFieldsQueryKey> = async (
-    context
+    context,
   ) => {
     const [{ dopplerAccountName }] = context.queryKey;
 

@@ -13,7 +13,7 @@ describe(promisifyProps.name, () => {
     const oldPropName = "oldProp";
     const expectedResult = {};
     const originalFunction: (callback: (data: any) => void) => void = (
-      callback: any
+      callback: any,
     ) => setTimeout(() => callback(expectedResult), 0);
     const obj: any = {
       [oldPropName]: originalFunction,
@@ -53,7 +53,7 @@ describe(promisifyProps.name, () => {
     const newPropName = "newProp";
     const oldPropName = "oldProp";
     const originalFunction: (callback: (data: any) => void) => void = (
-      callback: any
+      callback: any,
     ) => setTimeout(() => callback({}), 0);
     const obj: any = {
       [oldPropName]: originalFunction,
@@ -78,10 +78,10 @@ describe(promisifyProps.name, () => {
     const expectedResultA = {};
     const expectedResultB = {};
     const originalFunctionA: (callback: (data: any) => void) => void = (
-      callback: any
+      callback: any,
     ) => setTimeout(() => callback(expectedResultA), 0);
     const originalFunctionB: (callback: (data: any) => void) => void = (
-      callback: any
+      callback: any,
     ) => setTimeout(() => callback(expectedResultB), 0);
     const obj: any = {
       [oldPropNameA]: originalFunctionA,
@@ -179,7 +179,7 @@ describe(isDefined.name, () => {
 
       // Assert
       expect(result).toBe(expected);
-    }
+    },
   );
 });
 
@@ -226,7 +226,7 @@ describe(spliceBy, () => {
       // Assert
       expect(result).toEqual(expectedResult);
       expect(array).toEqual(expectedArray);
-    }
+    },
   );
 });
 
@@ -294,7 +294,7 @@ describe(nameComparison.name, () => {
 
       // Assert
       expect(result).toBe(expected);
-    }
+    },
   );
 });
 
@@ -323,7 +323,7 @@ describe(takeOneValue.name, () => {
 
       // Assert
       expect(result).toBeUndefined();
-    }
+    },
   );
 
   it.each<{
@@ -353,6 +353,6 @@ describe(takeOneValue.name, () => {
 
       // Assert
       expect(result).toBe(999);
-    }
+    },
   );
 });

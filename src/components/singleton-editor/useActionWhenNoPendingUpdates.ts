@@ -21,7 +21,7 @@ export function useActionWhenNoPendingUpdates({
     (action: () => void) => {
       dispatch({ type: "when-all-saved-action-requested", action });
     },
-    [dispatch]
+    [dispatch],
   );
 
   return {

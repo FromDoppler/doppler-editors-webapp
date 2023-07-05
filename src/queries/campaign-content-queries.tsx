@@ -63,7 +63,7 @@ export const useUpdateCampaignContentFromTemplate = () => {
   }) =>
     htmlEditorApiClient.updateCampaignContentFromTemplate(
       idCampaign,
-      idTemplate
+      idTemplate,
     );
 
   return useMutation(updateCampaignContent);

@@ -48,7 +48,7 @@ describe(useUnloadWithPendingUpdatesPrevention.name, () => {
     // Assert
     expect(windowMocks.addEventListener).toBeCalledWith(
       "beforeunload",
-      expect.any(Function)
+      expect.any(Function),
     );
     expect(windowMocks.removeEventListener).not.toBeCalledWith();
 
@@ -64,7 +64,7 @@ describe(useUnloadWithPendingUpdatesPrevention.name, () => {
     expect(windowMocks.addEventListener).not.toBeCalled();
     expect(windowMocks.removeEventListener).toBeCalledWith(
       "beforeunload",
-      beforeUnloadEventListener
+      beforeUnloadEventListener,
     );
   });
 

@@ -20,13 +20,13 @@ function createUnlayerObjectDouble({
     Promise.resolve({
       design: exportedDesign,
       html: exportedHtml,
-    })
+    }),
   );
   const exportImageAsync = jest.fn(() =>
     Promise.resolve({
       design: exportedDesign,
       url: exportedImageUrl,
-    })
+    }),
   );
   return {
     unlayerEditorObject: {
@@ -46,7 +46,7 @@ const createTestContext = () => {
   let currentExportContent: () => Promise<Content | undefined>;
   let currentSetSavingProcessData: (_: SavingProcessData) => void;
   let currentSetUnlayerEditorObject: (
-    _: UnlayerEditorObject | undefined
+    _: UnlayerEditorObject | undefined,
   ) => void;
 
   const dispatch = jest.fn();
@@ -81,7 +81,7 @@ const createTestContext = () => {
     setSavingProcessData: (savingProcessData: SavingProcessData) =>
       act(() => currentSetSavingProcessData(savingProcessData)),
     setUnlayerEditorObject: (
-      unlayerEditorObject: UnlayerEditorObject | undefined
+      unlayerEditorObject: UnlayerEditorObject | undefined,
     ) => act(() => currentSetUnlayerEditorObject(unlayerEditorObject)),
     dispatch,
     onSave,
@@ -344,7 +344,7 @@ describe(useSaving.name, () => {
 
       let resolveOnSave: (value?: unknown) => void = noop;
       onSave.mockImplementation(
-        () => new Promise((resolve) => (resolveOnSave = resolve))
+        () => new Promise((resolve) => (resolveOnSave = resolve)),
       );
 
       render(<TestComponent />);

@@ -90,19 +90,19 @@ export function reducer(
     canUndo,
     canRedo,
   }: State,
-  action: Action
+  action: Action,
 ): State {
   if (
     savingProcessData &&
     savingProcessData.savingUpdateCounter > updateCounter
   ) {
     throw new Error(
-      "Unexpected scenario: savingDataCounter cannot be greater than updateCounter"
+      "Unexpected scenario: savingDataCounter cannot be greater than updateCounter",
     );
   }
   if (savedCounter > updateCounter) {
     throw new Error(
-      "Unexpected scenario: savedDataCounter cannot be greater than updateCounter"
+      "Unexpected scenario: savedDataCounter cannot be greater than updateCounter",
     );
   }
 

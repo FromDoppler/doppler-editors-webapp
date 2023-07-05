@@ -71,7 +71,7 @@ export const useGetImageGallery = ({
 
   const images = useMemo(
     () => query.data?.pages.flatMap((x) => x.items) ?? [],
-    [query.data?.pages]
+    [query.data?.pages],
   );
 
   return { ...query, images };
@@ -114,7 +114,7 @@ export const useDeleteImages = () => {
       console.error(
         "Error in useDeletesImage",
         { message: error.message, cause: error.cause },
-        error
+        error,
       ),
   });
 };

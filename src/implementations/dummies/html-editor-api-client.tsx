@@ -10,7 +10,7 @@ import {
 
 export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
   public getCampaignContent: (
-    campaignId: string
+    campaignId: string,
   ) => Promise<Result<CampaignContent>> = async (campaignId: string) => {
     console.log("Begin getCampaignContent...", {
       campaignId,
@@ -32,7 +32,7 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
 
   async updateCampaignContent(
     campaignId: string,
-    content: Content
+    content: Content,
   ): Promise<Result> {
     console.log("Begin updateCampaignContent...", {
       campaignId,
@@ -46,7 +46,7 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
 
   async updateCampaignContentFromTemplate(
     campaignId: string,
-    templateId: string
+    templateId: string,
   ): Promise<Result> {
     console.log("Begin updateCampaignContentFromTemplate...", {
       campaignId,
@@ -78,7 +78,7 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
 
   async updateTemplate(
     templateId: string,
-    template: TemplateContent
+    template: TemplateContent,
   ): Promise<Result> {
     console.log("Begin updateTemplate...", {
       templateId,
@@ -91,7 +91,7 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
   }
 
   async createTemplateFromTemplate(
-    baseTemplateId: string
+    baseTemplateId: string,
   ): Promise<Result<{ newTemplateId: string }>> {
     console.log("Begin createTemplateFromTemplate...", {
       baseTemplateId,
@@ -103,7 +103,7 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
   }
 
   async createPrivateTemplate(
-    template: TemplateContent
+    template: TemplateContent,
   ): Promise<Result<{ newTemplateId: string }>> {
     console.log("Begin createPrivateTemplate...", template);
     await timeout(1000);

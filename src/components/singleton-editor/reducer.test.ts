@@ -79,7 +79,7 @@ describe(reducer.name, () => {
 
         // Assert
         expect(finalState).toEqual(expectedState);
-      }
+      },
     );
 
     it.each<{ scenario: string; initialState: State }>([
@@ -103,9 +103,9 @@ describe(reducer.name, () => {
 
         // Assert
         expect(act).toThrow(
-          "Unexpected scenario: savedDataCounter cannot be greater than updateCounter"
+          "Unexpected scenario: savedDataCounter cannot be greater than updateCounter",
         );
-      }
+      },
     );
   });
 
@@ -166,7 +166,7 @@ describe(reducer.name, () => {
 
         // Assert
         expect(finalState).toEqual(expectedState);
-      }
+      },
     );
 
     it.each<{ scenario: string; initialState: State }>([
@@ -215,7 +215,7 @@ describe(reducer.name, () => {
 
         // Assert
         expect(finalState).toEqual(expectedState);
-      }
+      },
     );
 
     it.each<{ scenario: string; initialState: State }>([
@@ -271,7 +271,7 @@ describe(reducer.name, () => {
 
         // Assert
         expect(finalState).toEqual(expectedState);
-      }
+      },
     );
 
     it.each<{ scenario: string; initialState: State }>([
@@ -341,7 +341,7 @@ describe(reducer.name, () => {
 
         // Assert
         expect(finalState).toEqual(expectedState);
-      }
+      },
     );
   });
 
@@ -387,7 +387,7 @@ describe(reducer.name, () => {
 
         // Assert
         expect(finalState).toEqual(expectedState);
-      }
+      },
     );
 
     it.each<{ scenario: string; initialState: State }>([
@@ -411,9 +411,9 @@ describe(reducer.name, () => {
 
         // Assert
         expect(act).toThrow(
-          "Unexpected scenario: savedDataCounter cannot be greater than updateCounter"
+          "Unexpected scenario: savedDataCounter cannot be greater than updateCounter",
         );
-      }
+      },
     );
 
     it.each<{ scenario: string; initialState: State }>([
@@ -459,7 +459,7 @@ describe(reducer.name, () => {
 
         // Assert
         expect(finalState).toEqual(expectedState);
-      }
+      },
     );
 
     it.each<{ scenario: string; initialState: State }>([
@@ -524,7 +524,7 @@ describe(reducer.name, () => {
 
         // Assert
         expect(finalState).toEqual(expectedState);
-      }
+      },
     );
   });
 
@@ -577,7 +577,7 @@ describe(reducer.name, () => {
 
         // Assert
         expect(finalState).toEqual(expectedState);
-      }
+      },
     );
 
     it.each<{ scenario: string; initialState: State }>([
@@ -601,9 +601,9 @@ describe(reducer.name, () => {
 
         // Assert
         expect(act).toThrow(
-          "Unexpected scenario: savedDataCounter cannot be greater than updateCounter"
+          "Unexpected scenario: savedDataCounter cannot be greater than updateCounter",
         );
-      }
+      },
     );
 
     it.each<{ scenario: string; initialState: State }>([
@@ -649,7 +649,7 @@ describe(reducer.name, () => {
 
         // Assert
         expect(finalState).toEqual(expectedState);
-      }
+      },
     );
 
     it.each<{ scenario: string; initialState: State }>([
@@ -714,7 +714,7 @@ describe(reducer.name, () => {
 
         // Assert
         expect(finalState).toEqual(expectedState);
-      }
+      },
     );
   });
 
@@ -794,7 +794,7 @@ describe(reducer.name, () => {
 
         // Assert
         expect(finalState).toEqual(expectedState);
-      }
+      },
     );
 
     it.each<{ scenario: string; initialState: State }>([
@@ -949,7 +949,7 @@ describe(reducer.name, () => {
 
         // Assert
         expect(finalState).toEqual(expectedState);
-      }
+      },
     );
   });
 
@@ -1015,7 +1015,7 @@ describe(reducer.name, () => {
 
         // Assert
         expect(finalState).toEqual(expectedState);
-      }
+      },
     );
   });
 
@@ -1081,7 +1081,7 @@ describe(reducer.name, () => {
 
         // Assert
         expect(finalState).toEqual(expectedState);
-      }
+      },
     );
   });
 
@@ -1268,7 +1268,7 @@ describe(reducer.name, () => {
 
         // Assert
         expect(finalState).toEqual(expectedState);
-      }
+      },
     );
   });
 });

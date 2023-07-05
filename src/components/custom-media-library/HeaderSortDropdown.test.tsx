@@ -11,10 +11,10 @@ const createBaseProps: () => SortDropdownProps = () => ({
 
 const expectToHaveOptionWith = (
   select: HTMLSelectElement,
-  { value, label }: { value: string; label: string }
+  { value, label }: { value: string; label: string },
 ) => {
   const option = select.querySelector<HTMLOptionElement>(
-    `option[value=${value}]`
+    `option[value=${value}]`,
   );
   expect(option).not.toBeNull();
   expect(option?.label).toBe(label);
@@ -26,7 +26,7 @@ const renderSUT = (sortDropdownProps: SortDropdownProps) => {
   render(
     <TestDopplerIntlProvider>
       <HeaderSortDropdown data-testid={testId} {...sortDropdownProps} />
-    </TestDopplerIntlProvider>
+    </TestDopplerIntlProvider>,
   );
 
   const dropdown = screen.getByTestId<HTMLSelectElement>(testId);
@@ -94,7 +94,7 @@ describe(HeaderSortDropdown.name, () => {
       setValue,
     });
     const filenameAscendingOption = dropdown.querySelector<HTMLOptionElement>(
-      `option[label=${optionLabel}]`
+      `option[label=${optionLabel}]`,
     );
 
     // Act

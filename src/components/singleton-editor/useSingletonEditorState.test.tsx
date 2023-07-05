@@ -100,7 +100,7 @@ describe(useSingletonEditorState.name, () => {
 
       // Assert
       expect(singletonEditorStateRef.current?.areUpdatesPending).toBe(false);
-    }
+    },
   );
 
   it.each<{
@@ -311,9 +311,9 @@ describe(useSingletonEditorState.name, () => {
 
       // Assert
       expect(singletonEditorStateRef.current?.saveStatus).toBe(
-        expectedSaveStatus
+        expectedSaveStatus,
       );
-    }
+    },
   );
 
   it.each<{ scenario: string; initialState: State }>([
@@ -438,7 +438,7 @@ describe(useSingletonEditorState.name, () => {
 
     // Assert
     expect(singletonEditorStateRef.current?.savingProcessData).toBe(
-      savingProcessData
+      savingProcessData,
     );
   });
 
@@ -464,7 +464,7 @@ describe(useSingletonEditorState.name, () => {
 
     // Act
     act(() =>
-      singletonEditorStateRef.current!.dispatch({ type: "content-updated" })
+      singletonEditorStateRef.current!.dispatch({ type: "content-updated" }),
     );
 
     // Assert

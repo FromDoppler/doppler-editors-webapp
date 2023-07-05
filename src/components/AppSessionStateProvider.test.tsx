@@ -77,7 +77,7 @@ describe("AppSessionStateProvider", () => {
       <>
         <TestComponent />
         <ComponentToInjectCodeBeforeTestComponentUseEffect />
-      </>
+      </>,
     );
 
     expect(inspectCurrentSessionState().status).toEqual(AUTHENTICATED.status);
@@ -106,7 +106,7 @@ describe("AppSessionStateProvider", () => {
       <>
         <TestComponent />
         <ComponentToInjectCodeBeforeTestComponentUseEffect />
-      </>
+      </>,
     );
   });
 });

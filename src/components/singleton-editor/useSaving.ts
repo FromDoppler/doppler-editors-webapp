@@ -9,7 +9,7 @@ import { Content } from "../../abstractions/domain/content";
 import { UnlayerEditorObject } from "../../abstractions/domain/editor";
 
 async function exportContentFromUnlayer(
-  unlayerEditorObject?: UnlayerEditorObject
+  unlayerEditorObject?: UnlayerEditorObject,
 ) {
   if (!unlayerEditorObject) {
     console.error("The editor is loading, can't save yet!");
@@ -98,13 +98,13 @@ async function postingContentEffect({
 }
 
 function isPreparingContent(
-  savingProcessData: SavingProcessData
+  savingProcessData: SavingProcessData,
 ): savingProcessData is SavingProcessDataPreparingContent {
   return savingProcessData?.step === "preparing-content";
 }
 
 function isPostingContent(
-  savingProcessData: SavingProcessData
+  savingProcessData: SavingProcessData,
 ): savingProcessData is SavingProcessDataPostingContent {
   return savingProcessData?.step === "posting-content";
 }

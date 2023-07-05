@@ -151,7 +151,7 @@ export const useSaveAsTemplateModal = () => {
           }}
         />
       ),
-    [state]
+    [state],
   );
 
   const showSaveAsTemplateModal = ({

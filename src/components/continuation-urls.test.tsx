@@ -49,7 +49,7 @@ function buildTestScenario<T>({
         >
           <TestComponent />
         </AppServicesProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     return result;
   };
@@ -129,7 +129,7 @@ describe(useTemplatesContinuationUrls.name, () => {
       // Assert
       expect(nextUrl).toBe(expectedNextUrl);
       expect(exitUrl).toBe(expectedExitUrl);
-    }
+    },
   );
 });
 
@@ -236,7 +236,7 @@ describe(useCampaignContinuationUrls.name, () => {
       // Assert
       expect(nextUrl).toBe(expectedNextUrl);
       expect(exitUrl).toBe(expectedExitUrl);
-    }
+    },
   );
 });
 
@@ -284,6 +284,6 @@ describe(useContinueUrl, () => {
 
       // Assert
       expect(continueUrl).toBe(expectedContinuationUrl);
-    }
+    },
   );
 });

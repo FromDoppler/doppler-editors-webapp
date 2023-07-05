@@ -24,11 +24,11 @@ function createTestContext({
   const get = jest.fn(() =>
     Promise.resolve({
       data: { images: [] } as any,
-    })
+    }),
   );
 
   const postForm = jest.fn((_url: string, _data?: any) =>
-    Promise.resolve({ data: { success: true } })
+    Promise.resolve({ data: { success: true } }),
   );
 
   const create = jest.fn(() => ({
@@ -213,9 +213,9 @@ describe(DopplerLegacyClientImpl.name, () => {
 
         // Assert
         expect(axiosGet).toBeCalledWith(
-          expect.stringContaining(expectedQueryString)
+          expect.stringContaining(expectedQueryString),
         );
-      }
+      },
     );
 
     it("Should calculate next continuation based on current continuation, items and count", async () => {
@@ -244,7 +244,7 @@ describe(DopplerLegacyClientImpl.name, () => {
       expect(result.value).toEqual(
         expect.objectContaining({
           continuation: expectedContinuation,
-        })
+        }),
       );
     });
 
@@ -321,15 +321,15 @@ describe(DopplerLegacyClientImpl.name, () => {
       expect(axiosPostForm).toBeCalledTimes(3);
       expect(axiosPostForm).toBeCalledWith(
         expectedRequestsURL,
-        expectedRequestBody1
+        expectedRequestBody1,
       );
       expect(axiosPostForm).toBeCalledWith(
         expectedRequestsURL,
-        expectedRequestBody2
+        expectedRequestBody2,
       );
       expect(axiosPostForm).toBeCalledWith(
         expectedRequestsURL,
-        expectedRequestBody3
+        expectedRequestBody3,
       );
       expect(result).toEqual({
         success: true,
@@ -349,7 +349,7 @@ describe(DopplerLegacyClientImpl.name, () => {
       axiosPostForm.mockImplementation((_url, data) =>
         data.fileName === filenameOk
           ? Promise.resolve({ data: { success: true } })
-          : Promise.reject()
+          : Promise.reject(),
       );
 
       // Act

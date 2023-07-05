@@ -30,7 +30,7 @@ export const Template = () => {
       if (!templateQuery.data) {
         console.error(
           "Template data is not available trying to save template content",
-          content
+          content,
         );
       } else if (content.type !== "unlayer") {
         console.error("Content type is not supported", content);
@@ -41,7 +41,7 @@ export const Template = () => {
         });
       }
     },
-    [templateQuery.data, updateTemplateMutateAsync, idTemplate]
+    [templateQuery.data, updateTemplateMutateAsync, idTemplate],
   );
 
   const { smartSave, doWhenNoPendingUpdates, saveStatus, undoTools } =

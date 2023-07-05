@@ -16,15 +16,15 @@ export type SimplifiedAppSessionState =
     };
 
 export const AppSessionStateContext = createContext<SimplifiedAppSessionState>(
-  defaultAppSessionState
+  defaultAppSessionState,
 );
 
 const isTheSameSession: (
   prevState: SimplifiedAppSessionState,
-  newValue: AppSessionState
+  newValue: AppSessionState,
 ) => boolean = (
   prevState: SimplifiedAppSessionState,
-  newValue: AppSessionState
+  newValue: AppSessionState,
 ) =>
   newValue.status !== "authenticated"
     ? prevState.status === newValue.status
@@ -34,7 +34,7 @@ const isTheSameSession: (
       newValue.unlayerUser.signature === prevState.unlayerUser.signature;
 
 const mapAppSessionStateToSimplifiedAppSessionState: (
-  appSessionState: AppSessionState
+  appSessionState: AppSessionState,
 ) => SimplifiedAppSessionState = (appSessionState: AppSessionState) => {
   if (appSessionState.status !== "authenticated") {
     return { status: appSessionState.status };
@@ -62,7 +62,7 @@ export const AppSessionStateProvider = ({
 
   const [appSessionState, setAppSessionState] =
     useState<SimplifiedAppSessionState>(
-      appSessionStateAccessor.getCurrentSessionState()
+      appSessionStateAccessor.getCurrentSessionState(),
     );
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export const AppSessionStateProvider = ({
       setAppSessionState((prevState) =>
         isTheSameSession(prevState, newValue)
           ? prevState
-          : mapAppSessionStateToSimplifiedAppSessionState(newValue)
+          : mapAppSessionStateToSimplifiedAppSessionState(newValue),
       );
     };
 

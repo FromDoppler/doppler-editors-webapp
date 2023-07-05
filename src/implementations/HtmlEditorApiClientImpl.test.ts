@@ -23,7 +23,7 @@ function createTestContext() {
   };
 
   appSessionStateAccessor.getCurrentSessionState.mockReturnValue(
-    authenticatedSession
+    authenticatedSession,
   );
 
   const request = jest.fn();
@@ -209,12 +209,12 @@ describe(HtmlEditorApiClientImpl.name, () => {
 
         // Assert
         await expect(act).rejects.toThrowError(
-          new Error("Authenticated session required")
+          new Error("Authenticated session required"),
         );
 
         // Assert
         expect(request).not.toBeCalled();
-      }
+      },
     );
   });
 
@@ -436,12 +436,12 @@ describe(HtmlEditorApiClientImpl.name, () => {
 
         // Assert
         await expect(act).rejects.toThrowError(
-          new Error("Authenticated session required")
+          new Error("Authenticated session required"),
         );
 
         // Assert
         expect(request).not.toBeCalled();
-      }
+      },
     );
   });
 

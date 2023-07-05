@@ -83,7 +83,7 @@ const createTestContext = () => {
       new Promise((resolve, reject) => {
         resolveGetCampaignContentPromise = resolve;
         rejectGetCampaignContentPromise = reject;
-      })
+      }),
   );
 
   let resolveUpdateCampaignContentPromise: any;
@@ -93,7 +93,7 @@ const createTestContext = () => {
       new Promise((resolve, reject) => {
         resolveUpdateCampaignContentPromise = resolve;
         rejectUpdateCampaignContentPromise = reject;
-      })
+      }),
   );
 
   const htmlEditorApiClient = {
@@ -123,7 +123,7 @@ const createTestContext = () => {
       },
       removeEventListener: (
         type: string,
-        _callback: (data: object) => void
+        _callback: (data: object) => void,
       ) => {
         switch (type) {
           case "design:updated":
@@ -280,7 +280,7 @@ describe(Campaign.name, () => {
         previewImage: editorExportedImageUrl,
         type: "unlayer",
       });
-    }
+    },
   );
 
   it.each([{ buttonText: "exit_edit_later" }, { buttonText: "continue" }])(
@@ -305,7 +305,7 @@ describe(Campaign.name, () => {
 
       // Assert
       expect(updateCampaignContent).not.toHaveBeenCalled();
-    }
+    },
   );
 
   it.each([
@@ -336,7 +336,7 @@ describe(Campaign.name, () => {
       });
 
       const buttonByText: HTMLAnchorElement = await screen.findByText(
-        buttonText
+        buttonText,
       );
 
       // Act
@@ -344,7 +344,7 @@ describe(Campaign.name, () => {
 
       // Assert
       expect(setHref).toHaveBeenCalledWith(urlExpected);
-    }
+    },
   );
 
   it.each([
@@ -385,7 +385,7 @@ describe(Campaign.name, () => {
 
       // Assert
       expect(setHref).toHaveBeenCalledWith(urlExpected);
-    }
+    },
   );
 
   it.each([
@@ -423,9 +423,9 @@ describe(Campaign.name, () => {
 
       // Assert
       expect(setHref).toHaveBeenCalledWith(
-        baseAppServices.appConfiguration.dopplerExternalUrls.campaigns
+        baseAppServices.appConfiguration.dopplerExternalUrls.campaigns,
       );
-    }
+    },
   );
 
   it("export button must be disabled when is exporting as template", async () => {

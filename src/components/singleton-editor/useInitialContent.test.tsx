@@ -14,7 +14,7 @@ const createTestContext = () => {
   };
 
   let currentSetUnlayerEditorObject: (
-    _: UnlayerEditorObject | undefined
+    _: UnlayerEditorObject | undefined,
   ) => void;
 
   const setContent = jest.fn();
@@ -38,7 +38,7 @@ const createTestContext = () => {
     setContent,
     TestComponent,
     setUnlayerEditorObject: (
-      unlayerEditorObject: UnlayerEditorObject | undefined
+      unlayerEditorObject: UnlayerEditorObject | undefined,
     ) => act(() => currentSetUnlayerEditorObject(unlayerEditorObject)),
   };
 };

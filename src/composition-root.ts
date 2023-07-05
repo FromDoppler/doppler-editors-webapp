@@ -19,7 +19,7 @@ import { DopplerLegacyClientImpl } from "./implementations/DopplerLegacyClientIm
 import { DummyDopplerLegacyClient } from "./implementations/dummies/doppler-legacy-client";
 
 export const configureApp = (
-  customConfiguration: Partial<AppConfiguration>
+  customConfiguration: Partial<AppConfiguration>,
 ): AppServices => {
   const appConfiguration = {
     ...defaultAppConfiguration,

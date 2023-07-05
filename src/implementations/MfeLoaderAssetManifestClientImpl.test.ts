@@ -17,7 +17,7 @@ describe(MfeLoaderAssetManifestClientImpl.name, () => {
         },
       };
       windowDouble.assetServices.getEntrypoints.mockResolvedValue(
-        assetServicesResult
+        assetServicesResult,
       );
 
       const sut = new MfeLoaderAssetManifestClientImpl({

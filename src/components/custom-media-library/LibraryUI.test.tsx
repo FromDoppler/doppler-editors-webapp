@@ -23,7 +23,7 @@ describe(LibraryUI.name, () => {
     render(
       <TestContextWrapper>
         <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
-      </TestContextWrapper>
+      </TestContextWrapper>,
     );
 
     // Assert
@@ -41,7 +41,7 @@ describe(LibraryUI.name, () => {
     render(
       <TestContextWrapper>
         <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
-      </TestContextWrapper>
+      </TestContextWrapper>,
     );
 
     // Assert
@@ -65,7 +65,7 @@ describe(LibraryUI.name, () => {
     render(
       <TestContextWrapper>
         <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
-      </TestContextWrapper>
+      </TestContextWrapper>,
     );
 
     // Act
@@ -104,13 +104,13 @@ describe(LibraryUI.name, () => {
       render(
         <TestContextWrapper>
           <LibraryUI {...baseProps} images={images as ImageItem[]} />
-        </TestContextWrapper>
+        </TestContextWrapper>,
       );
 
       // Assert
       const list = screen.getByTestId("image-list");
       expect(list.childElementCount).toBe(images.length);
-    }
+    },
   );
 
   it("should show the checked items", () => {
@@ -144,7 +144,7 @@ describe(LibraryUI.name, () => {
           images={images as ImageItem[]}
           checkedImages={checkedItems}
         />
-      </TestContextWrapper>
+      </TestContextWrapper>,
     );
 
     // Assert
@@ -179,7 +179,7 @@ describe(LibraryUI.name, () => {
           images={images as ImageItem[]}
           toggleCheckedImage={toggleCheckedImage}
         />
-      </TestContextWrapper>
+      </TestContextWrapper>,
     );
 
     // Assert
@@ -189,7 +189,7 @@ describe(LibraryUI.name, () => {
 
     await userEvent.click(testCheckbox!);
     expect(toggleCheckedImage).toBeCalledWith(
-      expect.objectContaining({ url: testItem.url })
+      expect.objectContaining({ url: testItem.url }),
     );
   });
 
@@ -216,7 +216,7 @@ describe(LibraryUI.name, () => {
           images={images as ImageItem[]}
           selectImage={selectImage}
         />
-      </TestContextWrapper>
+      </TestContextWrapper>,
     );
 
     // Assert
@@ -226,7 +226,7 @@ describe(LibraryUI.name, () => {
 
     await userEvent.dblClick(testCheckbox!);
     expect(selectImage).toBeCalledWith(
-      expect.objectContaining({ url: testItem.url })
+      expect.objectContaining({ url: testItem.url }),
     );
   });
 
@@ -239,7 +239,7 @@ describe(LibraryUI.name, () => {
     render(
       <TestContextWrapper>
         <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
-      </TestContextWrapper>
+      </TestContextWrapper>,
     );
 
     // Assert
@@ -258,7 +258,7 @@ describe(LibraryUI.name, () => {
     render(
       <TestContextWrapper>
         <LibraryUI {...baseProps} setSearchTerm={setSearchTerm} />
-      </TestContextWrapper>
+      </TestContextWrapper>,
     );
 
     // Assert
@@ -269,7 +269,7 @@ describe(LibraryUI.name, () => {
     expect(setSearchTerm).toBeCalledTimes(testSearchTerm.length);
     expect(setSearchTerm).toBeCalledWith(testSearchTerm[0]);
     expect(setSearchTerm).toBeCalledWith(
-      testSearchTerm[testSearchTerm.length - 1]
+      testSearchTerm[testSearchTerm.length - 1],
     );
   });
 
@@ -283,7 +283,7 @@ describe(LibraryUI.name, () => {
     render(
       <TestContextWrapper>
         <LibraryUI {...baseProps} searchTerm={testSearchTerm} />
-      </TestContextWrapper>
+      </TestContextWrapper>,
     );
 
     // Assert
@@ -300,7 +300,7 @@ describe(LibraryUI.name, () => {
     render(
       <TestContextWrapper>
         <LibraryUI {...baseProps} />
-      </TestContextWrapper>
+      </TestContextWrapper>,
     );
 
     // Assert
@@ -316,7 +316,7 @@ describe(LibraryUI.name, () => {
     render(
       <TestContextWrapper>
         <LibraryUI {...baseProps} debouncedSearchTerm="search term" />
-      </TestContextWrapper>
+      </TestContextWrapper>,
     );
 
     // Assert

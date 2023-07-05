@@ -8,7 +8,7 @@ const messages = Object.keys(messages_en).reduce(
     ...accumulator,
     [currentValue]: currentValue,
   }),
-  {}
+  {},
 ) as IntlMessages;
 
 export const TestDopplerIntlProvider = ({
