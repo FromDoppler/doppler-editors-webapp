@@ -70,7 +70,7 @@ const createTestContext = () => {
       new Promise((resolve, reject) => {
         resolveGetTemplatePromise = resolve;
         rejectGetTemplatePromise = reject;
-      })
+      }),
   );
 
   let resolveUpdateTemplatePromise: any;
@@ -80,7 +80,7 @@ const createTestContext = () => {
       new Promise((resolve, reject) => {
         resolveUpdateTemplatePromise = resolve;
         rejectUpdateTemplatePromise = reject;
-      })
+      }),
   );
 
   const htmlEditorApiClient = {
@@ -102,7 +102,7 @@ const createTestContext = () => {
     unlayerEditorObject: {
       addEventListener: (
         _type: string,
-        _callback: (data: object) => void
+        _callback: (data: object) => void,
       ) => {},
       removeEventListener: (_type: string) => {},
       registerCallback: noop,

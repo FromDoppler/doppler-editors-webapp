@@ -43,7 +43,7 @@ export const useNotificationModal = () => {
         onClose={hideModal}
       />
     ),
-    [messageDescriptorId, closeButtonDescriptorId, values]
+    [messageDescriptorId, closeButtonDescriptorId, values],
   );
 
   const showNotificationModal = useCallback(
@@ -51,7 +51,7 @@ export const useNotificationModal = () => {
       setProps({ ...defaultProps, ...props });
       showModal();
     },
-    [showModal]
+    [showModal],
   );
 
   return { showNotificationModal };

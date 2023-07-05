@@ -39,7 +39,7 @@ describe(useCustomFields.name, () => {
     render(
       <TestDopplerIntlProvider>
         <TestComponent />
-      </TestDopplerIntlProvider>
+      </TestDopplerIntlProvider>,
     );
 
     // Assert
@@ -53,7 +53,7 @@ describe(useCustomFields.name, () => {
     render(
       <TestDopplerIntlProvider>
         <TestComponent />
-      </TestDopplerIntlProvider>
+      </TestDopplerIntlProvider>,
     );
 
     // Act
@@ -70,7 +70,7 @@ describe(useCustomFields.name, () => {
     render(
       <TestDopplerIntlProvider>
         <TestComponent />
-      </TestDopplerIntlProvider>
+      </TestDopplerIntlProvider>,
     );
 
     // Act
@@ -87,7 +87,7 @@ describe(useCustomFields.name, () => {
     render(
       <TestDopplerIntlProvider>
         <TestComponent />
-      </TestDopplerIntlProvider>
+      </TestDopplerIntlProvider>,
     );
 
     // Act
@@ -136,7 +136,7 @@ describe(useCustomFields.name, () => {
     render(
       <CustomIntlProvider>
         <TestComponent />
-      </CustomIntlProvider>
+      </CustomIntlProvider>,
     );
 
     // Act
@@ -185,7 +185,7 @@ describe(useCustomFields.name, () => {
     render(
       <TestDopplerIntlProvider>
         <TestComponent />
-      </TestDopplerIntlProvider>
+      </TestDopplerIntlProvider>,
     );
 
     // Act

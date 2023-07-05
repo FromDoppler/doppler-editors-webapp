@@ -23,23 +23,23 @@ export function useContentUpdatesDetection({
     const updateDesignListener = () => {
       dispatch({ type: "content-updated" });
       unlayerEditorObject?.canUndo((value) =>
-        dispatch({ type: "can-undo-updated", value })
+        dispatch({ type: "can-undo-updated", value }),
       );
       unlayerEditorObject?.canRedo((value) =>
-        dispatch({ type: "can-redo-updated", value })
+        dispatch({ type: "can-redo-updated", value }),
       );
       debouncedSave();
     };
 
     unlayerEditorObject?.addEventListener(
       "design:updated",
-      updateDesignListener
+      updateDesignListener,
     );
 
     return () => {
       unlayerEditorObject?.removeEventListener(
         "design:updated",
-        updateDesignListener
+        updateDesignListener,
       );
     };
   }, [debouncedSave, dispatch, unlayerEditorObject]);

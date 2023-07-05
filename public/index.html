@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -57,7 +57,7 @@
   <!-- Use AssetServices to load asset-manifest.json -->
   <script type="text/javascript">
     new AssetServices().load(
-      "https://cdn.fromdoppler.com/doppler-style-guide/asset-manifest-main.json"
+      "https://cdn.fromdoppler.com/doppler-style-guide/asset-manifest-main.json",
     );
 
     window["doppler-session-mfe-configuration"] = {
@@ -65,7 +65,7 @@
       useDummies: true,
     };
     new AssetServices().load(
-      "https://cdn.fromdoppler.com/doppler-session-mfe/asset-manifest-main.json"
+      "https://cdn.fromdoppler.com/doppler-session-mfe/asset-manifest-main.json",
     );
   </script>
   <!-- End Use AssetServices -->

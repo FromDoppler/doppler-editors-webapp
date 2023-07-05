@@ -15,11 +15,11 @@ function createUnlayerObjectDouble() {
     unlayerEditorObject: {
       addEventListener: addEventListener as (
         type: string,
-        callback: (data: object) => void
+        callback: (data: object) => void,
       ) => void,
       removeEventListener: removeEventListener as (
         type: string,
-        callback: (data: object) => void
+        callback: (data: object) => void,
       ) => void,
       canUndo: canUndo as (callback: (v: boolean) => void) => void,
       canRedo: canRedo as (callback: (v: boolean) => void) => void,
@@ -35,7 +35,7 @@ function createUnlayerObjectDouble() {
 
 const createTestContext = () => {
   let currentSetUnlayerEditorObject: (
-    _: UnlayerEditorObject | undefined
+    _: UnlayerEditorObject | undefined,
   ) => void;
 
   const dispatch = jest.fn();
@@ -59,7 +59,7 @@ const createTestContext = () => {
     TestComponent,
     smartSave,
     setUnlayerEditorObject: (
-      unlayerEditorObject: UnlayerEditorObject | undefined
+      unlayerEditorObject: UnlayerEditorObject | undefined,
     ) => act(() => currentSetUnlayerEditorObject(unlayerEditorObject)),
     dispatch,
   };
@@ -79,7 +79,7 @@ describe(useContentUpdatesDetection.name, () => {
       // Assert
       expect(mocks.addEventListener).toBeCalledWith(
         "design:updated",
-        expect.any(Function)
+        expect.any(Function),
       );
       expect(mocks.removeEventListener).not.toBeCalledWith();
 
@@ -91,7 +91,7 @@ describe(useContentUpdatesDetection.name, () => {
       const updateDesignListener = mocks.addEventListener.mock.calls[0][1];
       expect(mocks.removeEventListener).toBeCalledWith(
         "design:updated",
-        updateDesignListener
+        updateDesignListener,
       );
     });
   });
@@ -166,7 +166,7 @@ describe(useContentUpdatesDetection.name, () => {
           value: canRedo,
         });
         expect(dispatch).toBeCalledTimes(3);
-      }
+      },
     );
 
     it("should call smartSave after 3 seconds", async () => {

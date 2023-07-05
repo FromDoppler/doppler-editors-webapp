@@ -21,7 +21,7 @@ function createTestContext() {
     updateCampaignContentFromTemplate: jest.fn(),
   };
   htmlEditorApiClientDouble.updateCampaignContentFromTemplate.mockResolvedValue(
-    { success: true }
+    { success: true },
   );
 
   const windowDouble = {
@@ -70,7 +70,7 @@ function createTestContext() {
             </Routes>
           </AppServicesProvider>
         </MemoryRouter>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
   return {
@@ -110,7 +110,7 @@ describe(SetCampaignContentFromTemplate.name, () => {
 
     await waitFor(() => {
       expect(
-        htmlEditorApiClientDouble.updateCampaignContentFromTemplate
+        htmlEditorApiClientDouble.updateCampaignContentFromTemplate,
       ).toHaveBeenCalledWith(idCampaign, idTemplate);
     });
 
@@ -122,7 +122,7 @@ describe(SetCampaignContentFromTemplate.name, () => {
     screen.getByText(destinationPageText);
 
     expect(
-      htmlEditorApiClientDouble.updateCampaignContentFromTemplate
+      htmlEditorApiClientDouble.updateCampaignContentFromTemplate,
     ).toHaveBeenCalledTimes(1);
   });
 
@@ -149,14 +149,14 @@ describe(SetCampaignContentFromTemplate.name, () => {
 
     await waitFor(() => {
       expect(
-        htmlEditorApiClientDouble.updateCampaignContentFromTemplate
+        htmlEditorApiClientDouble.updateCampaignContentFromTemplate,
       ).toHaveBeenCalledWith(idCampaign, idTemplate);
     });
 
     expect(windowDouble.location.href).toBe(expectedUrl);
 
     expect(
-      htmlEditorApiClientDouble.updateCampaignContentFromTemplate
+      htmlEditorApiClientDouble.updateCampaignContentFromTemplate,
     ).toHaveBeenCalledTimes(1);
   });
 
@@ -193,7 +193,7 @@ describe(SetCampaignContentFromTemplate.name, () => {
 
       await waitFor(() => {
         expect(
-          htmlEditorApiClientDouble.updateCampaignContentFromTemplate
+          htmlEditorApiClientDouble.updateCampaignContentFromTemplate,
         ).toHaveBeenCalledWith(idCampaign, idTemplate);
       });
 
@@ -205,11 +205,11 @@ describe(SetCampaignContentFromTemplate.name, () => {
       screen.getByText(destinationPageText);
 
       expect(
-        htmlEditorApiClientDouble.updateCampaignContentFromTemplate
+        htmlEditorApiClientDouble.updateCampaignContentFromTemplate,
       ).toHaveBeenCalledTimes(1);
 
       expect(windowDouble.location.href).toBe("");
-    }
+    },
   );
 
   it("should show error and redirect when API call fails", async () => {
@@ -231,7 +231,7 @@ describe(SetCampaignContentFromTemplate.name, () => {
 
     const errorMessage = "ErrorMessage";
     htmlEditorApiClientDouble.updateCampaignContentFromTemplate.mockRejectedValue(
-      new Error(errorMessage)
+      new Error(errorMessage),
     );
 
     // Act
@@ -244,14 +244,14 @@ describe(SetCampaignContentFromTemplate.name, () => {
 
     await waitFor(() => {
       expect(
-        htmlEditorApiClientDouble.updateCampaignContentFromTemplate
+        htmlEditorApiClientDouble.updateCampaignContentFromTemplate,
       ).toHaveBeenCalledWith(idCampaign, idTemplate);
     });
 
     await waitFor(() => {
       expect(windowDouble.console.error).toHaveBeenCalledWith(
         "Error creating campaign content from template",
-        expect.objectContaining({ message: errorMessage })
+        expect.objectContaining({ message: errorMessage }),
       );
     });
 
@@ -264,7 +264,7 @@ describe(SetCampaignContentFromTemplate.name, () => {
 
     expect(windowDouble.console.error).toHaveBeenCalledTimes(1);
     expect(
-      htmlEditorApiClientDouble.updateCampaignContentFromTemplate
+      htmlEditorApiClientDouble.updateCampaignContentFromTemplate,
     ).toHaveBeenCalledTimes(1);
   });
 
@@ -285,7 +285,7 @@ describe(SetCampaignContentFromTemplate.name, () => {
 
     const errorMessage = "ErrorMessage";
     htmlEditorApiClientDouble.updateCampaignContentFromTemplate.mockRejectedValue(
-      new Error(errorMessage)
+      new Error(errorMessage),
     );
 
     // Act
@@ -296,20 +296,20 @@ describe(SetCampaignContentFromTemplate.name, () => {
 
     await waitFor(() => {
       expect(
-        htmlEditorApiClientDouble.updateCampaignContentFromTemplate
+        htmlEditorApiClientDouble.updateCampaignContentFromTemplate,
       ).toHaveBeenCalledWith(idCampaign, idTemplate);
     });
 
     await waitFor(() => {
       expect(windowDouble.console.error).toHaveBeenCalledWith(
         "Error creating campaign content from template",
-        expect.objectContaining({ message: errorMessage })
+        expect.objectContaining({ message: errorMessage }),
       );
     });
 
     expect(windowDouble.console.error).toHaveBeenCalledTimes(1);
     expect(
-      htmlEditorApiClientDouble.updateCampaignContentFromTemplate
+      htmlEditorApiClientDouble.updateCampaignContentFromTemplate,
     ).toHaveBeenCalledTimes(1);
 
     expect(windowDouble.location.href).toBe(expectedUrl);
@@ -340,7 +340,7 @@ describe(SetCampaignContentFromTemplate.name, () => {
 
       const errorMessage = "ErrorMessage";
       htmlEditorApiClientDouble.updateCampaignContentFromTemplate.mockRejectedValue(
-        new Error(errorMessage)
+        new Error(errorMessage),
       );
 
       // Act
@@ -353,14 +353,14 @@ describe(SetCampaignContentFromTemplate.name, () => {
 
       await waitFor(() => {
         expect(
-          htmlEditorApiClientDouble.updateCampaignContentFromTemplate
+          htmlEditorApiClientDouble.updateCampaignContentFromTemplate,
         ).toHaveBeenCalledWith(idCampaign, idTemplate);
       });
 
       await waitFor(() => {
         expect(windowDouble.console.error).toHaveBeenCalledWith(
           "Error creating campaign content from template",
-          expect.objectContaining({ message: errorMessage })
+          expect.objectContaining({ message: errorMessage }),
         );
       });
 
@@ -373,10 +373,10 @@ describe(SetCampaignContentFromTemplate.name, () => {
 
       expect(windowDouble.console.error).toHaveBeenCalledTimes(1);
       expect(
-        htmlEditorApiClientDouble.updateCampaignContentFromTemplate
+        htmlEditorApiClientDouble.updateCampaignContentFromTemplate,
       ).toHaveBeenCalledTimes(1);
 
       expect(windowDouble.location.href).toBe("");
-    }
+    },
   );
 });

@@ -78,7 +78,7 @@ export const useSingletonEditor = ({
       undo: () => unlayerEditorObject?.undo(),
       redo: () => unlayerEditorObject?.redo(),
     }),
-    [canUndo, canRedo, unlayerEditorObject]
+    [canUndo, canRedo, unlayerEditorObject],
   );
 
   return {

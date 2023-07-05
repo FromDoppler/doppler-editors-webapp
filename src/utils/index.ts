@@ -23,13 +23,13 @@ export const promisifyFunctionWithErrorConvention =
 // TODO: improve this function to add type inference
 export const promisifyProps = <TOut>(
   obj: any,
-  maps: { [prop: string]: string }
+  maps: { [prop: string]: string },
 ) => {
   for (const newProp in maps) {
     const originalProp = maps[newProp];
     if (!(newProp in obj) && originalProp in obj) {
       obj[newProp] = promisifyFunctionWithErrorConvention(
-        obj[originalProp].bind(obj)
+        obj[originalProp].bind(obj),
       );
     }
   }
@@ -44,7 +44,7 @@ export const isDefined = <T>(item: T | undefined): item is T =>
 
 export const spliceBy = <T>(
   array: T[],
-  predicate: (item: T) => boolean
+  predicate: (item: T) => boolean,
 ): T | undefined => {
   const item = array.find(predicate);
   if (item) {
@@ -78,7 +78,7 @@ export const useDebounce = <T>(value: T, delay: number) => {
 
   const debouncedSet = useMemo(
     () => debounce((v: T) => setDebouncedValue(v), delay),
-    [delay]
+    [delay],
   );
 
   useEffect(() => {

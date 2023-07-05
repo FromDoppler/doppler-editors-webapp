@@ -95,7 +95,7 @@ describe(useActionWhenNoPendingUpdates.name, () => {
           type: "when-all-saved-action-requested",
           action,
         });
-      }
+      },
     );
   });
 

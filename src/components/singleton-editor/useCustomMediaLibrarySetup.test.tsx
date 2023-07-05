@@ -21,7 +21,7 @@ function createUnlayerObjectDouble() {
     unlayerEditorObject: {
       registerCallback: registerCallback as (
         type: string,
-        callback: (data: object, done: SelectImageDoneCallback) => void
+        callback: (data: object, done: SelectImageDoneCallback) => void,
       ) => void,
       unregisterCallback: unregisterCallback as (type: string) => void,
     } as UnlayerEditorObject,
@@ -39,7 +39,7 @@ const createTestContext = () => {
   });
 
   let currentSetUnlayerEditorObject: (
-    _: UnlayerEditorObject | undefined
+    _: UnlayerEditorObject | undefined,
   ) => void;
 
   let currentCustomMediaLibraryEnabled: boolean;
@@ -64,7 +64,7 @@ const createTestContext = () => {
   return {
     TestComponent,
     setUnlayerEditorObject: (
-      unlayerEditorObject: UnlayerEditorObject | undefined
+      unlayerEditorObject: UnlayerEditorObject | undefined,
     ) => act(() => currentSetUnlayerEditorObject(unlayerEditorObject)),
     getCurrentCustomMediaLibraryEnabled: () => currentCustomMediaLibraryEnabled,
     setCustomMediaLibraryEnabled: (enabled: boolean) =>
@@ -88,7 +88,7 @@ describe(useCustomMediaLibrarySetup.name, () => {
     render(
       <ModalProvider>
         <TestComponent />
-      </ModalProvider>
+      </ModalProvider>,
     );
     const {
       unlayerEditorObject,
@@ -103,7 +103,7 @@ describe(useCustomMediaLibrarySetup.name, () => {
     expect(getCurrentCustomMediaLibraryEnabled()).toBe(true);
     expect(registerCallback).toBeCalledWith(
       "selectImage",
-      expect.any(Function)
+      expect.any(Function),
     );
 
     // Arrange
@@ -128,7 +128,7 @@ describe(useCustomMediaLibrarySetup.name, () => {
     render(
       <ModalProvider>
         <TestComponent enabled={false} />
-      </ModalProvider>
+      </ModalProvider>,
     );
 
     const {
@@ -156,7 +156,7 @@ describe(useCustomMediaLibrarySetup.name, () => {
     render(
       <ModalProvider>
         <TestComponent />
-      </ModalProvider>
+      </ModalProvider>,
     );
 
     const {

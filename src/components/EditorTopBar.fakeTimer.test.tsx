@@ -32,7 +32,7 @@ describe(EditorTopBar.name, () => {
             <EditorTopBar saveStatus={saveStatus} />
           </AppServicesProvider>
         </TestDopplerIntlProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     screen.getByText("saved");

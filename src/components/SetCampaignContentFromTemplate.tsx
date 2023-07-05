@@ -31,7 +31,7 @@ export const SetCampaignContentFromTemplate = () => {
   if (isError) {
     window.console.error(
       "Error creating campaign content from template",
-      error
+      error,
     );
   } else if (isSuccess && !data.success) {
     window.console.error("Error creating campaign content from template", data);

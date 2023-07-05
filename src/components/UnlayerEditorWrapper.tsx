@@ -13,7 +13,7 @@ import { useCustomFields } from "./useCustomFields";
 import { useGetEditorSettings } from "../queries/editor-settings-queries";
 
 const prepareUnlayerEditorObject = (
-  editorObject: Editor
+  editorObject: Editor,
 ): UnlayerEditorObject =>
   promisifyProps<UnlayerEditorObject>(editorObject, {
     exportHtmlAsync: "exportHtml",
@@ -54,7 +54,7 @@ export const UnlayerEditorWrapper = ({
     }
 
     setUnlayerEditorObject(
-      prepareUnlayerEditorObject(emailEditorRef.current.editor)
+      prepareUnlayerEditorObject(emailEditorRef.current.editor),
     );
   }, [emailEditorLoaded, setUnlayerEditorObject]);
 

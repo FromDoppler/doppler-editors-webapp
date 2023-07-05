@@ -12,7 +12,7 @@ const appendContainer = (id: string) => {
 
 const renderEditor = (
   ui: ReactElement,
-  options?: Omit<RenderOptions, "wrapper">
+  options?: Omit<RenderOptions, "wrapper">,
 ) => {
   appendContainer("root-header");
   appendContainer("root-footer");

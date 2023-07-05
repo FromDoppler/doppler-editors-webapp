@@ -51,7 +51,7 @@ export const SingletonEditorProvider = ({
       throw new Error(
         `Not implemented: Content type '${
           (content as any).type
-        }' is not supported yet.`
+        }' is not supported yet.`,
       );
     }
   }, [content, unlayerEditorObject]);

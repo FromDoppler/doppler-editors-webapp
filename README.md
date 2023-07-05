@@ -143,7 +143,7 @@ the global `window` scope with the name `editors-webapp-configuration`.
 Production's `index.html` example:
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <!-- . . . -->
   <body>
@@ -175,6 +175,6 @@ export const DemoComponent = InjectAppServices(
     <code>
       <pre>{JSON.stringify(appConfiguration)}</pre>
     </code>
-  )
+  ),
 );
 ```

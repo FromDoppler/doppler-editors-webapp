@@ -14,7 +14,7 @@ describe(Footer.name, () => {
       </Footer>,
       {
         container: document.body.appendChild(componentToRender),
-      }
+      },
     );
 
     // Assert

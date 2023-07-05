@@ -15,7 +15,7 @@ describe(PortalComponent.name, () => {
       </PortalComponent>,
       {
         container: document.body.appendChild(componentToRender),
-      }
+      },
     );
 
     // Assert
@@ -25,14 +25,14 @@ describe(PortalComponent.name, () => {
   it("show error if container id doesn't exist", async () => {
     // Arrange
     const error = new Error(
-      `The element with id=container-test-id wasn't found`
+      `The element with id=container-test-id wasn't found`,
     );
     // Act
     const renderPortal = () =>
       render(
         <PortalComponent id="container-test-id">
           <div>Component rendered</div>
-        </PortalComponent>
+        </PortalComponent>,
       );
 
     // Assert

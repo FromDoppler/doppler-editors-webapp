@@ -84,7 +84,7 @@ function createTestContext() {
             </Routes>
           </AppServicesProvider>
         </MemoryRouter>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
   return {
@@ -128,7 +128,7 @@ describe(CreateTemplateFromTemplate.name, () => {
 
     await waitFor(() => {
       expect(
-        htmlEditorApiClientDouble.createTemplateFromTemplate
+        htmlEditorApiClientDouble.createTemplateFromTemplate,
       ).toHaveBeenCalledWith(idTemplate);
     });
 
@@ -140,7 +140,7 @@ describe(CreateTemplateFromTemplate.name, () => {
     screen.getByText(destinationPageText);
 
     expect(
-      htmlEditorApiClientDouble.createTemplateFromTemplate
+      htmlEditorApiClientDouble.createTemplateFromTemplate,
     ).toHaveBeenCalledTimes(1);
   });
 
@@ -165,7 +165,7 @@ describe(CreateTemplateFromTemplate.name, () => {
 
       const errorMessage = "ErrorMessage";
       htmlEditorApiClientDouble.createTemplateFromTemplate.mockRejectedValue(
-        new Error(errorMessage)
+        new Error(errorMessage),
       );
 
       // Act
@@ -178,14 +178,14 @@ describe(CreateTemplateFromTemplate.name, () => {
 
       await waitFor(() => {
         expect(
-          htmlEditorApiClientDouble.createTemplateFromTemplate
+          htmlEditorApiClientDouble.createTemplateFromTemplate,
         ).toHaveBeenCalledWith(idTemplate);
       });
 
       await waitFor(() => {
         expect(windowDouble.console.error).toHaveBeenCalledWith(
           "Error creating template from template",
-          expect.objectContaining({ message: errorMessage })
+          expect.objectContaining({ message: errorMessage }),
         );
       });
 
@@ -194,9 +194,9 @@ describe(CreateTemplateFromTemplate.name, () => {
 
       expect(windowDouble.console.error).toHaveBeenCalledTimes(1);
       expect(
-        htmlEditorApiClientDouble.createTemplateFromTemplate
+        htmlEditorApiClientDouble.createTemplateFromTemplate,
       ).toHaveBeenCalledTimes(1);
-    }
+    },
   );
 
   it("should show error and redirect to exit URL when API call fails and exit parameter is set", async () => {
@@ -218,7 +218,7 @@ describe(CreateTemplateFromTemplate.name, () => {
 
     const errorMessage = "ErrorMessage";
     htmlEditorApiClientDouble.createTemplateFromTemplate.mockRejectedValue(
-      new Error(errorMessage)
+      new Error(errorMessage),
     );
 
     // Act
@@ -231,14 +231,14 @@ describe(CreateTemplateFromTemplate.name, () => {
 
     await waitFor(() => {
       expect(
-        htmlEditorApiClientDouble.createTemplateFromTemplate
+        htmlEditorApiClientDouble.createTemplateFromTemplate,
       ).toHaveBeenCalledWith(idTemplate);
     });
 
     await waitFor(() => {
       expect(windowDouble.console.error).toHaveBeenCalledWith(
         "Error creating template from template",
-        expect.objectContaining({ message: errorMessage })
+        expect.objectContaining({ message: errorMessage }),
       );
     });
 
@@ -247,7 +247,7 @@ describe(CreateTemplateFromTemplate.name, () => {
 
     expect(windowDouble.console.error).toHaveBeenCalledTimes(1);
     expect(
-      htmlEditorApiClientDouble.createTemplateFromTemplate
+      htmlEditorApiClientDouble.createTemplateFromTemplate,
     ).toHaveBeenCalledTimes(1);
   });
 });

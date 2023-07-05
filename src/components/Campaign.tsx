@@ -37,7 +37,7 @@ export const Campaign = () => {
     async (content: Content) => {
       await updateCampaignContentMutateAsync({ idCampaign, content });
     },
-    [updateCampaignContentMutateAsync, idCampaign]
+    [updateCampaignContentMutateAsync, idCampaign],
   );
 
   const {

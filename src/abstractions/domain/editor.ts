@@ -25,7 +25,7 @@ export type SelectImageRegisterCallback = {
 };
 export type SelectImageCallback = (
   data: {},
-  done: SelectImageDoneCallback
+  done: SelectImageDoneCallback,
 ) => void;
 export type SelectImageDoneCallback = (data: { url: string }) => void;
 

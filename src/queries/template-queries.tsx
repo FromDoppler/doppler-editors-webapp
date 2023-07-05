@@ -18,7 +18,7 @@ export const useGetTemplate = (idTemplate: string) => {
   ];
 
   const queryFn: QueryFunction<TemplateContent, getTemplateQueryKey> = async (
-    context
+    context,
   ) => {
     const [{ idTemplate }] = context.queryKey;
     const result = await htmlEditorApiClient.getTemplate(idTemplate);

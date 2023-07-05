@@ -37,7 +37,7 @@ describe(SaveAsTemplateModal.name, () => {
             defaultName={defaultName}
           />
         </TestDopplerIntlProvider>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
     screen.getByRole("dialog");
@@ -70,7 +70,7 @@ describe(SaveAsTemplateModal.name, () => {
             defaultName={defaultName}
           />
         </TestDopplerIntlProvider>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
     screen.getByRole("dialog");

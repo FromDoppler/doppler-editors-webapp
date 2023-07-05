@@ -30,7 +30,7 @@ export const CreateTemplateFromTemplate = () => {
   if (!isIdle && !isLoading) {
     window.console.error(
       "Error creating template from template",
-      error || data
+      error || data,
     );
     return <NavigateSmart to={exitUrl} />;
   }

@@ -29,7 +29,7 @@ declare global {
 }
 
 const mapDopplerSessionState: (
-  dopplerSessionState: DopplerSessionMfeState
+  dopplerSessionState: DopplerSessionMfeState,
 ) => AppSessionState = (dopplerSessionState) =>
   !dopplerSessionState
     ? defaultAppSessionState
@@ -76,7 +76,7 @@ export class DopplerSessionMfeAppSessionStateMonitor
       DOPPLER_SESSION_STATE_UPDATE_EVENT_TYPE,
       () => {
         this.onSessionUpdate();
-      }
+      },
     );
     this.onSessionUpdate();
   }

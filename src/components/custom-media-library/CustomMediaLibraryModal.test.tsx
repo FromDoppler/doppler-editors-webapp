@@ -31,7 +31,7 @@ const ContextWrapper = ({ children }: { children: ReactNode }) => (
 
 const createTestContext = () => {
   let currentShowCustomMediaLibraryModal: (
-    callback: (data: { url: string }) => void
+    callback: (data: { url: string }) => void,
   ) => void;
 
   const TestComponent = () => {
@@ -56,7 +56,7 @@ describe(useCustomMediaLibraryModal.name, () => {
     render(
       <ContextWrapper>
         <TestComponent />
-      </ContextWrapper>
+      </ContextWrapper>,
     );
     expect(screen.queryAllByRole("dialog")).toEqual([]);
 
@@ -74,7 +74,7 @@ describe(useCustomMediaLibraryModal.name, () => {
     render(
       <ContextWrapper>
         <TestComponent />
-      </ContextWrapper>
+      </ContextWrapper>,
     );
     showCustomMediaLibraryModal(() => {});
     const dialog = screen.getByRole("dialog");
@@ -94,7 +94,7 @@ describe(useCustomMediaLibraryModal.name, () => {
     render(
       <ContextWrapper>
         <TestComponent />
-      </ContextWrapper>
+      </ContextWrapper>,
     );
     showCustomMediaLibraryModal(() => {});
     screen.getByRole("dialog");
@@ -116,7 +116,7 @@ describe(useCustomMediaLibraryModal.name, () => {
     render(
       <ContextWrapper>
         <TestComponent />
-      </ContextWrapper>
+      </ContextWrapper>,
     );
     showCustomMediaLibraryModal(callback);
     const gallery = screen.getByTestId("image-list");
@@ -147,7 +147,7 @@ describe(useCustomMediaLibraryModal.name, () => {
     expect(callback).toBeCalledWith(
       expect.objectContaining({
         url: expectedImageUrl,
-      })
+      }),
     );
   });
 });

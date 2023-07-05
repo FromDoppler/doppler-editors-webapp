@@ -59,7 +59,7 @@ export const useConfirmationModal = () => {
       confirmationButtonDescriptorId,
       cancelationButtonDescriptorId,
       values,
-    ]
+    ],
   );
 
   const showConfirmationModal = useCallback(
@@ -67,7 +67,7 @@ export const useConfirmationModal = () => {
       setProps({ ...defaultProps, ...props });
       showModal();
     },
-    [showModal]
+    [showModal],
   );
 
   return { showConfirmationModal };

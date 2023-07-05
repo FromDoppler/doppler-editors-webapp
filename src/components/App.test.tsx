@@ -48,7 +48,7 @@ test("root URL should not render invoices or expenses content", async () => {
           </MemoryRouter>
         </TestDopplerIntlProvider>
       </AppServicesProvider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
   // Assert
@@ -74,7 +74,7 @@ test("Wrong URL should render expected content", async () => {
           </MemoryRouter>
         </TestDopplerIntlProvider>
       </AppServicesProvider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
   // Assert
@@ -95,7 +95,7 @@ test("expenses URL should render expected content", async () => {
           </MemoryRouter>
         </TestDopplerIntlProvider>
       </AppServicesProvider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
   // Assert
@@ -116,7 +116,7 @@ test("invoices URL should render expected content", async () => {
           </MemoryRouter>
         </TestDopplerIntlProvider>
       </AppServicesProvider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
   // Assert

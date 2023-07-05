@@ -27,7 +27,7 @@ const DoubleUnlayerEditorWrapper = ({
   ...otherProps
 }: {
   setUnlayerEditorObject: (
-    unlayerEditorObject: UnlayerEditorObject | undefined
+    unlayerEditorObject: UnlayerEditorObject | undefined,
   ) => void;
   hidden: boolean;
 }) => {
@@ -146,7 +146,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
     render(
       <WrapperSingletonProviderTest>
         <DemoComponent onSave={noopAsync} />
-      </WrapperSingletonProviderTest>
+      </WrapperSingletonProviderTest>,
     );
 
     // Assert
@@ -159,7 +159,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
     render(
       <WrapperSingletonProviderTest>
         <DemoComponent onSave={noopAsync} />
-      </WrapperSingletonProviderTest>
+      </WrapperSingletonProviderTest>,
     );
 
     // Act
@@ -194,7 +194,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
     render(
       <WrapperSingletonProviderTest>
         <DemoComponent onSave={onSaveFn} />
-      </WrapperSingletonProviderTest>
+      </WrapperSingletonProviderTest>,
     );
 
     // Act

@@ -44,7 +44,7 @@ describe(EditorTopBar.name, () => {
             <EditorTopBar />
           </AppServicesProvider>
         </TestDopplerIntlProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     // Assert
@@ -64,7 +64,7 @@ describe(EditorTopBar.name, () => {
             <EditorTopBar />
           </AppServicesProvider>
         </TestDopplerIntlProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(screen.getByText("home")).toBeNull;
@@ -90,7 +90,7 @@ describe(EditorTopBar.name, () => {
             <EditorTopBar />
           </TestDopplerIntlProvider>
         </AppServicesProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     act(() => screen.getByText("exit_editor").click());
@@ -103,22 +103,22 @@ describe(EditorTopBar.name, () => {
     // Assert
     expect(homeOption.closest("a")).toHaveAttribute(
       "href",
-      appConfiguration.dopplerExternalUrls.home
+      appConfiguration.dopplerExternalUrls.home,
     );
 
     expect(campaignsOption.closest("a")).toHaveAttribute(
       "href",
-      appConfiguration.dopplerExternalUrls.campaigns
+      appConfiguration.dopplerExternalUrls.campaigns,
     );
 
     expect(listsOption.closest("a")).toHaveAttribute(
       "href",
-      appConfiguration.dopplerExternalUrls.lists
+      appConfiguration.dopplerExternalUrls.lists,
     );
 
     expect(controlPanelOption.closest("a")).toHaveAttribute(
       "href",
-      appConfiguration.dopplerExternalUrls.controlPanel
+      appConfiguration.dopplerExternalUrls.controlPanel,
     );
 
     expect(screen.queryByTestId("saveStatus")).toBeNull();
@@ -144,17 +144,17 @@ describe(EditorTopBar.name, () => {
               <EditorTopBar saveStatus={saveStatus} />
             </AppServicesProvider>
           </TestDopplerIntlProvider>
-        </MemoryRouter>
+        </MemoryRouter>,
       );
 
       // Assert
       const saveStatusElement = screen.getByText("saving");
       expect(saveStatusElement.parentElement).toHaveAttribute(
         "title",
-        "saving_details"
+        "saving_details",
       );
       expect(saveStatusElement.parentElement).toHaveClass(expectedStatusClass);
-    }
+    },
   );
 
   it("should no render content when saveStatus is idle", async () => {
@@ -170,7 +170,7 @@ describe(EditorTopBar.name, () => {
             <EditorTopBar saveStatus={saveStatus} />
           </AppServicesProvider>
         </TestDopplerIntlProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     // Assert
@@ -192,14 +192,14 @@ describe(EditorTopBar.name, () => {
             <EditorTopBar saveStatus={saveStatus} />
           </AppServicesProvider>
         </TestDopplerIntlProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     // Assert
     const saveStatusTextElement = screen.getByText("saved");
     expect(saveStatusTextElement.parentElement).toHaveAttribute(
       "title",
-      "saved_details"
+      "saved_details",
     );
     expect(saveStatusTextElement.parentElement).toHaveClass("state-saved");
   });
@@ -228,7 +228,7 @@ describe(EditorTopBar.name, () => {
               <EditorTopBar undoTools={{ canUndo, canRedo, undo, redo }} />
             </AppServicesProvider>
           </TestDopplerIntlProvider>
-        </MemoryRouter>
+        </MemoryRouter>,
       );
 
       // Assert
@@ -251,6 +251,6 @@ describe(EditorTopBar.name, () => {
 
       // Assert
       matchToBeCalled(redo, canRedo);
-    }
+    },
   );
 });

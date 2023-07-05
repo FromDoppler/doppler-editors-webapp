@@ -46,24 +46,24 @@ export const useLibraryBehavior = ({
   const { mutate: uploadImageMutation } = useUploadImage();
   const { mutate: deleteImages } = useDeleteImages();
   const [searchTerm, setSearchTerm] = useState(
-    defaultQueryParameters.searchTerm
+    defaultQueryParameters.searchTerm,
   );
   const [sortingCriteria, setSortingCriteria] = useState(
-    defaultQueryParameters.sortingCriteria
+    defaultQueryParameters.sortingCriteria,
   );
   const [sortingDirection, setSortingDirection] = useState(
-    defaultQueryParameters.sortingDirection
+    defaultQueryParameters.sortingDirection,
   );
   const parametersToDebounce = useMemo(
     () => ({ searchTerm, sortingCriteria, sortingDirection }),
-    [searchTerm, sortingCriteria, sortingDirection]
+    [searchTerm, sortingCriteria, sortingDirection],
   );
   const debouncedQueryParameters = useDebounce(parametersToDebounce, 300);
   const { isFetching, images, hasNextPage, fetchNextPage } = useGetImageGallery(
-    debouncedQueryParameters
+    debouncedQueryParameters,
   );
   const [checkedImages, setCheckedImages] = useState<ReadonlySet<string>>(
-    new Set()
+    new Set(),
   );
 
   const uploadImage = useCallback(
@@ -92,7 +92,7 @@ export const useLibraryBehavior = ({
           console.error(error);
         },
       }),
-    [uploadImageMutation, notify]
+    [uploadImageMutation, notify],
   );
 
   // Sanitize checkedImages based on existing images
@@ -110,7 +110,7 @@ export const useLibraryBehavior = ({
   const toggleCheckedImage = useCallback(
     ({ name }: { name: string }) =>
       setCheckedImages(toggleItemInSet(checkedImages, name)),
-    [checkedImages]
+    [checkedImages],
   );
 
   const selectCheckedImage = useMemo(() => {
@@ -119,7 +119,7 @@ export const useLibraryBehavior = ({
     }
 
     const selectedImage = images.find(
-      (x) => x.name === takeOneValue(checkedImages)
+      (x) => x.name === takeOneValue(checkedImages),
     );
 
     if (!selectedImage) {
@@ -131,7 +131,7 @@ export const useLibraryBehavior = ({
 
   const sorting = useMemo(
     () => ({ criteria: sortingCriteria, direction: sortingDirection }),
-    [sortingCriteria, sortingDirection]
+    [sortingCriteria, sortingDirection],
   );
   const setSorting = useCallback(
     ({
@@ -144,7 +144,7 @@ export const useLibraryBehavior = ({
       setSortingCriteria(criteria);
       setSortingDirection(direction);
     },
-    [setSortingCriteria, setSortingDirection]
+    [setSortingCriteria, setSortingDirection],
   );
 
   const deleteCheckedImages = useCallback(() => {

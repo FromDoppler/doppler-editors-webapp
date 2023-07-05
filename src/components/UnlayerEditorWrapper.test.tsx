@@ -56,7 +56,7 @@ describe(UnlayerEditorWrapper.name, () => {
       '{"locale":"en","baseAssetsUrl":"https://app2.dopplerfiles.com/MSEditor/images",' +
       '"stores":[{"name":"MercadoShops","promotionCodeEnabled":true}]};';
     const getEntrypoints = jest.fn(() =>
-      Promise.resolve(unlayerEditorExtensionsEntrypoints)
+      Promise.resolve(unlayerEditorExtensionsEntrypoints),
     );
     const assetManifestClient: AssetManifestClient =
       new MfeLoaderAssetManifestClientImpl({
@@ -94,7 +94,7 @@ describe(UnlayerEditorWrapper.name, () => {
             </AppSessionStateContext.Provider>
           </TestDopplerIntlProvider>
         </AppServicesProvider>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
     // Assert
@@ -103,7 +103,7 @@ describe(UnlayerEditorWrapper.name, () => {
     });
 
     const propsEl = await waitFor(() =>
-      screen.getByTestId(emailEditorPropsTestId)
+      screen.getByTestId(emailEditorPropsTestId),
     );
     const propsStr = propsEl.textContent;
     expect(propsStr).toBeTruthy();
@@ -121,7 +121,7 @@ describe(UnlayerEditorWrapper.name, () => {
             email: authenticatedSession.dopplerAccountName,
           },
         }),
-      })
+      }),
     );
   });
 
@@ -161,12 +161,12 @@ describe(UnlayerEditorWrapper.name, () => {
               />
             </TestDopplerIntlProvider>
           </AppServicesProvider>
-        </QueryClientProvider>
+        </QueryClientProvider>,
       );
 
       // Assert
       const propsEl = screen.queryByTestId(emailEditorPropsTestId);
       expect(propsEl).toBeNull();
-    }
+    },
   );
 });

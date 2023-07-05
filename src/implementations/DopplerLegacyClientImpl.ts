@@ -76,7 +76,7 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
         "/Campaigns/Editor/UploadImage",
         {
           file,
-        }
+        },
       );
 
       if (result.data?.success) {
@@ -110,7 +110,7 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
         "/Campaigns/Editor/RemoveImage",
         {
           fileName: name,
-        }
+        },
       );
       if (!result.data.success) {
         return { success: false, error: { cause: result.data } };
@@ -136,7 +136,7 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
 
   async getEditorSettings() {
     const response = await this.axios.get(
-      "/MSEditor/Editor/GetStaticUserSettings"
+      "/MSEditor/Editor/GetStaticUserSettings",
     );
     const value = parseDopplerEditorSettings(response.data);
     return { success: true, value } as const;
@@ -225,7 +225,7 @@ function parseDate(value: string) {
     parseInt(day),
     parsedHour,
     parseInt(minute),
-    parseInt(second)
+    parseInt(second),
   );
 
   return new Date(asNumber);

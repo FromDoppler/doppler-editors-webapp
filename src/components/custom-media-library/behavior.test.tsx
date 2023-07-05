@@ -16,7 +16,7 @@ const createTestContext = () => {
   const queryClient = new QueryClient();
   const dopplerLegacyClient = {
     getImageGallery: jest.fn(() =>
-      Promise.resolve({ success: true, value: { items: [] as ImageItem[] } })
+      Promise.resolve({ success: true, value: { items: [] as ImageItem[] } }),
     ),
     uploadImage: jest.fn(() => Promise.resolve({ success: true })),
     deleteImages: jest.fn(() => Promise.resolve({ success: true })),
@@ -155,7 +155,7 @@ describe(useLibraryBehavior.name, () => {
     // Assert
     expect(selectCheckedIsNull()).toBe(false);
     expect(selectImage).toBeCalledWith(
-      expect.objectContaining({ url: images[0].url })
+      expect.objectContaining({ url: images[0].url }),
     );
   });
 
@@ -209,7 +209,7 @@ describe(useLibraryBehavior.name, () => {
           searchTerm: "",
           sortingCriteria: "DATE",
           sortingDirection: "DESCENDING",
-        })
+        }),
       );
     });
 
@@ -229,7 +229,7 @@ describe(useLibraryBehavior.name, () => {
           searchTerm: "This value will be removed",
           sortingCriteria: "FILENAME",
           sortingDirection: "ASCENDING",
-        })
+        }),
       );
     });
     expect(dopplerLegacyClient.getImageGallery).toBeCalledTimes(2);
@@ -284,7 +284,7 @@ describe(useLibraryBehavior.name, () => {
           searchTerm: "This value will be removed",
           sortingCriteria: "FILENAME",
           sortingDirection: "ASCENDING",
-        })
+        }),
       );
     });
     expect(dopplerLegacyClient.getImageGallery).toBeCalledTimes(2);
@@ -306,7 +306,7 @@ describe(useLibraryBehavior.name, () => {
           searchTerm: "",
           sortingCriteria: "DATE",
           sortingDirection: "DESCENDING",
-        })
+        }),
       );
     });
     expect(dopplerLegacyClient.getImageGallery).toBeCalledTimes(3);
@@ -459,7 +459,7 @@ describe(useLibraryBehavior.name, () => {
     expect(dopplerLegacyClient.getImageGallery).toBeCalledWith(
       expect.objectContaining({
         searchTerm: "",
-      })
+      }),
     );
 
     // Act
@@ -496,7 +496,7 @@ describe(useLibraryBehavior.name, () => {
     expect(dopplerLegacyClient.getImageGallery).toBeCalledWith(
       expect.objectContaining({
         searchTerm: "test2",
-      })
+      }),
     );
     expect(dopplerLegacyClient.getImageGallery).toBeCalledTimes(2);
   });

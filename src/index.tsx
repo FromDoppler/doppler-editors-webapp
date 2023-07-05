@@ -23,7 +23,7 @@ appSessionStateMonitor.start();
 const queryClient = new QueryClient();
 
 const container = document.getElementById(
-  appServices.appConfiguration.appElementId
+  appServices.appConfiguration.appElementId,
 );
 
 ReactModal.setAppElement("#root-apps");
@@ -49,7 +49,7 @@ render(
       </BrowserRouter>
     </QueryClientProvider>
   </StrictMode>,
-  container
+  container,
 );
 
 // If you want to start measuring performance in your app, pass a function

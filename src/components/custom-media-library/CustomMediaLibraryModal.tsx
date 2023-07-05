@@ -58,7 +58,7 @@ export const useCustomMediaLibraryModal = () => {
         }}
       />
     ),
-    [imageSelectedCallbackWrapper]
+    [imageSelectedCallbackWrapper],
   );
 
   const showCustomMediaLibraryModal = useCallback(
@@ -66,7 +66,7 @@ export const useCustomMediaLibraryModal = () => {
       setImageSelectedCallbackWrapper({ callback });
       showModal();
     },
-    [showModal]
+    [showModal],
   );
 
   return { showCustomMediaLibraryModal };
