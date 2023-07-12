@@ -15,7 +15,7 @@
     "@types/lodash": "4.14.195",
     "@types/node": "18.16.19",
     "@types/react": "18.2.14",
-    "@types/react-dom": "18.2.6",
+    "@types/react-dom": "18.2.7",
     "@types/react-infinite-scroller": "1.2.3",
     "@types/react-modal": "^3.13.1",
     "@types/react-query": "1.2.9",
