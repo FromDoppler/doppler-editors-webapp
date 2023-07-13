@@ -29,7 +29,7 @@ export const UnlayerEditorWrapper = ({
   hidden: boolean;
 }) => {
   const {
-    appConfiguration: { unlayerProjectId, unlayerCDN },
+    appConfiguration: { unlayerProjectId, unlayerCDN, previewMode },
   } = useAppServices();
 
   const appSessionState = useAppSessionState();
@@ -100,6 +100,7 @@ export const UnlayerEditorWrapper = ({
   const unlayerExtensionsConfiguration = JSON.stringify({
     locale: intl.locale,
     baseAssetsUrl: "https://app2.dopplerfiles.com/MSEditor/images",
+    previewMode,
     ...editorSettings.data!,
   });
 
