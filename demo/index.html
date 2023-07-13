@@ -45,6 +45,7 @@
           window["doppler-session-mfe-configuration"] = {
             dopplerLegacyBaseUrl: "https://appint.fromdoppler.com",
             useDummies: parsed.useDummies,
+            previewMode: parsed.previewMode,
           };
 
           assetServices.load({ manifestURL: parsed.manifestUrl });
@@ -64,6 +65,7 @@
           window["editors-webapp-configuration"] = {
             basename: "editors",
             useDummies: parsed.useDummies,
+            previewMode: parsed.previewMode,
           };
 
           assetServices.load({ manifestURL: parsed.manifestUrl });
@@ -114,6 +116,17 @@
           ? useDummiesParamRegexResult[1] == "true"
           : useDummiesDefault;
 
+        const previewModeParamRegex = new RegExp(
+          "\\?(?:.+&)*" +
+            prefix +
+            "_preview_mode=((?:true)|(?:false))(?:&.*)?$",
+        );
+        const previewModeParamRegexResult = href.match(previewModeParamRegex);
+        const previewModeDefault = false;
+        const previewMode = previewModeParamRegexResult
+          ? previewModeParamRegexResult[1] == "true"
+          : previewModeDefault;
+
         const manifestUrl =
           cdnBaseUrl +
           "/" +
@@ -126,6 +139,7 @@
 
         action({
           useDummies: useDummies,
+          previewMode: previewMode,
           manifestUrl: manifestUrl,
         });
       }
