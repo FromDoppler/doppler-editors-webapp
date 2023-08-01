@@ -9,6 +9,8 @@ import {
 import { ImageItem } from "../abstractions/domain/image-gallery";
 import { DopplerEditorSettings } from "../abstractions/domain/DopplerEditorSettings";
 
+const MERCADO_SHOPS_STORE_NAME = "MercadoShops";
+
 export class DopplerLegacyClientImpl implements DopplerLegacyClient {
   private axios;
   private window;
@@ -143,7 +145,7 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
   }
 }
 
-const INTEGRATIONS_WITH_PROMOTIONS = ["MercadoShops"];
+const INTEGRATIONS_WITH_PROMOTIONS = [MERCADO_SHOPS_STORE_NAME];
 
 function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
   // See:
