@@ -1,6 +1,7 @@
 import { Result } from "../abstractions/common/result-types";
 import { AppServices } from "../abstractions";
 import {
+  PromoCodeItem,
   DopplerLegacyClient,
   SortingCriteria,
   SortingDirection,
@@ -143,6 +144,23 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     const value = parseDopplerEditorSettings(response.data);
     return { success: true, value } as const;
   }
+
+  async getPromoCodes({
+    store,
+  }: {
+    store: string;
+  }): Promise<Result<PromoCodeItem[]>> {
+    if (store !== MERCADO_SHOPS_STORE_NAME) {
+      return { success: true, value: [] } as const;
+    }
+
+    const response = await this.axios.get(
+      "/MSEditor/Editor/GetMercadoShopsPromotions",
+    );
+
+    const value = arrayOrEmptyArray(response.data).map(parsePromoCodeItem);
+    return { success: true, value } as const;
+  }
 }
 
 const INTEGRATIONS_WITH_PROMOTIONS = [MERCADO_SHOPS_STORE_NAME];
@@ -173,12 +191,39 @@ function objectOrEmptyObject(value: any): { [key: string]: unknown } {
   return value && typeof value === "object" ? value : {};
 }
 
-function arrayOrEmptyArray(value: any): unknown[] {
+function arrayOrEmptyArray(
+  value: any,
+): ({ [key: string]: unknown } | undefined | null)[] {
   return Array.isArray(value) ? value : [];
 }
 
 function hasName(x: unknown): x is { name: any } {
   return !!(x && (x as any).name);
+}
+
+function parsePromoCodeItem({
+  Code,
+  DiscountType,
+  Value,
+  StartDate,
+  EndDate,
+  use_limit,
+  MinPaymentAmount,
+  Name,
+  Status,
+}: any = {}): PromoCodeItem {
+  return {
+    code: `${Code}`,
+    type:
+      `${DiscountType}`.toLocaleLowerCase() === "percent" ? "percent" : "money",
+    value: parseFloat(`${Value}`),
+    startDate: StartDate ? new Date(`${StartDate}`) : undefined,
+    endDate: EndDate ? new Date(`${EndDate}`) : undefined,
+    useLimit: parseInt(`${use_limit}`) || undefined,
+    minPaymentAmount: parseFloat(`${MinPaymentAmount}`) || 0,
+    promotionName: `${Name}`,
+    isActive: `${Status}`.toUpperCase() === "ACTIVE",
+  };
 }
 
 function parseImageItem({

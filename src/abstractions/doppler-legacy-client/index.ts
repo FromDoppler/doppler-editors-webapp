@@ -10,6 +10,18 @@ export type UploadImageError =
   | { reason: "unexpected"; details: unknown };
 export type UploadImageResult = Result<void, UploadImageError>;
 
+export type PromoCodeItem = {
+  code: string;
+  type: "percent" | "money";
+  value: number;
+  startDate: Date | undefined;
+  endDate: Date | undefined;
+  useLimit: number | undefined;
+  minPaymentAmount: number;
+  promotionName: string;
+  isActive: boolean;
+};
+
 export interface DopplerLegacyClient {
   getImageGallery: ({
     searchTerm,
@@ -27,4 +39,9 @@ export interface DopplerLegacyClient {
   uploadImage: (file: File) => Promise<UploadImageResult>;
   deleteImages: (items: readonly { name: string }[]) => Promise<Result>;
   getEditorSettings: () => Promise<Result<DopplerEditorSettings>>;
+  getPromoCodes: ({
+    store,
+  }: {
+    store: string;
+  }) => Promise<Result<PromoCodeItem[]>>;
 }

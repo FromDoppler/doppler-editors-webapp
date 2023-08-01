@@ -502,4 +502,93 @@ describe(DopplerLegacyClientImpl.name, () => {
       expect(result).toEqual({ success: true, value: expectedResult });
     });
   });
+
+  describe("getPromoCodes", () => {
+    it("should return empty result without calling backend when store is not MercadoShops", async () => {
+      // Arrange
+      const { sut, axiosGet } = createTestContext();
+      const store = "Tiendanube";
+
+      // Act
+      const result = await sut.getPromoCodes({ store });
+
+      // Assert
+      expect(result).toEqual({ success: true, value: [] });
+      expect(axiosGet).not.toBeCalled();
+    });
+
+    it("should call backend when store is MercadoShops", async () => {
+      // Arrange
+      const { sut, axiosGet } = createTestContext();
+      const store = "MercadoShops";
+
+      // Act
+      await sut.getPromoCodes({ store });
+
+      // Assert
+      expect(axiosGet).toBeCalledWith(
+        "/MSEditor/Editor/GetMercadoShopsPromotions",
+      );
+    });
+
+    it("should map the backend result", async () => {
+      // Arrange
+      const { sut, axiosGet } = createTestContext();
+      const store = "MercadoShops";
+      const serverResponse = [
+        {
+          Id: "10591761",
+          Name: "NombrePromoción",
+          Status: "ACTIVE",
+          Type: "coupon",
+          StartDate: "2023-08-01T17:56:36.000+00:00",
+          EndDate: "2023-09-02T02:59:59.000+00:00",
+          Target: "ALL_PRODUCTS",
+          DiscountType: "percent",
+          Value: "30",
+          shop_id: "196181385",
+          Code: "CODE",
+          use_limit: "1",
+          MinPaymentAmount: "10000",
+        },
+        {
+          Name: "Mínimo",
+          Type: "coupon",
+          Value: "10",
+          Code: "min-data",
+        },
+      ] as const;
+      const expectedResult = [
+        {
+          code: "CODE",
+          endDate: new Date("2023-09-02T02:59:59.000Z"),
+          isActive: true,
+          minPaymentAmount: 10000,
+          promotionName: "NombrePromoción",
+          startDate: new Date("2023-08-01T17:56:36.000Z"),
+          type: "percent",
+          useLimit: 1,
+          value: 30,
+        },
+        {
+          code: "min-data",
+          endDate: undefined,
+          isActive: false,
+          minPaymentAmount: 0,
+          promotionName: "Mínimo",
+          startDate: undefined,
+          type: "money",
+          useLimit: undefined,
+          value: 10,
+        },
+      ] as const;
+      axiosGet.mockResolvedValue({ data: serverResponse });
+
+      // Act
+      const result = await sut.getPromoCodes({ store });
+
+      // Assert
+      expect(result).toEqual({ success: true, value: expectedResult });
+    });
+  });
 });
