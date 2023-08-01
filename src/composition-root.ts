@@ -48,11 +48,8 @@ export const configureApp = (
         appSessionStateAccessor,
         appConfiguration,
       }),
-    dopplerLegacyClientFactory: ({ axiosStatic, appConfiguration }) =>
-      new DopplerLegacyClientImpl({
-        axiosStatic,
-        appConfiguration,
-      }),
+    dopplerLegacyClientFactory: (appServices) =>
+      new DopplerLegacyClientImpl(appServices),
     appSessionStateAccessorFactory: ({ window }: AppServices) =>
       new DopplerSessionMfeAppSessionStateAccessor({ window }),
     appSessionStateMonitorFactory: ({ window }: AppServices) =>

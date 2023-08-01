@@ -48,7 +48,7 @@ const baseAppServices = {
   dopplerRestApiClient: {
     getFields: () => Promise.resolve({ success: true, value: [] as Field[] }),
   },
-} as AppServices;
+} as unknown as AppServices;
 
 const createQueryClient = () =>
   new QueryClient({

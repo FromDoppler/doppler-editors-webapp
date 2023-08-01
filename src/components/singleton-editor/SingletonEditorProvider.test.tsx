@@ -97,7 +97,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
   });
 
   // Arrange
-  const appServices = defaultAppServices as AppServices;
+  const appServices = defaultAppServices as unknown as AppServices;
 
   const DemoComponent = ({ onSave }: { onSave: () => Promise<void> }) => {
     const [initialContent, setInitialContent] = useState<Content | undefined>();
