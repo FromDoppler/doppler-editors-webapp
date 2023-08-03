@@ -65,4 +65,8 @@ export class SingletonLazyAppServicesContainer implements AppServices {
   get assetManifestClient() {
     return this.singleton("assetManifestClient");
   }
+
+  get editorExtensionsBridge() {
+    return this.singleton("editorExtensionsBridge");
+  }
 }

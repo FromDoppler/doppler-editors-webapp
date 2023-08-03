@@ -17,6 +17,7 @@ import { DopplerRestApiClientImpl } from "./implementations/DopplerRestApiClient
 import { MfeLoaderAssetManifestClientImpl } from "./implementations/MfeLoaderAssetManifestClientImpl";
 import { DopplerLegacyClientImpl } from "./implementations/DopplerLegacyClientImpl";
 import { DummyDopplerLegacyClient } from "./implementations/dummies/doppler-legacy-client";
+import { EditorExtensionsBridgeImplementation } from "./implementations/editor-extensions-bridge";
 
 export const configureApp = (
   customConfiguration: Partial<AppConfiguration>,
@@ -58,6 +59,8 @@ export const configureApp = (
       }),
     assetManifestClientFactory: ({ window }: AppServices) =>
       new MfeLoaderAssetManifestClientImpl({ window }),
+    editorExtensionsBridgeFactory: (appServices) =>
+      new EditorExtensionsBridgeImplementation(appServices),
   };
 
   const dummyFactories: Partial<ServicesFactories> = {
