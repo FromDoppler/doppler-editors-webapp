@@ -17,5 +17,12 @@ export class EditorExtensionsListenersImplementation
   // TODO: support unregister the listeners
 
   registerListeners(): void {
+    this.editorExtensionsBridge.registerListener(
+      "getPromoCodes",
+      async ({ store }: { store: string }) => {
+        const result = await this.dopplerLegacyClient.getPromoCodes({ store });
+        return result.value;
+      },
+    );
   }
 }
