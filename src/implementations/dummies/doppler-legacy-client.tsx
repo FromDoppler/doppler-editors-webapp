@@ -142,4 +142,48 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     console.log("End getEditorSettings", value);
     return { success: true, value } as const;
   };
+
+  getPromoCodes = async ({ store }: { store: string }) => {
+    if (store !== "MercadoShops") {
+      return { success: true, value: [] } as const;
+    }
+    return {
+      success: true,
+      value: [
+        {
+          code: `${store}-CODE-1`,
+          type: "money",
+          value: 1000,
+          useLimit: 1,
+          minPaymentAmount: 1,
+          startDate: new Date(2023, 0, 1),
+          endDate: new Date(2025, 0, 1),
+          promotionName: "Promotion 1",
+          isActive: true,
+        },
+        {
+          code: `${store}-CODE-2`,
+          type: "percent",
+          value: 15,
+          useLimit: 2,
+          minPaymentAmount: 2,
+          startDate: new Date(2023, 0, 1),
+          endDate: new Date(2025, 0, 1),
+          promotionName: "Promotion 2",
+          isActive: true,
+        },
+        {
+          code: `${store}-CODE-3`,
+          type: "money",
+          value: 500,
+          useLimit: 3,
+          minPaymentAmount: 3,
+          startDate: new Date(2023, 0, 1),
+          endDate: new Date(2025, 0, 1),
+          promotionName: "Another promotion",
+          isActive: true,
+        },
+      ],
+    } as const;
+  };
 }

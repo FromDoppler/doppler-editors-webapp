@@ -6,6 +6,8 @@ import { HtmlEditorApiClient } from "./html-editor-api-client";
 import { DopplerRestApiClient } from "./doppler-rest-api-client";
 import { AssetManifestClient } from "./asset-manifest-client";
 import { DopplerLegacyClient } from "./doppler-legacy-client";
+import { EditorExtensionsBridge } from "./editor-extensions-bridge";
+import { EditorExtensionsListeners } from "./editor-extensions-listeners";
 
 // TODO: Determine if defining this type based on a list of types possible,
 // for example based on this type:
@@ -21,4 +23,6 @@ export type AppServices = {
   appSessionStateAccessor: AppSessionStateAccessor;
   appSessionStateMonitor: AppSessionStateMonitor;
   assetManifestClient: AssetManifestClient;
+  editorExtensionsBridge: EditorExtensionsBridge;
+  editorExtensionsListeners: EditorExtensionsListeners;
 };

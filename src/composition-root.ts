@@ -17,6 +17,8 @@ import { DopplerRestApiClientImpl } from "./implementations/DopplerRestApiClient
 import { MfeLoaderAssetManifestClientImpl } from "./implementations/MfeLoaderAssetManifestClientImpl";
 import { DopplerLegacyClientImpl } from "./implementations/DopplerLegacyClientImpl";
 import { DummyDopplerLegacyClient } from "./implementations/dummies/doppler-legacy-client";
+import { EditorExtensionsBridgeImplementation } from "./implementations/editor-extensions-bridge";
+import { EditorExtensionsListenersImplementation } from "./implementations/editor-extensions-listeners";
 
 export const configureApp = (
   customConfiguration: Partial<AppConfiguration>,
@@ -48,11 +50,8 @@ export const configureApp = (
         appSessionStateAccessor,
         appConfiguration,
       }),
-    dopplerLegacyClientFactory: ({ axiosStatic, appConfiguration }) =>
-      new DopplerLegacyClientImpl({
-        axiosStatic,
-        appConfiguration,
-      }),
+    dopplerLegacyClientFactory: (appServices) =>
+      new DopplerLegacyClientImpl(appServices),
     appSessionStateAccessorFactory: ({ window }: AppServices) =>
       new DopplerSessionMfeAppSessionStateAccessor({ window }),
     appSessionStateMonitorFactory: ({ window }: AppServices) =>
@@ -61,6 +60,10 @@ export const configureApp = (
       }),
     assetManifestClientFactory: ({ window }: AppServices) =>
       new MfeLoaderAssetManifestClientImpl({ window }),
+    editorExtensionsBridgeFactory: (appServices) =>
+      new EditorExtensionsBridgeImplementation(appServices),
+    editorExtensionsListenersFactory: (appServices) =>
+      new EditorExtensionsListenersImplementation(appServices),
   };
 
   const dummyFactories: Partial<ServicesFactories> = {
