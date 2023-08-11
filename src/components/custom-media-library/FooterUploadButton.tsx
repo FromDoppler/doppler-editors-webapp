@@ -7,7 +7,7 @@ export const FooterUploadButton = ({
   onClick: (file: File) => void;
 }) => (
   <UploadButton
-    className="dp-button button-medium secondary-green"
+    className="dp-button button-medium ctaTertiary"
     onFile={onClick}
     accept=".jpg, .jpeg, .png, .gif"
   >
