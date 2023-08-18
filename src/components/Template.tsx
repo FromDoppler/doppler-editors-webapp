@@ -85,7 +85,7 @@ export const Template = () => {
             <EditorBottomBar>
               <button
                 onClick={() => saveAndNavigateClick(continuationUrls.exitUrl)}
-                className="dp-button button-medium secondary-green"
+                className="dp-button button-medium ctaTertiary"
               >
                 <FormattedMessage id="exit_edit_later" />
               </button>

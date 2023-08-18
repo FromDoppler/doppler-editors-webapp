@@ -87,7 +87,7 @@ export const SaveAsTemplateModal = ({
           <button
             type="button"
             name="cancel"
-            className="dp-button button-medium primary-grey"
+            className="dp-button button-medium ctaTertiary"
             onClick={close}
           >
             <FormattedMessage id="cancel"></FormattedMessage>
