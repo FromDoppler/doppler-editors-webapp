@@ -335,9 +335,8 @@ describe(Campaign.name, () => {
         value: { type: "unlayer" } as any,
       });
 
-      const buttonByText: HTMLAnchorElement = await screen.findByText(
-        buttonText,
-      );
+      const buttonByText: HTMLAnchorElement =
+        await screen.findByText(buttonText);
 
       // Act
       await userEvent.click(buttonByText);
