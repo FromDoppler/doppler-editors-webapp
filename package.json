@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "resolutions": {
-    "@types/react": "18.2.20"
+    "@types/react": "18.2.21"
   },
   "devDependencies": {
     "@cspell/dict-es-es": "2.2.6",
@@ -14,7 +14,7 @@
     "@types/jest": "29.5.4",
     "@types/lodash": "4.14.197",
     "@types/node": "18.17.8",
-    "@types/react": "18.2.20",
+    "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "@types/react-infinite-scroller": "1.2.3",
     "@types/react-modal": "^3.13.1",
