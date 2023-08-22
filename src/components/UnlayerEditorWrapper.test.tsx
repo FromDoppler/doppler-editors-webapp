@@ -79,7 +79,7 @@ describe(UnlayerEditorWrapper.name, () => {
           Promise.resolve({ success: true, value: editorSettings }),
       } as unknown,
       assetManifestClient,
-    } as AppServices;
+    } as unknown as AppServices;
 
     // Act
     render(
@@ -148,7 +148,7 @@ describe(UnlayerEditorWrapper.name, () => {
           getFields: () =>
             Promise.resolve({ success: true, value: [] as Field[] }),
         },
-      } as AppServices;
+      } as unknown as AppServices;
 
       // Act
       render(
