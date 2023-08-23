@@ -14,6 +14,7 @@ import { Design } from "react-email-editor";
 import { UnlayerEditorObject } from "../abstractions/domain/editor";
 import { ModalProvider } from "react-modal-hook";
 import { noop } from "../utils";
+import { EditorExtensionsBridge } from "../abstractions/editor-extensions-bridge";
 
 jest.mock("./LoadingScreen", () => ({
   LoadingScreen: () => <div>Loading...</div>,
@@ -35,6 +36,9 @@ const baseAppServices = {
       integrations: "https://dopplerexternalurls.integrations/",
     },
   },
+  editorExtensionsBridge: {
+    registerCallbackListener: () => ({ destructor: noop }),
+  } as unknown as EditorExtensionsBridge,
 } as AppServices;
 
 const createQueryClient = () =>

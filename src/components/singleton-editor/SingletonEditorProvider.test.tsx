@@ -73,6 +73,9 @@ const defaultAppServices = {
   dopplerRestApiClient: {
     getFields: () => Promise.resolve({ success: true, value: [] as Field[] }),
   },
+  editorExtensionsBridge: {
+    registerCallbackListener: () => ({ destructor: noop }),
+  },
 };
 
 let generatedContentCounter = 0;
