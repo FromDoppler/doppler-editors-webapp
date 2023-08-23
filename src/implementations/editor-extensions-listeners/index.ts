@@ -17,7 +17,7 @@ export class EditorExtensionsListenersImplementation
   // TODO: support unregister the listeners
 
   registerListeners(): void {
-    this.editorExtensionsBridge.registerListener(
+    this.editorExtensionsBridge.registerPromiseListener(
       "getPromoCodes",
       async ({ store }: { store: string }) => {
         const result = await this.dopplerLegacyClient.getPromoCodes({ store });

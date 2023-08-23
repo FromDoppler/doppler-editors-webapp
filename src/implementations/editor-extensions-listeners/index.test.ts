@@ -3,7 +3,7 @@ import { AppServices } from "../../abstractions";
 
 function createTestContext() {
   const editorExtensionsBridge = {
-    registerListener: jest.fn(),
+    registerPromiseListener: jest.fn(),
   };
 
   const dopplerLegacyClient = {
@@ -18,7 +18,7 @@ function createTestContext() {
   const sut = new EditorExtensionsListenersImplementation(appServices);
 
   const getFirstRegisteredListener = () =>
-    editorExtensionsBridge.registerListener.mock.calls[0][1];
+    editorExtensionsBridge.registerPromiseListener.mock.calls[0][1];
 
   return {
     dependencies: { dopplerLegacyClient, editorExtensionsBridge },
@@ -40,7 +40,7 @@ describe(EditorExtensionsListenersImplementation.name, () => {
       sut.registerListeners();
 
       // Assert
-      expect(editorExtensionsBridge.registerListener).toBeCalledWith(
+      expect(editorExtensionsBridge.registerPromiseListener).toBeCalledWith(
         "getPromoCodes",
         expect.any(Function),
       );
