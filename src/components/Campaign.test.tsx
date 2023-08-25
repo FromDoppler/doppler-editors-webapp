@@ -50,6 +50,7 @@ const baseAppServices = {
   },
   editorExtensionsBridge: {
     registerCallbackListener: () => ({ destructor: noop }),
+    registerPromiseListener: () => ({ destructor: noop }),
   },
 } as unknown as AppServices;
 

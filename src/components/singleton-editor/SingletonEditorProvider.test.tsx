@@ -75,6 +75,7 @@ const defaultAppServices = {
   },
   editorExtensionsBridge: {
     registerCallbackListener: () => ({ destructor: noop }),
+    registerPromiseListener: () => ({ destructor: noop }),
   },
 };
 

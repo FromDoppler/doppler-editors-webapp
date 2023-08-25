@@ -38,7 +38,8 @@ const baseAppServices = {
   },
   editorExtensionsBridge: {
     registerCallbackListener: () => ({ destructor: noop }),
-  } as unknown as EditorExtensionsBridge,
+    registerPromiseListener: () => ({ destructor: noop }),
+  } as EditorExtensionsBridge,
 } as AppServices;
 
 const createQueryClient = () =>
