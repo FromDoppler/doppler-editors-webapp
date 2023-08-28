@@ -12,6 +12,48 @@ const TestContextWrapper = ({ children }: { children: ReactNode }) => (
 );
 
 describe(ProductGalleryUI.name, () => {
+  it("should disable button when selectCheckedItem is null", () => {
+    // Arrange
+    const selectCheckedItem = null;
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <TestContextWrapper>
+        <ProductGalleryUI {...baseProps} selectCheckedItem={selectCheckedItem} />
+      </TestContextWrapper>,
+    );
+
+    // Assert
+    const selectButton = screen.getByText("select_product");
+    expect(selectButton).toBeDisabled();
+    expect(selectButton.onclick).toBeNull();
+  });
+
+  it("should enable button when selectCheckedItem is a function and call it on click", () => {
+    // Arrange
+    const selectCheckedItem = jest.fn();
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <TestContextWrapper>
+        <ProductGalleryUI {...baseProps} selectCheckedItem={selectCheckedItem} />
+      </TestContextWrapper>,
+    );
+
+    // Assert
+    const selectButton = screen.getByText("select_product");
+    expect(selectButton).not.toBeDisabled();
+    expect(selectCheckedItem).not.toBeCalled();
+
+    // Act
+    selectButton.click();
+
+    // Assert
+    expect(selectCheckedItem).toBeCalled();
+  });
+
   it("should call selectCheckedItem on submit", async () => {
     // Arrange
     const selectCheckedItem = jest.fn();
