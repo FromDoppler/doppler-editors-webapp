@@ -20,9 +20,6 @@ const appServices = configureApp(customConfiguration);
 const appSessionStateMonitor = appServices.appSessionStateMonitor;
 appSessionStateMonitor.start();
 
-const editorExtensionsListeners = appServices.editorExtensionsListeners;
-editorExtensionsListeners.registerListeners();
-
 const queryClient = new QueryClient();
 
 const container = document.getElementById(

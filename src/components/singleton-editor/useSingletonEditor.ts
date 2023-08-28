@@ -8,6 +8,7 @@ import { useUnloadWithPendingUpdatesPrevention } from "./useUnloadWithPendingUpd
 import { useActionWhenNoPendingUpdates } from "./useActionWhenNoPendingUpdates";
 import { useMemo } from "react";
 import { useCustomMediaLibrarySetup } from "./useCustomMediaLibrarySetup";
+import { useEditorExtensionListeners } from "./useEditorExtensionListeners";
 
 export type UndoToolsObject = Readonly<{
   canUndo: boolean;
@@ -30,6 +31,8 @@ export const useSingletonEditor = ({
   });
   // Ugly patch to allow enable/disable custom media library
   (window as any).setCustomMediaLibraryEnabled = setCustomMediaLibraryEnabled;
+
+  useEditorExtensionListeners();
 
   useInitialContent({
     initialContent,

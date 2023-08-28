@@ -48,6 +48,10 @@ const baseAppServices = {
   dopplerRestApiClient: {
     getFields: () => Promise.resolve({ success: true, value: [] as Field[] }),
   },
+  editorExtensionsBridge: {
+    registerCallbackListener: () => ({ destructor: noop }),
+    registerPromiseListener: () => ({ destructor: noop }),
+  },
 } as unknown as AppServices;
 
 const createQueryClient = () =>

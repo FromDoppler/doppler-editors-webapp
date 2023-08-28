@@ -18,7 +18,6 @@ import { MfeLoaderAssetManifestClientImpl } from "./implementations/MfeLoaderAss
 import { DopplerLegacyClientImpl } from "./implementations/DopplerLegacyClientImpl";
 import { DummyDopplerLegacyClient } from "./implementations/dummies/doppler-legacy-client";
 import { EditorExtensionsBridgeImplementation } from "./implementations/editor-extensions-bridge";
-import { EditorExtensionsListenersImplementation } from "./implementations/editor-extensions-listeners";
 
 export const configureApp = (
   customConfiguration: Partial<AppConfiguration>,
@@ -62,8 +61,6 @@ export const configureApp = (
       new MfeLoaderAssetManifestClientImpl({ window }),
     editorExtensionsBridgeFactory: (appServices) =>
       new EditorExtensionsBridgeImplementation(appServices),
-    editorExtensionsListenersFactory: (appServices) =>
-      new EditorExtensionsListenersImplementation(appServices),
   };
 
   const dummyFactories: Partial<ServicesFactories> = {
