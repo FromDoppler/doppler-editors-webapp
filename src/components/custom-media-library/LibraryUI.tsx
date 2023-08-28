@@ -8,7 +8,7 @@ import { FooterUploadButton } from "./FooterUploadButton";
 import { FooterSubmitButton } from "./FooterSubmitButton";
 import { HeaderSortDropdown } from "./HeaderSortDropdown";
 import { HeaderSearchInput } from "./HeaderSearchInput";
-import { Form } from "./Form";
+import { Form } from "../base-gallery/Form";
 import { HeaderDeleteButton } from "./HeaderDeleteButton";
 
 export const LibraryUI = ({

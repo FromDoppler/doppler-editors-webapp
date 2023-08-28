@@ -1,5 +1,5 @@
 import { ProductGalleryValue } from "../../abstractions/domain/product-gallery";
-import { Form } from "./Form";
+import { Form } from "../base-gallery/Form";
 
 // TODO: implement it
 export const ProductGalleryUI = ({
