@@ -1,6 +1,6 @@
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { SortingPair } from "./behavior";
-import { Footer } from "./Footer";
+import { Footer } from "../base-gallery/Footer";
 import { Header } from "./Header";
 import { Content } from "./Content";
 import { ContentList } from "./ContentList";
