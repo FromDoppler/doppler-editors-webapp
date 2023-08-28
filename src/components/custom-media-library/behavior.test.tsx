@@ -2,7 +2,7 @@ import { act, render, waitFor } from "@testing-library/react";
 import {
   ConfirmProps,
   NotificationProps,
-  SortingPair,
+  SortingImagesPair,
   useLibraryBehavior,
 } from "./behavior";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
@@ -58,7 +58,7 @@ const createTestContext = () => {
     setSearchTerm: (value: string) =>
       act(() => currentHookValues.setSearchTerm(value)),
     getSorting: () => currentHookValues.sorting,
-    setSorting: (value: SortingPair) =>
+    setSorting: (value: SortingImagesPair) =>
       act(() => currentHookValues.setSorting(value)),
     mocks: {
       selectImage,

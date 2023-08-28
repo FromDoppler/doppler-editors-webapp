@@ -2,8 +2,8 @@ import { Result } from "../common/result-types";
 import { DopplerEditorSettings } from "../domain/DopplerEditorSettings";
 import { ImageItem } from "../domain/image-gallery";
 
-export type SortingCriteria = "DATE" | "FILENAME";
-export type SortingDirection = "ASCENDING" | "DESCENDING";
+export type SortingImagesCriteria = "DATE" | "FILENAME";
+export type SortingImagesDirection = "ASCENDING" | "DESCENDING";
 
 export type UploadImageError =
   | { reason: "maxSizeExceeded"; currentSize: number; maxSize: number }
@@ -30,8 +30,8 @@ export interface DopplerLegacyClient {
     continuation,
   }: {
     searchTerm: string;
-    sortingCriteria: SortingCriteria;
-    sortingDirection: SortingDirection;
+    sortingCriteria: SortingImagesCriteria;
+    sortingDirection: SortingImagesDirection;
     continuation?: string | undefined;
   }) => Promise<
     Result<{ items: ImageItem[]; continuation: string | undefined }>

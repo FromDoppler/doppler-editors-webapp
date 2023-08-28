@@ -1,5 +1,5 @@
 import { useIntl } from "react-intl";
-import type { SortingPair } from "./behavior";
+import type { SortingImagesPair } from "./behavior";
 import {
   Dropdown,
   DropdownItem,
@@ -8,18 +8,18 @@ import {
 import { FieldGroupItem } from "../dp-components/FieldGroup";
 
 export type SortingValue =
-  `${SortingPair["criteria"]}_${SortingPair["direction"]}`;
+  `${SortingImagesPair["criteria"]}_${SortingImagesPair["direction"]}`;
 
-export type SortDropdownProps = Omit<
+export type SortImagesDropdownProps = Omit<
   DropdownProps,
   "children" | "value" | "onChange"
 > & {
-  value: SortingPair;
-  setValue: (value: SortingPair) => void;
+  value: SortingImagesPair;
+  setValue: (value: SortingImagesPair) => void;
 };
 
 const sortingValues: {
-  [key in SortingValue]: SortingPair;
+  [key in SortingValue]: SortingImagesPair;
 } = {
   DATE_DESCENDING: { criteria: "DATE", direction: "DESCENDING" },
   DATE_ASCENDING: { criteria: "DATE", direction: "ASCENDING" },
@@ -27,11 +27,12 @@ const sortingValues: {
   FILENAME_ASCENDING: { criteria: "FILENAME", direction: "ASCENDING" },
 };
 
-export const HeaderSortDropdown = ({
+// TODO: refactor it into an customizable items component
+export const HeaderSortImagesDropdown = ({
   value,
   setValue,
   ...rest
-}: SortDropdownProps) => {
+}: SortImagesDropdownProps) => {
   const intl = useIntl();
   const sortingValue: SortingValue = `${value.criteria}_${value.direction}`;
 

@@ -2,8 +2,8 @@ import { AppConfiguration } from "../abstractions";
 import { AxiosStatic } from "axios";
 import { DopplerLegacyClientImpl } from "./DopplerLegacyClientImpl";
 import {
-  SortingCriteria,
-  SortingDirection,
+  SortingImagesCriteria,
+  SortingImagesDirection,
 } from "../abstractions/doppler-legacy-client";
 
 const baseUrl = "https://app2.dopplerfiles.com/Users/88469/Originals";
@@ -164,8 +164,8 @@ describe(DopplerLegacyClientImpl.name, () => {
 
     it.each<{
       searchTerm: string;
-      sortingCriteria: SortingCriteria;
-      sortingDirection: SortingDirection;
+      sortingCriteria: SortingImagesCriteria;
+      sortingDirection: SortingImagesDirection;
       expectedQueryString: string;
     }>([
       {
