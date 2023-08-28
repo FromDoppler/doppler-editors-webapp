@@ -1,5 +1,4 @@
 import { useIntl } from "react-intl";
-import type { SortingImagesPair } from "./behavior";
 import {
   Dropdown,
   DropdownItem,
@@ -7,32 +6,39 @@ import {
 } from "../dp-components/Dropdown";
 import { FieldGroupItem } from "../dp-components/FieldGroup";
 
-export type SortingValue =
-  `${SortingImagesPair["criteria"]}_${SortingImagesPair["direction"]}`;
+export type SortingProductsCriteria = "PRICE";
+export type SortingProductsDirection = "ASCENDING" | "DESCENDING";
 
-export type SortImagesDropdownProps = Omit<
+export type SortingProductsPair = {
+  criteria: SortingProductsCriteria;
+  direction: SortingProductsDirection;
+};
+
+export type SortingValue =
+  `${SortingProductsPair["criteria"]}_${SortingProductsPair["direction"]}`;
+
+export type SortProductsDropdownProps = Omit<
   DropdownProps,
   "children" | "value" | "onChange"
 > & {
-  value: SortingImagesPair;
-  setValue: (value: SortingImagesPair) => void;
+  value: SortingProductsPair;
+  setValue: (value: SortingProductsPair) => void;
 };
 
 const sortingValues: {
-  [key in SortingValue]: SortingImagesPair;
+  [key in SortingValue]: SortingProductsPair;
 } = {
-  DATE_DESCENDING: { criteria: "DATE", direction: "DESCENDING" },
-  DATE_ASCENDING: { criteria: "DATE", direction: "ASCENDING" },
-  FILENAME_DESCENDING: { criteria: "FILENAME", direction: "DESCENDING" },
-  FILENAME_ASCENDING: { criteria: "FILENAME", direction: "ASCENDING" },
+  PRICE_ASCENDING: { criteria: "PRICE", direction: "ASCENDING" },
+  PRICE_DESCENDING: { criteria: "PRICE", direction: "DESCENDING" },
 };
 
-// TODO: refactor it into an customizable items component (see also HeaderSortProductsDropdown)
-export const HeaderSortImagesDropdown = ({
+// TODO: change sorting criteria dynamically depending on the store
+// For example TN allows sorting by title
+export const HeaderSortProductsDropdown = ({
   value,
   setValue,
   ...rest
-}: SortImagesDropdownProps) => {
+}: SortProductsDropdownProps) => {
   const intl = useIntl();
   const sortingValue: SortingValue = `${value.criteria}_${value.direction}`;
 
