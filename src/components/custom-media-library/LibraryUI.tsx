@@ -4,12 +4,13 @@ import { Footer } from "../base-gallery/Footer";
 import { Header } from "./Header";
 import { Content } from "./Content";
 import { ContentList } from "./ContentList";
-import { FooterUploadButton } from "./FooterUploadButton";
-import { FooterSubmitButton } from "./FooterSubmitButton";
+import { FooterUploadButton } from "../base-gallery/FooterUploadButton";
+import { FooterSubmitButton } from "../base-gallery/FooterSubmitButton";
 import { HeaderSortDropdown } from "./HeaderSortDropdown";
 import { HeaderSearchInput } from "./HeaderSearchInput";
 import { Form } from "../base-gallery/Form";
 import { HeaderDeleteButton } from "./HeaderDeleteButton";
+import { FormattedMessage } from "react-intl";
 
 export const LibraryUI = ({
   selectCheckedImage,
@@ -76,8 +77,12 @@ export const LibraryUI = ({
       />
     </Content>
     <Footer>
-      <FooterUploadButton onClick={uploadImage} />
-      <FooterSubmitButton isEnabled={!!selectCheckedImage} />
+      <FooterUploadButton onClick={uploadImage}>
+        <FormattedMessage id="upload_image" />
+      </FooterUploadButton>
+      <FooterSubmitButton isEnabled={!!selectCheckedImage}>
+        <FormattedMessage id="select_image" />
+      </FooterSubmitButton>
     </Footer>
   </Form>
 );
