@@ -39,6 +39,8 @@ La Plantilla se ha guardado correctamente en la sección "Mis Plantillas". Los c
 a partir de ahora, no serán aplicados.`,
   new_template_label: `Nombre de la Plantilla:`,
   new_template_title: `Guardar como Plantilla privada`,
+  products_gallery_empty_title: `No hay productos en esta tienda`,
+  products_gallery_search_no_results_message: `Ninguno de los productos posee el nombre "{searchTerm}"`,
   redo_description: `Rehacer cambios`,
   redo_label: `Rehacer`,
   save: `Guardar`,

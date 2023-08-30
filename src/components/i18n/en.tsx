@@ -41,6 +41,8 @@ The Template was successfully saved in the "My Templates" section. The changes y
 will not be applied.`,
   new_template_label: `Template Name:`,
   new_template_title: `Save as private Template`,
+  products_gallery_empty_title: `There are no products in the store.`,
+  products_gallery_search_no_results_message: `There's no product with the name "{searchTerm}"`,
   redo_description: `Redo changes`,
   redo_label: `Redo`,
   save: `Save`,
