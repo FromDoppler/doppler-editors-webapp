@@ -2,7 +2,9 @@ import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { SortingImagesPair } from "./behavior";
 import { Footer } from "../base-gallery/Footer";
 import { Header } from "../base-gallery/Header";
-import { Content } from "./Content";
+import { Content } from "../base-gallery/Content";
+import { ContentNoResult } from "./ContentNoResult";
+import { ContentEmpty } from "./ContentEmpty";
 import { ContentList } from "./ContentList";
 import { FooterUploadButton } from "../base-gallery/FooterUploadButton";
 import { FooterSubmitButton } from "../base-gallery/FooterSubmitButton";
@@ -66,6 +68,8 @@ export const LibraryUI = ({
       isFetching={isFetching}
       searchTerm={debouncedSearchTerm}
       emptyResults={images.length === 0}
+      ContentEmptyComponent={ContentEmpty}
+      ContentNoResultComponent={ContentNoResult}
     >
       <ContentList
         images={images}

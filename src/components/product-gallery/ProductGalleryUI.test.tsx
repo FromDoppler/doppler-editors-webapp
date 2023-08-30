@@ -84,50 +84,50 @@ describe(ProductGalleryUI.name, () => {
   });
 });
 
-  it("should call setSearchTerm on edit", async () => {
-    // Arrange
-    const testSearchTerm = "test search term";
-    const setSearchTerm = jest.fn();
+it("should call setSearchTerm on edit", async () => {
+  // Arrange
+  const testSearchTerm = "test search term";
+  const setSearchTerm = jest.fn();
 
-    const baseProps = createBaseProps();
+  const baseProps = createBaseProps();
 
-    // Act
-    render(
-      <TestContextWrapper>
-        <ProductGalleryUI {...baseProps} setSearchTerm={setSearchTerm} />
-      </TestContextWrapper>,
-    );
+  // Act
+  render(
+    <TestContextWrapper>
+      <ProductGalleryUI {...baseProps} setSearchTerm={setSearchTerm} />
+    </TestContextWrapper>,
+  );
 
-    // Assert
-    const input = screen.getByPlaceholderText("search_placeholder");
+  // Assert
+  const input = screen.getByPlaceholderText("search_placeholder");
 
-    await userEvent.click(input);
-    await userEvent.keyboard(testSearchTerm);
-    expect(setSearchTerm).toBeCalledTimes(testSearchTerm.length);
-    expect(setSearchTerm).toBeCalledWith(testSearchTerm[0]);
-    expect(setSearchTerm).toBeCalledWith(
-      testSearchTerm[testSearchTerm.length - 1],
-    );
-  });
+  await userEvent.click(input);
+  await userEvent.keyboard(testSearchTerm);
+  expect(setSearchTerm).toBeCalledTimes(testSearchTerm.length);
+  expect(setSearchTerm).toBeCalledWith(testSearchTerm[0]);
+  expect(setSearchTerm).toBeCalledWith(
+    testSearchTerm[testSearchTerm.length - 1],
+  );
+});
 
-  it("should use searchTerm as input value", async () => {
-    // Arrange
-    const testSearchTerm = "test search term";
+it("should use searchTerm as input value", async () => {
+  // Arrange
+  const testSearchTerm = "test search term";
 
-    const baseProps = createBaseProps();
+  const baseProps = createBaseProps();
 
-    // Act
-    render(
-      <TestContextWrapper>
-        <ProductGalleryUI {...baseProps} searchTerm={testSearchTerm} />
-      </TestContextWrapper>,
-    );
+  // Act
+  render(
+    <TestContextWrapper>
+      <ProductGalleryUI {...baseProps} searchTerm={testSearchTerm} />
+    </TestContextWrapper>,
+  );
 
-    // Assert
-    const input = screen.getByPlaceholderText("search_placeholder");
+  // Assert
+  const input = screen.getByPlaceholderText("search_placeholder");
 
-    expect(input).toHaveValue(testSearchTerm);
-  });
+  expect(input).toHaveValue(testSearchTerm);
+});
 
 const createBaseProps: () => Parameters<typeof ProductGalleryUI>[0] = () => ({
   selectCheckedItem: null,
