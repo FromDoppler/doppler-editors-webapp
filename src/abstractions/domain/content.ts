@@ -1,4 +1,4 @@
-import { Design } from "react-email-editor";
+import { JSONTemplate } from "state/types/index";
 
 type HtmlContent = {
   htmlContent: string;
@@ -8,7 +8,7 @@ type HtmlContent = {
 
 export type UnlayerContent = {
   htmlContent: string;
-  design: Design;
+  design: JSONTemplate;
   previewImage: string;
   type: "unlayer";
 };

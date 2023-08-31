@@ -5,8 +5,11 @@ import { UnlayerEditorObject } from "../../abstractions/domain/editor";
 import { SingletonDesignContextProvider } from "./singletonDesignContext";
 
 const emptyDesign = {
+  counters: {},
   body: {
+    id: undefined,
     rows: [],
+    values: {},
   },
 };
 

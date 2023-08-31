@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import EmailEditor, { EditorRef, Editor } from "react-email-editor";
+import EmailEditor, {
+  EditorRef,
+  Editor,
+  UnlayerOptions,
+} from "react-email-editor";
 import { ExtendedUnlayerOptions } from "../abstractions/domain/unlayer-type-patches";
 import { useGetUserFields } from "../queries/user-fields-queries";
 import { useAppServices } from "./AppServicesContext";
@@ -173,7 +177,7 @@ export const UnlayerEditorWrapper = ({
         key="email-editor-test"
         ref={emailEditorRef}
         onReady={() => setEmailEditorLoaded(true)}
-        options={unlayerOptions}
+        options={unlayerOptions as UnlayerOptions}
       />
     </div>
   );

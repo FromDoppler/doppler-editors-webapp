@@ -4,7 +4,8 @@ import { SavingProcessData } from "./reducer";
 import { UnlayerEditorObject } from "../../abstractions/domain/editor";
 import { Content } from "../../abstractions/domain/content";
 import { act, render, waitFor } from "@testing-library/react";
-import { Design, HtmlExport, ImageExport } from "react-email-editor";
+import { JSONTemplate } from "state/types/index";
+import { ExportHtmlResult, ExportFromApiResult } from "embed/Config";
 import { noop } from "../../utils";
 
 function createUnlayerObjectDouble({
@@ -12,7 +13,7 @@ function createUnlayerObjectDouble({
   exportedHtml = "",
   exportedImageUrl = "",
 }: {
-  exportedDesign?: Design;
+  exportedDesign?: JSONTemplate;
   exportedHtml?: string;
   exportedImageUrl?: string;
 } = {}) {
@@ -20,7 +21,7 @@ function createUnlayerObjectDouble({
     Promise.resolve({
       design: exportedDesign,
       html: exportedHtml,
-    }),
+    } as ExportHtmlResult),
   );
   const exportImageAsync = jest.fn(() =>
     Promise.resolve({
@@ -30,8 +31,8 @@ function createUnlayerObjectDouble({
   );
   return {
     unlayerEditorObject: {
-      exportHtmlAsync: exportHtmlAsync as () => Promise<HtmlExport>,
-      exportImageAsync: exportImageAsync as () => Promise<ImageExport>,
+      exportHtmlAsync: exportHtmlAsync as () => Promise<ExportHtmlResult>,
+      exportImageAsync: exportImageAsync as () => Promise<ExportFromApiResult>,
     } as UnlayerEditorObject,
     mocks: {
       exportHtmlAsync,
