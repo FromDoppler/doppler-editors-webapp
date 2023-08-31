@@ -1,8 +1,8 @@
 import { nameComparison, timeout } from "../../utils";
 import {
   DopplerLegacyClient,
-  SortingCriteria,
-  SortingDirection,
+  SortingImagesCriteria,
+  SortingImagesDirection,
   UploadImageResult,
 } from "../../abstractions/doppler-legacy-client";
 import { Result } from "../../abstractions/common/result-types";
@@ -58,8 +58,8 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     continuation,
   }: {
     searchTerm: string;
-    sortingCriteria: SortingCriteria;
-    sortingDirection: SortingDirection;
+    sortingCriteria: SortingImagesCriteria;
+    sortingDirection: SortingImagesDirection;
     continuation?: string | undefined;
   }) => Promise<
     Result<{ items: ImageItem[]; continuation: string | undefined }>

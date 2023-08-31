@@ -6,15 +6,15 @@ import {
 import { useAppServices } from "../components/AppServicesContext";
 import { useMemo } from "react";
 import {
-  SortingCriteria,
-  SortingDirection,
+  SortingImagesCriteria,
+  SortingImagesDirection,
   UploadImageError,
 } from "../abstractions/doppler-legacy-client";
 
 type QueryParameters = {
   searchTerm: string;
-  sortingCriteria: SortingCriteria;
-  sortingDirection: SortingDirection;
+  sortingCriteria: SortingImagesCriteria;
+  sortingDirection: SortingImagesDirection;
 };
 
 export const defaultQueryParameters: QueryParameters = {

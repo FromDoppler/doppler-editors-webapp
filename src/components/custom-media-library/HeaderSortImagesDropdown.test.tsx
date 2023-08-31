@@ -1,10 +1,13 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { TestDopplerIntlProvider } from "../i18n/TestDopplerIntlProvider";
-import { HeaderSortDropdown, SortDropdownProps } from "./HeaderSortDropdown";
+import {
+  HeaderSortImagesDropdown,
+  SortImagesDropdownProps,
+} from "./HeaderSortImagesDropdown";
 import { noop } from "../../utils";
 import userEvent from "@testing-library/user-event";
 
-const createBaseProps: () => SortDropdownProps = () => ({
+const createBaseProps: () => SortImagesDropdownProps = () => ({
   value: { criteria: "DATE", direction: "DESCENDING" },
   setValue: noop,
 });
@@ -20,12 +23,12 @@ const expectToHaveOptionWith = (
   expect(option?.label).toBe(label);
 };
 
-const renderSUT = (sortDropdownProps: SortDropdownProps) => {
+const renderSUT = (sortDropdownProps: SortImagesDropdownProps) => {
   const testId = "sort-dropdown";
 
   render(
     <TestDopplerIntlProvider>
-      <HeaderSortDropdown data-testid={testId} {...sortDropdownProps} />
+      <HeaderSortImagesDropdown data-testid={testId} {...sortDropdownProps} />
     </TestDopplerIntlProvider>,
   );
 
@@ -33,7 +36,7 @@ const renderSUT = (sortDropdownProps: SortDropdownProps) => {
   return dropdown;
 };
 
-describe(HeaderSortDropdown.name, () => {
+describe(HeaderSortImagesDropdown.name, () => {
   it("should have 4 items with the right values and labels", () => {
     // Arrange
     const baseProps = createBaseProps();

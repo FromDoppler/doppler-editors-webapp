@@ -7,8 +7,8 @@ import {
   useDeleteImages,
 } from "../../queries/image-gallery-queries";
 import {
-  SortingCriteria,
-  SortingDirection,
+  SortingImagesCriteria,
+  SortingImagesDirection,
 } from "../../abstractions/doppler-legacy-client";
 import { IntlMessageId } from "../../abstractions/i18n";
 
@@ -29,9 +29,9 @@ export type NotificationProps = {
   values?: Record<string, any>;
 };
 
-export type SortingPair = {
-  criteria: SortingCriteria;
-  direction: SortingDirection;
+export type SortingImagesPair = {
+  criteria: SortingImagesCriteria;
+  direction: SortingImagesDirection;
 };
 
 export const useLibraryBehavior = ({
@@ -138,8 +138,8 @@ export const useLibraryBehavior = ({
       criteria,
       direction,
     }: {
-      criteria: SortingCriteria;
-      direction: SortingDirection;
+      criteria: SortingImagesCriteria;
+      direction: SortingImagesDirection;
     }) => {
       setSortingCriteria(criteria);
       setSortingDirection(direction);

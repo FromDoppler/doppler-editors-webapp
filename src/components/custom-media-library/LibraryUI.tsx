@@ -1,15 +1,18 @@
 import { ImageItem } from "../../abstractions/domain/image-gallery";
-import { SortingPair } from "./behavior";
-import { Footer } from "./Footer";
-import { Header } from "./Header";
-import { Content } from "./Content";
+import { SortingImagesPair } from "./behavior";
+import { Footer } from "../base-gallery/Footer";
+import { Header } from "../base-gallery/Header";
+import { Content } from "../base-gallery/Content";
+import { ContentNoResult } from "./ContentNoResult";
+import { ContentEmpty } from "./ContentEmpty";
 import { ContentList } from "./ContentList";
-import { FooterUploadButton } from "./FooterUploadButton";
-import { FooterSubmitButton } from "./FooterSubmitButton";
-import { HeaderSortDropdown } from "./HeaderSortDropdown";
-import { HeaderSearchInput } from "./HeaderSearchInput";
-import { Form } from "./Form";
-import { HeaderDeleteButton } from "./HeaderDeleteButton";
+import { FooterUploadButton } from "../base-gallery/FooterUploadButton";
+import { FooterSubmitButton } from "../base-gallery/FooterSubmitButton";
+import { HeaderSortImagesDropdown } from "./HeaderSortImagesDropdown";
+import { HeaderSearchInput } from "../base-gallery/HeaderSearchInput";
+import { Form } from "../base-gallery/Form";
+import { HeaderDeleteButton } from "../base-gallery/HeaderDeleteButton";
+import { FormattedMessage } from "react-intl";
 
 export const LibraryUI = ({
   selectCheckedImage,
@@ -40,8 +43,8 @@ export const LibraryUI = ({
   searchTerm: string;
   debouncedSearchTerm: string;
   setSearchTerm: (value: string) => void;
-  sorting: SortingPair;
-  setSorting: (value: SortingPair) => void;
+  sorting: SortingImagesPair;
+  setSorting: (value: SortingImagesPair) => void;
   deleteCheckedImages: () => void;
   hasNextPage: boolean | undefined;
   fetchNextPage: () => void;
@@ -52,7 +55,7 @@ export const LibraryUI = ({
         isVisible={checkedImages.size > 0}
         onClick={deleteCheckedImages}
       />
-      <HeaderSortDropdown value={sorting} setValue={setSorting} />
+      <HeaderSortImagesDropdown value={sorting} setValue={setSorting} />
       <HeaderSearchInput value={searchTerm} setValue={setSearchTerm} />
       {/*
         TODO: Add following tools:
@@ -65,6 +68,8 @@ export const LibraryUI = ({
       isFetching={isFetching}
       searchTerm={debouncedSearchTerm}
       emptyResults={images.length === 0}
+      ContentEmptyComponent={ContentEmpty}
+      ContentNoResultComponent={ContentNoResult}
     >
       <ContentList
         images={images}
@@ -76,8 +81,12 @@ export const LibraryUI = ({
       />
     </Content>
     <Footer>
-      <FooterUploadButton onClick={uploadImage} />
-      <FooterSubmitButton isEnabled={!!selectCheckedImage} />
+      <FooterUploadButton onClick={uploadImage}>
+        <FormattedMessage id="upload_image" />
+      </FooterUploadButton>
+      <FooterSubmitButton isEnabled={!!selectCheckedImage}>
+        <FormattedMessage id="select_image" />
+      </FooterSubmitButton>
     </Footer>
   </Form>
 );

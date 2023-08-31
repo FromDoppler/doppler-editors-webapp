@@ -3,8 +3,8 @@ import { AppServices } from "../abstractions";
 import {
   PromoCodeItem,
   DopplerLegacyClient,
-  SortingCriteria,
-  SortingDirection,
+  SortingImagesCriteria,
+  SortingImagesDirection,
   UploadImageResult,
 } from "../abstractions/doppler-legacy-client";
 import { ImageItem } from "../abstractions/domain/image-gallery";
@@ -35,8 +35,8 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     continuation,
   }: {
     searchTerm: string;
-    sortingCriteria: SortingCriteria;
-    sortingDirection: SortingDirection;
+    sortingCriteria: SortingImagesCriteria;
+    sortingDirection: SortingImagesDirection;
     continuation?: string | undefined;
   }): Promise<
     Result<{ items: ImageItem[]; continuation: string | undefined }>
