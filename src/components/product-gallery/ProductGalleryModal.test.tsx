@@ -61,6 +61,26 @@ describe(useProductGalleryModal.name, () => {
     screen.getByRole("dialog");
   });
 
+  it("should close dialog on clicking on close button", async () => {
+    // Arrange
+    const { TestComponent, showProductGalleryModal } = createTestContext();
+
+    render(
+      <ContextWrapper>
+        <TestComponent />
+      </ContextWrapper>,
+    );
+    showProductGalleryModal(() => {});
+    const dialog = screen.getByRole("dialog");
+    const closeButton = dialog.querySelector('button[name="close-modal"]');
+
+    // Act
+    await userEvent.click(closeButton!);
+
+    // Assert
+    expect(screen.queryAllByRole("dialog")).toEqual([]);
+  });
+
   it("should close dialog on pressing escape", async () => {
     // Arrange
     const { TestComponent, showProductGalleryModal } = createTestContext();
