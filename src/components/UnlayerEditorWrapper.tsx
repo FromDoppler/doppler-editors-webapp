@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import EmailEditor, { EditorRef, Editor } from "react-email-editor";
+import EmailEditor, {
+  EditorRef,
+  Editor,
+  UnlayerOptions,
+} from "react-email-editor";
 import { ExtendedUnlayerOptions } from "../abstractions/domain/unlayer-type-patches";
 import { useGetUserFields } from "../queries/user-fields-queries";
 import { useAppServices } from "./AppServicesContext";
@@ -11,6 +15,7 @@ import { useUnlayerEditorExtensionsEntrypoints } from "../queries/unlayer-editor
 import { promisifyProps } from "../utils";
 import { useCustomFields } from "./useCustomFields";
 import { useGetEditorSettings } from "../queries/editor-settings-queries";
+import { keyBy } from "lodash";
 
 const prepareUnlayerEditorObject = (
   editorObject: Editor,
@@ -40,7 +45,10 @@ export const UnlayerEditorWrapper = ({
   const appSessionState = useAppSessionState();
   const editorSettings = useGetEditorSettings();
   const userFieldsQuery = useGetUserFields();
-  const mergeTags = useCustomFields(userFieldsQuery.data);
+  const mergeTags = keyBy(
+    useCustomFields(userFieldsQuery.data) || [],
+    (x) => x.name,
+  );
   const unlayerEditorExtensionsEntrypointsQuery =
     useUnlayerEditorExtensionsEntrypoints();
   const emailEditorRef = useRef<EditorRef>(null);
@@ -111,6 +119,7 @@ export const UnlayerEditorWrapper = ({
   });
 
   const unlayerOptions: ExtendedUnlayerOptions = {
+    projectId: unlayerProjectId,
     tabs: {
       body: {
         enabled: true,
@@ -165,11 +174,10 @@ export const UnlayerEditorWrapper = ({
     <div style={containerStyle} {...otherProps}>
       <EmailEditor
         style={{ minHeight: "100%" }}
-        projectId={unlayerProjectId}
         key="email-editor-test"
         ref={emailEditorRef}
         onReady={() => setEmailEditorLoaded(true)}
-        options={unlayerOptions}
+        options={unlayerOptions as UnlayerOptions}
       />
     </div>
   );

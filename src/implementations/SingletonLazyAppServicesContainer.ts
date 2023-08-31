@@ -69,8 +69,4 @@ export class SingletonLazyAppServicesContainer implements AppServices {
   get editorExtensionsBridge() {
     return this.singleton("editorExtensionsBridge");
   }
-
-  get editorExtensionsListeners() {
-    return this.singleton("editorExtensionsListeners");
-  }
 }

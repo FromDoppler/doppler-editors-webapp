@@ -2,12 +2,11 @@ import { useState } from "react";
 import { act, render } from "@testing-library/react";
 import { UnlayerEditorObject } from "../../abstractions/domain/editor";
 import { Content } from "../../abstractions/domain/content";
-import { Design } from "react-email-editor";
 import { useInitialContent } from "./useInitialContent";
 
 const createTestContext = () => {
   const initialContent: Content = {
-    design: {} as Design,
+    design: {} as any,
     htmlContent: "html",
     previewImage: "url",
     type: "unlayer",

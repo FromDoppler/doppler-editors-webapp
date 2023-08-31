@@ -85,8 +85,11 @@ const generateNewContent: () => CampaignContent = () => ({
   type: "unlayer",
   design: {
     body: {
+      id: undefined,
       rows: [],
+      values: {},
     },
+    counters: {},
   },
   previewImage: "",
   campaignName: "campaign-name-test",

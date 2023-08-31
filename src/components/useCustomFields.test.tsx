@@ -127,7 +127,7 @@ describe(useCustomFields.name, () => {
 
     const CustomIntlProvider = ({ children }: { children: ReactNode }) => {
       return (
-        <IntlProvider locale="en" messages={messages}>
+        <IntlProvider locale="en" messages={messages as any}>
           {children}
         </IntlProvider>
       );

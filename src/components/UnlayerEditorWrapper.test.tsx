@@ -1,5 +1,4 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import { Design } from "react-email-editor";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppServices } from "../abstractions";
 import { AuthenticatedAppSessionState } from "../abstractions/app-session/app-session-state";
@@ -10,8 +9,6 @@ import { UnlayerEditorWrapper } from "./UnlayerEditorWrapper";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { AssetManifestClient } from "../abstractions/asset-manifest-client";
 import { MfeLoaderAssetManifestClientImpl } from "../implementations/MfeLoaderAssetManifestClientImpl";
-import { DopplerEditorSettings } from "../abstractions/domain/DopplerEditorSettings";
-import { DopplerLegacyClient } from "../abstractions/doppler-legacy-client";
 
 const emailEditorPropsTestId = "EmailEditor_props";
 
@@ -111,8 +108,8 @@ describe(UnlayerEditorWrapper.name, () => {
 
     expect(props).toEqual(
       expect.objectContaining({
-        projectId: unlayerProjectId,
         options: expect.objectContaining({
+          projectId: unlayerProjectId,
           customCSS: expectedCustomCSS,
           customJS: [expectedExtensionsConfiguration, ...expectedCustomJS],
           user: {

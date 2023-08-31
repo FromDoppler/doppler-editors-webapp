@@ -1,4 +1,5 @@
-import { Editor, HtmlExport, ImageExport } from "react-email-editor";
+import { Editor } from "react-email-editor";
+import { ExportHtmlResult, ExportFromApiResult } from "embed/Config";
 
 // The UnlayerEditorObject type is used to complete the inconsistent types between
 // Unlayer's Editor type and the real Unlayer's Editor object.
@@ -8,15 +9,11 @@ export type UnlayerEditorObject = Omit<
   "exportImage"
 > &
   Readonly<{
-    exportHtmlAsync: () => Promise<HtmlExport>;
-    exportImageAsync: () => Promise<ImageExport>;
+    exportHtmlAsync: () => Promise<ExportHtmlResult>;
+    exportImageAsync: () => Promise<ExportFromApiResult>;
     registerCallback: SelectImageRegisterCallback;
     unregisterCallback: SelectImageUnregisterCallback;
-    // https://docs.unlayer.com/docs/features#undo--redo
-    canUndo: (callback: (v: boolean) => void) => void;
-    canRedo: (callback: (v: boolean) => void) => void;
-    undo: () => void;
-    redo: () => void;
+    removeEventListener(type: string, callback: Function): void;
   }>;
 
 // https://docs.unlayer.com/docs/custom-image-library#content-head
