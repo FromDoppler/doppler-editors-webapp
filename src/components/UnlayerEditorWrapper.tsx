@@ -11,6 +11,7 @@ import { useUnlayerEditorExtensionsEntrypoints } from "../queries/unlayer-editor
 import { promisifyProps } from "../utils";
 import { useCustomFields } from "./useCustomFields";
 import { useGetEditorSettings } from "../queries/editor-settings-queries";
+import { keyBy } from "lodash";
 
 const prepareUnlayerEditorObject = (
   editorObject: Editor,
@@ -40,7 +41,10 @@ export const UnlayerEditorWrapper = ({
   const appSessionState = useAppSessionState();
   const editorSettings = useGetEditorSettings();
   const userFieldsQuery = useGetUserFields();
-  const mergeTags = useCustomFields(userFieldsQuery.data);
+  const mergeTags = keyBy(
+    useCustomFields(userFieldsQuery.data) || [],
+    (x) => x.name,
+  );
   const unlayerEditorExtensionsEntrypointsQuery =
     useUnlayerEditorExtensionsEntrypoints();
   const emailEditorRef = useRef<EditorRef>(null);
