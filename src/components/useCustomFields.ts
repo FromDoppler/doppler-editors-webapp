@@ -20,7 +20,7 @@ const isAllowedField = (x: Field) =>
   allowFieldTypes.includes(x.type.toLowerCase());
 const translateFieldName = (intl: IntlShape, fieldName: string) =>
   intl.formatMessage({
-    id: `field_name_${fieldName.toLowerCase()}`,
+    id: `field_name_${fieldName.toLowerCase()}` as any,
     defaultMessage: fieldName,
   });
 

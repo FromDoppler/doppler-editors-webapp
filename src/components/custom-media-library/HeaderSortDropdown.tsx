@@ -48,7 +48,7 @@ export const HeaderSortDropdown = ({
           <DropdownItem
             key={value}
             value={value}
-            label={intl.formatMessage({ id: `sort_criteria_${value}` })}
+            label={intl.formatMessage({ id: `sort_criteria_${value}` as any })}
           />
         ))}
       </Dropdown>
