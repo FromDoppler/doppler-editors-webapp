@@ -31,13 +31,13 @@ async function exportContentFromUnlayer(
     ? {
         htmlContent: htmlExport.html,
         // TODO: validate if the generated image is valid for HTML content
-        previewImage: imageExport.url,
+        previewImage: imageExport.url ?? "",
         type: "html",
       }
     : {
         design: htmlExport.design,
         htmlContent: htmlExport.html,
-        previewImage: imageExport.url,
+        previewImage: imageExport.url ?? "",
         type: "unlayer",
       };
 
