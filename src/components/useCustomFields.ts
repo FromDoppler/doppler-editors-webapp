@@ -24,7 +24,7 @@ const translateFieldName = (intl: IntlShape, fieldName: string) =>
     defaultMessage: fieldName,
   });
 
-export function useCustomFields(fields: Field[] | undefined) {
+export function useCustomFields(fields: readonly Field[] | undefined) {
   const intl = useIntl();
 
   const mergeTags = useMemo(() => {

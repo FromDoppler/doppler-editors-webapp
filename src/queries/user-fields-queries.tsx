@@ -25,9 +25,10 @@ export const useGetUserFields = () => {
     },
   ];
 
-  const queryFn: QueryFunction<Field[], GetUserFieldsQueryKey> = async (
-    context,
-  ) => {
+  const queryFn: QueryFunction<
+    readonly Field[],
+    GetUserFieldsQueryKey
+  > = async (context) => {
     const [{ dopplerAccountName }] = context.queryKey;
 
     if (!dopplerAccountName) {
