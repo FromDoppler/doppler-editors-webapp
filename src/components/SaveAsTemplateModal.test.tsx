@@ -1,6 +1,5 @@
 import { SaveAsTemplateModal } from "./SaveAsTemplateModal";
 import { UnlayerContent } from "../abstractions/domain/content";
-import { Design } from "react-email-editor";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
@@ -20,7 +19,7 @@ describe(SaveAsTemplateModal.name, () => {
   it("should be render the modal with default name", async () => {
     // Arrange
     const unlayerContent: UnlayerContent = {
-      design: { test: "Demo data" } as unknown as Design,
+      design: { test: "Demo data" } as any,
       htmlContent: "<html><p></p></html>",
       previewImage: "",
       type: "unlayer",
@@ -53,7 +52,7 @@ describe(SaveAsTemplateModal.name, () => {
   it.skip("should be show the success message when click on accept button", async () => {
     // Arrange
     const unlayerContent: UnlayerContent = {
-      design: { test: "Demo data" } as unknown as Design,
+      design: { test: "Demo data" } as any,
       htmlContent: "<html><p></p></html>",
       previewImage: "",
       type: "unlayer",

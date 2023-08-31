@@ -10,8 +10,6 @@ import { editorTopBarTestId, errorMessageTestId, Template } from "./Template";
 import { SingletonDesignContextProvider } from "./singleton-editor/singletonDesignContext";
 import { Result } from "../abstractions/common/result-types";
 import { TemplateContent } from "../abstractions/domain/content";
-import { Design } from "react-email-editor";
-import { UnlayerEditorObject } from "../abstractions/domain/editor";
 import { ModalProvider } from "react-modal-hook";
 import { noop } from "../utils";
 import { EditorExtensionsBridge } from "../abstractions/editor-extensions-bridge";
@@ -93,13 +91,13 @@ const createTestContext = () => {
     updateTemplate,
   } as unknown as HtmlEditorApiClient;
 
-  const editorDesign = { test: "Demo data" } as unknown as Design;
+  const editorDesign = { test: "Demo data" } as any;
   const editorHtmlContent = "<html><p></p></html>";
   const editorExportedImageUrl = "https://test.fromdoppler.net/export.png";
   const exportHtmlAsync = () =>
     Promise.resolve({ design: editorDesign, html: editorHtmlContent });
   const exportImageAsync = () =>
-    Promise.resolve({ url: editorExportedImageUrl, design: {} as Design });
+    Promise.resolve({ url: editorExportedImageUrl, design: {} as any });
 
   const singletonEditorContext = {
     hidden: false,
@@ -114,7 +112,7 @@ const createTestContext = () => {
       unregisterCallback: noop,
       exportHtmlAsync,
       exportImageAsync,
-    } as Partial<UnlayerEditorObject> as UnlayerEditorObject,
+    },
   };
 
   const TestComponent = ({
@@ -131,7 +129,7 @@ const createTestContext = () => {
         }}
       >
         <TestDopplerIntlProvider>
-          <SingletonDesignContextProvider value={singletonEditorContext}>
+          <SingletonDesignContextProvider value={singletonEditorContext as any}>
             <ModalProvider>
               <MemoryRouter initialEntries={[routerInitialEntry]}>
                 <Routes>

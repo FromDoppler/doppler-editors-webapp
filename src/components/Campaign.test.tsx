@@ -7,13 +7,11 @@ import { HtmlEditorApiClient } from "../abstractions/html-editor-api-client";
 import { AppServicesProvider } from "./AppServicesContext";
 import { Campaign, editorTopBarTestId, errorMessageTestId } from "./Campaign";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
-import { Design } from "react-email-editor";
 import { act, screen, waitFor } from "@testing-library/react";
 import { SingletonDesignContextProvider } from "./singleton-editor/singletonDesignContext";
 import userEvent from "@testing-library/user-event";
 import { Result } from "../abstractions/common/result-types";
 import { CampaignContent } from "../abstractions/domain/content";
-import { UnlayerEditorObject } from "../abstractions/domain/editor";
 import { noop } from "../utils";
 import { ModalProvider } from "react-modal-hook";
 
@@ -105,13 +103,13 @@ const createTestContext = () => {
     updateCampaignContent,
   } as unknown as HtmlEditorApiClient;
 
-  const editorDesign = { test: "Demo data" } as unknown as Design;
+  const editorDesign = { test: "Demo data" };
   const editorHtmlContent = "<html><p></p></html>";
   const editorExportedImageUrl = "https://test.fromdoppler.net/export.png";
   const exportHtmlAsync = () =>
     Promise.resolve({ design: editorDesign, html: editorHtmlContent });
   const exportImageAsync = () =>
-    Promise.resolve({ url: editorExportedImageUrl, design: {} as Design });
+    Promise.resolve({ url: editorExportedImageUrl, design: {} });
 
   let simulateEditorChangeEvent = null as any;
   const singletonEditorContext = {
@@ -141,7 +139,7 @@ const createTestContext = () => {
       unregisterCallback: noop,
       canUndo: noop,
       canRedo: noop,
-    } as UnlayerEditorObject,
+    } as any,
   };
 
   const TestComponent = ({

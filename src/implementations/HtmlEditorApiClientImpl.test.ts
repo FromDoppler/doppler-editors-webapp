@@ -2,7 +2,6 @@ import { AppConfiguration } from "../abstractions";
 import { AxiosStatic } from "axios";
 import { HtmlEditorApiClientImpl } from "./HtmlEditorApiClientImpl";
 import { AppSessionStateAccessor } from "../abstractions/app-session";
-import { Design } from "react-email-editor";
 import {
   CampaignContent,
   TemplateContent,
@@ -222,7 +221,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
     it("should PUT unlayer contents", async () => {
       // Arrange
       const campaignId = "123";
-      const design = { testContent: "test content" } as unknown as Design;
+      const design = { testContent: "test content" } as any;
       const htmlContent = "<html></html>";
       const previewImage = "https://app.fromdoppler.net/image.png";
 
@@ -451,7 +450,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
       const templateId = "123";
 
       const templateName = "TemplateName";
-      const design = { testContent: "test content" } as unknown as Design;
+      const design = { testContent: "test content" } as any;
       const htmlContent = "<html></html>";
       const previewImage = "https://app.fromdoppler.net/image.png";
       const isPublic = false;

@@ -107,7 +107,7 @@ describe(useSaving.name, () => {
       const { TestComponent, setUnlayerEditorObject, exportContent } =
         createTestContext();
 
-      const exportedDesign = "design" as any as Design;
+      const exportedDesign = "design" as any;
       const exportedHtml = "html";
       const exportedImageUrl = "url";
 
@@ -216,7 +216,7 @@ describe(useSaving.name, () => {
         dispatch,
       } = createTestContext();
 
-      const exportedDesign = "design" as any as Design;
+      const exportedDesign = "design" as any;
       const exportedHtml = "html";
       const exportedImageUrl = "url";
       const savingUpdateCounter = 10;
@@ -259,7 +259,7 @@ describe(useSaving.name, () => {
         dispatch,
       } = createTestContext();
 
-      const exportedDesign = "design" as any as Design;
+      const exportedDesign = "design" as any;
       const exportedHtml = "html";
       const exportedImageUrl = "url";
       const savingUpdateCounter = 10;

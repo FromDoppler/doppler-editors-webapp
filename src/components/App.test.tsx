@@ -2,7 +2,6 @@ import { render, screen } from "@testing-library/react";
 import { App } from "./App";
 import { MemoryRouter } from "react-router-dom";
 import { AppServicesProvider } from "./AppServicesContext";
-import { AppServices } from "../abstractions";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Field } from "../abstractions/doppler-rest-api-client";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
@@ -23,7 +22,7 @@ const baseAppServices = {
   dopplerRestApiClient: {
     getFields: () => Promise.resolve({ success: true, value: [] as Field[] }),
   },
-} as AppServices;
+} as any;
 
 const createQueryClient = () =>
   new QueryClient({
