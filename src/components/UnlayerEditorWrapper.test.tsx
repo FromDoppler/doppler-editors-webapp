@@ -108,8 +108,8 @@ describe(UnlayerEditorWrapper.name, () => {
 
     expect(props).toEqual(
       expect.objectContaining({
-        projectId: unlayerProjectId,
         options: expect.objectContaining({
+          projectId: unlayerProjectId,
           customCSS: expectedCustomCSS,
           customJS: [expectedExtensionsConfiguration, ...expectedCustomJS],
           user: {

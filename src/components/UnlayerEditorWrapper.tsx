@@ -119,6 +119,7 @@ export const UnlayerEditorWrapper = ({
   });
 
   const unlayerOptions: ExtendedUnlayerOptions = {
+    projectId: unlayerProjectId,
     tabs: {
       body: {
         enabled: true,
@@ -173,7 +174,6 @@ export const UnlayerEditorWrapper = ({
     <div style={containerStyle} {...otherProps}>
       <EmailEditor
         style={{ minHeight: "100%" }}
-        projectId={unlayerProjectId}
         key="email-editor-test"
         ref={emailEditorRef}
         onReady={() => setEmailEditorLoaded(true)}
