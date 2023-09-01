@@ -168,19 +168,19 @@ export const useLibraryBehavior = ({
   }, [checkedItemIds, deleteItems, confirm]);
 
   return {
+    checkedItemIds,
+    debouncedSearchTerm: debouncedQueryParameters.searchTerm,
+    deleteCheckedItems,
+    fetchNextPage,
+    hasNextPage,
     isFetching,
     items,
+    searchTerm,
     selectCheckedItem,
-    deleteCheckedItems,
-    checkedItemIds,
+    setSearchTerm,
+    setSorting,
+    sorting,
     toggleCheckedItem,
     uploadImage,
-    searchTerm,
-    debouncedSearchTerm: debouncedQueryParameters.searchTerm,
-    setSearchTerm,
-    sorting,
-    setSorting,
-    hasNextPage,
-    fetchNextPage,
   };
 };

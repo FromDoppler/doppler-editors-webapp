@@ -315,22 +315,22 @@ describe(LibraryUI.name, () => {
 });
 
 const createBaseProps: () => Parameters<typeof LibraryUI>[0] = () => ({
-  selectCheckedItem: noop,
-  uploadImage: noop,
   cancel: noop,
-  selectItem: noop,
+  checkedItemIds: new Set([]),
+  debouncedSearchTerm: "",
+  deleteCheckedItems: noop,
+  fetchNextPage: noop,
+  hasNextPage: false,
   isFetching: false,
   items: [],
-  checkedItemIds: new Set([]),
-  toggleCheckedItem: noop,
   searchTerm: "",
-  debouncedSearchTerm: "",
+  selectCheckedItem: noop,
+  selectItem: noop,
   setSearchTerm: noop,
-  sorting: { criteria: "DATE", direction: "DESCENDING" },
   setSorting: noop,
-  deleteCheckedItems: noop, //
-  hasNextPage: false,
-  fetchNextPage: noop,
+  sorting: { criteria: "DATE", direction: "DESCENDING" },
+  toggleCheckedItem: noop,
+  uploadImage: noop,
 });
 
 const hasACheckedCheckbox = (element: Element) => {

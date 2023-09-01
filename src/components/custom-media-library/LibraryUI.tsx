@@ -15,39 +15,39 @@ import { HeaderDeleteButton } from "../base-gallery/HeaderDeleteButton";
 import { FormattedMessage } from "react-intl";
 
 export const LibraryUI = ({
-  selectCheckedItem,
-  uploadImage,
   cancel,
-  selectItem,
+  checkedItemIds,
+  debouncedSearchTerm,
+  deleteCheckedItems,
+  fetchNextPage,
+  hasNextPage,
   isFetching,
   items,
-  checkedItemIds,
-  toggleCheckedItem,
   searchTerm,
-  debouncedSearchTerm,
+  selectCheckedItem,
+  selectItem,
   setSearchTerm,
-  sorting,
   setSorting,
-  deleteCheckedItems,
-  hasNextPage,
-  fetchNextPage,
+  sorting,
+  toggleCheckedItem,
+  uploadImage,
 }: {
-  selectCheckedItem: (() => void) | null;
-  uploadImage: (file: File) => void;
   cancel: () => void;
-  selectItem: (item: ImageItem) => void;
+  checkedItemIds: ReadonlySet<string>;
+  debouncedSearchTerm: string;
+  deleteCheckedItems: () => void;
+  fetchNextPage: () => void;
+  hasNextPage: boolean | undefined;
   isFetching: boolean;
   items: ImageItem[];
-  checkedItemIds: ReadonlySet<string>;
-  toggleCheckedItem: (id: string) => void;
   searchTerm: string;
-  debouncedSearchTerm: string;
+  selectCheckedItem: (() => void) | null;
+  selectItem: (item: ImageItem) => void;
   setSearchTerm: (value: string) => void;
-  sorting: SortingImagesPair;
   setSorting: (value: SortingImagesPair) => void;
-  deleteCheckedItems: () => void;
-  hasNextPage: boolean | undefined;
-  fetchNextPage: () => void;
+  sorting: SortingImagesPair;
+  toggleCheckedItem: (id: string) => void;
+  uploadImage: (file: File) => void;
 }) => (
   <Form onSubmit={selectCheckedItem} onCancel={cancel}>
     <Header>

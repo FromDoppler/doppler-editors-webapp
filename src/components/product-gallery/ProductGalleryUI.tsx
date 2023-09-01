@@ -15,28 +15,28 @@ import { ProductGalleryContentNoResult } from "./ProductGalleryContentNoResult";
 
 // TODO: implement it
 export const ProductGalleryUI = ({
-  selectCheckedItem,
-  selectItem,
   cancel,
-  searchTerm,
   debouncedSearchTerm,
-  setSearchTerm,
-  sorting,
-  setSorting,
   isFetching,
   items,
+  searchTerm,
+  selectCheckedItem,
+  selectItem,
+  setSearchTerm,
+  setSorting,
+  sorting,
   ...rest
 }: {
-  selectCheckedItem: (() => void) | null;
-  selectItem: (item: ProductGalleryValue) => void;
   cancel: () => void;
-  searchTerm: string;
   debouncedSearchTerm: string;
-  setSearchTerm: (value: string) => void;
-  sorting: SortingProductsPair;
-  setSorting: (value: SortingProductsPair) => void;
   isFetching: boolean;
   items: readonly [];
+  searchTerm: string;
+  selectCheckedItem: (() => void) | null;
+  selectItem: (item: ProductGalleryValue) => void;
+  setSearchTerm: (value: string) => void;
+  setSorting: (value: SortingProductsPair) => void;
+  sorting: SortingProductsPair;
 } & Record<string, any>) => (
   <Form onCancel={cancel} onSubmit={selectCheckedItem}>
     <Header>
