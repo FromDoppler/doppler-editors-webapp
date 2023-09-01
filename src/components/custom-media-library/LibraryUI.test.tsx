@@ -6,6 +6,7 @@ import userEvent from "@testing-library/user-event";
 import { TestDopplerIntlProvider } from "../i18n/TestDopplerIntlProvider";
 import { ModalProvider } from "react-modal-hook";
 import { ReactNode } from "react";
+import { GalleryItem } from "../base-gallery/GalleryItem";
 
 const TestContextWrapper = ({ children }: { children: ReactNode }) => (
   <TestDopplerIntlProvider>
@@ -75,27 +76,59 @@ describe(LibraryUI.name, () => {
     expect(selectCheckedImage).toBeCalled();
   });
 
-  it.each<{ scenario: string; items: ImageItem[] }>([
+  it.each<{ scenario: string; items: GalleryItem<ImageItem>[] }>([
     {
       scenario: "an empty array",
       items: [],
     },
     {
       scenario: "an array with one item",
-      items: [{ name: "name", url: "url" }] as ImageItem[],
+      items: [
+        {
+          id: "id",
+          thumbnailUrl: "thumbnail",
+          text: "text",
+          item: "item" as any,
+        },
+      ],
     },
     {
       scenario: "an array with five items",
       items: [
-        { name: "name1", url: "url1" },
-        { name: "name2", url: "url2" },
-        { name: "name3", url: "url3" },
-        { name: "name4", url: "url4" },
-        { name: "name5", url: "url5" },
-      ] as ImageItem[],
+        {
+          id: "id1",
+          thumbnailUrl: "thumbnail1",
+          text: "text1",
+          item: "item1" as any,
+        },
+        {
+          id: "id2",
+          thumbnailUrl: "thumbnail2",
+          text: "text2",
+          item: "item2" as any,
+        },
+        {
+          id: "id3",
+          thumbnailUrl: "thumbnail3",
+          text: "text3",
+          item: "item3" as any,
+        },
+        {
+          id: "id4",
+          thumbnailUrl: "thumbnail4",
+          text: "text4",
+          item: "item4" as any,
+        },
+        {
+          id: "id5",
+          thumbnailUrl: "thumbnail5",
+          text: "text5",
+          item: "item5" as any,
+        },
+      ],
     },
   ])(
-    "should have an item by each image when items is {scenario}",
+    "should have an item by each image when images is {scenario}",
     ({ items }) => {
       // Arrange
       const baseProps = createBaseProps();
@@ -103,6 +136,7 @@ describe(LibraryUI.name, () => {
       // Act
       render(
         <TestContextWrapper>
+          i
           <LibraryUI {...baseProps} items={items} />
         </TestContextWrapper>,
       );
@@ -121,17 +155,42 @@ describe(LibraryUI.name, () => {
     const checkedIndex2 = 3;
     const uncheckedIndex3 = 4;
 
-    const items = [
-      { name: "name1", url: "url1" },
-      { name: "name2", url: "url2" },
-      { name: "name3", url: "url3" },
-      { name: "name4", url: "url4" },
-      { name: "name5", url: "url5" },
-    ] as ImageItem[];
+    const items: GalleryItem<ImageItem>[] = [
+      {
+        id: "id1",
+        thumbnailUrl: "thumbnail1",
+        text: "text1",
+        item: "item1" as any,
+      },
+      {
+        id: "id2",
+        thumbnailUrl: "thumbnail2",
+        text: "text2",
+        item: "item2" as any,
+      },
+      {
+        id: "id3",
+        thumbnailUrl: "thumbnail3",
+        text: "text3",
+        item: "item3" as any,
+      },
+      {
+        id: "id4",
+        thumbnailUrl: "thumbnail4",
+        text: "text4",
+        item: "item4" as any,
+      },
+      {
+        id: "id5",
+        thumbnailUrl: "thumbnail5",
+        text: "text5",
+        item: "item5" as any,
+      },
+    ];
 
     const checkedItems = new Set([
-      items[checkedIndex1].name,
-      items[checkedIndex2].name,
+      items[checkedIndex1].id,
+      items[checkedIndex2].id,
     ]);
 
     const baseProps = createBaseProps();
@@ -154,15 +213,40 @@ describe(LibraryUI.name, () => {
 
   it("should pass the clicked item to toggleCheckedImageName", async () => {
     // Arrange
-    const items = [
-      { name: "name1", url: "url1" },
-      { name: "name2", url: "url2" },
-      { name: "name3", url: "url3" },
-      { name: "name4", url: "url4" },
-      { name: "name5", url: "url5" },
-    ] as ImageItem[];
+    const items: GalleryItem<ImageItem>[] = [
+      {
+        id: "id1",
+        thumbnailUrl: "thumbnail1",
+        text: "text1",
+        item: "item1" as any,
+      },
+      {
+        id: "id2",
+        thumbnailUrl: "thumbnail2",
+        text: "text2",
+        item: "item2" as any,
+      },
+      {
+        id: "id3",
+        thumbnailUrl: "thumbnail3",
+        text: "text3",
+        item: "item3" as any,
+      },
+      {
+        id: "id4",
+        thumbnailUrl: "thumbnail4",
+        text: "text4",
+        item: "item4" as any,
+      },
+      {
+        id: "id5",
+        thumbnailUrl: "thumbnail5",
+        text: "text5",
+        item: "item5" as any,
+      },
+    ];
     const testItemIndex = 3;
-    const testItem = items[3];
+    const testItemId = items[3].id;
     const toggleCheckedImageName = jest.fn();
 
     const baseProps = createBaseProps();
@@ -184,20 +268,45 @@ describe(LibraryUI.name, () => {
     const testCheckbox = testLi.querySelector('input[type="checkbox"]');
 
     await userEvent.click(testCheckbox!);
-    expect(toggleCheckedImageName).toBeCalledWith(testItem.name);
+    expect(toggleCheckedImageName).toBeCalledWith(testItemId);
   });
 
   it("should pass the double clicked item to selectImage", async () => {
     // Arrange
-    const items = [
-      { name: "name1", url: "url1" },
-      { name: "name2", url: "url2" },
-      { name: "name3", url: "url3" },
-      { name: "name4", url: "url4" },
-      { name: "name5", url: "url5" },
-    ] as ImageItem[];
+    const items: GalleryItem<ImageItem>[] = [
+      {
+        id: "id1",
+        thumbnailUrl: "thumbnail1",
+        text: "text1",
+        item: "item1" as any,
+      },
+      {
+        id: "id2",
+        thumbnailUrl: "thumbnail2",
+        text: "text2",
+        item: "item2" as any,
+      },
+      {
+        id: "id3",
+        thumbnailUrl: "thumbnail3",
+        text: "text3",
+        item: "item3" as any,
+      },
+      {
+        id: "id4",
+        thumbnailUrl: "thumbnail4",
+        text: "text4",
+        item: "item4" as any,
+      },
+      {
+        id: "id5",
+        thumbnailUrl: "thumbnail5",
+        text: "text5",
+        item: "item5" as any,
+      },
+    ];
     const testItemIndex = 3;
-    const testItem = items[3];
+    const testItemItem = items[3].item;
     const selectImage = jest.fn();
 
     const baseProps = createBaseProps();
@@ -215,9 +324,7 @@ describe(LibraryUI.name, () => {
     const testCheckbox = testLi.querySelector('input[type="checkbox"]');
 
     await userEvent.dblClick(testCheckbox!);
-    expect(selectImage).toBeCalledWith(
-      expect.objectContaining({ url: testItem.url }),
-    );
+    expect(selectImage).toBeCalledWith(testItemItem);
   });
 
   it("should have the upload button", () => {
@@ -315,22 +422,22 @@ describe(LibraryUI.name, () => {
 });
 
 const createBaseProps: () => Parameters<typeof LibraryUI>[0] = () => ({
+  selectCheckedItem: noop,
+  uploadImage: noop,
   cancel: noop,
-  checkedItemIds: new Set([]),
-  debouncedSearchTerm: "",
-  deleteCheckedItems: noop,
-  fetchNextPage: noop,
-  hasNextPage: false,
+  selectItem: noop,
   isFetching: false,
   items: [],
-  searchTerm: "",
-  selectCheckedItem: noop,
-  selectItem: noop,
-  setSearchTerm: noop,
-  setSorting: noop,
-  sorting: { criteria: "DATE", direction: "DESCENDING" },
+  checkedItemIds: new Set([]),
   toggleCheckedItem: noop,
-  uploadImage: noop,
+  searchTerm: "",
+  debouncedSearchTerm: "",
+  setSearchTerm: noop,
+  sorting: { criteria: "DATE", direction: "DESCENDING" },
+  setSorting: noop,
+  deleteCheckedItems: noop, //
+  hasNextPage: false,
+  fetchNextPage: noop,
 });
 
 const hasACheckedCheckbox = (element: Element) => {

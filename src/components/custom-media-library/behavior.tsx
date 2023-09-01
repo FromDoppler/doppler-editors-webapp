@@ -167,6 +167,17 @@ export const useLibraryBehavior = ({
     });
   }, [checkedItemIds, deleteItems, confirm]);
 
+  const galleryItems = useMemo(
+    () =>
+      items.map((x) => ({
+        text: x.name,
+        thumbnailUrl: x.thumbnailUrl150,
+        id: x.name,
+        item: x,
+      })),
+    [items],
+  );
+
   return {
     checkedItemIds,
     debouncedSearchTerm: debouncedQueryParameters.searchTerm,
@@ -174,7 +185,7 @@ export const useLibraryBehavior = ({
     fetchNextPage,
     hasNextPage,
     isFetching,
-    items,
+    items: galleryItems,
     searchTerm,
     selectCheckedItem,
     setSearchTerm,

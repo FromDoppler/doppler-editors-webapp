@@ -55,6 +55,7 @@ const createTestContext = () => {
       }),
     deleteCheckedItems: () => act(() => currentHookValues.deleteCheckedItems()),
     getItems: () => currentHookValues.items,
+    getItemsUnwrapped: () => currentHookValues.items.map((x) => x.item),
     invalidateQueries: () => queryClient.invalidateQueries(),
     getSearchTerm: () => currentHookValues.searchTerm,
     setSearchTerm: (value: string) =>
@@ -77,7 +78,7 @@ describe(useLibraryBehavior.name, () => {
       Component,
       getCheckedItems,
       toggleCheckedItem,
-      getItems,
+      getItemsUnwrapped: getItems,
       mocks: { dopplerLegacyClient },
     } = createTestContext();
 
@@ -135,7 +136,7 @@ describe(useLibraryBehavior.name, () => {
       toggleCheckedItem,
       selectCheckedItem,
       selectCheckedItemIsNull,
-      getItems,
+      getItemsUnwrapped: getItems,
       mocks: { selectItem, dopplerLegacyClient },
     } = createTestContext();
     const items = [createItem({ name: "name1" })];
@@ -319,7 +320,7 @@ describe(useLibraryBehavior.name, () => {
     const {
       Component,
       invalidateQueries,
-      getItems,
+      getItemsUnwrapped: getItems,
       toggleCheckedItem,
       getCheckedItems,
       mocks: { dopplerLegacyClient },
@@ -367,7 +368,7 @@ describe(useLibraryBehavior.name, () => {
     const {
       Component,
       invalidateQueries,
-      getItems,
+      getItemsUnwrapped: getItems,
       toggleCheckedItem,
       getCheckedItems,
       mocks: { dopplerLegacyClient },
@@ -418,7 +419,7 @@ describe(useLibraryBehavior.name, () => {
     // Arrange
     const {
       Component,
-      getItems,
+      getItemsUnwrapped: getItems,
       toggleCheckedItem,
       getCheckedItems,
       mocks: { dopplerLegacyClient },
@@ -509,7 +510,7 @@ describe(useLibraryBehavior.name, () => {
       Component,
       toggleCheckedItem,
       deleteCheckedItems,
-      getItems,
+      getItemsUnwrapped: getItems,
       mocks: { dopplerLegacyClient, confirm },
     } = createTestContext();
     const items = [createItem({ name: "name1" })];
@@ -554,7 +555,7 @@ describe(useLibraryBehavior.name, () => {
       Component,
       toggleCheckedItem,
       deleteCheckedItems,
-      getItems,
+      getItemsUnwrapped: getItems,
       mocks: { dopplerLegacyClient, confirm },
     } = createTestContext();
     const items = [
@@ -596,7 +597,7 @@ describe(useLibraryBehavior.name, () => {
       Component,
       toggleCheckedItem,
       deleteCheckedItems,
-      getItems,
+      getItemsUnwrapped: getItems,
       mocks: { dopplerLegacyClient, confirm },
     } = createTestContext();
     const items = [

@@ -5,7 +5,7 @@ import { Header } from "../base-gallery/Header";
 import { Content } from "../base-gallery/Content";
 import { ContentNoResult } from "./ContentNoResult";
 import { ContentEmpty } from "./ContentEmpty";
-import { ContentList } from "./ContentList";
+import { ContentList } from "../base-gallery/ContentList";
 import { FooterUploadButton } from "../base-gallery/FooterUploadButton";
 import { FooterSubmitButton } from "../base-gallery/FooterSubmitButton";
 import { HeaderSortImagesDropdown } from "./HeaderSortImagesDropdown";
@@ -13,6 +13,7 @@ import { HeaderSearchInput } from "../base-gallery/HeaderSearchInput";
 import { Form } from "../base-gallery/Form";
 import { HeaderDeleteButton } from "../base-gallery/HeaderDeleteButton";
 import { FormattedMessage } from "react-intl";
+import { GalleryItem } from "../base-gallery/GalleryItem";
 
 export const LibraryUI = ({
   cancel,
@@ -39,7 +40,7 @@ export const LibraryUI = ({
   fetchNextPage: () => void;
   hasNextPage: boolean | undefined;
   isFetching: boolean;
-  items: ImageItem[];
+  items: GalleryItem<ImageItem>[];
   searchTerm: string;
   selectCheckedItem: (() => void) | null;
   selectItem: (item: ImageItem) => void;
