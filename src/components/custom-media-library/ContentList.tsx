@@ -2,17 +2,17 @@ import { ImageItem } from "../../abstractions/domain/image-gallery";
 import InfiniteScroll from "react-infinite-scroller";
 
 export const ContentList = ({
-  images,
-  checkedImages,
-  toggleCheckedImage,
-  selectImage,
+  items: images,
+  checkedItemIds,
+  toggleCheckedItem,
+  selectItem,
   hasNextPage,
   fetchNextPage,
 }: {
-  images: ImageItem[];
-  checkedImages: ReadonlySet<string>;
-  toggleCheckedImage: ({ name }: { name: string }) => void;
-  selectImage: ({ url }: { url: string }) => void;
+  items: ImageItem[];
+  checkedItemIds: ReadonlySet<string>;
+  toggleCheckedItem: (id: string) => void;
+  selectItem: (item: ImageItem) => void;
   hasNextPage: boolean | undefined;
   fetchNextPage: () => void;
 }) => (
@@ -27,15 +27,15 @@ export const ContentList = ({
           <label
             className="dp-image-gallery-thumbnail"
             htmlFor={`image-item-${i}-check`}
-            onDoubleClick={() => selectImage(x)}
+            onDoubleClick={() => selectItem(x)}
           >
             <img src={x.thumbnailUrl150} alt={x.name} />
             <div className="dp-image-gallery--mask" />
             <input
               id={`image-item-${i}-check`}
               type="checkbox"
-              checked={checkedImages.has(x.name)}
-              onChange={() => toggleCheckedImage(x)}
+              checked={checkedItemIds.has(x.name)}
+              onChange={() => toggleCheckedItem(x.name)}
             />
           </label>
           <p>{x.name}</p>

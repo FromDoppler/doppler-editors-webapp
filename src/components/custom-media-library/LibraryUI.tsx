@@ -15,45 +15,45 @@ import { HeaderDeleteButton } from "../base-gallery/HeaderDeleteButton";
 import { FormattedMessage } from "react-intl";
 
 export const LibraryUI = ({
-  selectCheckedImage,
+  selectCheckedItem,
   uploadImage,
   cancel,
-  selectImage,
+  selectItem,
   isFetching,
-  images,
-  checkedImages,
-  toggleCheckedImage,
+  items,
+  checkedItemIds,
+  toggleCheckedItem,
   searchTerm,
   debouncedSearchTerm,
   setSearchTerm,
   sorting,
   setSorting,
-  deleteCheckedImages,
+  deleteCheckedItems,
   hasNextPage,
   fetchNextPage,
 }: {
-  selectCheckedImage: (() => void) | null;
+  selectCheckedItem: (() => void) | null;
   uploadImage: (file: File) => void;
   cancel: () => void;
-  selectImage: ({ url }: { url: string }) => void;
+  selectItem: (item: ImageItem) => void;
   isFetching: boolean;
-  images: ImageItem[];
-  checkedImages: ReadonlySet<string>;
-  toggleCheckedImage: ({ name }: { name: string }) => void;
+  items: ImageItem[];
+  checkedItemIds: ReadonlySet<string>;
+  toggleCheckedItem: (id: string) => void;
   searchTerm: string;
   debouncedSearchTerm: string;
   setSearchTerm: (value: string) => void;
   sorting: SortingImagesPair;
   setSorting: (value: SortingImagesPair) => void;
-  deleteCheckedImages: () => void;
+  deleteCheckedItems: () => void;
   hasNextPage: boolean | undefined;
   fetchNextPage: () => void;
 }) => (
-  <Form onSubmit={selectCheckedImage} onCancel={cancel}>
+  <Form onSubmit={selectCheckedItem} onCancel={cancel}>
     <Header>
       <HeaderDeleteButton
-        isVisible={checkedImages.size > 0}
-        onClick={deleteCheckedImages}
+        isVisible={checkedItemIds.size > 0}
+        onClick={deleteCheckedItems}
       />
       <HeaderSortImagesDropdown value={sorting} setValue={setSorting} />
       <HeaderSearchInput value={searchTerm} setValue={setSearchTerm} />
@@ -67,15 +67,15 @@ export const LibraryUI = ({
     <Content
       isFetching={isFetching}
       searchTerm={debouncedSearchTerm}
-      emptyResults={images.length === 0}
+      emptyResults={items.length === 0}
       ContentEmptyComponent={ContentEmpty}
       ContentNoResultComponent={ContentNoResult}
     >
       <ContentList
-        images={images}
-        checkedImages={checkedImages}
-        toggleCheckedImage={toggleCheckedImage}
-        selectImage={selectImage}
+        items={items}
+        checkedItemIds={checkedItemIds}
+        toggleCheckedItem={toggleCheckedItem}
+        selectItem={selectItem}
         hasNextPage={hasNextPage}
         fetchNextPage={fetchNextPage}
       />
@@ -84,7 +84,7 @@ export const LibraryUI = ({
       <FooterUploadButton onClick={uploadImage}>
         <FormattedMessage id="upload_image" />
       </FooterUploadButton>
-      <FooterSubmitButton isEnabled={!!selectCheckedImage}>
+      <FooterSubmitButton isEnabled={!!selectCheckedItem}>
         <FormattedMessage id="select_image" />
       </FooterSubmitButton>
     </Footer>

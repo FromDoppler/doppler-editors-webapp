@@ -22,7 +22,7 @@ describe(LibraryUI.name, () => {
     // Act
     render(
       <TestContextWrapper>
-        <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
+        <LibraryUI {...baseProps} selectCheckedItem={selectCheckedImage} />
       </TestContextWrapper>,
     );
 
@@ -40,7 +40,7 @@ describe(LibraryUI.name, () => {
     // Act
     render(
       <TestContextWrapper>
-        <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
+        <LibraryUI {...baseProps} selectCheckedItem={selectCheckedImage} />
       </TestContextWrapper>,
     );
 
@@ -64,7 +64,7 @@ describe(LibraryUI.name, () => {
     // Act
     render(
       <TestContextWrapper>
-        <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
+        <LibraryUI {...baseProps} selectCheckedItem={selectCheckedImage} />
       </TestContextWrapper>,
     );
 
@@ -75,41 +75,41 @@ describe(LibraryUI.name, () => {
     expect(selectCheckedImage).toBeCalled();
   });
 
-  it.each([
+  it.each<{ scenario: string; items: ImageItem[] }>([
     {
       scenario: "an empty array",
-      images: [],
+      items: [],
     },
     {
       scenario: "an array with one item",
-      images: [{ name: "name", url: "url" }],
+      items: [{ name: "name", url: "url" }] as ImageItem[],
     },
     {
       scenario: "an array with five items",
-      images: [
+      items: [
         { name: "name1", url: "url1" },
         { name: "name2", url: "url2" },
         { name: "name3", url: "url3" },
         { name: "name4", url: "url4" },
         { name: "name5", url: "url5" },
-      ],
+      ] as ImageItem[],
     },
   ])(
-    "should have an item by each image when images is {scenario}",
-    ({ images }) => {
+    "should have an item by each image when items is {scenario}",
+    ({ items }) => {
       // Arrange
       const baseProps = createBaseProps();
 
       // Act
       render(
         <TestContextWrapper>
-          <LibraryUI {...baseProps} images={images as ImageItem[]} />
+          <LibraryUI {...baseProps} items={items} />
         </TestContextWrapper>,
       );
 
       // Assert
       const list = screen.getByTestId("image-list");
-      expect(list.childElementCount).toBe(images.length);
+      expect(list.childElementCount).toBe(items.length);
     },
   );
 
@@ -121,17 +121,17 @@ describe(LibraryUI.name, () => {
     const checkedIndex2 = 3;
     const uncheckedIndex3 = 4;
 
-    const images = [
+    const items = [
       { name: "name1", url: "url1" },
       { name: "name2", url: "url2" },
       { name: "name3", url: "url3" },
       { name: "name4", url: "url4" },
       { name: "name5", url: "url5" },
-    ];
+    ] as ImageItem[];
 
     const checkedItems = new Set([
-      images[checkedIndex1].name,
-      images[checkedIndex2].name,
+      items[checkedIndex1].name,
+      items[checkedIndex2].name,
     ]);
 
     const baseProps = createBaseProps();
@@ -139,11 +139,7 @@ describe(LibraryUI.name, () => {
     // Act
     render(
       <TestContextWrapper>
-        <LibraryUI
-          {...baseProps}
-          images={images as ImageItem[]}
-          checkedImages={checkedItems}
-        />
+        <LibraryUI {...baseProps} items={items} checkedItemIds={checkedItems} />
       </TestContextWrapper>,
     );
 
@@ -156,18 +152,18 @@ describe(LibraryUI.name, () => {
     expect(hasACheckedCheckbox(list.children[uncheckedIndex3])).toBe(false);
   });
 
-  it("should pass the clicked item to toggleCheckedImage", async () => {
+  it("should pass the clicked item to toggleCheckedImageName", async () => {
     // Arrange
-    const images = [
+    const items = [
       { name: "name1", url: "url1" },
       { name: "name2", url: "url2" },
       { name: "name3", url: "url3" },
       { name: "name4", url: "url4" },
       { name: "name5", url: "url5" },
-    ];
+    ] as ImageItem[];
     const testItemIndex = 3;
-    const testItem = images[3];
-    const toggleCheckedImage = jest.fn();
+    const testItem = items[3];
+    const toggleCheckedImageName = jest.fn();
 
     const baseProps = createBaseProps();
 
@@ -176,8 +172,8 @@ describe(LibraryUI.name, () => {
       <TestContextWrapper>
         <LibraryUI
           {...baseProps}
-          images={images as ImageItem[]}
-          toggleCheckedImage={toggleCheckedImage}
+          items={items}
+          toggleCheckedItem={toggleCheckedImageName}
         />
       </TestContextWrapper>,
     );
@@ -188,22 +184,20 @@ describe(LibraryUI.name, () => {
     const testCheckbox = testLi.querySelector('input[type="checkbox"]');
 
     await userEvent.click(testCheckbox!);
-    expect(toggleCheckedImage).toBeCalledWith(
-      expect.objectContaining({ url: testItem.url }),
-    );
+    expect(toggleCheckedImageName).toBeCalledWith(testItem.name);
   });
 
   it("should pass the double clicked item to selectImage", async () => {
     // Arrange
-    const images = [
+    const items = [
       { name: "name1", url: "url1" },
       { name: "name2", url: "url2" },
       { name: "name3", url: "url3" },
       { name: "name4", url: "url4" },
       { name: "name5", url: "url5" },
-    ];
+    ] as ImageItem[];
     const testItemIndex = 3;
-    const testItem = images[3];
+    const testItem = items[3];
     const selectImage = jest.fn();
 
     const baseProps = createBaseProps();
@@ -211,11 +205,7 @@ describe(LibraryUI.name, () => {
     // Act
     render(
       <TestContextWrapper>
-        <LibraryUI
-          {...baseProps}
-          images={images as ImageItem[]}
-          selectImage={selectImage}
-        />
+        <LibraryUI {...baseProps} items={items} selectItem={selectImage} />
       </TestContextWrapper>,
     );
 
@@ -238,7 +228,7 @@ describe(LibraryUI.name, () => {
     // Act
     render(
       <TestContextWrapper>
-        <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
+        <LibraryUI {...baseProps} selectCheckedItem={selectCheckedImage} />
       </TestContextWrapper>,
     );
 
@@ -325,20 +315,20 @@ describe(LibraryUI.name, () => {
 });
 
 const createBaseProps: () => Parameters<typeof LibraryUI>[0] = () => ({
-  selectCheckedImage: noop,
+  selectCheckedItem: noop,
   uploadImage: noop,
   cancel: noop,
-  selectImage: noop,
+  selectItem: noop,
   isFetching: false,
-  images: [],
-  checkedImages: new Set([]),
-  toggleCheckedImage: noop,
+  items: [],
+  checkedItemIds: new Set([]),
+  toggleCheckedItem: noop,
   searchTerm: "",
   debouncedSearchTerm: "",
   setSearchTerm: noop,
   sorting: { criteria: "DATE", direction: "DESCENDING" },
   setSorting: noop,
-  deleteCheckedImages: noop,
+  deleteCheckedItems: noop, //
   hasNextPage: false,
   fetchNextPage: noop,
 });

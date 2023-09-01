@@ -69,12 +69,12 @@ export const useGetImageGallery = ({
     getNextPageParam: (lastPage) => lastPage.continuation,
   });
 
-  const images = useMemo(
+  const items = useMemo(
     () => query.data?.pages.flatMap((x) => x.items) ?? [],
     [query.data?.pages],
   );
 
-  return { ...query, images };
+  return { ...query, items };
 };
 
 export const useUploadImage = () => {
