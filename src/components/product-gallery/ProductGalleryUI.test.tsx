@@ -5,6 +5,8 @@ import userEvent from "@testing-library/user-event";
 import { TestDopplerIntlProvider } from "../i18n/TestDopplerIntlProvider";
 import { ModalProvider } from "react-modal-hook";
 import { ReactNode } from "react";
+import { ProductGalleryValue } from "../../abstractions/domain/product-gallery";
+import { GalleryItem } from "../base-gallery/GalleryItem";
 
 const TestContextWrapper = ({ children }: { children: ReactNode }) => (
   <TestDopplerIntlProvider>
@@ -81,6 +83,232 @@ describe(ProductGalleryUI.name, () => {
 
     // Assert
     expect(selectCheckedItem).toBeCalled();
+  });
+
+  it.each<{ scenario: string; items: GalleryItem<ProductGalleryValue>[] }>([
+    {
+      scenario: "an empty array",
+      items: [],
+    },
+    {
+      scenario: "an array with one item",
+      items: [
+        {
+          id: "id",
+          thumbnailUrl: "thumbnail",
+          text: "text",
+          item: "item" as any,
+        },
+      ],
+    },
+    {
+      scenario: "an array with five items",
+      items: [
+        {
+          id: "id1",
+          thumbnailUrl: "thumbnail1",
+          text: "text1",
+          item: "item1" as any,
+        },
+        {
+          id: "id2",
+          thumbnailUrl: "thumbnail2",
+          text: "text2",
+          item: "item2" as any,
+        },
+        {
+          id: "id3",
+          thumbnailUrl: "thumbnail3",
+          text: "text3",
+          item: "item3" as any,
+        },
+        {
+          id: "id4",
+          thumbnailUrl: "thumbnail4",
+          text: "text4",
+          item: "item4" as any,
+        },
+      ],
+    },
+  ])("should have an item by each product when {scenario}", ({ items }) => {
+    // Arrange
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <TestContextWrapper>
+        <ProductGalleryUI {...baseProps} items={items} />
+      </TestContextWrapper>,
+    );
+
+    // Assert
+    const list = screen.getByTestId("image-list");
+    expect(list.childElementCount).toBe(items.length);
+  });
+
+  it("should show the checked item", () => {
+    // Arrange
+    const uncheckedIndex1 = 0;
+    const checkedIndex1 = 1;
+    const uncheckedIndex2 = 2;
+    const uncheckedIndex3 = 3;
+
+    const items: GalleryItem<ProductGalleryValue>[] = [
+      {
+        id: "id1",
+        thumbnailUrl: "thumbnail1",
+        text: "text1",
+        item: "item1" as any,
+      },
+      {
+        id: "id2",
+        thumbnailUrl: "thumbnail2",
+        text: "text2",
+        item: "item2" as any,
+      },
+      {
+        id: "id3",
+        thumbnailUrl: "thumbnail3",
+        text: "text3",
+        item: "item3" as any,
+      },
+      {
+        id: "id4",
+        thumbnailUrl: "thumbnail4",
+        text: "text4",
+        item: "item4" as any,
+      },
+    ];
+
+    const checkedItems = new Set([items[checkedIndex1].id]);
+
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <TestContextWrapper>
+        <ProductGalleryUI
+          {...baseProps}
+          items={items}
+          checkedItemIds={checkedItems}
+        />
+      </TestContextWrapper>,
+    );
+
+    // Assert
+    const list = screen.getByTestId("image-list");
+    expect(hasACheckedCheckbox(list.children[checkedIndex1])).toBe(true);
+    expect(hasACheckedCheckbox(list.children[uncheckedIndex1])).toBe(false);
+    expect(hasACheckedCheckbox(list.children[uncheckedIndex2])).toBe(false);
+    expect(hasACheckedCheckbox(list.children[uncheckedIndex3])).toBe(false);
+  });
+
+  it("should pass the clicked item to toggleCheckedImageName", async () => {
+    // Arrange
+    const items: GalleryItem<ProductGalleryValue>[] = [
+      {
+        id: "id1",
+        thumbnailUrl: "thumbnail1",
+        text: "text1",
+        item: "item1" as any,
+      },
+      {
+        id: "id2",
+        thumbnailUrl: "thumbnail2",
+        text: "text2",
+        item: "item2" as any,
+      },
+      {
+        id: "id3",
+        thumbnailUrl: "thumbnail3",
+        text: "text3",
+        item: "item3" as any,
+      },
+      {
+        id: "id4",
+        thumbnailUrl: "thumbnail4",
+        text: "text4",
+        item: "item4" as any,
+      },
+    ];
+    const testItemIndex = 3;
+    const testItemId = items[3].id;
+    const toggleCheckedItemId = jest.fn();
+
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <TestContextWrapper>
+        <ProductGalleryUI
+          {...baseProps}
+          items={items}
+          toggleCheckedItem={toggleCheckedItemId}
+        />
+      </TestContextWrapper>,
+    );
+
+    // Assert
+    const list = screen.getByTestId("image-list");
+    const testLi = list.children[testItemIndex];
+    const testCheckbox = testLi.querySelector('input[type="checkbox"]');
+
+    await userEvent.click(testCheckbox!);
+    expect(toggleCheckedItemId).toBeCalledWith(testItemId);
+  });
+
+  it("should pass the double clicked item to selectImage", async () => {
+    // Arrange
+    const items: GalleryItem<ProductGalleryValue>[] = [
+      {
+        id: "id1",
+        thumbnailUrl: "thumbnail1",
+        text: "text1",
+        item: "item1" as any,
+      },
+      {
+        id: "id2",
+        thumbnailUrl: "thumbnail2",
+        text: "text2",
+        item: "item2" as any,
+      },
+      {
+        id: "id3",
+        thumbnailUrl: "thumbnail3",
+        text: "text3",
+        item: "item3" as any,
+      },
+      {
+        id: "id4",
+        thumbnailUrl: "thumbnail4",
+        text: "text4",
+        item: "item4" as any,
+      },
+    ];
+    const testItemIndex = 3;
+    const testItemItem = items[3].item;
+    const selectItem = jest.fn();
+
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <TestContextWrapper>
+        <ProductGalleryUI
+          {...baseProps}
+          items={items}
+          selectItem={selectItem}
+        />
+      </TestContextWrapper>,
+    );
+
+    // Assert
+    const list = screen.getByTestId("image-list");
+    const testLi = list.children[testItemIndex];
+    const testCheckbox = testLi.querySelector('input[type="checkbox"]');
+
+    await userEvent.dblClick(testCheckbox!);
+    expect(selectItem).toBeCalledWith(testItemItem);
   });
 
   it("should call setSearchTerm on edit", async () => {
@@ -160,14 +388,23 @@ describe(ProductGalleryUI.name, () => {
 });
 
 const createBaseProps: () => Parameters<typeof ProductGalleryUI>[0] = () => ({
-  cancel: noop,
-  debouncedSearchTerm: "",
-  isFetching: false,
-  items: [],
-  searchTerm: "",
   selectCheckedItem: null,
   selectItem: noop,
+  cancel: noop,
+  checkedItemIds: new Set(),
+  toggleCheckedItem: noop,
+  searchTerm: "",
+  debouncedSearchTerm: "",
   setSearchTerm: noop,
-  setSorting: noop,
   sorting: { criteria: "PRICE", direction: "DESCENDING" } as const,
+  setSorting: noop,
+  isFetching: false,
+  items: [],
+  hasNextPage: undefined,
+  fetchNextPage: noop,
 });
+
+const hasACheckedCheckbox = (element: Element) => {
+  const checkbox = element.querySelector('input[type="checkbox"]');
+  return !!(checkbox && "checked" in checkbox && checkbox.checked);
+};

@@ -1,4 +1,5 @@
 import { noop } from "../../utils";
+import { GalleryItem } from "../base-gallery/GalleryItem";
 import { SortingProductsPair } from "./HeaderSortProductsDropdown";
 
 // TODO: implement it
@@ -12,9 +13,12 @@ export const useProductGalleryBehavior = <TValue>({
 >) => {
   console.log("useProductGalleryBehavior", { selectItem, ...rest });
   // TODO: implement it
+  const checkedItemIds = new Set<string>([]);
   const debouncedSearchTerm = "";
+  const fetchNextPage = noop;
+  const hasNextPage = false;
   const isFetching = false;
-  const items = [] as const;
+  const items: GalleryItem<TValue>[] = [];
   const searchTerm = "";
   const selectCheckedItem = null;
   const setSearchTerm = noop;
@@ -23,9 +27,14 @@ export const useProductGalleryBehavior = <TValue>({
     criteria: "PRICE",
     direction: "ASCENDING",
   };
+  const toggleCheckedItem = noop;
+
   return {
     cancel,
+    checkedItemIds,
     debouncedSearchTerm,
+    fetchNextPage,
+    hasNextPage,
     isFetching,
     items,
     searchTerm,
@@ -34,6 +43,6 @@ export const useProductGalleryBehavior = <TValue>({
     setSearchTerm,
     setSorting,
     sorting,
-    ...rest,
+    toggleCheckedItem,
   };
 };
