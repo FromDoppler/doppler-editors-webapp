@@ -12,28 +12,28 @@ export const useProductGalleryBehavior = <TValue>({
 >) => {
   console.log("useProductGalleryBehavior", { selectItem, ...rest });
   // TODO: implement it
-  const selectCheckedItem = null;
-  const searchTerm = "";
   const debouncedSearchTerm = "";
+  const isFetching = false;
+  const items = [] as const;
+  const searchTerm = "";
+  const selectCheckedItem = null;
   const setSearchTerm = noop;
+  const setSorting = noop;
   const sorting: SortingProductsPair = {
     criteria: "PRICE",
     direction: "ASCENDING",
   };
-  const setSorting = noop;
-  const isFetching = false;
-  const items = [] as const;
   return {
     cancel,
-    selectItem,
-    selectCheckedItem,
-    searchTerm,
     debouncedSearchTerm,
-    setSearchTerm,
-    sorting,
-    setSorting,
     isFetching,
     items,
+    searchTerm,
+    selectCheckedItem,
+    selectItem,
+    setSearchTerm,
+    setSorting,
+    sorting,
     ...rest,
   };
 };

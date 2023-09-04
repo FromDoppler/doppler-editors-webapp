@@ -5,7 +5,7 @@ import { Header } from "../base-gallery/Header";
 import { Content } from "../base-gallery/Content";
 import { ContentNoResult } from "./ContentNoResult";
 import { ContentEmpty } from "./ContentEmpty";
-import { ContentList } from "./ContentList";
+import { ContentList } from "../base-gallery/ContentList";
 import { FooterUploadButton } from "../base-gallery/FooterUploadButton";
 import { FooterSubmitButton } from "../base-gallery/FooterSubmitButton";
 import { HeaderSortImagesDropdown } from "./HeaderSortImagesDropdown";
@@ -13,47 +13,48 @@ import { HeaderSearchInput } from "../base-gallery/HeaderSearchInput";
 import { Form } from "../base-gallery/Form";
 import { HeaderDeleteButton } from "../base-gallery/HeaderDeleteButton";
 import { FormattedMessage } from "react-intl";
+import { GalleryItem } from "../base-gallery/GalleryItem";
 
 export const LibraryUI = ({
-  selectCheckedImage,
-  uploadImage,
   cancel,
-  selectImage,
-  isFetching,
-  images,
-  checkedImages,
-  toggleCheckedImage,
-  searchTerm,
+  checkedItemIds,
   debouncedSearchTerm,
-  setSearchTerm,
-  sorting,
-  setSorting,
-  deleteCheckedImages,
-  hasNextPage,
+  deleteCheckedItems,
   fetchNextPage,
+  hasNextPage,
+  isFetching,
+  items,
+  searchTerm,
+  selectCheckedItem,
+  selectItem,
+  setSearchTerm,
+  setSorting,
+  sorting,
+  toggleCheckedItem,
+  uploadImage,
 }: {
-  selectCheckedImage: (() => void) | null;
-  uploadImage: (file: File) => void;
   cancel: () => void;
-  selectImage: ({ url }: { url: string }) => void;
-  isFetching: boolean;
-  images: ImageItem[];
-  checkedImages: ReadonlySet<string>;
-  toggleCheckedImage: ({ name }: { name: string }) => void;
-  searchTerm: string;
+  checkedItemIds: ReadonlySet<string>;
   debouncedSearchTerm: string;
-  setSearchTerm: (value: string) => void;
-  sorting: SortingImagesPair;
-  setSorting: (value: SortingImagesPair) => void;
-  deleteCheckedImages: () => void;
-  hasNextPage: boolean | undefined;
+  deleteCheckedItems: () => void;
   fetchNextPage: () => void;
+  hasNextPage: boolean | undefined;
+  isFetching: boolean;
+  items: GalleryItem<ImageItem>[];
+  searchTerm: string;
+  selectCheckedItem: (() => void) | null;
+  selectItem: (item: ImageItem) => void;
+  setSearchTerm: (value: string) => void;
+  setSorting: (value: SortingImagesPair) => void;
+  sorting: SortingImagesPair;
+  toggleCheckedItem: (id: string) => void;
+  uploadImage: (file: File) => void;
 }) => (
-  <Form onSubmit={selectCheckedImage} onCancel={cancel}>
+  <Form onSubmit={selectCheckedItem} onCancel={cancel}>
     <Header>
       <HeaderDeleteButton
-        isVisible={checkedImages.size > 0}
-        onClick={deleteCheckedImages}
+        isVisible={checkedItemIds.size > 0}
+        onClick={deleteCheckedItems}
       />
       <HeaderSortImagesDropdown value={sorting} setValue={setSorting} />
       <HeaderSearchInput value={searchTerm} setValue={setSearchTerm} />
@@ -67,15 +68,15 @@ export const LibraryUI = ({
     <Content
       isFetching={isFetching}
       searchTerm={debouncedSearchTerm}
-      emptyResults={images.length === 0}
+      emptyResults={items.length === 0}
       ContentEmptyComponent={ContentEmpty}
       ContentNoResultComponent={ContentNoResult}
     >
       <ContentList
-        images={images}
-        checkedImages={checkedImages}
-        toggleCheckedImage={toggleCheckedImage}
-        selectImage={selectImage}
+        items={items}
+        checkedItemIds={checkedItemIds}
+        toggleCheckedItem={toggleCheckedItem}
+        selectItem={selectItem}
         hasNextPage={hasNextPage}
         fetchNextPage={fetchNextPage}
       />
@@ -84,7 +85,7 @@ export const LibraryUI = ({
       <FooterUploadButton onClick={uploadImage}>
         <FormattedMessage id="upload_image" />
       </FooterUploadButton>
-      <FooterSubmitButton isEnabled={!!selectCheckedImage}>
+      <FooterSubmitButton isEnabled={!!selectCheckedItem}>
         <FormattedMessage id="select_image" />
       </FooterSubmitButton>
     </Footer>

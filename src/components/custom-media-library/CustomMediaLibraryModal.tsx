@@ -6,30 +6,31 @@ import { LibraryUI } from "./LibraryUI";
 import { useLibraryBehavior } from "./behavior";
 import { useConfirmationModal } from "../confirmation";
 import { useNotificationModal } from "../notification";
+import { ImageItem } from "../../abstractions/domain/image-gallery";
 
 const CustomMediaLibrary = ({
   cancel,
-  selectImage,
+  selectItem,
 }: {
   cancel: () => void;
-  selectImage: ({ url }: { url: string }) => void;
+  selectItem: (item: ImageItem) => void;
 }) => {
   const { showConfirmationModal } = useConfirmationModal();
   const { showNotificationModal } = useNotificationModal();
   const props = useLibraryBehavior({
-    selectImage,
+    selectItem,
     confirm: showConfirmationModal,
     notify: showNotificationModal,
   });
-  return <LibraryUI cancel={cancel} selectImage={selectImage} {...props} />;
+  return <LibraryUI cancel={cancel} selectItem={selectItem} {...props} />;
 };
 
 const CustomMediaLibraryModal = ({
   cancel,
-  selectImage,
+  selectItem,
 }: {
   cancel: () => void;
-  selectImage: ({ url }: { url: string }) => void;
+  selectItem: (item: ImageItem) => void;
 }) => {
   return (
     <ReactModal
@@ -39,7 +40,7 @@ const CustomMediaLibraryModal = ({
       overlayClassName="modal"
       portalClassName="dp-library"
     >
-      <CustomMediaLibrary cancel={cancel} selectImage={selectImage} />
+      <CustomMediaLibrary cancel={cancel} selectItem={selectItem} />
     </ReactModal>
   );
 };
@@ -52,7 +53,7 @@ export const useCustomMediaLibraryModal = () => {
     () => (
       <CustomMediaLibraryModal
         cancel={hideModal}
-        selectImage={(data) => {
+        selectItem={(data) => {
           imageSelectedCallbackWrapper.callback(data);
           hideModal();
         }}

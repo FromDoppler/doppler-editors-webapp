@@ -160,14 +160,14 @@ describe(ProductGalleryUI.name, () => {
 });
 
 const createBaseProps: () => Parameters<typeof ProductGalleryUI>[0] = () => ({
-  selectCheckedItem: null,
-  selectItem: noop,
   cancel: noop,
-  searchTerm: "",
   debouncedSearchTerm: "",
-  setSearchTerm: noop,
-  sorting: { criteria: "PRICE", direction: "DESCENDING" } as const,
-  setSorting: noop,
   isFetching: false,
   items: [],
+  searchTerm: "",
+  selectCheckedItem: null,
+  selectItem: noop,
+  setSearchTerm: noop,
+  setSorting: noop,
+  sorting: { criteria: "PRICE", direction: "DESCENDING" } as const,
 });

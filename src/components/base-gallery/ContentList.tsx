@@ -1,18 +1,18 @@
-import { ImageItem } from "../../abstractions/domain/image-gallery";
 import InfiniteScroll from "react-infinite-scroller";
+import { GalleryItem } from "./GalleryItem";
 
-export const ContentList = ({
-  images,
-  checkedImages,
-  toggleCheckedImage,
-  selectImage,
+export const ContentList = <T,>({
+  items,
+  checkedItemIds,
+  toggleCheckedItem,
+  selectItem,
   hasNextPage,
   fetchNextPage,
 }: {
-  images: ImageItem[];
-  checkedImages: ReadonlySet<string>;
-  toggleCheckedImage: ({ name }: { name: string }) => void;
-  selectImage: ({ url }: { url: string }) => void;
+  items: GalleryItem<T>[];
+  checkedItemIds: ReadonlySet<string>;
+  toggleCheckedItem: (id: string) => void;
+  selectItem: (item: T) => void;
   hasNextPage: boolean | undefined;
   fetchNextPage: () => void;
 }) => (
@@ -22,23 +22,23 @@ export const ContentList = ({
     useWindow={false}
   >
     <ul className="dp-image-gallery-list" data-testid="image-list">
-      {images.map((x, i) => (
-        <li key={x.name}>
+      {items.map((x, i) => (
+        <li key={x.id}>
           <label
             className="dp-image-gallery-thumbnail"
             htmlFor={`image-item-${i}-check`}
-            onDoubleClick={() => selectImage(x)}
+            onDoubleClick={() => selectItem(x.item)}
           >
-            <img src={x.thumbnailUrl150} alt={x.name} />
+            <img src={x.thumbnailUrl} alt={x.text} />
             <div className="dp-image-gallery--mask" />
             <input
               id={`image-item-${i}-check`}
               type="checkbox"
-              checked={checkedImages.has(x.name)}
-              onChange={() => toggleCheckedImage(x)}
+              checked={checkedItemIds.has(x.id)}
+              onChange={() => toggleCheckedItem(x.id)}
             />
           </label>
-          <p>{x.name}</p>
+          <p>{x.text}</p>
         </li>
       ))}
     </ul>

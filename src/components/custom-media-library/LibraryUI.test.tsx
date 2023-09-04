@@ -6,6 +6,7 @@ import userEvent from "@testing-library/user-event";
 import { TestDopplerIntlProvider } from "../i18n/TestDopplerIntlProvider";
 import { ModalProvider } from "react-modal-hook";
 import { ReactNode } from "react";
+import { GalleryItem } from "../base-gallery/GalleryItem";
 
 const TestContextWrapper = ({ children }: { children: ReactNode }) => (
   <TestDopplerIntlProvider>
@@ -22,7 +23,7 @@ describe(LibraryUI.name, () => {
     // Act
     render(
       <TestContextWrapper>
-        <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
+        <LibraryUI {...baseProps} selectCheckedItem={selectCheckedImage} />
       </TestContextWrapper>,
     );
 
@@ -40,7 +41,7 @@ describe(LibraryUI.name, () => {
     // Act
     render(
       <TestContextWrapper>
-        <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
+        <LibraryUI {...baseProps} selectCheckedItem={selectCheckedImage} />
       </TestContextWrapper>,
     );
 
@@ -64,7 +65,7 @@ describe(LibraryUI.name, () => {
     // Act
     render(
       <TestContextWrapper>
-        <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
+        <LibraryUI {...baseProps} selectCheckedItem={selectCheckedImage} />
       </TestContextWrapper>,
     );
 
@@ -75,41 +76,74 @@ describe(LibraryUI.name, () => {
     expect(selectCheckedImage).toBeCalled();
   });
 
-  it.each([
+  it.each<{ scenario: string; items: GalleryItem<ImageItem>[] }>([
     {
       scenario: "an empty array",
-      images: [],
+      items: [],
     },
     {
       scenario: "an array with one item",
-      images: [{ name: "name", url: "url" }],
+      items: [
+        {
+          id: "id",
+          thumbnailUrl: "thumbnail",
+          text: "text",
+          item: "item" as any,
+        },
+      ],
     },
     {
       scenario: "an array with five items",
-      images: [
-        { name: "name1", url: "url1" },
-        { name: "name2", url: "url2" },
-        { name: "name3", url: "url3" },
-        { name: "name4", url: "url4" },
-        { name: "name5", url: "url5" },
+      items: [
+        {
+          id: "id1",
+          thumbnailUrl: "thumbnail1",
+          text: "text1",
+          item: "item1" as any,
+        },
+        {
+          id: "id2",
+          thumbnailUrl: "thumbnail2",
+          text: "text2",
+          item: "item2" as any,
+        },
+        {
+          id: "id3",
+          thumbnailUrl: "thumbnail3",
+          text: "text3",
+          item: "item3" as any,
+        },
+        {
+          id: "id4",
+          thumbnailUrl: "thumbnail4",
+          text: "text4",
+          item: "item4" as any,
+        },
+        {
+          id: "id5",
+          thumbnailUrl: "thumbnail5",
+          text: "text5",
+          item: "item5" as any,
+        },
       ],
     },
   ])(
     "should have an item by each image when images is {scenario}",
-    ({ images }) => {
+    ({ items }) => {
       // Arrange
       const baseProps = createBaseProps();
 
       // Act
       render(
         <TestContextWrapper>
-          <LibraryUI {...baseProps} images={images as ImageItem[]} />
+          i
+          <LibraryUI {...baseProps} items={items} />
         </TestContextWrapper>,
       );
 
       // Assert
       const list = screen.getByTestId("image-list");
-      expect(list.childElementCount).toBe(images.length);
+      expect(list.childElementCount).toBe(items.length);
     },
   );
 
@@ -121,17 +155,42 @@ describe(LibraryUI.name, () => {
     const checkedIndex2 = 3;
     const uncheckedIndex3 = 4;
 
-    const images = [
-      { name: "name1", url: "url1" },
-      { name: "name2", url: "url2" },
-      { name: "name3", url: "url3" },
-      { name: "name4", url: "url4" },
-      { name: "name5", url: "url5" },
+    const items: GalleryItem<ImageItem>[] = [
+      {
+        id: "id1",
+        thumbnailUrl: "thumbnail1",
+        text: "text1",
+        item: "item1" as any,
+      },
+      {
+        id: "id2",
+        thumbnailUrl: "thumbnail2",
+        text: "text2",
+        item: "item2" as any,
+      },
+      {
+        id: "id3",
+        thumbnailUrl: "thumbnail3",
+        text: "text3",
+        item: "item3" as any,
+      },
+      {
+        id: "id4",
+        thumbnailUrl: "thumbnail4",
+        text: "text4",
+        item: "item4" as any,
+      },
+      {
+        id: "id5",
+        thumbnailUrl: "thumbnail5",
+        text: "text5",
+        item: "item5" as any,
+      },
     ];
 
     const checkedItems = new Set([
-      images[checkedIndex1].name,
-      images[checkedIndex2].name,
+      items[checkedIndex1].id,
+      items[checkedIndex2].id,
     ]);
 
     const baseProps = createBaseProps();
@@ -139,11 +198,7 @@ describe(LibraryUI.name, () => {
     // Act
     render(
       <TestContextWrapper>
-        <LibraryUI
-          {...baseProps}
-          images={images as ImageItem[]}
-          checkedImages={checkedItems}
-        />
+        <LibraryUI {...baseProps} items={items} checkedItemIds={checkedItems} />
       </TestContextWrapper>,
     );
 
@@ -156,18 +211,43 @@ describe(LibraryUI.name, () => {
     expect(hasACheckedCheckbox(list.children[uncheckedIndex3])).toBe(false);
   });
 
-  it("should pass the clicked item to toggleCheckedImage", async () => {
+  it("should pass the clicked item to toggleCheckedImageName", async () => {
     // Arrange
-    const images = [
-      { name: "name1", url: "url1" },
-      { name: "name2", url: "url2" },
-      { name: "name3", url: "url3" },
-      { name: "name4", url: "url4" },
-      { name: "name5", url: "url5" },
+    const items: GalleryItem<ImageItem>[] = [
+      {
+        id: "id1",
+        thumbnailUrl: "thumbnail1",
+        text: "text1",
+        item: "item1" as any,
+      },
+      {
+        id: "id2",
+        thumbnailUrl: "thumbnail2",
+        text: "text2",
+        item: "item2" as any,
+      },
+      {
+        id: "id3",
+        thumbnailUrl: "thumbnail3",
+        text: "text3",
+        item: "item3" as any,
+      },
+      {
+        id: "id4",
+        thumbnailUrl: "thumbnail4",
+        text: "text4",
+        item: "item4" as any,
+      },
+      {
+        id: "id5",
+        thumbnailUrl: "thumbnail5",
+        text: "text5",
+        item: "item5" as any,
+      },
     ];
     const testItemIndex = 3;
-    const testItem = images[3];
-    const toggleCheckedImage = jest.fn();
+    const testItemId = items[3].id;
+    const toggleCheckedImageName = jest.fn();
 
     const baseProps = createBaseProps();
 
@@ -176,8 +256,8 @@ describe(LibraryUI.name, () => {
       <TestContextWrapper>
         <LibraryUI
           {...baseProps}
-          images={images as ImageItem[]}
-          toggleCheckedImage={toggleCheckedImage}
+          items={items}
+          toggleCheckedItem={toggleCheckedImageName}
         />
       </TestContextWrapper>,
     );
@@ -188,22 +268,45 @@ describe(LibraryUI.name, () => {
     const testCheckbox = testLi.querySelector('input[type="checkbox"]');
 
     await userEvent.click(testCheckbox!);
-    expect(toggleCheckedImage).toBeCalledWith(
-      expect.objectContaining({ url: testItem.url }),
-    );
+    expect(toggleCheckedImageName).toBeCalledWith(testItemId);
   });
 
   it("should pass the double clicked item to selectImage", async () => {
     // Arrange
-    const images = [
-      { name: "name1", url: "url1" },
-      { name: "name2", url: "url2" },
-      { name: "name3", url: "url3" },
-      { name: "name4", url: "url4" },
-      { name: "name5", url: "url5" },
+    const items: GalleryItem<ImageItem>[] = [
+      {
+        id: "id1",
+        thumbnailUrl: "thumbnail1",
+        text: "text1",
+        item: "item1" as any,
+      },
+      {
+        id: "id2",
+        thumbnailUrl: "thumbnail2",
+        text: "text2",
+        item: "item2" as any,
+      },
+      {
+        id: "id3",
+        thumbnailUrl: "thumbnail3",
+        text: "text3",
+        item: "item3" as any,
+      },
+      {
+        id: "id4",
+        thumbnailUrl: "thumbnail4",
+        text: "text4",
+        item: "item4" as any,
+      },
+      {
+        id: "id5",
+        thumbnailUrl: "thumbnail5",
+        text: "text5",
+        item: "item5" as any,
+      },
     ];
     const testItemIndex = 3;
-    const testItem = images[3];
+    const testItemItem = items[3].item;
     const selectImage = jest.fn();
 
     const baseProps = createBaseProps();
@@ -211,11 +314,7 @@ describe(LibraryUI.name, () => {
     // Act
     render(
       <TestContextWrapper>
-        <LibraryUI
-          {...baseProps}
-          images={images as ImageItem[]}
-          selectImage={selectImage}
-        />
+        <LibraryUI {...baseProps} items={items} selectItem={selectImage} />
       </TestContextWrapper>,
     );
 
@@ -225,9 +324,7 @@ describe(LibraryUI.name, () => {
     const testCheckbox = testLi.querySelector('input[type="checkbox"]');
 
     await userEvent.dblClick(testCheckbox!);
-    expect(selectImage).toBeCalledWith(
-      expect.objectContaining({ url: testItem.url }),
-    );
+    expect(selectImage).toBeCalledWith(testItemItem);
   });
 
   it("should have the upload button", () => {
@@ -238,7 +335,7 @@ describe(LibraryUI.name, () => {
     // Act
     render(
       <TestContextWrapper>
-        <LibraryUI {...baseProps} selectCheckedImage={selectCheckedImage} />
+        <LibraryUI {...baseProps} selectCheckedItem={selectCheckedImage} />
       </TestContextWrapper>,
     );
 
@@ -325,20 +422,20 @@ describe(LibraryUI.name, () => {
 });
 
 const createBaseProps: () => Parameters<typeof LibraryUI>[0] = () => ({
-  selectCheckedImage: noop,
+  selectCheckedItem: noop,
   uploadImage: noop,
   cancel: noop,
-  selectImage: noop,
+  selectItem: noop,
   isFetching: false,
-  images: [],
-  checkedImages: new Set([]),
-  toggleCheckedImage: noop,
+  items: [],
+  checkedItemIds: new Set([]),
+  toggleCheckedItem: noop,
   searchTerm: "",
   debouncedSearchTerm: "",
   setSearchTerm: noop,
   sorting: { criteria: "DATE", direction: "DESCENDING" },
   setSorting: noop,
-  deleteCheckedImages: noop,
+  deleteCheckedItems: noop, //
   hasNextPage: false,
   fetchNextPage: noop,
 });

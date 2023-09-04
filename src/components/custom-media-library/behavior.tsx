@@ -11,6 +11,7 @@ import {
   SortingImagesDirection,
 } from "../../abstractions/doppler-legacy-client";
 import { IntlMessageId } from "../../abstractions/i18n";
+import { ImageItem } from "../../abstractions/domain/image-gallery";
 
 export type ConfirmProps = {
   onConfirm: () => void;
@@ -35,16 +36,16 @@ export type SortingImagesPair = {
 };
 
 export const useLibraryBehavior = ({
-  selectImage,
+  selectItem,
   confirm,
   notify,
 }: {
-  selectImage: ({ url }: { url: string }) => void;
+  selectItem: (item: ImageItem) => void;
   confirm: (props: ConfirmProps) => void;
   notify: (props: NotificationProps) => void;
 }) => {
   const { mutate: uploadImageMutation } = useUploadImage();
-  const { mutate: deleteImages } = useDeleteImages();
+  const { mutate: deleteItems } = useDeleteImages();
   const [searchTerm, setSearchTerm] = useState(
     defaultQueryParameters.searchTerm,
   );
@@ -59,10 +60,10 @@ export const useLibraryBehavior = ({
     [searchTerm, sortingCriteria, sortingDirection],
   );
   const debouncedQueryParameters = useDebounce(parametersToDebounce, 300);
-  const { isFetching, images, hasNextPage, fetchNextPage } = useGetImageGallery(
+  const { isFetching, items, hasNextPage, fetchNextPage } = useGetImageGallery(
     debouncedQueryParameters,
   );
-  const [checkedImages, setCheckedImages] = useState<ReadonlySet<string>>(
+  const [checkedItemIds, setCheckedItemIds] = useState<ReadonlySet<string>>(
     new Set(),
   );
 
@@ -95,39 +96,38 @@ export const useLibraryBehavior = ({
     [uploadImageMutation, notify],
   );
 
-  // Sanitize checkedImages based on existing images
+  // Sanitize checkedItemIds based on existing items
   useEffect(() => {
     if (isFetching) {
       return;
     }
-    const newCheckedImages = images.filter((x) => checkedImages.has(x.name));
+    const newCheckedItemIds = items.filter((x) => checkedItemIds.has(x.name));
     // It is only different when we should sanitize
-    if (newCheckedImages.length !== checkedImages.size) {
-      setCheckedImages(new Set(newCheckedImages.map((x) => x.name)));
+    if (newCheckedItemIds.length !== checkedItemIds.size) {
+      setCheckedItemIds(new Set(newCheckedItemIds.map((x) => x.name)));
     }
-  }, [isFetching, images, checkedImages]);
+  }, [isFetching, items, checkedItemIds]);
 
-  const toggleCheckedImage = useCallback(
-    ({ name }: { name: string }) =>
-      setCheckedImages(toggleItemInSet(checkedImages, name)),
-    [checkedImages],
+  const toggleCheckedItem = useCallback(
+    (id: string) => setCheckedItemIds(toggleItemInSet(checkedItemIds, id)),
+    [checkedItemIds],
   );
 
-  const selectCheckedImage = useMemo(() => {
-    if (checkedImages.size !== 1) {
+  const selectCheckedItem = useMemo(() => {
+    if (checkedItemIds.size !== 1) {
       return null;
     }
 
-    const selectedImage = images.find(
-      (x) => x.name === takeOneValue(checkedImages),
+    const selectedItem = items.find(
+      (x) => x.name === takeOneValue(checkedItemIds),
     );
 
-    if (!selectedImage) {
+    if (!selectedItem) {
       return null;
     }
 
-    return () => selectImage(selectedImage);
-  }, [checkedImages, selectImage, images]);
+    return () => selectItem(selectedItem);
+  }, [checkedItemIds, selectItem, items]);
 
   const sorting = useMemo(
     () => ({ criteria: sortingCriteria, direction: sortingDirection }),
@@ -147,40 +147,51 @@ export const useLibraryBehavior = ({
     [setSortingCriteria, setSortingDirection],
   );
 
-  const deleteCheckedImages = useCallback(() => {
+  const deleteCheckedItems = useCallback(() => {
     confirm({
       titleDescriptorId:
-        checkedImages.size === 1
+        checkedItemIds.size === 1
           ? "delete_images_confirmation_title_single"
           : "delete_images_confirmation_title_multiple",
       messageDescriptorId:
-        checkedImages.size === 1
+        checkedItemIds.size === 1
           ? "delete_images_confirmation_single"
           : "delete_images_confirmation_multiple",
       confirmationButtonDescriptorId: "delete",
       values: {
-        firstName: takeOneValue(checkedImages),
-        itemsCount: checkedImages.size,
+        firstName: takeOneValue(checkedItemIds),
+        itemsCount: checkedItemIds.size,
       },
       onConfirm: () =>
-        deleteImages(Array.from(checkedImages).map((x) => ({ name: x }))),
+        deleteItems(Array.from(checkedItemIds).map((x) => ({ name: x }))),
     });
-  }, [checkedImages, deleteImages, confirm]);
+  }, [checkedItemIds, deleteItems, confirm]);
+
+  const galleryItems = useMemo(
+    () =>
+      items.map((x) => ({
+        text: x.name,
+        thumbnailUrl: x.thumbnailUrl150,
+        id: x.name,
+        item: x,
+      })),
+    [items],
+  );
 
   return {
-    isFetching,
-    images,
-    selectCheckedImage,
-    deleteCheckedImages,
-    checkedImages,
-    toggleCheckedImage,
-    uploadImage,
-    searchTerm,
+    checkedItemIds,
     debouncedSearchTerm: debouncedQueryParameters.searchTerm,
-    setSearchTerm,
-    sorting,
-    setSorting,
-    hasNextPage,
+    deleteCheckedItems,
     fetchNextPage,
+    hasNextPage,
+    isFetching,
+    items: galleryItems,
+    searchTerm,
+    selectCheckedItem,
+    setSearchTerm,
+    setSorting,
+    sorting,
+    toggleCheckedItem,
+    uploadImage,
   };
 };
