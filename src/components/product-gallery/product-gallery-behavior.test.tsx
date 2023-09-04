@@ -113,6 +113,37 @@ describe(useProductGalleryBehavior.name, () => {
     expect(getCheckedItems()).toEqual([]);
   });
 
+  it("should define selectCheckedItem when there is only one checked item", async () => {
+    // Arrange
+    const {
+      Component,
+      toggleCheckedItem,
+      selectCheckedItem,
+      selectCheckedItemIsNull,
+      getItemsUnwrapped,
+      mocks: { selectItem, dopplerLegacyClient },
+    } = createTestContext();
+    const items = [createItem({ name: "name1" })];
+    dopplerLegacyClient.getProducts.mockResolvedValue({
+      success: true,
+      value: { items },
+    });
+    render(<Component />);
+
+    await waitFor(() => {
+      expect(getItemsUnwrapped()).toEqual(items);
+    });
+
+    toggleCheckedItem(items[0].productUrl);
+
+    // Act
+    selectCheckedItem();
+
+    // Assert
+    expect(selectCheckedItemIsNull()).toBe(false);
+    expect(selectItem).toBeCalledWith(items[0]);
+  });
+
   it("should make selectCheckedItem null when there are no checked items", () => {
     // Arrange
     const { Component, selectCheckedItem, selectCheckedItemIsNull } =

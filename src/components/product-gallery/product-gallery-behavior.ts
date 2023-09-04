@@ -4,7 +4,7 @@ import {
   useGetProductsGallery,
 } from "../../queries/products-gallery-queries";
 import { ProductGalleryValue } from "../../abstractions/domain/product-gallery";
-import { noop, useDebounce } from "../../utils";
+import { noop, takeOneValue, useDebounce } from "../../utils";
 import { SortingProductsPair } from "./HeaderSortProductsDropdown";
 
 export const useProductGalleryBehavior = ({
@@ -58,8 +58,23 @@ export const useProductGalleryBehavior = ({
     [checkedItemIds],
   );
 
+  const selectCheckedItem = useMemo(() => {
+    if (checkedItemIds.size !== 1) {
+      return null;
+    }
+
+    const selectedItem = items.find(
+      (x) => x.productUrl === takeOneValue(checkedItemIds),
+    );
+
+    if (!selectedItem) {
+      return null;
+    }
+
+    return () => selectItem(selectedItem);
+  }, [checkedItemIds, selectItem, items]);
+
   // TODO: implement these
-  const selectCheckedItem = null;
   const setSorting = noop;
   const sorting: SortingProductsPair = {
     criteria: "PRICE",
