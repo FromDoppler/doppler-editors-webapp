@@ -176,6 +176,50 @@ describe(useProductGalleryBehavior.name, () => {
     expect(selectCheckedItemIsNull()).toBe(true);
   });
 
+  it("should send parameters on change", async () => {
+    // Arrange
+    const {
+      Component,
+      getSearchTerm,
+      setSearchTerm,
+      getSorting,
+      setSorting,
+      mocks: { dopplerLegacyClient },
+    } = createTestContext();
+
+    render(<Component />);
+    await waitFor(() => {
+      expect(dopplerLegacyClient.getProducts).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          searchTerm: "",
+          sortingCriteria: "PRICE",
+          sortingDirection: "DESCENDING",
+        }),
+      );
+    });
+
+    // Act
+    setSearchTerm("This value will be removed");
+    setSorting({ criteria: "PRICE", direction: "ASCENDING" });
+
+    // Assert
+    expect(getSearchTerm()).not.toBe("");
+    expect(getSorting()).toEqual({
+      criteria: "PRICE",
+      direction: "ASCENDING",
+    });
+    await waitFor(() => {
+      expect(dopplerLegacyClient.getProducts).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          searchTerm: "This value will be removed",
+          sortingCriteria: "PRICE",
+          sortingDirection: "ASCENDING",
+        }),
+      );
+    });
+    expect(dopplerLegacyClient.getProducts).toBeCalledTimes(2);
+  });
+
   it("should keep checkedItems when the id is still present after reloading", async () => {
     // Arrange
     const {

@@ -4,8 +4,11 @@ import {
   useGetProductsGallery,
 } from "../../queries/products-gallery-queries";
 import { ProductGalleryValue } from "../../abstractions/domain/product-gallery";
-import { noop, takeOneValue, useDebounce } from "../../utils";
-import { SortingProductsPair } from "./HeaderSortProductsDropdown";
+import { takeOneValue, useDebounce } from "../../utils";
+import {
+  SortingProductsCriteria,
+  SortingProductsDirection,
+} from "./HeaderSortProductsDropdown";
 
 export const useProductGalleryBehavior = ({
   cancel,
@@ -17,10 +20,10 @@ export const useProductGalleryBehavior = ({
   const [searchTerm, setSearchTerm] = useState(
     defaultQueryParameters.searchTerm,
   );
-  const [sortingCriteria /*, setSortingCriteria*/] = useState(
+  const [sortingCriteria, setSortingCriteria] = useState(
     defaultQueryParameters.sortingCriteria,
   );
-  const [sortingDirection /*, setSortingDirection*/] = useState(
+  const [sortingDirection, setSortingDirection] = useState(
     defaultQueryParameters.sortingDirection,
   );
 
@@ -74,12 +77,23 @@ export const useProductGalleryBehavior = ({
     return () => selectItem(selectedItem);
   }, [checkedItemIds, selectItem, items]);
 
-  // TODO: implement these
-  const setSorting = noop;
-  const sorting: SortingProductsPair = {
-    criteria: "PRICE",
-    direction: "ASCENDING",
-  };
+  const sorting = useMemo(
+    () => ({ criteria: sortingCriteria, direction: sortingDirection }),
+    [sortingCriteria, sortingDirection],
+  );
+  const setSorting = useCallback(
+    ({
+      criteria,
+      direction,
+    }: {
+      criteria: SortingProductsCriteria;
+      direction: SortingProductsDirection;
+    }) => {
+      setSortingCriteria(criteria);
+      setSortingDirection(direction);
+    },
+    [setSortingCriteria, setSortingDirection],
+  );
 
   const galleryItems = useMemo(
     () =>
