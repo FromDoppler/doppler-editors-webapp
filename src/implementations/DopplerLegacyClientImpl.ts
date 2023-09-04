@@ -9,6 +9,11 @@ import {
 } from "../abstractions/doppler-legacy-client";
 import { ImageItem } from "../abstractions/domain/image-gallery";
 import { DopplerEditorSettings } from "../abstractions/domain/DopplerEditorSettings";
+import {
+  SortingProductsCriteria,
+  SortingProductsDirection,
+} from "../components/product-gallery/HeaderSortProductsDropdown";
+import { ProductGalleryValue } from "../abstractions/domain/product-gallery";
 
 const MERCADO_SHOPS_STORE_NAME = "MercadoShops";
 
@@ -160,6 +165,41 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
 
     const value = arrayOrEmptyArray(response.data).map(parsePromoCodeItem);
     return { success: true, value } as const;
+  }
+
+  async getProducts({
+    searchTerm,
+    sortingCriteria,
+    sortingDirection,
+    continuation,
+  }: {
+    searchTerm: string;
+    sortingCriteria: SortingProductsCriteria;
+    sortingDirection: SortingProductsDirection;
+    continuation?: string | undefined;
+  }): Promise<
+    Result<{
+      // TODO: update this type because it is what we need to send to Unlayer Extensions,
+      // but probably it is not what we need for the gallery. For example, we need the
+      // thumbnail URL.
+      items: ProductGalleryValue[];
+      continuation: string | undefined;
+    }>
+  > {
+    console.error("getProducts is not implemented yet");
+    console.log(
+      `searchTerm: ${searchTerm}; sortingCriteria: ${sortingCriteria};`,
+    );
+    console.log(
+      `sortingDirection: ${sortingDirection}; continuation: ${continuation};`,
+    );
+    return {
+      success: true as const,
+      value: {
+        items: [],
+        continuation: undefined,
+      },
+    };
   }
 }
 

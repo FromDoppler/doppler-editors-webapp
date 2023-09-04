@@ -1,6 +1,11 @@
+import {
+  SortingProductsCriteria,
+  SortingProductsDirection,
+} from "../../components/product-gallery/HeaderSortProductsDropdown";
 import { Result } from "../common/result-types";
 import { DopplerEditorSettings } from "../domain/DopplerEditorSettings";
 import { ImageItem } from "../domain/image-gallery";
+import { ProductGalleryValue } from "../domain/product-gallery";
 
 export type SortingImagesCriteria = "DATE" | "FILENAME";
 export type SortingImagesDirection = "ASCENDING" | "DESCENDING";
@@ -44,4 +49,23 @@ export interface DopplerLegacyClient {
   }: {
     store: string;
   }) => Promise<Result<PromoCodeItem[]>>;
+  getProducts: ({
+    searchTerm,
+    sortingCriteria,
+    sortingDirection,
+    continuation,
+  }: {
+    searchTerm: string;
+    sortingCriteria: SortingProductsCriteria;
+    sortingDirection: SortingProductsDirection;
+    continuation?: string | undefined;
+  }) => Promise<
+    Result<{
+      // TODO: update this type because it is what we need to send to Unlayer Extensions,
+      // but probably it is not what we need for the gallery. For example, we need the
+      // thumbnail URL.
+      items: ProductGalleryValue[];
+      continuation: string | undefined;
+    }>
+  >;
 }
