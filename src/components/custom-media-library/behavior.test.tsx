@@ -72,7 +72,7 @@ const createTestContext = () => {
 };
 
 describe(useLibraryBehavior.name, () => {
-  it("should toggle checked items", async () => {
+  it("should toggle checked items (multiple selection)", async () => {
     // Arrange
     const {
       Component,

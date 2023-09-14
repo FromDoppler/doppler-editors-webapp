@@ -108,7 +108,7 @@ export const useLibraryBehavior = ({
     }
   }, [isFetching, items, checkedItemIds]);
 
-  const toggleCheckedItem = useCallback(
+  const toggleCheckedItemMultipleSelection = useCallback(
     (id: string) => setCheckedItemIds(toggleItemInSet(checkedItemIds, id)),
     [checkedItemIds],
   );
@@ -191,7 +191,7 @@ export const useLibraryBehavior = ({
     setSearchTerm,
     setSorting,
     sorting,
-    toggleCheckedItem,
+    toggleCheckedItem: toggleCheckedItemMultipleSelection,
     uploadImage,
   };
 };

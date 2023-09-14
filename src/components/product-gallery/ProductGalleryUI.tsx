@@ -12,11 +12,15 @@ import {
 import { Content } from "../base-gallery/Content";
 import { ProductGalleryContentEmpty } from "./ProductGalleryContentEmpty";
 import { ProductGalleryContentNoResult } from "./ProductGalleryContentNoResult";
+import { ContentList } from "../base-gallery/ContentList";
+import { GalleryItem } from "../base-gallery/GalleryItem";
 
-// TODO: implement it
 export const ProductGalleryUI = ({
   cancel,
+  checkedItemIds,
   debouncedSearchTerm,
+  fetchNextPage,
+  hasNextPage,
   isFetching,
   items,
   searchTerm,
@@ -25,19 +29,23 @@ export const ProductGalleryUI = ({
   setSearchTerm,
   setSorting,
   sorting,
-  ...rest
+  toggleCheckedItem,
 }: {
   cancel: () => void;
+  checkedItemIds: ReadonlySet<string>;
   debouncedSearchTerm: string;
+  fetchNextPage: () => void;
+  hasNextPage: boolean | undefined;
   isFetching: boolean;
-  items: readonly [];
+  items: GalleryItem<ProductGalleryValue>[];
   searchTerm: string;
   selectCheckedItem: (() => void) | null;
   selectItem: (item: ProductGalleryValue) => void;
   setSearchTerm: (value: string) => void;
   setSorting: (value: SortingProductsPair) => void;
   sorting: SortingProductsPair;
-} & Record<string, any>) => (
+  toggleCheckedItem: (id: string) => void;
+}) => (
   <Form onCancel={cancel} onSubmit={selectCheckedItem}>
     <Header>
       <HeaderSortProductsDropdown value={sorting} setValue={setSorting} />
@@ -50,13 +58,15 @@ export const ProductGalleryUI = ({
       ContentEmptyComponent={ProductGalleryContentEmpty}
       ContentNoResultComponent={ProductGalleryContentNoResult}
     >
-      {items.length ? (
-        <code>
-          <pre>{JSON.stringify({ selectItem, cancel, ...rest })}</pre>
-        </code>
-      ) : (
-        <></>
-      )}
+      {/* TODO: use a list view in place of this icons view */}
+      <ContentList
+        items={items}
+        checkedItemIds={checkedItemIds}
+        toggleCheckedItem={toggleCheckedItem}
+        selectItem={selectItem}
+        hasNextPage={hasNextPage}
+        fetchNextPage={fetchNextPage}
+      />
     </Content>
     <Footer>
       <FooterSubmitButton isEnabled={!!selectCheckedItem}>

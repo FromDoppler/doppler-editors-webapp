@@ -8,6 +8,11 @@ import {
 import { Result } from "../../abstractions/common/result-types";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
 import { DopplerEditorSettings } from "../../abstractions/domain/DopplerEditorSettings";
+import { ProductGalleryValue } from "../../abstractions/domain/product-gallery";
+import {
+  SortingProductsCriteria,
+  SortingProductsDirection,
+} from "../../components/product-gallery/HeaderSortProductsDropdown";
 
 const baseUrl =
   "https://www.fromdoppler.com/wp-content/themes/doppler_site/img";
@@ -48,6 +53,54 @@ export const demoImages: ImageItem[] = [
     thumbnailUrl: `${baseUrl}/omnicanalidad-emailtransaccional.png`,
     thumbnailUrl150: `${baseUrl}/omnicanalidad-emailtransaccional.png`,
   })),
+];
+
+export const demoProducts: ProductGalleryValue[] = [
+  {
+    productUrl: "https://fromdoppler.net/product/product1",
+    imageUrl: "https://fromdoppler.net/product/product1.png",
+    title: "Title product1",
+    defaultPriceText: "$ 1000",
+    discountPriceText: "$ 900",
+    discountText: "10% Off",
+    descriptionHtml: "<p>Descripción del producto <b>product1</b></p>",
+  },
+  {
+    productUrl: "https://fromdoppler.net/product/product2",
+    imageUrl: "https://fromdoppler.net/product/product2.png",
+    title: "Title product2",
+    defaultPriceText: "$ 5000",
+    discountPriceText: undefined,
+    discountText: undefined,
+    descriptionHtml: "<p>Descripción del producto <b>product2</b></p>",
+  },
+  {
+    productUrl: "https://fromdoppler.net/product/product3",
+    imageUrl: "https://fromdoppler.net/product/product3.png",
+    title: "Title product3",
+    defaultPriceText: undefined,
+    discountPriceText: "$ 3000",
+    discountText: undefined,
+    descriptionHtml: "<p>Descripción del producto <b>product3</b></p>",
+  },
+  {
+    productUrl: "https://fromdoppler.net/product/product4",
+    imageUrl: "https://fromdoppler.net/product/product4.png",
+    title: "Title product4",
+    defaultPriceText: "$ 2000",
+    discountPriceText: "$ 1000",
+    discountText: undefined,
+    descriptionHtml: "<p>Descripción del producto <b>product4</b></p>",
+  },
+  {
+    productUrl: "https://fromdoppler.net/product/product5",
+    imageUrl: "https://fromdoppler.net/product/product5.png",
+    title: "Title product5",
+    defaultPriceText: "$ 4000",
+    discountPriceText: undefined,
+    discountText: "50%",
+    descriptionHtml: "<p>Descripción del producto <b>product5</b></p>",
+  },
 ];
 
 export class DummyDopplerLegacyClient implements DopplerLegacyClient {
@@ -185,5 +238,50 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
         },
       ],
     } as const;
+  };
+
+  getProducts: ({
+    searchTerm,
+    sortingCriteria,
+    sortingDirection,
+    continuation,
+  }: {
+    searchTerm: string;
+    sortingCriteria: SortingProductsCriteria;
+    sortingDirection: SortingProductsDirection;
+    continuation?: string | undefined;
+  }) => Promise<
+    Result<{
+      // TODO: update this type because it is what we need to send to Unlayer Extensions,
+      // but probably it is not what we need for the gallery. For example, we need the
+      // thumbnail URL.
+      items: ProductGalleryValue[];
+      continuation: string | undefined;
+    }>
+  > = async ({
+    searchTerm,
+    sortingCriteria,
+    sortingDirection,
+    continuation,
+  }) => {
+    console.log("Begin getImageGallery.");
+    console.log(
+      `searchTerm: ${searchTerm}; sortingCriteria: ${sortingCriteria};`,
+    );
+    console.log(
+      `sortingDirection: ${sortingDirection}; continuation: ${continuation};`,
+    );
+    await timeout(1000);
+
+    const result = {
+      success: true as const,
+      value: {
+        items: demoProducts,
+        continuation: undefined,
+      },
+    };
+
+    console.log("End getImageGallery", { result });
+    return result;
   };
 }
