@@ -141,7 +141,7 @@ export const UnlayerEditorWrapper = ({
     },
     displayMode: "email",
     features: {
-      sendTestEmail: true,
+      sendTestEmail: false,
       preheaderText: false,
       smartMergeTags: false,
       undoRedo: false, // it only hides the buttons, undo/redo still works
