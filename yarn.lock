@@ -1237,10 +1237,10 @@
   resolved "https://registry.yarnpkg.com/@cspell/dict-en_us/-/dict-en_us-4.3.8.tgz#79f0d93827c6bc8f6d9c5b9dcbf5fd7b8aec42ee"
   integrity sha512-rCPsbDHuRnFUbzWAY6O1H9+cLZt5FNQwjPVw2TdQZfipdb0lim984aLGY+nupi1iKC3lfjyd5SVUgmSZEG1QNA==
 
-"@cspell/dict-es-es@2.2.6":
-  version "2.2.6"
-  resolved "https://registry.yarnpkg.com/@cspell/dict-es-es/-/dict-es-es-2.2.6.tgz#b4b4dbdc6cec2e92197c2e2b2c93e7633c17fac6"
-  integrity sha512-0qqrqSHeUCZ9u44pclyojelR45smYI30gJRguEwTGCP9kGHnwhzABSURwe9btVGByRz7n3LLVzvV4xvMM9YSLg==
+"@cspell/dict-es-es@2.2.7":
+  version "2.2.7"
+  resolved "https://registry.yarnpkg.com/@cspell/dict-es-es/-/dict-es-es-2.2.7.tgz#cf4adb2b847a7ddac00453e43dfada37e5114cfc"
+  integrity sha512-7zzFh2AFLkt44VR/kl0N/RjFJ4AUxk40AqLGUPL74BrOxKsYLSkN0l6JR1+y8leLQpJcAsIu4zEg69v+qsXppA==
 
 "@cspell/dict-filetypes@^3.0.1":
   version "3.0.1"
