@@ -14,6 +14,7 @@ import { ProductGalleryContentEmpty } from "./ProductGalleryContentEmpty";
 import { ProductGalleryContentNoResult } from "./ProductGalleryContentNoResult";
 import { ContentList } from "../base-gallery/ContentList";
 import { GalleryItem } from "../base-gallery/GalleryItem";
+import { SidePanel } from "../base-gallery/SidePanel";
 
 export const ProductGalleryUI = ({
   cancel,
@@ -23,6 +24,8 @@ export const ProductGalleryUI = ({
   hasNextPage,
   isFetching,
   items,
+  storeSelected,
+  setStore,
   searchTerm,
   selectCheckedItem,
   selectItem,
@@ -39,8 +42,10 @@ export const ProductGalleryUI = ({
   isFetching: boolean;
   items: GalleryItem<ProductGalleryValue>[];
   searchTerm: string;
+  storeSelected: string;
   selectCheckedItem: (() => void) | null;
   selectItem: (item: ProductGalleryValue) => void;
+  setStore: (store: string) => void;
   setSearchTerm: (value: string) => void;
   setSorting: (value: SortingProductsPair) => void;
   sorting: SortingProductsPair;
@@ -51,23 +56,28 @@ export const ProductGalleryUI = ({
       <HeaderSortProductsDropdown value={sorting} setValue={setSorting} />
       <HeaderSearchInput value={searchTerm} setValue={setSearchTerm} />
     </Header>
-    <Content
-      isFetching={isFetching}
-      searchTerm={debouncedSearchTerm}
-      emptyResults={items.length === 0}
-      ContentEmptyComponent={ProductGalleryContentEmpty}
-      ContentNoResultComponent={ProductGalleryContentNoResult}
-    >
-      {/* TODO: use a list view in place of this icons view */}
-      <ContentList
-        items={items}
-        checkedItemIds={checkedItemIds}
-        toggleCheckedItem={toggleCheckedItem}
-        selectItem={selectItem}
-        hasNextPage={hasNextPage}
-        fetchNextPage={fetchNextPage}
-      />
-    </Content>
+    <div style={{ display: "flex" }}>
+      <SidePanel value={storeSelected} setValue={setStore} />
+      <div style={{ width: "80%", height: "700px" }}>
+        <Content
+          isFetching={isFetching}
+          searchTerm={debouncedSearchTerm}
+          emptyResults={items.length === 0}
+          ContentEmptyComponent={ProductGalleryContentEmpty}
+          ContentNoResultComponent={ProductGalleryContentNoResult}
+        >
+          {/* TODO: use a list view in place of this icons view */}
+          <ContentList
+            items={items}
+            checkedItemIds={checkedItemIds}
+            toggleCheckedItem={toggleCheckedItem}
+            selectItem={selectItem}
+            hasNextPage={hasNextPage}
+            fetchNextPage={fetchNextPage}
+          />
+        </Content>
+      </div>
+    </div>
     <Footer>
       <FooterSubmitButton isEnabled={!!selectCheckedItem}>
         <FormattedMessage id="select_product" />
