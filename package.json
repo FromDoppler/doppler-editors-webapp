@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "resolutions": {
-    "@types/react": "18.2.35",
+    "@types/react": "18.2.36",
     "@typescript-eslint/parser": "6.9.1"
   },
   "devDependencies": {
@@ -15,7 +15,7 @@
     "@types/jest": "29.5.7",
     "@types/lodash": "4.14.200",
     "@types/node": "20.8.10",
-    "@types/react": "18.2.35",
+    "@types/react": "18.2.36",
     "@types/react-dom": "18.2.14",
     "@types/react-infinite-scroller": "1.2.4",
     "@types/react-modal": "^3.13.1",
