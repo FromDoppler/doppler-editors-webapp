@@ -17,7 +17,7 @@
     "@types/node": "20.8.10",
     "@types/react": "18.2.36",
     "@types/react-dom": "18.2.14",
-    "@types/react-infinite-scroller": "1.2.4",
+    "@types/react-infinite-scroller": "1.2.5",
     "@types/react-modal": "^3.13.1",
     "@types/react-query": "1.2.9",
     "cspell": "7.3.8",
