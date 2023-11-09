@@ -9,6 +9,7 @@ import {
   SortingProductsCriteria,
   SortingProductsDirection,
 } from "./HeaderSortProductsDropdown";
+import { useGetEditorSettings } from "../../queries/editor-settings-queries";
 
 export const useProductGalleryBehavior = ({
   cancel,
@@ -17,6 +18,10 @@ export const useProductGalleryBehavior = ({
   cancel: () => void;
   selectItem: (item: ProductGalleryValue) => void;
 }) => {
+  const editorSettings = useGetEditorSettings();
+  const storeName =
+    editorSettings.data?.stores.find((store) => store.productsEnabled === true)
+      ?.name || "";
   const [searchTerm, setSearchTerm] = useState(
     defaultQueryParameters.searchTerm,
   );
