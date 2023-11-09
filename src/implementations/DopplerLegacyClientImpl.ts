@@ -214,6 +214,8 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
   // https://github.com/MakingSense/Doppler/pull/10148
   const d = objectOrEmptyObject(data);
   const promotionCodeEnabled = !!d.promotionCodeEnabled;
+
+  // TODO: analyze to use a store parse
   const stores =
     arrayOrEmptyArray(d.stores)
       .filter(hasName)
@@ -221,6 +223,7 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
         name: x.name,
         promotionCodeEnabled:
           promotionCodeEnabled && INTEGRATIONS_WITH_PROMOTIONS.includes(x.name),
+        productsEnabled: x.productsEnabled,
       })) ?? [];
   return {
     stores,
@@ -237,7 +240,7 @@ function arrayOrEmptyArray(
   return Array.isArray(value) ? value : [];
 }
 
-function hasName(x: unknown): x is { name: any } {
+function hasName(x: unknown): x is { name: any; productsEnabled: boolean } {
   return !!(x && (x as any).name);
 }
 

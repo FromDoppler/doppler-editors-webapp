@@ -2,7 +2,8 @@ export type DopplerEditorSettings = Readonly<{
   stores: Readonly<DopplerEditorStore[]>;
 }>;
 
-type DopplerEditorStore = Readonly<{
+export type DopplerEditorStore = Readonly<{
   name: string;
   promotionCodeEnabled: boolean;
+  productsEnabled: boolean;
 }>;

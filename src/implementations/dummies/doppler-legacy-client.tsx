@@ -190,7 +190,33 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     console.log("Begin getEditorSettings...");
     await timeout(1000);
     const value: DopplerEditorSettings = {
-      stores: [{ name: "MercadoShops", promotionCodeEnabled: true }],
+      stores: [
+        {
+          name: "MercadoShops",
+          promotionCodeEnabled: true,
+          productsEnabled: true,
+        },
+        {
+          name: "Tienda Nube",
+          promotionCodeEnabled: false,
+          productsEnabled: true,
+        },
+        {
+          name: "Jumpseller",
+          promotionCodeEnabled: false,
+          productsEnabled: false,
+        },
+        {
+          name: "VTEX",
+          promotionCodeEnabled: false,
+          productsEnabled: false,
+        },
+        {
+          name: "Woocomerce",
+          promotionCodeEnabled: false,
+          productsEnabled: true,
+        },
+      ],
     } as const;
     console.log("End getEditorSettings", value);
     return { success: true, value } as const;
