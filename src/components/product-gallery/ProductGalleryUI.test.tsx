@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ProductGalleryUI } from "./ProductGalleryUI";
 import { noop } from "../../utils";
 import userEvent from "@testing-library/user-event";
@@ -7,11 +8,56 @@ import { ModalProvider } from "react-modal-hook";
 import { ReactNode } from "react";
 import { ProductGalleryValue } from "../../abstractions/domain/product-gallery";
 import { GalleryItem } from "../base-gallery/GalleryItem";
+import { AppServices } from "../../abstractions";
+import { AppServicesProvider } from "../AppServicesContext";
+
+const createQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        cacheTime: 0,
+      },
+    },
+  });
+
+const queryClient = createQueryClient();
+const editorSettings = {
+  stores: [
+    {
+      name: "MercadoShops",
+      promotionCodeEnabled: true,
+      productsEnabled: true,
+    },
+    {
+      name: "TiendaNube",
+      promotionCodeEnabled: false,
+      productsEnabled: true,
+    },
+    {
+      name: "VTEX",
+      promotionCodeEnabled: false,
+      productsEnabled: false,
+    },
+  ],
+};
+
+const appServices = {
+  dopplerLegacyClient: {
+    getEditorSettings: () =>
+      Promise.resolve({ success: true, value: editorSettings }),
+  } as unknown,
+  //assetManifestClient,
+} as unknown as AppServices;
 
 const TestContextWrapper = ({ children }: { children: ReactNode }) => (
-  <TestDopplerIntlProvider>
-    <ModalProvider>{children}</ModalProvider>
-  </TestDopplerIntlProvider>
+  <QueryClientProvider client={queryClient}>
+    <AppServicesProvider appServices={appServices}>
+      <TestDopplerIntlProvider>
+        <ModalProvider>{children}</ModalProvider>
+      </TestDopplerIntlProvider>
+    </AppServicesProvider>
+  </QueryClientProvider>
 );
 
 describe(ProductGalleryUI.name, () => {

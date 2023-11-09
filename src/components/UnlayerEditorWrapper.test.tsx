@@ -46,12 +46,24 @@ describe(UnlayerEditorWrapper.name, () => {
     const expectedCustomCSS = ["b.css"];
     const expectedCustomJS = ["a.js", "d.js"];
     const editorSettings = {
-      stores: [{ name: "MercadoShops", promotionCodeEnabled: true }],
+      stores: [
+        {
+          name: "MercadoShops",
+          promotionCodeEnabled: true,
+          productsEnabled: true,
+        },
+        {
+          name: "TiendaNube",
+          promotionCodeEnabled: false,
+          productsEnabled: true,
+        },
+      ],
     };
     const expectedExtensionsConfiguration =
       'window["unlayer-extensions-configuration"] = ' +
       '{"locale":"en","baseAssetsUrl":"https://app2.dopplerfiles.com/MSEditor/images",' +
-      '"stores":[{"name":"MercadoShops","promotionCodeEnabled":true}]};';
+      '"stores":[{"name":"MercadoShops","promotionCodeEnabled":true,"productsEnabled":true},' +
+      '{"name":"TiendaNube","promotionCodeEnabled":false,"productsEnabled":true}]};';
     const getEntrypoints = jest.fn(() =>
       Promise.resolve(unlayerEditorExtensionsEntrypoints),
     );
