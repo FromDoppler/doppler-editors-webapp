@@ -58,7 +58,7 @@ export const demoImages: ImageItem[] = [
 export const demoProducts: ProductGalleryValue[] = [
   {
     productUrl: "https://fromdoppler.net/product/product1",
-    imageUrl: "https://fromdoppler.net/product/product1.png",
+    imageUrl: "https://dummyimage.com/150/000/fff.jpg&text=product1",
     title: "Title product1",
     defaultPriceText: "$ 1000",
     discountPriceText: "$ 900",
@@ -67,40 +67,49 @@ export const demoProducts: ProductGalleryValue[] = [
   },
   {
     productUrl: "https://fromdoppler.net/product/product2",
-    imageUrl: "https://fromdoppler.net/product/product2.png",
+    imageUrl: "https://dummyimage.com/150/000/fff.jpg&text=product2",
     title: "Title product2",
-    defaultPriceText: "$ 5000",
+    defaultPriceText: "$ 2000",
     discountPriceText: undefined,
     discountText: undefined,
     descriptionHtml: "<p>Descripción del producto <b>product2</b></p>",
   },
   {
     productUrl: "https://fromdoppler.net/product/product3",
-    imageUrl: "https://fromdoppler.net/product/product3.png",
+    imageUrl: "https://dummyimage.com/150/000/fff.jpg&text=product3",
     title: "Title product3",
-    defaultPriceText: undefined,
+    defaultPriceText: "$ 3000",
     discountPriceText: "$ 3000",
     discountText: undefined,
     descriptionHtml: "<p>Descripción del producto <b>product3</b></p>",
   },
   {
     productUrl: "https://fromdoppler.net/product/product4",
-    imageUrl: "https://fromdoppler.net/product/product4.png",
+    imageUrl: "https://dummyimage.com/150/000/fff.jpg&text=product4",
     title: "Title product4",
-    defaultPriceText: "$ 2000",
+    defaultPriceText: "$ 4000",
     discountPriceText: "$ 1000",
     discountText: undefined,
     descriptionHtml: "<p>Descripción del producto <b>product4</b></p>",
   },
   {
     productUrl: "https://fromdoppler.net/product/product5",
-    imageUrl: "https://fromdoppler.net/product/product5.png",
+    imageUrl: "https://dummyimage.com/150/000/fff.jpg&text=product5",
     title: "Title product5",
-    defaultPriceText: "$ 4000",
+    defaultPriceText: "$ 5000",
     discountPriceText: undefined,
     discountText: "50%",
     descriptionHtml: "<p>Descripción del producto <b>product5</b></p>",
   },
+  ...Array.from({ length: 95 }, (_, i) => ({
+    productUrl: `https://fromdoppler.net/product/product${i + 6}`,
+    imageUrl: `https://dummyimage.com/150/000/fff.jpg&text=product${i + 6}`,
+    title: `Title product${i + 6}`,
+    defaultPriceText: "$ 6000",
+    discountPriceText: "$ 3000",
+    discountText: "50%",
+    descriptionHtml: `<p>Descripción del producto <b>product5</b></p>`,
+  })),
 ];
 
 export class DummyDopplerLegacyClient implements DopplerLegacyClient {
@@ -302,11 +311,19 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     );
     await timeout(1000);
 
+    const pageSize = 25;
+    const start = (continuation && parseInt(continuation)) || 0;
+    const end = start + pageSize;
+    const filteredItems = demoProducts.filter((x: ProductGalleryValue) =>
+      (x.title || "").includes(searchTerm),
+    );
+    const items = filteredItems.slice(start, end).map((x) => ({ ...x }));
+    const newContinuation = filteredItems.length > end ? `${end}` : undefined;
     const result = {
       success: true as const,
       value: {
-        items: demoProducts,
-        continuation: undefined,
+        items,
+        continuation: newContinuation,
       },
     };
 
