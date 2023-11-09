@@ -431,6 +431,72 @@ describe(ProductGalleryUI.name, () => {
     // Assert
     screen.getByText("products_gallery_search_no_results_message");
   });
+
+  it("should have a store selected with active style", () => {
+    // Arrange
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <TestContextWrapper>
+        <ProductGalleryUI {...baseProps} storeSelected="MercadoShops" />
+      </TestContextWrapper>,
+    );
+
+    // Assert
+    const storeItem = screen.getByText("MercadoShops");
+    expect(storeItem.style.color).toEqual("rgb(38, 38, 38)");
+  });
+
+  it("should have a store with no active style", () => {
+    // Arrange
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <TestContextWrapper>
+        <ProductGalleryUI {...baseProps} />
+      </TestContextWrapper>,
+    );
+
+    // Assert
+    const storeItem = screen.getByText("MercadoShops");
+    expect(storeItem.style.color).toEqual("rgb(153, 153, 153)");
+  });
+
+  it("should not display stores with productsEnabled false", async () => {
+    // Arrange
+    const baseProps = createBaseProps();
+
+    // Act
+    render(
+      <TestContextWrapper>
+        <ProductGalleryUI {...baseProps} />
+      </TestContextWrapper>,
+    );
+
+    // Assert
+    const storeItem = screen.queryByText("VTEX");
+    expect(storeItem).toBeNull();
+  });
+
+  it("should call setStore when a store item is clicked", async () => {
+    // Arrange
+    const baseProps = createBaseProps();
+    const setStore = jest.fn();
+    // Act
+    render(
+      <TestContextWrapper>
+        <ProductGalleryUI {...baseProps} setStore={setStore} />
+      </TestContextWrapper>,
+    );
+
+    // Assert
+    const storeItem = screen.getByText("TiendaNube");
+    await userEvent.click(storeItem);
+    expect(setStore).toBeCalledTimes(1);
+    expect(setStore).toBeCalledWith("TiendaNube");
+  });
 });
 
 const createBaseProps: () => Parameters<typeof ProductGalleryUI>[0] = () => ({
@@ -439,6 +505,8 @@ const createBaseProps: () => Parameters<typeof ProductGalleryUI>[0] = () => ({
   cancel: noop,
   checkedItemIds: new Set(),
   toggleCheckedItem: noop,
+  storeSelected: "",
+  setStore: noop,
   searchTerm: "",
   debouncedSearchTerm: "",
   setSearchTerm: noop,
