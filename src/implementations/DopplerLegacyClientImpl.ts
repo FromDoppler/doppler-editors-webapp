@@ -188,18 +188,40 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
       continuation: string | undefined;
     }>
   > {
-    console.error("getProducts is not implemented yet");
-    console.log(
-      `searchTerm: ${searchTerm}; sortingCriteria: ${sortingCriteria};`,
+    const take = 20;
+    const page = continuation ? parseInt(continuation) : 1;
+    const queryString = new URLSearchParams({
+      store: storeSelected,
+      query: searchTerm,
+      page: `${page}`,
+      itemsPerPage: `${take}`,
+      sortingCriteria: sortingCriteria,
+      isAscending: sortingDirection === "ASCENDING" ? "true" : "false",
+    });
+
+    const path = "/MSEditor/Editor/GetProducts";
+    const response = await this.axios.get(`${path}?${queryString}`);
+
+    const items = arrayOrEmptyArray(response.data.products).map(
+      parseProductItem,
     );
-    console.log(
-      `sortingDirection: ${sortingDirection}; continuation: ${continuation};`,
-    );
+
+    const count = items.length;
+    const total = parseInt(response.data.total);
+    let newContinuation = undefined;
+
+    // total of items for the current query was not informed but it has items
+    if (total === 0 && count > 0) {
+      newContinuation = count === take ? `${page + 1}` : undefined;
+    } else {
+      newContinuation = total > page * take ? `${page + 1}` : undefined;
+    }
+
     return {
       success: true as const,
       value: {
-        items: [],
-        continuation: undefined,
+        items,
+        continuation: newContinuation,
       },
     };
   }
@@ -321,4 +343,24 @@ function parseDate(value: string) {
   );
 
   return new Date(asNumber);
+}
+
+function parseProductItem({
+  ProductUrl,
+  ImageUrl,
+  Title,
+  DefaultPriceText,
+  DiscountPriceText,
+  DiscountText,
+  DescriptionHtml,
+}: any) {
+  return {
+    productUrl: `${ProductUrl}`,
+    imageUrl: `${ImageUrl}`,
+    title: `${Title}`,
+    defaultPriceText: `${DefaultPriceText}`,
+    discountPriceText: `${DiscountPriceText}`,
+    discountText: `${DiscountText}`,
+    descriptionHtml: `${DescriptionHtml}`,
+  };
 }
