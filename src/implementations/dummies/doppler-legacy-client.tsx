@@ -267,11 +267,13 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
   };
 
   getProducts: ({
+    storeSelected,
     searchTerm,
     sortingCriteria,
     sortingDirection,
     continuation,
   }: {
+    storeSelected: string;
     searchTerm: string;
     sortingCriteria: SortingProductsCriteria;
     sortingDirection: SortingProductsDirection;
@@ -285,14 +287,15 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
       continuation: string | undefined;
     }>
   > = async ({
+    storeSelected,
     searchTerm,
     sortingCriteria,
     sortingDirection,
     continuation,
   }) => {
-    console.log("Begin getImageGallery.");
+    console.log("Begin getProducts.");
     console.log(
-      `searchTerm: ${searchTerm}; sortingCriteria: ${sortingCriteria};`,
+      `store:  ${storeSelected}; searchTerm: ${searchTerm}; sortingCriteria: ${sortingCriteria};`,
     );
     console.log(
       `sortingDirection: ${sortingDirection}; continuation: ${continuation};`,

@@ -168,11 +168,13 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
   }
 
   async getProducts({
+    storeSelected,
     searchTerm,
     sortingCriteria,
     sortingDirection,
     continuation,
   }: {
+    storeSelected: string;
     searchTerm: string;
     sortingCriteria: SortingProductsCriteria;
     sortingDirection: SortingProductsDirection;
