@@ -11,12 +11,14 @@ type QueryParameters = {
   searchTerm: string;
   sortingCriteria: SortingProductsCriteria;
   sortingDirection: SortingProductsDirection;
+  storeSelected: string;
 };
 
 export const defaultQueryParameters: QueryParameters = {
   searchTerm: "",
   sortingCriteria: "PRICE",
   sortingDirection: "DESCENDING",
+  storeSelected: "",
 };
 
 const getBaseQueryKey = () => ["products-gallery"] as const;
@@ -25,25 +27,34 @@ const getQueryKey = ({
   searchTerm,
   sortingCriteria,
   sortingDirection,
+  storeSelected,
 }: QueryParameters) =>
   [
     ...getBaseQueryKey(),
     searchTerm,
     `${sortingCriteria}_${sortingDirection}`,
+    storeSelected,
   ] as const;
 
 export const useGetProductsGallery = ({
   searchTerm = defaultQueryParameters.searchTerm,
   sortingCriteria = defaultQueryParameters.sortingCriteria,
   sortingDirection = defaultQueryParameters.sortingDirection,
+  storeSelected = defaultQueryParameters.storeSelected,
 }: Partial<QueryParameters> = {}) => {
   const { dopplerLegacyClient } = useAppServices();
 
   const query = useInfiniteQuery({
-    queryKey: getQueryKey({ searchTerm, sortingCriteria, sortingDirection }),
+    queryKey: getQueryKey({
+      searchTerm,
+      sortingCriteria,
+      sortingDirection,
+      storeSelected,
+    }),
     queryFn: async ({ pageParam: continuation }: { pageParam?: string }) =>
       (
         await dopplerLegacyClient.getProducts({
+          storeSelected,
           searchTerm,
           sortingCriteria,
           sortingDirection,
