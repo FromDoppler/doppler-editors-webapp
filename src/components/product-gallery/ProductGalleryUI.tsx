@@ -56,6 +56,7 @@ export const ProductGalleryUI = ({
       <HeaderSortProductsDropdown value={sorting} setValue={setSorting} />
       <HeaderSearchInput value={searchTerm} setValue={setSearchTerm} />
     </Header>
+    {/* TODO: resolve style rules by class */}
     <div style={{ display: "flex" }}>
       <SidePanel value={storeSelected} setValue={setStore} />
       <div style={{ width: "80%", height: "700px" }}>
