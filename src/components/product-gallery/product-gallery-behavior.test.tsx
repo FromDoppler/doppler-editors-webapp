@@ -51,6 +51,8 @@ const createTestContext = () => {
     getSearchTerm: () => currentHookValues.searchTerm,
     setSearchTerm: (value: string) =>
       act(() => currentHookValues.setSearchTerm(value)),
+    setStore: (value: string) => act(() => currentHookValues.setStore(value)),
+    getStore: () => currentHookValues.storeSelected,
     getSorting: () => currentHookValues.sorting,
     setSorting: (value: SortingProductsPair) =>
       act(() => currentHookValues.setSorting(value)),
@@ -182,6 +184,8 @@ describe(useProductGalleryBehavior.name, () => {
       Component,
       getSearchTerm,
       setSearchTerm,
+      setStore,
+      getStore,
       getSorting,
       setSorting,
       mocks: { dopplerLegacyClient },
@@ -194,6 +198,7 @@ describe(useProductGalleryBehavior.name, () => {
           searchTerm: "",
           sortingCriteria: "PRICE",
           sortingDirection: "DESCENDING",
+          storeSelected: "",
         }),
       );
     });
@@ -201,6 +206,7 @@ describe(useProductGalleryBehavior.name, () => {
     // Act
     setSearchTerm("This value will be removed");
     setSorting({ criteria: "PRICE", direction: "ASCENDING" });
+    setStore("MercadoShops");
 
     // Assert
     expect(getSearchTerm()).not.toBe("");
@@ -208,16 +214,31 @@ describe(useProductGalleryBehavior.name, () => {
       criteria: "PRICE",
       direction: "ASCENDING",
     });
+    expect(getStore()).toEqual("MercadoShops");
     await waitFor(() => {
       expect(dopplerLegacyClient.getProducts).toHaveBeenLastCalledWith(
         expect.objectContaining({
           searchTerm: "This value will be removed",
           sortingCriteria: "PRICE",
           sortingDirection: "ASCENDING",
+          storeSelected: "MercadoShops",
         }),
       );
     });
     expect(dopplerLegacyClient.getProducts).toBeCalledTimes(2);
+
+    setStore("TiendaNube");
+    await waitFor(() => {
+      expect(dopplerLegacyClient.getProducts).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          searchTerm: "This value will be removed",
+          sortingCriteria: "PRICE",
+          sortingDirection: "ASCENDING",
+          storeSelected: "TiendaNube",
+        }),
+      );
+    });
+    expect(dopplerLegacyClient.getProducts).toBeCalledTimes(3);
   });
 
   it("should keep checkedItems when the id is still present after reloading", async () => {

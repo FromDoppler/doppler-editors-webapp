@@ -33,6 +33,7 @@ An error occurred while uploading the file "{filename}". Please try again.`,
   image_gallery_empty_title: `You don't have images yet`,
   image_gallery_search_no_results_message: `There's no image with name "{searchTerm}"`,
   lists: `Lists`,
+  my_integrations: `My Integrations`,
   new_template_description: `
 Have you finished editing your Template? Save it in the "My Templates" section to be able to use this
 version as many times as you want.`,

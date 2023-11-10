@@ -434,11 +434,13 @@ describe(DopplerLegacyClientImpl.name, () => {
               name: "MercadoShops",
               accessToken: "123",
               storeId: "456",
+              productsEnabled: true,
             },
             {
               name: "Tiendanube",
               accessToken: "789",
               storeId: "101112",
+              productsEnabled: false,
             },
           ],
           promotionCodeEnabled: false,
@@ -447,10 +449,12 @@ describe(DopplerLegacyClientImpl.name, () => {
           stores: [
             {
               name: "MercadoShops",
+              productsEnabled: true,
               promotionCodeEnabled: false,
             },
             {
               name: "Tiendanube",
+              productsEnabled: false,
               promotionCodeEnabled: false,
             },
           ],
@@ -463,11 +467,13 @@ describe(DopplerLegacyClientImpl.name, () => {
               name: "MercadoShops",
               accessToken: "123",
               storeId: "456",
+              productsEnabled: true,
             },
             {
               name: "Tiendanube",
               accessToken: "789",
               storeId: "101112",
+              productsEnabled: false,
             },
           ],
           promotionCodeEnabled: true,
@@ -477,10 +483,12 @@ describe(DopplerLegacyClientImpl.name, () => {
             {
               name: "MercadoShops",
               promotionCodeEnabled: true,
+              productsEnabled: true,
             },
             {
               name: "Tiendanube",
               promotionCodeEnabled: false,
+              productsEnabled: false,
             },
           ],
         },

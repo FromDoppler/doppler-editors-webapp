@@ -50,11 +50,13 @@ export interface DopplerLegacyClient {
     store: string;
   }) => Promise<Result<PromoCodeItem[]>>;
   getProducts: ({
+    storeSelected,
     searchTerm,
     sortingCriteria,
     sortingDirection,
     continuation,
   }: {
+    storeSelected: string;
     searchTerm: string;
     sortingCriteria: SortingProductsCriteria;
     sortingDirection: SortingProductsDirection;

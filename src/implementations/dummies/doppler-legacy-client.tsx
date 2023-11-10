@@ -58,7 +58,7 @@ export const demoImages: ImageItem[] = [
 export const demoProducts: ProductGalleryValue[] = [
   {
     productUrl: "https://fromdoppler.net/product/product1",
-    imageUrl: "https://fromdoppler.net/product/product1.png",
+    imageUrl: "https://dummyimage.com/150/000/fff.jpg&text=product1",
     title: "Title product1",
     defaultPriceText: "$ 1000",
     discountPriceText: "$ 900",
@@ -67,40 +67,49 @@ export const demoProducts: ProductGalleryValue[] = [
   },
   {
     productUrl: "https://fromdoppler.net/product/product2",
-    imageUrl: "https://fromdoppler.net/product/product2.png",
+    imageUrl: "https://dummyimage.com/150/000/fff.jpg&text=product2",
     title: "Title product2",
-    defaultPriceText: "$ 5000",
+    defaultPriceText: "$ 2000",
     discountPriceText: undefined,
     discountText: undefined,
     descriptionHtml: "<p>Descripción del producto <b>product2</b></p>",
   },
   {
     productUrl: "https://fromdoppler.net/product/product3",
-    imageUrl: "https://fromdoppler.net/product/product3.png",
+    imageUrl: "https://dummyimage.com/150/000/fff.jpg&text=product3",
     title: "Title product3",
-    defaultPriceText: undefined,
+    defaultPriceText: "$ 3000",
     discountPriceText: "$ 3000",
     discountText: undefined,
     descriptionHtml: "<p>Descripción del producto <b>product3</b></p>",
   },
   {
     productUrl: "https://fromdoppler.net/product/product4",
-    imageUrl: "https://fromdoppler.net/product/product4.png",
+    imageUrl: "https://dummyimage.com/150/000/fff.jpg&text=product4",
     title: "Title product4",
-    defaultPriceText: "$ 2000",
+    defaultPriceText: "$ 4000",
     discountPriceText: "$ 1000",
     discountText: undefined,
     descriptionHtml: "<p>Descripción del producto <b>product4</b></p>",
   },
   {
     productUrl: "https://fromdoppler.net/product/product5",
-    imageUrl: "https://fromdoppler.net/product/product5.png",
+    imageUrl: "https://dummyimage.com/150/000/fff.jpg&text=product5",
     title: "Title product5",
-    defaultPriceText: "$ 4000",
+    defaultPriceText: "$ 5000",
     discountPriceText: undefined,
     discountText: "50%",
     descriptionHtml: "<p>Descripción del producto <b>product5</b></p>",
   },
+  ...Array.from({ length: 95 }, (_, i) => ({
+    productUrl: `https://fromdoppler.net/product/product${i + 6}`,
+    imageUrl: `https://dummyimage.com/150/000/fff.jpg&text=product${i + 6}`,
+    title: `Title product${i + 6}`,
+    defaultPriceText: "$ 6000",
+    discountPriceText: "$ 3000",
+    discountText: "50%",
+    descriptionHtml: `<p>Descripción del producto <b>product5</b></p>`,
+  })),
 ];
 
 export class DummyDopplerLegacyClient implements DopplerLegacyClient {
@@ -190,7 +199,33 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     console.log("Begin getEditorSettings...");
     await timeout(1000);
     const value: DopplerEditorSettings = {
-      stores: [{ name: "MercadoShops", promotionCodeEnabled: true }],
+      stores: [
+        {
+          name: "MercadoShops",
+          promotionCodeEnabled: true,
+          productsEnabled: true,
+        },
+        {
+          name: "Tienda Nube",
+          promotionCodeEnabled: false,
+          productsEnabled: true,
+        },
+        {
+          name: "Jumpseller",
+          promotionCodeEnabled: false,
+          productsEnabled: false,
+        },
+        {
+          name: "VTEX",
+          promotionCodeEnabled: false,
+          productsEnabled: false,
+        },
+        {
+          name: "Woocomerce",
+          promotionCodeEnabled: false,
+          productsEnabled: true,
+        },
+      ],
     } as const;
     console.log("End getEditorSettings", value);
     return { success: true, value } as const;
@@ -241,11 +276,13 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
   };
 
   getProducts: ({
+    storeSelected,
     searchTerm,
     sortingCriteria,
     sortingDirection,
     continuation,
   }: {
+    storeSelected: string;
     searchTerm: string;
     sortingCriteria: SortingProductsCriteria;
     sortingDirection: SortingProductsDirection;
@@ -259,25 +296,34 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
       continuation: string | undefined;
     }>
   > = async ({
+    storeSelected,
     searchTerm,
     sortingCriteria,
     sortingDirection,
     continuation,
   }) => {
-    console.log("Begin getImageGallery.");
+    console.log("Begin getProducts.");
     console.log(
-      `searchTerm: ${searchTerm}; sortingCriteria: ${sortingCriteria};`,
+      `store:  ${storeSelected}; searchTerm: ${searchTerm}; sortingCriteria: ${sortingCriteria};`,
     );
     console.log(
       `sortingDirection: ${sortingDirection}; continuation: ${continuation};`,
     );
     await timeout(1000);
 
+    const pageSize = 25;
+    const start = (continuation && parseInt(continuation)) || 0;
+    const end = start + pageSize;
+    const filteredItems = demoProducts.filter((x: ProductGalleryValue) =>
+      (x.title || "").includes(searchTerm),
+    );
+    const items = filteredItems.slice(start, end).map((x) => ({ ...x }));
+    const newContinuation = filteredItems.length > end ? `${end}` : undefined;
     const result = {
       success: true as const,
       value: {
-        items: demoProducts,
-        continuation: undefined,
+        items,
+        continuation: newContinuation,
       },
     };
 

@@ -31,6 +31,7 @@ Se produjo un error al subir el archivo "{filename}". Inténtalo nuevamente.`,
   image_gallery_empty_title: `Aún no tienes imágenes`,
   image_gallery_search_no_results_message: `Ninguna de tus imágenes posee el nombre "{searchTerm}"`,
   lists: `Listas`,
+  my_integrations: `Mis Integraciones`,
   new_template_description: `
 ¿Ya has editado tu Plantilla? Guárdala en la sección "Mis Plantillas" para poder acceder a esta
 versión cuando quieras volver a utilizarla.`,

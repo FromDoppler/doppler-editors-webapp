@@ -9,6 +9,7 @@ import {
   SortingProductsCriteria,
   SortingProductsDirection,
 } from "./HeaderSortProductsDropdown";
+import { useGetEditorSettings } from "../../queries/editor-settings-queries";
 
 export const useProductGalleryBehavior = ({
   cancel,
@@ -17,9 +18,14 @@ export const useProductGalleryBehavior = ({
   cancel: () => void;
   selectItem: (item: ProductGalleryValue) => void;
 }) => {
+  const editorSettings = useGetEditorSettings();
+  const storeName =
+    editorSettings.data?.stores.find((store) => store.productsEnabled === true)
+      ?.name || "";
   const [searchTerm, setSearchTerm] = useState(
     defaultQueryParameters.searchTerm,
   );
+  const [storeSelected, setStore] = useState(storeName);
   const [sortingCriteria, setSortingCriteria] = useState(
     defaultQueryParameters.sortingCriteria,
   );
@@ -28,8 +34,8 @@ export const useProductGalleryBehavior = ({
   );
 
   const parametersToDebounce = useMemo(
-    () => ({ searchTerm, sortingCriteria, sortingDirection }),
-    [searchTerm, sortingCriteria, sortingDirection],
+    () => ({ searchTerm, sortingCriteria, sortingDirection, storeSelected }),
+    [searchTerm, sortingCriteria, sortingDirection, storeSelected],
   );
 
   const debouncedQueryParameters = useDebounce(parametersToDebounce, 300);
@@ -119,6 +125,8 @@ export const useProductGalleryBehavior = ({
     selectCheckedItem,
     selectItem,
     setSearchTerm,
+    storeSelected,
+    setStore,
     setSorting,
     sorting,
     toggleCheckedItem: toggleCheckedItemSimpleSelection,
