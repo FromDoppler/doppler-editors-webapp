@@ -189,12 +189,11 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     }>
   > {
     const take = 20;
-    const page = continuation ? parseInt(continuation) : 1;
     const queryString = new URLSearchParams({
       store: storeSelected,
       query: searchTerm,
-      page: `${page}`,
-      itemsPerPage: `${take}`,
+      continuationToken: !!continuation ? continuation : "",
+      itemsQuantity: `${take}`,
       sortingCriteria: sortingCriteria,
       isAscending: sortingDirection === "ASCENDING" ? "true" : "false",
     });
@@ -206,16 +205,9 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
       parseProductItem,
     );
 
-    const count = items.length;
-    const total = parseInt(response.data.total);
-    let newContinuation = undefined;
-
-    // total of items for the current query was not informed but it has items
-    if (total === 0 && count > 0) {
-      newContinuation = count === take ? `${page + 1}` : undefined;
-    } else {
-      newContinuation = total > page * take ? `${page + 1}` : undefined;
-    }
+    const newContinuation = response.data.paging.continuationToken
+      ? response.data.paging.continuationToken
+      : undefined;
 
     return {
       success: true as const,
