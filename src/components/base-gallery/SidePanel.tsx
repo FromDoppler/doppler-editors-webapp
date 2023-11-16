@@ -41,10 +41,7 @@ export const SidePanel = ({
   return loading ? (
     <ContentLoading />
   ) : (
-    <div
-      className="dp-product-gallery-side-panel"
-      style={{ width: "12%", paddingRight: "2%" }}
-    >
+    <div className="dp-product-gallery-side-panel" style={{ width: "230px" }}>
       <strong>
         <FormattedMessage id="my_integrations" />
       </strong>
