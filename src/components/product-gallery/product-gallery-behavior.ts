@@ -19,13 +19,13 @@ export const useProductGalleryBehavior = ({
   selectItem: (item: ProductGalleryValue) => void;
 }) => {
   const editorSettings = useGetEditorSettings();
-  const storeName =
-    editorSettings.data?.stores.find((store) => store.productsEnabled === true)
-      ?.name || "";
+  const defaultStore = editorSettings.data?.stores.find(
+    (store) => store.productsEnabled === true,
+  );
   const [searchTerm, setSearchTerm] = useState(
     defaultQueryParameters.searchTerm,
   );
-  const [storeSelected, setStore] = useState(storeName);
+  const [storeSelected, setStore] = useState(defaultStore);
   const [sortingCriteria, setSortingCriteria] = useState(
     defaultQueryParameters.sortingCriteria,
   );
