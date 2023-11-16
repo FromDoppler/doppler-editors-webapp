@@ -152,24 +152,24 @@ export function reducer(
             canRedo,
           }
         : newerUpdatesBeingSaved
-        ? {
-            savedCounter: action.savingUpdateCounter,
-            updateCounter,
-            savingProcessData,
-            onNoPendingUpdates,
-            errorData,
-            canUndo,
-            canRedo,
-          }
-        : {
-            savedCounter: action.savingUpdateCounter,
-            updateCounter,
-            savingProcessData: null,
-            onNoPendingUpdates,
-            errorData: null,
-            canUndo,
-            canRedo,
-          };
+          ? {
+              savedCounter: action.savingUpdateCounter,
+              updateCounter,
+              savingProcessData,
+              onNoPendingUpdates,
+              errorData,
+              canUndo,
+              canRedo,
+            }
+          : {
+              savedCounter: action.savingUpdateCounter,
+              updateCounter,
+              savingProcessData: null,
+              onNoPendingUpdates,
+              errorData: null,
+              canUndo,
+              canRedo,
+            };
     case "content-updated":
       return {
         savedCounter,
@@ -194,29 +194,29 @@ export function reducer(
             canRedo,
           }
         : !action.force && savedCounter === updateCounter
-        ? // Current data is already saved and we are not forcing
-          {
-            savedCounter,
-            updateCounter,
-            savingProcessData: null,
-            onNoPendingUpdates,
-            errorData,
-            canUndo,
-            canRedo,
-          }
-        : // Current data is not saved (nor being saved) or forcing
-          {
-            savedCounter,
-            updateCounter,
-            savingProcessData: {
-              step: "preparing-content",
-              savingUpdateCounter: updateCounter,
-            },
-            onNoPendingUpdates,
-            errorData: null,
-            canUndo,
-            canRedo,
-          };
+          ? // Current data is already saved and we are not forcing
+            {
+              savedCounter,
+              updateCounter,
+              savingProcessData: null,
+              onNoPendingUpdates,
+              errorData,
+              canUndo,
+              canRedo,
+            }
+          : // Current data is not saved (nor being saved) or forcing
+            {
+              savedCounter,
+              updateCounter,
+              savingProcessData: {
+                step: "preparing-content",
+                savingUpdateCounter: updateCounter,
+              },
+              onNoPendingUpdates,
+              errorData: null,
+              canUndo,
+              canRedo,
+            };
     case "content-prepared-to-save":
       return newerUpdatesBeingSaved ||
         newerUpdatesSaved ||

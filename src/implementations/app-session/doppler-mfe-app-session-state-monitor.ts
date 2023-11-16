@@ -34,17 +34,17 @@ const mapDopplerSessionState: (
   !dopplerSessionState
     ? defaultAppSessionState
     : dopplerSessionState.status !== "authenticated"
-    ? { status: dopplerSessionState.status }
-    : {
-        status: "authenticated",
-        jwtToken: dopplerSessionState.jwtToken,
-        dopplerAccountName: dopplerSessionState.dopplerAccountName,
-        lang: dopplerSessionState.lang,
-        unlayerUser: {
-          id: dopplerSessionState.unlayerUserId,
-          signature: dopplerSessionState.unlayerUserSignature,
-        },
-      };
+      ? { status: dopplerSessionState.status }
+      : {
+          status: "authenticated",
+          jwtToken: dopplerSessionState.jwtToken,
+          dopplerAccountName: dopplerSessionState.dopplerAccountName,
+          lang: dopplerSessionState.lang,
+          unlayerUser: {
+            id: dopplerSessionState.unlayerUserId,
+            signature: dopplerSessionState.unlayerUserSignature,
+          },
+        };
 
 export class DopplerSessionMfeAppSessionStateAccessor
   implements AppSessionStateAccessor
