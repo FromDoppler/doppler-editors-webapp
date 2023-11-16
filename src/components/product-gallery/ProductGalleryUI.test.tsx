@@ -10,6 +10,7 @@ import { ProductGalleryValue } from "../../abstractions/domain/product-gallery";
 import { GalleryItem } from "../base-gallery/GalleryItem";
 import { AppServices } from "../../abstractions";
 import { AppServicesProvider } from "../AppServicesContext";
+import { DopplerEditorStore } from "../../abstractions/domain/DopplerEditorSettings";
 
 const createQueryClient = () =>
   new QueryClient({
@@ -435,11 +436,16 @@ describe(ProductGalleryUI.name, () => {
   it("should have a store selected with active style", () => {
     // Arrange
     const baseProps = createBaseProps();
+    const store: DopplerEditorStore = {
+      name: `MercadoShops`,
+      promotionCodeEnabled: false,
+      productsEnabled: true,
+    };
 
     // Act
     render(
       <TestContextWrapper>
-        <ProductGalleryUI {...baseProps} storeSelected="MercadoShops" />
+        <ProductGalleryUI {...baseProps} storeSelected={store} />
       </TestContextWrapper>,
     );
 
@@ -495,7 +501,7 @@ describe(ProductGalleryUI.name, () => {
     const storeItem = screen.getByText("TiendaNube");
     await userEvent.click(storeItem);
     expect(setStore).toBeCalledTimes(1);
-    expect(setStore).toBeCalledWith("TiendaNube");
+    expect(setStore).toBeCalledWith(editorSettings.stores[1]);
   });
 });
 
@@ -505,7 +511,7 @@ const createBaseProps: () => Parameters<typeof ProductGalleryUI>[0] = () => ({
   cancel: noop,
   checkedItemIds: new Set(),
   toggleCheckedItem: noop,
-  storeSelected: "",
+  storeSelected: emptyStore,
   setStore: noop,
   searchTerm: "",
   debouncedSearchTerm: "",
@@ -521,4 +527,10 @@ const createBaseProps: () => Parameters<typeof ProductGalleryUI>[0] = () => ({
 const hasACheckedCheckbox = (element: Element) => {
   const checkbox = element.querySelector('input[type="checkbox"]');
   return !!(checkbox && "checked" in checkbox && checkbox.checked);
+};
+
+const emptyStore = {
+  name: "",
+  promotionCodeEnabled: false,
+  productsEnabled: true,
 };
