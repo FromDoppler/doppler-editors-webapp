@@ -15,6 +15,7 @@ import { ProductGalleryContentNoResult } from "./ProductGalleryContentNoResult";
 import { ContentList } from "../base-gallery/ContentList";
 import { GalleryItem } from "../base-gallery/GalleryItem";
 import { SidePanel } from "../base-gallery/SidePanel";
+import { DopplerEditorStore } from "../../abstractions/domain/DopplerEditorSettings";
 
 export const ProductGalleryUI = ({
   cancel,
@@ -42,10 +43,10 @@ export const ProductGalleryUI = ({
   isFetching: boolean;
   items: GalleryItem<ProductGalleryValue>[];
   searchTerm: string;
-  storeSelected: string;
+  storeSelected: DopplerEditorStore;
   selectCheckedItem: (() => void) | null;
   selectItem: (item: ProductGalleryValue) => void;
-  setStore: (store: string) => void;
+  setStore: (store: DopplerEditorStore) => void;
   setSearchTerm: (value: string) => void;
   setSorting: (value: SortingProductsPair) => void;
   sorting: SortingProductsPair;

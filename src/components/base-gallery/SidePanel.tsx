@@ -9,8 +9,8 @@ export const SidePanel = ({
   setValue,
   value,
 }: {
-  value: string;
-  setValue: (store: string) => void;
+  value: DopplerEditorStore;
+  setValue: (store: DopplerEditorStore) => void;
 }) => {
   const liStyle = {
     cursor: "pointer",
@@ -49,8 +49,8 @@ export const SidePanel = ({
         {stores.map((store) => (
           <li
             key={store.name}
-            style={store.name === value ? liStyleActive : liStyle}
-            onClick={() => setValue(store.name)}
+            style={store.name === value.name ? liStyleActive : liStyle}
+            onClick={() => setValue(store)}
           >
             {store.name}
           </li>
