@@ -43,7 +43,7 @@ export const SidePanel = ({
   ) : (
     <div
       className="dp-product-gallery-side-panel"
-      style={{ width: "12%", paddingRight: "2%" }}
+      style={{ width: "12%", paddingRight: "3%" }}
     >
       <strong>
         <FormattedMessage id="my_integrations" />
