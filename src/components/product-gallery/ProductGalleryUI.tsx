@@ -57,26 +57,43 @@ export const ProductGalleryUI = ({
       <HeaderSearchInput value={searchTerm} setValue={setSearchTerm} />
     </Header>
     {/* TODO: resolve style rules by class */}
-    <div style={{ display: "flex" }}>
+    <div
+      style={{
+        display: "inline-flex",
+        position: "relative",
+        height: "80%",
+      }}
+    >
       <SidePanel value={storeSelected} setValue={setStore} />
-      <div style={{ width: "80%", height: "700px" }}>
-        <Content
-          isFetching={isFetching}
-          searchTerm={debouncedSearchTerm}
-          emptyResults={items.length === 0}
-          ContentEmptyComponent={ProductGalleryContentEmpty}
-          ContentNoResultComponent={ProductGalleryContentNoResult}
+      <div
+        style={{
+          display: "flex",
+          flex: "1",
+        }}
+      >
+        <div
+          style={{
+            display: "contents",
+          }}
         >
-          {/* TODO: use a list view in place of this icons view */}
-          <ContentList
-            items={items}
-            checkedItemIds={checkedItemIds}
-            toggleCheckedItem={toggleCheckedItem}
-            selectItem={selectItem}
-            hasNextPage={hasNextPage}
-            fetchNextPage={fetchNextPage}
-          />
-        </Content>
+          <Content
+            isFetching={isFetching}
+            searchTerm={debouncedSearchTerm}
+            emptyResults={items.length === 0}
+            ContentEmptyComponent={ProductGalleryContentEmpty}
+            ContentNoResultComponent={ProductGalleryContentNoResult}
+          >
+            {/* TODO: use a list view in place of this icons view */}
+            <ContentList
+              items={items}
+              checkedItemIds={checkedItemIds}
+              toggleCheckedItem={toggleCheckedItem}
+              selectItem={selectItem}
+              hasNextPage={hasNextPage}
+              fetchNextPage={fetchNextPage}
+            />
+          </Content>
+        </div>
       </div>
     </div>
     <Footer>
