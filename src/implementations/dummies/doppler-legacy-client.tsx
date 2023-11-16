@@ -7,7 +7,10 @@ import {
 } from "../../abstractions/doppler-legacy-client";
 import { Result } from "../../abstractions/common/result-types";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
-import { DopplerEditorSettings } from "../../abstractions/domain/DopplerEditorSettings";
+import {
+  DopplerEditorSettings,
+  DopplerEditorStore,
+} from "../../abstractions/domain/DopplerEditorSettings";
 import { ProductGalleryValue } from "../../abstractions/domain/product-gallery";
 import {
   SortingProductsCriteria,
@@ -282,7 +285,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     sortingDirection,
     continuation,
   }: {
-    storeSelected: string;
+    storeSelected: DopplerEditorStore;
     searchTerm: string;
     sortingCriteria: SortingProductsCriteria;
     sortingDirection: SortingProductsDirection;
@@ -304,7 +307,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
   }) => {
     console.log("Begin getProducts.");
     console.log(
-      `store:  ${storeSelected}; searchTerm: ${searchTerm}; sortingCriteria: ${sortingCriteria};`,
+      `store:  ${storeSelected.name}; searchTerm: ${searchTerm}; sortingCriteria: ${sortingCriteria};`,
     );
     console.log(
       `sortingDirection: ${sortingDirection}; continuation: ${continuation};`,
