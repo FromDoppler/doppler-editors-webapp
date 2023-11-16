@@ -21,12 +21,12 @@ export function useSingletonEditorState({
   const saveStatus: SaveStatus = errorData
     ? "error"
     : savingProcessData
-    ? "saving" // It could be a force saving
-    : updateCounter === 0
-    ? "idle" // Initial state
-    : savedCounter === updateCounter
-    ? "saved"
-    : "pending";
+      ? "saving" // It could be a force saving
+      : updateCounter === 0
+        ? "idle" // Initial state
+        : savedCounter === updateCounter
+          ? "saved"
+          : "pending";
 
   const areUpdatesPending = savedCounter < updateCounter;
 

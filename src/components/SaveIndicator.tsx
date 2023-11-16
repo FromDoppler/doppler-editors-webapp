@@ -28,16 +28,16 @@ export function SaveIndicator({ saveStatus }: { saveStatus: SaveStatus }) {
           statusDescription: intl.formatMessage({ id: "saved_details" }),
         }
       : saveStatus === "saved"
-      ? {
-          statusClassName: `state-${saveStatus}`,
-          statusText: intl.formatMessage({ id: "saved" }),
-          statusDescription: intl.formatMessage({ id: "saved_details" }),
-        }
-      : {
-          statusClassName: `state-${saveStatus}`,
-          statusText: intl.formatMessage({ id: "saving" }),
-          statusDescription: intl.formatMessage({ id: "saving_details" }),
-        };
+        ? {
+            statusClassName: `state-${saveStatus}`,
+            statusText: intl.formatMessage({ id: "saved" }),
+            statusDescription: intl.formatMessage({ id: "saved_details" }),
+          }
+        : {
+            statusClassName: `state-${saveStatus}`,
+            statusText: intl.formatMessage({ id: "saving" }),
+            statusDescription: intl.formatMessage({ id: "saving_details" }),
+          };
 
   return (
     <div
