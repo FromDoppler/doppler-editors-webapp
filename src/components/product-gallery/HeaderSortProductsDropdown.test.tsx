@@ -9,6 +9,12 @@ import userEvent from "@testing-library/user-event";
 
 const createBaseProps: () => SortProductsDropdownProps = () => ({
   value: { criteria: "PRICE", direction: "DESCENDING" },
+  storeSelected: {
+    name: `TiendaNube`,
+    promotionCodeEnabled: false,
+    productsEnabled: true,
+    sortingProductsCriteria: ["PRICE"],
+  },
   setValue: noop,
 });
 
@@ -48,12 +54,12 @@ describe(HeaderSortProductsDropdown.name, () => {
     expect(dropdown.value).not.toBeFalsy();
     expect(dropdown.childNodes).toHaveLength(2);
     expectToHaveOptionWith(dropdown, {
-      value: "PRICE_DESCENDING",
-      label: "sort_criteria_PRICE_DESCENDING",
+      value: "PRICE__ASCENDING",
+      label: "sort_criteria_PRICE__ASCENDING",
     });
     expectToHaveOptionWith(dropdown, {
-      value: "PRICE_ASCENDING",
-      label: "sort_criteria_PRICE_ASCENDING",
+      value: "PRICE__DESCENDING",
+      label: "sort_criteria_PRICE__DESCENDING",
     });
   });
 
@@ -62,7 +68,7 @@ describe(HeaderSortProductsDropdown.name, () => {
     const baseProps = createBaseProps();
     const sortingCriteria = "PRICE";
     const sortingDirection = "ASCENDING";
-    const expectedValue = "PRICE_ASCENDING";
+    const expectedValue = "PRICE__ASCENDING";
 
     // Act
     const dropdown = renderSUT({
@@ -80,7 +86,7 @@ describe(HeaderSortProductsDropdown.name, () => {
     // Arrange
     const baseProps = createBaseProps();
     const setValue = jest.fn();
-    const optionLabel = "sort_criteria_PRICE_ASCENDING";
+    const optionLabel = "sort_criteria_PRICE__ASCENDING";
     const expectedSetCriteria = "PRICE";
     const expectedSetDirection = "ASCENDING";
 

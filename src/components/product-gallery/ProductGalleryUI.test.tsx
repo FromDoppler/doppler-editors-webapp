@@ -29,16 +29,19 @@ const editorSettings = {
       name: "MercadoShops",
       promotionCodeEnabled: true,
       productsEnabled: true,
+      sortingProductsCriteria: ["PRICE"],
     },
     {
       name: "TiendaNube",
       promotionCodeEnabled: false,
       productsEnabled: true,
+      sortingProductsCriteria: ["PRICE"],
     },
     {
       name: "VTEX",
       promotionCodeEnabled: false,
       productsEnabled: false,
+      sortingProductsCriteria: [],
     },
   ],
 };
@@ -440,6 +443,7 @@ describe(ProductGalleryUI.name, () => {
       name: `MercadoShops`,
       promotionCodeEnabled: false,
       productsEnabled: true,
+      sortingProductsCriteria: [],
     };
 
     // Act
@@ -533,4 +537,5 @@ const emptyStore = {
   name: "",
   promotionCodeEnabled: false,
   productsEnabled: true,
+  sortingProductsCriteria: [],
 };

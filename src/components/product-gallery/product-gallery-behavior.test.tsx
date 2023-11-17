@@ -204,6 +204,7 @@ describe(useProductGalleryBehavior.name, () => {
             name: "",
             productsEnabled: true,
             promotionCodeEnabled: false,
+            sortingProductsCriteria: [],
           },
         }),
       );
@@ -213,6 +214,7 @@ describe(useProductGalleryBehavior.name, () => {
       name: `MercadoShops`,
       promotionCodeEnabled: false,
       productsEnabled: true,
+      sortingProductsCriteria: [],
     };
     // Act
     setSearchTerm("This value will be removed");
@@ -242,6 +244,7 @@ describe(useProductGalleryBehavior.name, () => {
       name: `TiendaNube`,
       promotionCodeEnabled: false,
       productsEnabled: true,
+      sortingProductsCriteria: ["NAME"],
     };
     setStore(mockStore2);
     await waitFor(() => {
