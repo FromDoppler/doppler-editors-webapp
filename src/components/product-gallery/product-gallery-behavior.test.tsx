@@ -4,6 +4,7 @@ import { ProductGalleryValue } from "../../abstractions/domain/product-gallery";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppServicesProvider } from "../AppServicesContext";
 import { SortingProductsPair } from "./HeaderSortProductsDropdown";
+import { DopplerEditorStore } from "../../abstractions/domain/DopplerEditorSettings";
 
 jest.useFakeTimers();
 
@@ -51,7 +52,8 @@ const createTestContext = () => {
     getSearchTerm: () => currentHookValues.searchTerm,
     setSearchTerm: (value: string) =>
       act(() => currentHookValues.setSearchTerm(value)),
-    setStore: (value: string) => act(() => currentHookValues.setStore(value)),
+    setStore: (value: DopplerEditorStore) =>
+      act(() => currentHookValues.setStore(value)),
     getStore: () => currentHookValues.storeSelected,
     getSorting: () => currentHookValues.sorting,
     setSorting: (value: SortingProductsPair) =>
@@ -198,15 +200,24 @@ describe(useProductGalleryBehavior.name, () => {
           searchTerm: "",
           sortingCriteria: "PRICE",
           sortingDirection: "DESCENDING",
-          storeSelected: "",
+          storeSelected: {
+            name: "",
+            productsEnabled: true,
+            promotionCodeEnabled: false,
+          },
         }),
       );
     });
 
+    const mockStore: DopplerEditorStore = {
+      name: `MercadoShops`,
+      promotionCodeEnabled: false,
+      productsEnabled: true,
+    };
     // Act
     setSearchTerm("This value will be removed");
     setSorting({ criteria: "PRICE", direction: "ASCENDING" });
-    setStore("MercadoShops");
+    setStore(mockStore);
 
     // Assert
     expect(getSearchTerm()).not.toBe("");
@@ -214,27 +225,32 @@ describe(useProductGalleryBehavior.name, () => {
       criteria: "PRICE",
       direction: "ASCENDING",
     });
-    expect(getStore()).toEqual("MercadoShops");
+    expect(getStore()?.name).toEqual("MercadoShops");
     await waitFor(() => {
       expect(dopplerLegacyClient.getProducts).toHaveBeenLastCalledWith(
         expect.objectContaining({
           searchTerm: "This value will be removed",
           sortingCriteria: "PRICE",
           sortingDirection: "ASCENDING",
-          storeSelected: "MercadoShops",
+          storeSelected: mockStore,
         }),
       );
     });
     expect(dopplerLegacyClient.getProducts).toBeCalledTimes(2);
 
-    setStore("TiendaNube");
+    const mockStore2: DopplerEditorStore = {
+      name: `TiendaNube`,
+      promotionCodeEnabled: false,
+      productsEnabled: true,
+    };
+    setStore(mockStore2);
     await waitFor(() => {
       expect(dopplerLegacyClient.getProducts).toHaveBeenLastCalledWith(
         expect.objectContaining({
           searchTerm: "This value will be removed",
           sortingCriteria: "PRICE",
           sortingDirection: "ASCENDING",
-          storeSelected: "TiendaNube",
+          storeSelected: mockStore2,
         }),
       );
     });

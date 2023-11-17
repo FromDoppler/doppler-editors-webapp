@@ -8,7 +8,10 @@ import {
   UploadImageResult,
 } from "../abstractions/doppler-legacy-client";
 import { ImageItem } from "../abstractions/domain/image-gallery";
-import { DopplerEditorSettings } from "../abstractions/domain/DopplerEditorSettings";
+import {
+  DopplerEditorSettings,
+  DopplerEditorStore,
+} from "../abstractions/domain/DopplerEditorSettings";
 import {
   SortingProductsCriteria,
   SortingProductsDirection,
@@ -174,7 +177,7 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     sortingDirection,
     continuation,
   }: {
-    storeSelected: string;
+    storeSelected: DopplerEditorStore;
     searchTerm: string;
     sortingCriteria: SortingProductsCriteria;
     sortingDirection: SortingProductsDirection;
@@ -190,7 +193,7 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
   > {
     const take = 20;
     const queryString = new URLSearchParams({
-      store: storeSelected,
+      store: storeSelected.name,
       query: searchTerm,
       continuationToken: !!continuation ? continuation : "",
       itemsQuantity: `${take}`,

@@ -3,7 +3,10 @@ import {
   SortingProductsDirection,
 } from "../../components/product-gallery/HeaderSortProductsDropdown";
 import { Result } from "../common/result-types";
-import { DopplerEditorSettings } from "../domain/DopplerEditorSettings";
+import {
+  DopplerEditorSettings,
+  DopplerEditorStore,
+} from "../domain/DopplerEditorSettings";
 import { ImageItem } from "../domain/image-gallery";
 import { ProductGalleryValue } from "../domain/product-gallery";
 
@@ -56,7 +59,7 @@ export interface DopplerLegacyClient {
     sortingDirection,
     continuation,
   }: {
-    storeSelected: string;
+    storeSelected: DopplerEditorStore;
     searchTerm: string;
     sortingCriteria: SortingProductsCriteria;
     sortingDirection: SortingProductsDirection;

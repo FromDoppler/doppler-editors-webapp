@@ -6,19 +6,25 @@ import {
   SortingProductsDirection,
 } from "../components/product-gallery/HeaderSortProductsDropdown";
 import { ProductGalleryValue } from "../abstractions/domain/product-gallery";
+import { DopplerEditorStore } from "../abstractions/domain/DopplerEditorSettings";
 
 type QueryParameters = {
   searchTerm: string;
   sortingCriteria: SortingProductsCriteria;
   sortingDirection: SortingProductsDirection;
-  storeSelected: string;
+  storeSelected: DopplerEditorStore;
+};
+const emptyStore = {
+  name: "",
+  promotionCodeEnabled: false,
+  productsEnabled: true,
 };
 
 export const defaultQueryParameters: QueryParameters = {
   searchTerm: "",
   sortingCriteria: "PRICE",
   sortingDirection: "DESCENDING",
-  storeSelected: "",
+  storeSelected: emptyStore,
 };
 
 const getBaseQueryKey = () => ["products-gallery"] as const;
@@ -33,7 +39,7 @@ const getQueryKey = ({
     ...getBaseQueryKey(),
     searchTerm,
     `${sortingCriteria}_${sortingDirection}`,
-    storeSelected,
+    storeSelected.name,
   ] as const;
 
 export const useGetProductsGallery = ({
