@@ -7,7 +7,7 @@ import {
 import { FieldGroupItem } from "../dp-components/FieldGroup";
 import { DopplerEditorStore } from "../../abstractions/domain/DopplerEditorSettings";
 
-export type SortingProductsCriteria = "PRICE";
+export type SortingProductsCriteria = "PRICE" | "NAME" | "UPDATE_DATE" | "";
 export type SortingProductsDirection = "ASCENDING" | "DESCENDING";
 
 export type SortingProductsPair = {
