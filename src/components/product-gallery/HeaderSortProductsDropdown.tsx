@@ -5,6 +5,7 @@ import {
   DropdownProps,
 } from "../dp-components/Dropdown";
 import { FieldGroupItem } from "../dp-components/FieldGroup";
+import { DopplerEditorStore } from "../../abstractions/domain/DopplerEditorSettings";
 
 export type SortingProductsCriteria = "PRICE";
 export type SortingProductsDirection = "ASCENDING" | "DESCENDING";
@@ -21,6 +22,7 @@ export type SortProductsDropdownProps = Omit<
   DropdownProps,
   "children" | "value" | "onChange"
 > & {
+  storeSelected: DopplerEditorStore;
   value: SortingProductsPair;
   setValue: (value: SortingProductsPair) => void;
 };
@@ -35,6 +37,7 @@ const sortingValues: {
 // TODO: change sorting criteria dynamically depending on the store
 // For example TN allows sorting by title
 export const HeaderSortProductsDropdown = ({
+  storeSelected,
   value,
   setValue,
   ...rest

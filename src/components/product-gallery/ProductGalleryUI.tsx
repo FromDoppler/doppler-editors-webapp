@@ -54,7 +54,11 @@ export const ProductGalleryUI = ({
 }) => (
   <Form onCancel={cancel} onSubmit={selectCheckedItem}>
     <Header>
-      <HeaderSortProductsDropdown value={sorting} setValue={setSorting} />
+      <HeaderSortProductsDropdown
+        storeSelected={storeSelected}
+        value={sorting}
+        setValue={setSorting}
+      />
       <HeaderSearchInput value={searchTerm} setValue={setSearchTerm} />
     </Header>
     {/* TODO: resolve style rules by class */}
