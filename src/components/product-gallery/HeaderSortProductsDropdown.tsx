@@ -28,13 +28,6 @@ export type SortProductsDropdownProps = Omit<
   setValue: (value: SortingProductsPair) => void;
 };
 
-const sortingValues: {
-  [key in SortingValue]: SortingProductsPair;
-} = {
-  PRICE_ASCENDING: { criteria: "PRICE", direction: "ASCENDING" },
-  PRICE_DESCENDING: { criteria: "PRICE", direction: "DESCENDING" },
-};
-
 export const HeaderSortProductsDropdown = ({
   storeSelected,
   value,
