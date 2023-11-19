@@ -61,7 +61,7 @@ export const demoImages: ImageItem[] = [
 export const demoProducts: ProductGalleryValue[] = [
   {
     productUrl: "https://fromdoppler.net/product/product1",
-    imageUrl: "https://dummyimage.com/150/000/fff.jpg&text=product1",
+    imageUrl: "https://dummyimage.com/300x150/000/fff.jpg&text=product1",
     title: "Title product1",
     defaultPriceText: "$ 1000",
     discountPriceText: "$ 900",
@@ -70,7 +70,7 @@ export const demoProducts: ProductGalleryValue[] = [
   },
   {
     productUrl: "https://fromdoppler.net/product/product2",
-    imageUrl: "https://dummyimage.com/150/000/fff.jpg&text=product2",
+    imageUrl: "https://dummyimage.com/150x300/000/fff.jpg&text=product2",
     title: "Title product2",
     defaultPriceText: "$ 2000",
     discountPriceText: undefined,
@@ -319,7 +319,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     );
     await timeout(1000);
 
-    const pageSize = 25;
+    const pageSize = 5;
     const start = (continuation && parseInt(continuation)) || 0;
     const end = start + pageSize;
     const itemList = storeSelected.name === "" ? [] : demoProducts;

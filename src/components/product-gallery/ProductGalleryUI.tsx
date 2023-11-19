@@ -12,10 +12,10 @@ import {
 import { Content } from "../base-gallery/Content";
 import { ProductGalleryContentEmpty } from "./ProductGalleryContentEmpty";
 import { ProductGalleryContentNoResult } from "./ProductGalleryContentNoResult";
-import { ContentList } from "../base-gallery/ContentList";
 import { GalleryItem } from "../base-gallery/GalleryItem";
 import { SidePanel } from "../base-gallery/SidePanel";
 import { DopplerEditorStore } from "../../abstractions/domain/DopplerEditorSettings";
+import { ContentRowList } from "../base-gallery/ContentRowList";
 
 export const ProductGalleryUI = ({
   cancel,
@@ -89,7 +89,7 @@ export const ProductGalleryUI = ({
             ContentNoResultComponent={ProductGalleryContentNoResult}
           >
             {/* TODO: use a list view in place of this icons view */}
-            <ContentList
+            <ContentRowList
               items={items}
               checkedItemIds={checkedItemIds}
               toggleCheckedItem={toggleCheckedItem}
