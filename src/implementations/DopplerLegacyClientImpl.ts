@@ -243,6 +243,7 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
         promotionCodeEnabled:
           promotionCodeEnabled && INTEGRATIONS_WITH_PROMOTIONS.includes(x.name),
         productsEnabled: x.productsEnabled,
+        sortingProductsCriteria: x.sortingProductsCriteria,
       })) ?? [];
   return {
     stores,
@@ -259,7 +260,9 @@ function arrayOrEmptyArray(
   return Array.isArray(value) ? value : [];
 }
 
-function hasName(x: unknown): x is { name: any; productsEnabled: boolean } {
+function hasName(
+  x: unknown,
+): x is { name: any; productsEnabled: boolean; sortingProductsCriteria: [] } {
   return !!(x && (x as any).name);
 }
 

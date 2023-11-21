@@ -11,11 +11,39 @@ import { ProductGalleryValue } from "../../abstractions/domain/product-gallery";
 
 const queryClient = new QueryClient();
 
-const baseAppServices: Partial<AppServices> = {};
+const editorSettings = {
+  stores: [
+    {
+      name: "MercadoShops",
+      promotionCodeEnabled: true,
+      productsEnabled: true,
+      sortingProductsCriteria: ["PRICE"],
+    },
+  ],
+};
+
+const appServices = {
+  dopplerLegacyClient: {
+    getEditorSettings: () =>
+      Promise.resolve({ success: true, value: editorSettings }),
+  } as unknown,
+} as unknown as AppServices;
+
+// const TestContextWrapper = ({ children }: { children: ReactNode }) => (
+//   <QueryClientProvider client={queryClient}>
+//     <AppServicesProvider appServices={appServices}>
+//       <TestDopplerIntlProvider>
+//         <ModalProvider>{children}</ModalProvider>
+//       </TestDopplerIntlProvider>
+//     </AppServicesProvider>
+//   </QueryClientProvider>
+// );
+
+// const baseAppServices: Partial<AppServices> = {};
 
 const ContextWrapper = ({ children }: { children: ReactNode }) => (
   <QueryClientProvider client={queryClient}>
-    <AppServicesProvider appServices={baseAppServices as AppServices}>
+    <AppServicesProvider appServices={appServices}>
       <TestDopplerIntlProvider>
         <ModalProvider>{children}</ModalProvider>
       </TestDopplerIntlProvider>

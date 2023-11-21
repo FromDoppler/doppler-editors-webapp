@@ -207,26 +207,31 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
           name: "MercadoShops",
           promotionCodeEnabled: true,
           productsEnabled: true,
+          sortingProductsCriteria: ["PRICE"],
         },
         {
           name: "Tienda Nube",
           promotionCodeEnabled: false,
           productsEnabled: true,
+          sortingProductsCriteria: ["PRICE", "NAME", "UPDATE_DATE"],
         },
         {
           name: "Jumpseller",
           promotionCodeEnabled: false,
-          productsEnabled: false,
+          productsEnabled: true,
+          sortingProductsCriteria: [],
         },
         {
           name: "VTEX",
           promotionCodeEnabled: false,
           productsEnabled: false,
+          sortingProductsCriteria: [],
         },
         {
           name: "Woocomerce",
           promotionCodeEnabled: false,
           productsEnabled: true,
+          sortingProductsCriteria: ["NAME"],
         },
       ],
     } as const;
@@ -317,7 +322,8 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     const pageSize = 25;
     const start = (continuation && parseInt(continuation)) || 0;
     const end = start + pageSize;
-    const filteredItems = demoProducts.filter((x: ProductGalleryValue) =>
+    const itemList = storeSelected.name === "" ? [] : demoProducts;
+    const filteredItems = itemList.filter((x: ProductGalleryValue) =>
       (x.title || "").includes(searchTerm),
     );
     const items = filteredItems.slice(start, end).map((x) => ({ ...x }));

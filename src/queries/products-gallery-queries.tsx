@@ -18,6 +18,7 @@ const emptyStore = {
   name: "",
   promotionCodeEnabled: false,
   productsEnabled: true,
+  sortingProductsCriteria: [],
 };
 
 export const defaultQueryParameters: QueryParameters = {

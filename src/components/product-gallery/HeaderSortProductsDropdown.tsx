@@ -5,8 +5,10 @@ import {
   DropdownProps,
 } from "../dp-components/Dropdown";
 import { FieldGroupItem } from "../dp-components/FieldGroup";
+import { DopplerEditorStore } from "../../abstractions/domain/DopplerEditorSettings";
+import { useEffect, useState } from "react";
 
-export type SortingProductsCriteria = "PRICE";
+export type SortingProductsCriteria = "PRICE" | "NAME" | "UPDATE_DATE" | "";
 export type SortingProductsDirection = "ASCENDING" | "DESCENDING";
 
 export type SortingProductsPair = {
@@ -15,47 +17,73 @@ export type SortingProductsPair = {
 };
 
 export type SortingValue =
-  `${SortingProductsPair["criteria"]}_${SortingProductsPair["direction"]}`;
+  `${SortingProductsPair["criteria"]}__${SortingProductsPair["direction"]}`;
 
 export type SortProductsDropdownProps = Omit<
   DropdownProps,
   "children" | "value" | "onChange"
 > & {
+  storeSelected: DopplerEditorStore;
   value: SortingProductsPair;
   setValue: (value: SortingProductsPair) => void;
 };
 
-const sortingValues: {
-  [key in SortingValue]: SortingProductsPair;
-} = {
-  PRICE_ASCENDING: { criteria: "PRICE", direction: "ASCENDING" },
-  PRICE_DESCENDING: { criteria: "PRICE", direction: "DESCENDING" },
-};
-
-// TODO: change sorting criteria dynamically depending on the store
-// For example TN allows sorting by title
 export const HeaderSortProductsDropdown = ({
+  storeSelected,
   value,
   setValue,
   ...rest
 }: SortProductsDropdownProps) => {
   const intl = useIntl();
-  const sortingValue: SortingValue = `${value.criteria}_${value.direction}`;
+  const defaultSortingValue: SortingValue = `${value.criteria}__${value.direction}`;
+
+  const sortingValue = (value: SortingProductsPair) => {
+    return value ? `${value.criteria}__${value.direction}` : "";
+  };
+  const sortingObject = (value: string) => {
+    return value
+      ? {
+          criteria: value.split("__")[0],
+          direction: value.split("__")[1],
+        }
+      : { criteria: "", direction: "" };
+  };
+
+  const [sortingValues, setSortingValues] = useState<SortingProductsPair[]>([]);
+  useEffect(() => {
+    if (!storeSelected) return;
+    const sorts = storeSelected?.sortingProductsCriteria.reduce(
+      (previousValue: any, criteria: SortingProductsCriteria) => {
+        return [
+          ...previousValue,
+          { criteria: criteria, direction: "ASCENDING" },
+          { criteria: criteria, direction: "DESCENDING" },
+        ];
+      },
+      [],
+    );
+    setSortingValues(sorts);
+    setValue(
+      sorts.length > 0 ? sorts[0] : { criteria: "", direction: "ASCENDING" },
+    );
+  }, [storeSelected]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <FieldGroupItem className="col-fixed--240">
       <Dropdown
-        value={sortingValue}
+        value={defaultSortingValue}
         onChange={(e) =>
-          setValue(sortingValues[e.target.value as SortingValue])
+          setValue(sortingObject(e.target.value) as SortingProductsPair)
         }
         {...rest}
       >
-        {Object.keys(sortingValues).map((value) => (
+        {sortingValues.map((value) => (
           <DropdownItem
-            key={value}
-            value={value}
-            label={intl.formatMessage({ id: `sort_criteria_${value}` as any })}
+            key={sortingValue(value)}
+            value={sortingValue(value)}
+            label={intl.formatMessage({
+              id: `sort_criteria_${sortingValue(value)}` as any,
+            })}
           />
         ))}
       </Dropdown>
