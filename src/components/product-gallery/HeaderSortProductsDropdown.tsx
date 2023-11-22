@@ -68,7 +68,7 @@ export const HeaderSortProductsDropdown = ({
     );
   }, [storeSelected]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return (
+  return storeSelected?.sortingProductsCriteria.length > 0 ? (
     <FieldGroupItem className="col-fixed--240">
       <Dropdown
         value={defaultSortingValue}
@@ -88,5 +88,7 @@ export const HeaderSortProductsDropdown = ({
         ))}
       </Dropdown>
     </FieldGroupItem>
+  ) : (
+    <></>
   );
 };
