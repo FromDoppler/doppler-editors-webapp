@@ -66,7 +66,7 @@ export const ProductGalleryUI = ({
       style={{
         display: "inline-flex",
         position: "relative",
-        height: "80%",
+        height: "82%",
       }}
     >
       <SidePanel value={storeSelected} setValue={setStore} />
