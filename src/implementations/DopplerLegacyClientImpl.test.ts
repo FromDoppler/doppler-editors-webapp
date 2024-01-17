@@ -387,7 +387,9 @@ describe(DopplerLegacyClientImpl.name, () => {
         baseURL: dopplerLegacyBaseUrl,
         withCredentials: true,
       });
-      expect(axiosGet).toBeCalledWith("/MSEditor/Editor/GetStaticUserSettings");
+      expect(axiosGet).toBeCalledWith(
+        "/MSEditor/Editor/GetSettings?idCampaign=0&idTemplate=0",
+      );
     });
 
     it.each([

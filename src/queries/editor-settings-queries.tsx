@@ -2,7 +2,10 @@ import { QueryFunction, useQuery } from "@tanstack/react-query";
 import { useAppServices } from "../components/AppServicesContext";
 import { DopplerEditorSettings } from "../abstractions/domain/DopplerEditorSettings";
 
-export const useGetEditorSettings = () => {
+export const useGetEditorSettings = (
+  idCampaign?: string,
+  idTemplate?: string,
+) => {
   const { dopplerLegacyClient } = useAppServices();
 
   const queryKey = [
@@ -12,7 +15,10 @@ export const useGetEditorSettings = () => {
   ];
 
   const queryFn: QueryFunction<DopplerEditorSettings> = async () => {
-    const result = await dopplerLegacyClient.getEditorSettings();
+    const result = await dopplerLegacyClient.getEditorSettings(
+      idCampaign,
+      idTemplate,
+    );
     return result.value;
   };
 

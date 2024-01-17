@@ -145,9 +145,14 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     };
   }
 
-  async getEditorSettings() {
+  async getEditorSettings(idCampaign?: string, idTemplate?: string) {
+    const queryString = new URLSearchParams({
+      idCampaign: idCampaign || "0",
+      idTemplate: idTemplate || "0",
+    });
+
     const response = await this.axios.get(
-      "/MSEditor/Editor/GetStaticUserSettings",
+      `/MSEditor/Editor/GetSettings?${queryString}`,
     );
     const value = parseDopplerEditorSettings(response.data);
     return { success: true, value } as const;

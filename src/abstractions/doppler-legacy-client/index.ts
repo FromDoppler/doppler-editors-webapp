@@ -46,7 +46,10 @@ export interface DopplerLegacyClient {
   >;
   uploadImage: (file: File) => Promise<UploadImageResult>;
   deleteImages: (items: readonly { name: string }[]) => Promise<Result>;
-  getEditorSettings: () => Promise<Result<DopplerEditorSettings>>;
+  getEditorSettings: (
+    idCampaign?: string,
+    idTemplate?: string,
+  ) => Promise<Result<DopplerEditorSettings>>;
   getPromoCodes: ({
     store,
   }: {
