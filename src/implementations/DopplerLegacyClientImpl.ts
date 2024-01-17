@@ -238,7 +238,7 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
   // https://github.com/MakingSense/Doppler/pull/10148
   const d = objectOrEmptyObject(data);
   const promotionCodeEnabled = !!d.promotionCodeEnabled;
-
+  const abandonedCartCampaign = !!d.abandonedCartCampaign;
   // TODO: analyze to use a store parse
   const stores =
     arrayOrEmptyArray(d.stores)
@@ -252,6 +252,7 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
       })) ?? [];
   return {
     stores,
+    abandonedCartCampaign,
   };
 }
 

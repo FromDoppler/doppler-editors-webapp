@@ -202,6 +202,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     console.log("Begin getEditorSettings...");
     await timeout(1000);
     const value: DopplerEditorSettings = {
+      abandonedCartCampaign: true,
       stores: [
         {
           name: "MercadoShops",
