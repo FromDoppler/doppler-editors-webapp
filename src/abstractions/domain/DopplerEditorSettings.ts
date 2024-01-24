@@ -1,6 +1,7 @@
 import { SortingProductsCriteria } from "../../components/product-gallery/HeaderSortProductsDropdown";
 
 export type DopplerEditorSettings = Readonly<{
+  abandonedCartCampaign: boolean;
   stores: Readonly<DopplerEditorStore[]>;
 }>;
 

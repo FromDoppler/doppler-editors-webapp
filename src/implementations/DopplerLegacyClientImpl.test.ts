@@ -387,7 +387,9 @@ describe(DopplerLegacyClientImpl.name, () => {
         baseURL: dopplerLegacyBaseUrl,
         withCredentials: true,
       });
-      expect(axiosGet).toBeCalledWith("/MSEditor/Editor/GetStaticUserSettings");
+      expect(axiosGet).toBeCalledWith(
+        "/MSEditor/Editor/GetSettings?idCampaign=0&idTemplate=0",
+      );
     });
 
     it.each([
@@ -413,7 +415,7 @@ describe(DopplerLegacyClientImpl.name, () => {
       // Assert
       expect(result).toEqual({
         success: true,
-        value: { stores: [] },
+        value: { stores: [], abandonedCartCampaign: false },
       });
     });
 
@@ -422,13 +424,16 @@ describe(DopplerLegacyClientImpl.name, () => {
         data: {
           stores: [],
           promotionCodeEnabled: false,
+          abandonedCartCampaign: false,
         },
         expectedResult: {
           stores: [],
+          abandonedCartCampaign: false,
         },
       },
       {
         data: {
+          abandonedCartCampaign: true,
           stores: [
             {
               name: "MercadoShops",
@@ -448,6 +453,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           promotionCodeEnabled: false,
         },
         expectedResult: {
+          abandonedCartCampaign: true,
           stores: [
             {
               name: "MercadoShops",
@@ -483,8 +489,10 @@ describe(DopplerLegacyClientImpl.name, () => {
             },
           ],
           promotionCodeEnabled: true,
+          abandonedCartCampaign: false,
         },
         expectedResult: {
+          abandonedCartCampaign: false,
           stores: [
             {
               name: "MercadoShops",

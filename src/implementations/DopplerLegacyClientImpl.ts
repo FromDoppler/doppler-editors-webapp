@@ -145,9 +145,14 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     };
   }
 
-  async getEditorSettings() {
+  async getEditorSettings(idCampaign?: string, idTemplate?: string) {
+    const queryString = new URLSearchParams({
+      idCampaign: idCampaign || "0",
+      idTemplate: idTemplate || "0",
+    });
+
     const response = await this.axios.get(
-      "/MSEditor/Editor/GetStaticUserSettings",
+      `/MSEditor/Editor/GetSettings?${queryString}`,
     );
     const value = parseDopplerEditorSettings(response.data);
     return { success: true, value } as const;
@@ -233,7 +238,7 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
   // https://github.com/MakingSense/Doppler/pull/10148
   const d = objectOrEmptyObject(data);
   const promotionCodeEnabled = !!d.promotionCodeEnabled;
-
+  const abandonedCartCampaign = !!d.abandonedCartCampaign;
   // TODO: analyze to use a store parse
   const stores =
     arrayOrEmptyArray(d.stores)
@@ -247,6 +252,7 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
       })) ?? [];
   return {
     stores,
+    abandonedCartCampaign,
   };
 }
 
