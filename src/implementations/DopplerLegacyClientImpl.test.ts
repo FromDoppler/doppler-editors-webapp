@@ -415,7 +415,11 @@ describe(DopplerLegacyClientImpl.name, () => {
       // Assert
       expect(result).toEqual({
         success: true,
-        value: { stores: [], abandonedCartCampaign: false },
+        value: {
+          stores: [],
+          abandonedCartCampaign: false,
+          visitedProductsCampaign: false,
+        },
       });
     });
 
@@ -425,15 +429,18 @@ describe(DopplerLegacyClientImpl.name, () => {
           stores: [],
           promotionCodeEnabled: false,
           abandonedCartCampaign: false,
+          visitedProductsCampaign: false,
         },
         expectedResult: {
           stores: [],
           abandonedCartCampaign: false,
+          visitedProductsCampaign: false,
         },
       },
       {
         data: {
           abandonedCartCampaign: true,
+          visitedProductsCampaign: false,
           stores: [
             {
               name: "MercadoShops",
@@ -454,6 +461,7 @@ describe(DopplerLegacyClientImpl.name, () => {
         },
         expectedResult: {
           abandonedCartCampaign: true,
+          visitedProductsCampaign: false,
           stores: [
             {
               name: "MercadoShops",
@@ -490,9 +498,11 @@ describe(DopplerLegacyClientImpl.name, () => {
           ],
           promotionCodeEnabled: true,
           abandonedCartCampaign: false,
+          visitedProductsCampaign: false,
         },
         expectedResult: {
           abandonedCartCampaign: false,
+          visitedProductsCampaign: false,
           stores: [
             {
               name: "MercadoShops",
