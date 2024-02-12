@@ -203,6 +203,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     await timeout(1000);
     const value: DopplerEditorSettings = {
       abandonedCartCampaign: true,
+      visitedProductsCampaign: false,
       stores: [
         {
           name: "MercadoShops",
