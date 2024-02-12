@@ -480,6 +480,47 @@ describe(DopplerLegacyClientImpl.name, () => {
       },
       {
         data: {
+          abandonedCartCampaign: false,
+          visitedProductsCampaign: true,
+          stores: [
+            {
+              name: "MercadoShops",
+              accessToken: "123",
+              storeId: "456",
+              productsEnabled: true,
+              sortingProductsCriteria: [],
+            },
+            {
+              name: "Tiendanube",
+              accessToken: "789",
+              storeId: "101112",
+              productsEnabled: false,
+              sortingProductsCriteria: [],
+            },
+          ],
+          promotionCodeEnabled: false,
+        },
+        expectedResult: {
+          abandonedCartCampaign: false,
+          visitedProductsCampaign: true,
+          stores: [
+            {
+              name: "MercadoShops",
+              productsEnabled: true,
+              promotionCodeEnabled: false,
+              sortingProductsCriteria: [],
+            },
+            {
+              name: "Tiendanube",
+              productsEnabled: false,
+              promotionCodeEnabled: false,
+              sortingProductsCriteria: [],
+            },
+          ],
+        },
+      },
+      {
+        data: {
           stores: [
             {
               name: "MercadoShops",
