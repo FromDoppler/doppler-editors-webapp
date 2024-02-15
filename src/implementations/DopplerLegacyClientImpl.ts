@@ -239,6 +239,7 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
   const d = objectOrEmptyObject(data);
   const promotionCodeEnabled = !!d.promotionCodeEnabled;
   const abandonedCartCampaign = !!d.abandonedCartCampaign;
+  const visitedProductsCampaign = !!d.visitedProductsCampaign;
   // TODO: analyze to use a store parse
   const stores =
     arrayOrEmptyArray(d.stores)
@@ -253,6 +254,7 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
   return {
     stores,
     abandonedCartCampaign,
+    visitedProductsCampaign,
   };
 }
 
