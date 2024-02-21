@@ -419,6 +419,8 @@ describe(DopplerLegacyClientImpl.name, () => {
           stores: [],
           abandonedCartCampaign: false,
           visitedProductsCampaign: false,
+          pendingOrderCampaign: false,
+          confirmationOrderCampaign: false,
         },
       });
     });
@@ -430,17 +432,23 @@ describe(DopplerLegacyClientImpl.name, () => {
           promotionCodeEnabled: false,
           abandonedCartCampaign: false,
           visitedProductsCampaign: false,
+          pendingOrderCampaign: false,
+          confirmationOrderCampaign: false,
         },
         expectedResult: {
           stores: [],
           abandonedCartCampaign: false,
           visitedProductsCampaign: false,
+          pendingOrderCampaign: false,
+          confirmationOrderCampaign: false,
         },
       },
       {
         data: {
           abandonedCartCampaign: true,
           visitedProductsCampaign: false,
+          pendingOrderCampaign: false,
+          confirmationOrderCampaign: false,
           stores: [
             {
               name: "MercadoShops",
@@ -462,6 +470,8 @@ describe(DopplerLegacyClientImpl.name, () => {
         expectedResult: {
           abandonedCartCampaign: true,
           visitedProductsCampaign: false,
+          pendingOrderCampaign: false,
+          confirmationOrderCampaign: false,
           stores: [
             {
               name: "MercadoShops",
@@ -482,6 +492,8 @@ describe(DopplerLegacyClientImpl.name, () => {
         data: {
           abandonedCartCampaign: false,
           visitedProductsCampaign: true,
+          pendingOrderCampaign: false,
+          confirmationOrderCampaign: false,
           stores: [
             {
               name: "MercadoShops",
@@ -503,6 +515,8 @@ describe(DopplerLegacyClientImpl.name, () => {
         expectedResult: {
           abandonedCartCampaign: false,
           visitedProductsCampaign: true,
+          pendingOrderCampaign: false,
+          confirmationOrderCampaign: false,
           stores: [
             {
               name: "MercadoShops",
@@ -510,6 +524,70 @@ describe(DopplerLegacyClientImpl.name, () => {
               promotionCodeEnabled: false,
               sortingProductsCriteria: [],
             },
+            {
+              name: "Tiendanube",
+              productsEnabled: false,
+              promotionCodeEnabled: false,
+              sortingProductsCriteria: [],
+            },
+          ],
+        },
+      },
+      {
+        data: {
+          abandonedCartCampaign: false,
+          visitedProductsCampaign: false,
+          pendingOrderCampaign: true,
+          confirmationOrderCampaign: false,
+          stores: [
+            {
+              name: "Tiendanube",
+              accessToken: "789",
+              storeId: "101112",
+              productsEnabled: false,
+              sortingProductsCriteria: [],
+            },
+          ],
+          promotionCodeEnabled: false,
+        },
+        expectedResult: {
+          abandonedCartCampaign: false,
+          visitedProductsCampaign: false,
+          pendingOrderCampaign: true,
+          confirmationOrderCampaign: false,
+          stores: [
+            {
+              name: "Tiendanube",
+              productsEnabled: false,
+              promotionCodeEnabled: false,
+              sortingProductsCriteria: [],
+            },
+          ],
+        },
+      },
+      {
+        data: {
+          abandonedCartCampaign: false,
+          visitedProductsCampaign: false,
+          pendingOrderCampaign: false,
+          confirmationOrderCampaign: true,
+          stores: [
+            {
+              name: "Tiendanube",
+              accessToken: "789",
+              storeId: "101112",
+              productsEnabled: false,
+              sortingProductsCriteria: [],
+            },
+          ],
+          promotionCodeEnabled: false,
+        },
+        expectedResult: {
+          abandonedCartCampaign: false,
+          visitedProductsCampaign: false,
+          pendingOrderCampaign: false,
+          confirmationOrderCampaign: true,
+          stores: [
             {
               name: "Tiendanube",
               productsEnabled: false,
@@ -540,10 +618,14 @@ describe(DopplerLegacyClientImpl.name, () => {
           promotionCodeEnabled: true,
           abandonedCartCampaign: false,
           visitedProductsCampaign: false,
+          pendingOrderCampaign: false,
+          confirmationOrderCampaign: false,
         },
         expectedResult: {
           abandonedCartCampaign: false,
           visitedProductsCampaign: false,
+          pendingOrderCampaign: false,
+          confirmationOrderCampaign: false,
           stores: [
             {
               name: "MercadoShops",

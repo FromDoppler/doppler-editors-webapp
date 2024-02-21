@@ -204,6 +204,8 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     const value: DopplerEditorSettings = {
       abandonedCartCampaign: true,
       visitedProductsCampaign: false,
+      pendingOrderCampaign: false,
+      confirmationOrderCampaign: false,
       stores: [
         {
           name: "MercadoShops",
