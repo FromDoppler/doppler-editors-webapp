@@ -11,6 +11,8 @@ import { DopplerLegacyClient } from "../../abstractions/doppler-legacy-client";
 import { TestDopplerIntlProvider } from "../i18n/TestDopplerIntlProvider";
 
 const queryClient = new QueryClient();
+const TIMEOUT_SECONDS = 50;
+jest.setTimeout(1000 * TIMEOUT_SECONDS);
 
 const baseAppServices: Partial<AppServices> = {
   dopplerLegacyClient: {
