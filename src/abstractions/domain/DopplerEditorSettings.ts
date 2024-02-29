@@ -3,6 +3,8 @@ import { SortingProductsCriteria } from "../../components/product-gallery/Header
 export type DopplerEditorSettings = Readonly<{
   abandonedCartCampaign: boolean;
   visitedProductsCampaign: boolean;
+  confirmationOrderCampaign: boolean;
+  pendingOrderCampaign: boolean;
   stores: Readonly<DopplerEditorStore[]>;
 }>;
 
