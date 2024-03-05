@@ -264,6 +264,9 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
     visitedProductsCampaign,
     confirmationOrderCampaign,
     pendingOrderCampaign,
+    bestSellingEnabled,
+    newProductsEnabled,
+    crossSellingEnabled,
   };
 }
 
