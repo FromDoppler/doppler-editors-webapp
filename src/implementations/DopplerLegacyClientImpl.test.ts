@@ -421,6 +421,9 @@ describe(DopplerLegacyClientImpl.name, () => {
           visitedProductsCampaign: false,
           pendingOrderCampaign: false,
           confirmationOrderCampaign: false,
+          bestSellingEnabled: false,
+          newProductsEnabled: false,
+          crossSellingEnabled: false,
         },
       });
     });
@@ -434,6 +437,9 @@ describe(DopplerLegacyClientImpl.name, () => {
           visitedProductsCampaign: false,
           pendingOrderCampaign: false,
           confirmationOrderCampaign: false,
+          bestSellingEnabled: false,
+          newProductsEnabled: false,
+          crossSellingEnabled: false,
         },
         expectedResult: {
           stores: [],
@@ -441,6 +447,9 @@ describe(DopplerLegacyClientImpl.name, () => {
           visitedProductsCampaign: false,
           pendingOrderCampaign: false,
           confirmationOrderCampaign: false,
+          bestSellingEnabled: false,
+          newProductsEnabled: false,
+          crossSellingEnabled: false,
         },
       },
       {
@@ -449,6 +458,9 @@ describe(DopplerLegacyClientImpl.name, () => {
           visitedProductsCampaign: false,
           pendingOrderCampaign: false,
           confirmationOrderCampaign: false,
+          bestSellingEnabled: false,
+          newProductsEnabled: false,
+          crossSellingEnabled: false,
           stores: [
             {
               name: "MercadoShops",
@@ -472,6 +484,9 @@ describe(DopplerLegacyClientImpl.name, () => {
           visitedProductsCampaign: false,
           pendingOrderCampaign: false,
           confirmationOrderCampaign: false,
+          bestSellingEnabled: false,
+          newProductsEnabled: false,
+          crossSellingEnabled: false,
           stores: [
             {
               name: "MercadoShops",
@@ -494,6 +509,9 @@ describe(DopplerLegacyClientImpl.name, () => {
           visitedProductsCampaign: true,
           pendingOrderCampaign: false,
           confirmationOrderCampaign: false,
+          bestSellingEnabled: false,
+          newProductsEnabled: false,
+          crossSellingEnabled: false,
           stores: [
             {
               name: "MercadoShops",
@@ -517,6 +535,9 @@ describe(DopplerLegacyClientImpl.name, () => {
           visitedProductsCampaign: true,
           pendingOrderCampaign: false,
           confirmationOrderCampaign: false,
+          bestSellingEnabled: false,
+          newProductsEnabled: false,
+          crossSellingEnabled: false,
           stores: [
             {
               name: "MercadoShops",
@@ -539,6 +560,9 @@ describe(DopplerLegacyClientImpl.name, () => {
           visitedProductsCampaign: false,
           pendingOrderCampaign: true,
           confirmationOrderCampaign: false,
+          bestSellingEnabled: false,
+          newProductsEnabled: false,
+          crossSellingEnabled: false,
           stores: [
             {
               name: "Tiendanube",
@@ -555,6 +579,9 @@ describe(DopplerLegacyClientImpl.name, () => {
           visitedProductsCampaign: false,
           pendingOrderCampaign: true,
           confirmationOrderCampaign: false,
+          bestSellingEnabled: false,
+          newProductsEnabled: false,
+          crossSellingEnabled: false,
           stores: [
             {
               name: "Tiendanube",
@@ -571,6 +598,9 @@ describe(DopplerLegacyClientImpl.name, () => {
           visitedProductsCampaign: false,
           pendingOrderCampaign: false,
           confirmationOrderCampaign: true,
+          bestSellingEnabled: false,
+          newProductsEnabled: false,
+          crossSellingEnabled: false,
           stores: [
             {
               name: "Tiendanube",
@@ -587,6 +617,9 @@ describe(DopplerLegacyClientImpl.name, () => {
           visitedProductsCampaign: false,
           pendingOrderCampaign: false,
           confirmationOrderCampaign: true,
+          bestSellingEnabled: false,
+          newProductsEnabled: false,
+          crossSellingEnabled: false,
           stores: [
             {
               name: "Tiendanube",
@@ -620,12 +653,18 @@ describe(DopplerLegacyClientImpl.name, () => {
           visitedProductsCampaign: false,
           pendingOrderCampaign: false,
           confirmationOrderCampaign: false,
+          bestSellingEnabled: false,
+          newProductsEnabled: false,
+          crossSellingEnabled: false,
         },
         expectedResult: {
           abandonedCartCampaign: false,
           visitedProductsCampaign: false,
           pendingOrderCampaign: false,
           confirmationOrderCampaign: false,
+          bestSellingEnabled: false,
+          newProductsEnabled: false,
+          crossSellingEnabled: false,
           stores: [
             {
               name: "MercadoShops",
