@@ -206,6 +206,9 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
       visitedProductsCampaign: false,
       pendingOrderCampaign: false,
       confirmationOrderCampaign: false,
+      bestSellingEnabled: false,
+      newProductsEnabled: false,
+      crossSellingEnabled: false,
       stores: [
         {
           name: "MercadoShops",

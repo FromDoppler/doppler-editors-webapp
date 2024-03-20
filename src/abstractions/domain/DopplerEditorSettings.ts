@@ -5,6 +5,9 @@ export type DopplerEditorSettings = Readonly<{
   visitedProductsCampaign: boolean;
   confirmationOrderCampaign: boolean;
   pendingOrderCampaign: boolean;
+  bestSellingEnabled: boolean;
+  newProductsEnabled: boolean;
+  crossSellingEnabled: boolean;
   stores: Readonly<DopplerEditorStore[]>;
 }>;
 

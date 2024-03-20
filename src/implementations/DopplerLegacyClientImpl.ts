@@ -244,6 +244,9 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
   const visitedProductsCampaign = !!d.visitedProductsCampaign;
   const confirmationOrderCampaign = !!d.confirmationOrderCampaign;
   const pendingOrderCampaign = !!d.pendingOrderCampaign;
+  const bestSellingEnabled = !!d.bestSellingEnabled;
+  const newProductsEnabled = !!d.newProductsEnabled;
+  const crossSellingEnabled = !!d.crossSellingEnabled;
   // TODO: analyze to use a store parse
   const stores =
     arrayOrEmptyArray(d.stores)
@@ -261,6 +264,9 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
     visitedProductsCampaign,
     confirmationOrderCampaign,
     pendingOrderCampaign,
+    bestSellingEnabled,
+    newProductsEnabled,
+    crossSellingEnabled,
   };
 }
 
