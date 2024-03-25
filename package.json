@@ -20,7 +20,7 @@
     "@types/react-infinite-scroller": "1.2.5",
     "@types/react-modal": "^3.13.1",
     "@types/react-query": "1.2.9",
-    "cspell": "8.6.0",
+    "cspell": "8.6.1",
     "eclint": "2.8.1",
     "prettier": "3.2.5"
   },
