@@ -2007,18 +2007,18 @@
     "@tanstack/query-core" "4.36.1"
     use-sync-external-store "^1.2.0"
 
-"@testing-library/dom@^9.0.0":
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-9.0.0.tgz#cc50e8df2a7dccff95555102beebbae60e95e95e"
-  integrity sha512-+/TLgKNFsYUshOY/zXsQOk+PlFQK+eyJ9T13IDVNJEi+M+Un7xlJK+FZKkbGSnf0+7E1G6PlDhkSYQ/GFiruBQ==
+"@testing-library/dom@^10.0.0":
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-10.0.0.tgz#ae1ab88aad35a728a38264041163174cafd7e8dd"
+  integrity sha512-PmJPnogldqoVFf+EwbHvbBJ98MmqASV8kLrBYgsDNxQcFMeIS7JFL48sfyXvuMtgmWO/wMhh25odr+8VhDmn4g==
   dependencies:
     "@babel/code-frame" "^7.10.4"
     "@babel/runtime" "^7.12.5"
     "@types/aria-query" "^5.0.1"
-    aria-query "^5.0.0"
+    aria-query "5.3.0"
     chalk "^4.1.0"
     dom-accessibility-api "^0.5.9"
-    lz-string "^1.4.4"
+    lz-string "^1.5.0"
     pretty-format "^27.0.2"
 
 "@testing-library/jest-dom@6.4.2":
@@ -2035,13 +2035,13 @@
     lodash "^4.17.15"
     redent "^3.0.0"
 
-"@testing-library/react@14.3.0":
-  version "14.3.0"
-  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-14.3.0.tgz#8183eb5a5f465b5b8cc495fcbd9bad0a16b8dd3b"
-  integrity sha512-AYJGvNFMbCa5vt1UtDCa/dcaABrXq8gph6VN+cffIx0UeA0qiGqS+sT60+sb+Gjc8tGXdECWYQgaF0khf8b+Lg==
+"@testing-library/react@15.0.0":
+  version "15.0.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-15.0.0.tgz#13cdc21aa83c60c48bd05cfec3d7725dd775c6c5"
+  integrity sha512-Nb2Sq8MoSvGVdOGGppRqXeafLtvXCOwiOQtcbqCfkpVNZZNUqIjeSOwrfJ59zBfmZbAn8PitnWEzUKD1YwMrCg==
   dependencies:
     "@babel/runtime" "^7.12.5"
-    "@testing-library/dom" "^9.0.0"
+    "@testing-library/dom" "^10.0.0"
     "@types/react-dom" "^18.0.0"
 
 "@testing-library/user-event@14.5.2":
@@ -2847,6 +2847,13 @@ argparse@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz"
   integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
+
+aria-query@5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/aria-query/-/aria-query-5.3.0.tgz#650c569e41ad90b51b3d7df5e5eed1c7549c103e"
+  integrity sha512-b0P0sZPKtyu8HkeRAfCq0IfURZK+SuwMjY1UXGBU27wpAiTwQAIlq56IbIO+ytk/JjS1fMR14ee5WBBfKi5J6A==
+  dependencies:
+    dequal "^2.0.3"
 
 aria-query@^4.2.2:
   version "4.2.2"
@@ -4320,6 +4327,11 @@ depd@~1.1.2:
   version "1.1.2"
   resolved "https://registry.npmjs.org/depd/-/depd-1.1.2.tgz"
   integrity sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=
+
+dequal@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/dequal/-/dequal-2.0.3.tgz#2644214f1997d39ed0ee0ece72335490a7ac67be"
+  integrity sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==
 
 destroy@~1.0.4:
   version "1.0.4"
@@ -7454,10 +7466,10 @@ lru-cache@^6.0.0:
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-10.1.0.tgz#2098d41c2dc56500e6c88584aa656c84de7d0484"
   integrity sha512-/1clY/ui8CzjKFyjdvwPWJUYKiFVXG2I2cY0ssG7h4+hwk+XOIX7ZSG9Q7TW8TW3Kp3BUSqgFWBLgL4PJ+Blag==
 
-lz-string@^1.4.4:
-  version "1.4.4"
-  resolved "https://registry.npmjs.org/lz-string/-/lz-string-1.4.4.tgz"
-  integrity sha1-wNjq82BZ9wV5bh40SBHPTEmNOiY=
+lz-string@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/lz-string/-/lz-string-1.5.0.tgz#c1ab50f77887b712621201ba9fd4e3a6ed099941"
+  integrity sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==
 
 magic-string@^0.25.0, magic-string@^0.25.7:
   version "0.25.7"
