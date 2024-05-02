@@ -8,6 +8,8 @@ export type DopplerEditorSettings = Readonly<{
   bestSellingEnabled: boolean;
   newProductsEnabled: boolean;
   crossSellingEnabled: boolean;
+  rssCampaign: boolean;
+  rssShowPreview: boolean;
   stores: Readonly<DopplerEditorStore[]>;
 }>;
 

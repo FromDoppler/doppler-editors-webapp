@@ -424,6 +424,8 @@ describe(DopplerLegacyClientImpl.name, () => {
           bestSellingEnabled: false,
           newProductsEnabled: false,
           crossSellingEnabled: false,
+          rssCampaign: false,
+          rssShowPreview: false,
         },
       });
     });
@@ -440,6 +442,8 @@ describe(DopplerLegacyClientImpl.name, () => {
           bestSellingEnabled: false,
           newProductsEnabled: false,
           crossSellingEnabled: false,
+          rssCampaign: false,
+          rssShowPreview: false,
         },
         expectedResult: {
           stores: [],
@@ -450,6 +454,8 @@ describe(DopplerLegacyClientImpl.name, () => {
           bestSellingEnabled: false,
           newProductsEnabled: false,
           crossSellingEnabled: false,
+          rssCampaign: false,
+          rssShowPreview: false,
         },
       },
       {
@@ -461,6 +467,8 @@ describe(DopplerLegacyClientImpl.name, () => {
           bestSellingEnabled: false,
           newProductsEnabled: false,
           crossSellingEnabled: false,
+          rssCampaign: false,
+          rssShowPreview: false,
           stores: [
             {
               name: "MercadoShops",
@@ -487,6 +495,8 @@ describe(DopplerLegacyClientImpl.name, () => {
           bestSellingEnabled: false,
           newProductsEnabled: false,
           crossSellingEnabled: false,
+          rssCampaign: false,
+          rssShowPreview: false,
           stores: [
             {
               name: "MercadoShops",
@@ -512,6 +522,8 @@ describe(DopplerLegacyClientImpl.name, () => {
           bestSellingEnabled: false,
           newProductsEnabled: false,
           crossSellingEnabled: false,
+          rssCampaign: false,
+          rssShowPreview: false,
           stores: [
             {
               name: "MercadoShops",
@@ -538,6 +550,8 @@ describe(DopplerLegacyClientImpl.name, () => {
           bestSellingEnabled: false,
           newProductsEnabled: false,
           crossSellingEnabled: false,
+          rssCampaign: false,
+          rssShowPreview: false,
           stores: [
             {
               name: "MercadoShops",
@@ -563,6 +577,8 @@ describe(DopplerLegacyClientImpl.name, () => {
           bestSellingEnabled: false,
           newProductsEnabled: false,
           crossSellingEnabled: false,
+          rssCampaign: false,
+          rssShowPreview: false,
           stores: [
             {
               name: "Tiendanube",
@@ -582,6 +598,8 @@ describe(DopplerLegacyClientImpl.name, () => {
           bestSellingEnabled: false,
           newProductsEnabled: false,
           crossSellingEnabled: false,
+          rssCampaign: false,
+          rssShowPreview: false,
           stores: [
             {
               name: "Tiendanube",
@@ -601,6 +619,8 @@ describe(DopplerLegacyClientImpl.name, () => {
           bestSellingEnabled: false,
           newProductsEnabled: false,
           crossSellingEnabled: false,
+          rssCampaign: false,
+          rssShowPreview: false,
           stores: [
             {
               name: "Tiendanube",
@@ -620,6 +640,8 @@ describe(DopplerLegacyClientImpl.name, () => {
           bestSellingEnabled: false,
           newProductsEnabled: false,
           crossSellingEnabled: false,
+          rssCampaign: false,
+          rssShowPreview: false,
           stores: [
             {
               name: "Tiendanube",
@@ -656,6 +678,8 @@ describe(DopplerLegacyClientImpl.name, () => {
           bestSellingEnabled: false,
           newProductsEnabled: false,
           crossSellingEnabled: false,
+          rssCampaign: false,
+          rssShowPreview: false,
         },
         expectedResult: {
           abandonedCartCampaign: false,
@@ -665,6 +689,118 @@ describe(DopplerLegacyClientImpl.name, () => {
           bestSellingEnabled: false,
           newProductsEnabled: false,
           crossSellingEnabled: false,
+          rssCampaign: false,
+          rssShowPreview: false,
+          stores: [
+            {
+              name: "MercadoShops",
+              promotionCodeEnabled: true,
+              productsEnabled: true,
+              sortingProductsCriteria: [],
+            },
+            {
+              name: "Tiendanube",
+              promotionCodeEnabled: false,
+              productsEnabled: false,
+              sortingProductsCriteria: [],
+            },
+          ],
+        },
+      },
+      {
+        data: {
+          stores: [
+            {
+              name: "MercadoShops",
+              accessToken: "123",
+              storeId: "456",
+              productsEnabled: true,
+              sortingProductsCriteria: [],
+            },
+            {
+              name: "Tiendanube",
+              accessToken: "789",
+              storeId: "101112",
+              productsEnabled: false,
+              sortingProductsCriteria: [],
+            },
+          ],
+          promotionCodeEnabled: true,
+          abandonedCartCampaign: false,
+          visitedProductsCampaign: false,
+          pendingOrderCampaign: false,
+          confirmationOrderCampaign: false,
+          bestSellingEnabled: false,
+          newProductsEnabled: false,
+          crossSellingEnabled: false,
+          rssCampaign: true,
+          rssShowPreview: false,
+        },
+        expectedResult: {
+          abandonedCartCampaign: false,
+          visitedProductsCampaign: false,
+          pendingOrderCampaign: false,
+          confirmationOrderCampaign: false,
+          bestSellingEnabled: false,
+          newProductsEnabled: false,
+          crossSellingEnabled: false,
+          rssCampaign: true,
+          rssShowPreview: false,
+          stores: [
+            {
+              name: "MercadoShops",
+              promotionCodeEnabled: true,
+              productsEnabled: true,
+              sortingProductsCriteria: [],
+            },
+            {
+              name: "Tiendanube",
+              promotionCodeEnabled: false,
+              productsEnabled: false,
+              sortingProductsCriteria: [],
+            },
+          ],
+        },
+      },
+      {
+        data: {
+          stores: [
+            {
+              name: "MercadoShops",
+              accessToken: "123",
+              storeId: "456",
+              productsEnabled: true,
+              sortingProductsCriteria: [],
+            },
+            {
+              name: "Tiendanube",
+              accessToken: "789",
+              storeId: "101112",
+              productsEnabled: false,
+              sortingProductsCriteria: [],
+            },
+          ],
+          promotionCodeEnabled: true,
+          abandonedCartCampaign: false,
+          visitedProductsCampaign: false,
+          pendingOrderCampaign: false,
+          confirmationOrderCampaign: false,
+          bestSellingEnabled: false,
+          newProductsEnabled: false,
+          crossSellingEnabled: false,
+          rssCampaign: true,
+          rssShowPreview: true,
+        },
+        expectedResult: {
+          abandonedCartCampaign: false,
+          visitedProductsCampaign: false,
+          pendingOrderCampaign: false,
+          confirmationOrderCampaign: false,
+          bestSellingEnabled: false,
+          newProductsEnabled: false,
+          crossSellingEnabled: false,
+          rssCampaign: true,
+          rssShowPreview: true,
           stores: [
             {
               name: "MercadoShops",
