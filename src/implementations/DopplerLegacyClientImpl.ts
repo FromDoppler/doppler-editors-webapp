@@ -247,6 +247,8 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
   const bestSellingEnabled = !!d.bestSellingEnabled;
   const newProductsEnabled = !!d.newProductsEnabled;
   const crossSellingEnabled = !!d.crossSellingEnabled;
+  const rssCampaign = !!d.rssCampaign;
+  const rssShowPreview = !!d.rssShowPreview;
   // TODO: analyze to use a store parse
   const stores =
     arrayOrEmptyArray(d.stores)
@@ -267,6 +269,8 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
     bestSellingEnabled,
     newProductsEnabled,
     crossSellingEnabled,
+    rssCampaign,
+    rssShowPreview,
   };
 }
 
