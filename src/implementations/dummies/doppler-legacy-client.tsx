@@ -198,6 +198,22 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
       return { success: true };
     };
 
+  updateCampaignThumbnail: (idCampaign: string) => Promise<Result<void, any>> =
+    async (idCampaign) => {
+      console.log(`Begin updateCampaignThumbnail ${idCampaign}...`);
+      await timeout(1000);
+      console.log("End updateCampaignThumbnail");
+      return { success: true };
+    };
+
+  updateTemplateThumbnail: (idTemplate: string) => Promise<Result<void, any>> =
+    async (idTemplate) => {
+      console.log(`Begin updateTemplateThumbnail ${idTemplate}...`);
+      await timeout(1000);
+      console.log("End updateTemplateThumbnail");
+      return { success: true };
+    };
+
   getEditorSettings = async () => {
     console.log("Begin getEditorSettings...");
     await timeout(1000);

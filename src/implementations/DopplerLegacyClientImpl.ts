@@ -145,6 +145,46 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     };
   }
 
+  async updateCampaignThumbnail(
+    idCampaign: string,
+  ): Promise<Result<void, any>> {
+    try {
+      // Using postForm to avoid the preflight request
+      const result = await this.axios.postForm(
+        "/Campaigns/Editor/GenerateCampaignThumbnail",
+        {
+          idCampaign: idCampaign,
+        },
+      );
+      if (!result.data.success) {
+        return { success: false, error: { cause: result.data } };
+      }
+    } catch (e) {
+      return { success: false, error: { cause: e } };
+    }
+    return { success: true };
+  }
+
+  async updateTemplateThumbnail(
+    idTemplate: string,
+  ): Promise<Result<void, any>> {
+    try {
+      // Using postForm to avoid the preflight request
+      const result = await this.axios.postForm(
+        "/Campaigns/Editor/GenerateTemplateThumbnail",
+        {
+          idTemplate: idTemplate,
+        },
+      );
+      if (!result.data.success) {
+        return { success: false, error: { cause: result.data } };
+      }
+    } catch (e) {
+      return { success: false, error: { cause: e } };
+    }
+    return { success: true };
+  }
+
   async getEditorSettings(idCampaign?: string, idTemplate?: string) {
     // fix to resolve call GetSettings with both parameter
     const _idTemplate = idCampaign && idCampaign !== "0" ? "0" : idTemplate;
