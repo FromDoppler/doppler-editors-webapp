@@ -16,28 +16,18 @@ async function exportContentFromUnlayer(
     return;
   }
 
-  const [htmlExport, imageExport] = await Promise.all([
-    unlayerEditorObject.exportHtmlAsync(),
-    unlayerEditorObject.exportImageAsync().catch((e) => {
-      console.log("Error generating image", e);
-      return {
-        design: {},
-        url: "https://cdn.fromdoppler.com/empty-300x240.jpg",
-      };
-    }),
-  ]);
-
+  const htmlExport = await unlayerEditorObject.exportHtmlAsync();
+  // TODO Analyze keep previewImage data
   const content: Content = !htmlExport.design
     ? {
         htmlContent: htmlExport.html,
-        // TODO: validate if the generated image is valid for HTML content
-        previewImage: imageExport.url ?? "",
+        previewImage: "https://cdn.fromdoppler.com/empty-300x240.jpg",
         type: "html",
       }
     : {
         design: htmlExport.design,
         htmlContent: htmlExport.html,
-        previewImage: imageExport.url ?? "",
+        previewImage: "https://cdn.fromdoppler.com/empty-300x240.jpg",
         type: "unlayer",
       };
 
