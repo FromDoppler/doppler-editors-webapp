@@ -110,7 +110,7 @@ describe(useSaving.name, () => {
 
       const exportedDesign = "design" as any;
       const exportedHtml = "html";
-      const exportedImageUrl = "url";
+      const exportedImageUrl = "https://cdn.fromdoppler.com/empty-300x240.jpg";
 
       render(<TestComponent />);
       const { unlayerEditorObject } = createUnlayerObjectDouble({
@@ -138,7 +138,7 @@ describe(useSaving.name, () => {
         createTestContext();
 
       const exportedHtml = "html";
-      const exportedImageUrl = "url";
+      const exportedImageUrl = "https://cdn.fromdoppler.com/empty-300x240.jpg";
 
       render(<TestComponent />);
       const { unlayerEditorObject } = createUnlayerObjectDouble({
@@ -219,7 +219,7 @@ describe(useSaving.name, () => {
 
       const exportedDesign = "design" as any;
       const exportedHtml = "html";
-      const exportedImageUrl = "url";
+      const exportedImageUrl = "https://cdn.fromdoppler.com/empty-300x240.jpg";
       const savingUpdateCounter = 10;
 
       render(<TestComponent />);
@@ -262,7 +262,7 @@ describe(useSaving.name, () => {
 
       const exportedDesign = "design" as any;
       const exportedHtml = "html";
-      const exportedImageUrl = "url";
+      const exportedImageUrl = "https://cdn.fromdoppler.com/empty-300x240.jpg";
       const savingUpdateCounter = 10;
       const error = "error";
 
