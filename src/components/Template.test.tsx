@@ -93,11 +93,10 @@ const createTestContext = () => {
 
   const editorDesign = { test: "Demo data" } as any;
   const editorHtmlContent = "<html><p></p></html>";
-  const editorExportedImageUrl = "https://test.fromdoppler.net/export.png";
+  const defaultPreviewImageUrl =
+    "https://cdn.fromdoppler.com/empty-300x240.jpg";
   const exportHtmlAsync = () =>
     Promise.resolve({ design: editorDesign, html: editorHtmlContent });
-  const exportImageAsync = () =>
-    Promise.resolve({ url: editorExportedImageUrl, design: {} as any });
 
   const singletonEditorContext = {
     hidden: false,
@@ -111,7 +110,6 @@ const createTestContext = () => {
       registerCallback: noop,
       unregisterCallback: noop,
       exportHtmlAsync,
-      exportImageAsync,
     },
   };
 
@@ -146,7 +144,7 @@ const createTestContext = () => {
   return {
     editorDesign,
     editorHtmlContent,
-    editorExportedImageUrl,
+    defaultPreviewImageUrl,
     getTemplate,
     updateTemplate,
     resolveGetTemplatePromise: (result: Result<TemplateContent>) =>

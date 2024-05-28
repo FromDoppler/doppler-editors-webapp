@@ -186,7 +186,7 @@ describe(`${SingletonEditorProvider.name}`, () => {
       arbitrary: "data",
     };
     const htmlContent = "HTML";
-    const previewImage = "https://app.fromdoppler.net/image.png";
+    const previewImage = "https://cdn.fromdoppler.com/empty-300x240.jpg";
     exportHtmlData = {
       design,
       html: htmlContent,

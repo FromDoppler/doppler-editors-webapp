@@ -105,11 +105,9 @@ const createTestContext = () => {
 
   const editorDesign = { test: "Demo data" };
   const editorHtmlContent = "<html><p></p></html>";
-  const editorExportedImageUrl = "https://test.fromdoppler.net/export.png";
+  const defaultEditImageUrl = "https://cdn.fromdoppler.com/empty-300x240.jpg";
   const exportHtmlAsync = () =>
     Promise.resolve({ design: editorDesign, html: editorHtmlContent });
-  const exportImageAsync = () =>
-    Promise.resolve({ url: editorExportedImageUrl, design: {} });
 
   let simulateEditorChangeEvent = null as any;
   const singletonEditorContext = {
@@ -134,7 +132,6 @@ const createTestContext = () => {
         }
       },
       exportHtmlAsync,
-      exportImageAsync,
       registerCallback: noop,
       unregisterCallback: noop,
       canUndo: noop,
@@ -173,7 +170,7 @@ const createTestContext = () => {
   return {
     editorDesign,
     editorHtmlContent,
-    editorExportedImageUrl,
+    defaultEditImageUrl,
     getCampaignContent,
     updateCampaignContent,
     resolveGetCampaignContentPromise: (result: Result<CampaignContent>) =>
@@ -259,7 +256,7 @@ describe(Campaign.name, () => {
       const {
         editorDesign,
         editorHtmlContent,
-        editorExportedImageUrl,
+        defaultEditImageUrl,
         updateCampaignContent,
         resolveGetCampaignContentPromise,
         simulateEditorChangeEvent,
@@ -279,7 +276,7 @@ describe(Campaign.name, () => {
       expect(updateCampaignContent).toHaveBeenCalledWith(idCampaign, {
         design: editorDesign,
         htmlContent: editorHtmlContent,
-        previewImage: editorExportedImageUrl,
+        previewImage: defaultEditImageUrl,
         type: "unlayer",
       });
     },
