@@ -37,6 +37,20 @@ export const useGetCampaignContent = (idCampaign: string) => {
   return query;
 };
 
+export const useUpdateCampaignThumbnail = () => {
+  const { dopplerLegacyClient } = useAppServices();
+  const updateCampaignThumbnail = ({ idCampaign }: { idCampaign: string }) =>
+    dopplerLegacyClient.updateCampaignThumbnail(idCampaign);
+  return useMutation(updateCampaignThumbnail);
+};
+
+export const useUpdateTemplateThumbnail = () => {
+  const { dopplerLegacyClient } = useAppServices();
+  const updateTemplateThumbnail = ({ idTemplate }: { idTemplate: string }) =>
+    dopplerLegacyClient.updateTemplateThumbnail(idTemplate);
+  return useMutation(updateTemplateThumbnail);
+};
+
 export const useUpdateCampaignContent = () => {
   const { htmlEditorApiClient } = useAppServices();
 
