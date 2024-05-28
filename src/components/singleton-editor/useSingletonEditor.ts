@@ -9,6 +9,7 @@ import { useActionWhenNoPendingUpdates } from "./useActionWhenNoPendingUpdates";
 import { useMemo } from "react";
 import { useCustomMediaLibrarySetup } from "./useCustomMediaLibrarySetup";
 import { useEditorExtensionListeners } from "./useEditorExtensionListeners";
+import { useGenerateThumbnail } from "./useGenerateThumbnail";
 
 export type UndoToolsObject = Readonly<{
   canUndo: boolean;
@@ -67,6 +68,8 @@ export const useSingletonEditor = ({
     areUpdatesPending,
     smartSave,
   });
+
+  useGenerateThumbnail({});
 
   const { doWhenNoPendingUpdates } = useActionWhenNoPendingUpdates({
     areUpdatesPending,
