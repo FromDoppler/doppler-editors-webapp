@@ -16,7 +16,12 @@ export type SortingImagesDirection = "ASCENDING" | "DESCENDING";
 export type UploadImageError =
   | { reason: "maxSizeExceeded"; currentSize: number; maxSize: number }
   | { reason: "unexpected"; details: unknown };
+export type UnexpectedError = { reason: "unexpected"; details: unknown };
 export type UploadImageResult = Result<void, UploadImageError>;
+export type SetImageCampaign = Result<UploadImageSuccess, UnexpectedError>;
+export type UploadImageSuccess = {
+  url: string;
+};
 
 export type PromoCodeItem = {
   code: string;
@@ -45,6 +50,7 @@ export interface DopplerLegacyClient {
     Result<{ items: ImageItem[]; continuation: string | undefined }>
   >;
   uploadImage: (file: File) => Promise<UploadImageResult>;
+  selectGalleryImage: (fileName: string) => Promise<SetImageCampaign>;
   deleteImages: (items: readonly { name: string }[]) => Promise<Result>;
   updateCampaignThumbnail: (idCampaign: string) => Promise<Result<void, any>>;
   updateTemplateThumbnail: (idTemplate: string) => Promise<Result<void, any>>;
