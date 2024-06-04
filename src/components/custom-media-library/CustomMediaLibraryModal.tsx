@@ -7,6 +7,7 @@ import { useLibraryBehavior } from "./behavior";
 import { useConfirmationModal } from "../confirmation";
 import { useNotificationModal } from "../notification";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
+import { useSelectGalleryImage } from "../../queries/campaign-content-queries";
 
 const CustomMediaLibrary = ({
   cancel,
@@ -49,12 +50,25 @@ export const useCustomMediaLibraryModal = () => {
   const [imageSelectedCallbackWrapper, setImageSelectedCallbackWrapper] =
     useState<{ callback: (data: { url: string }) => void }>({ callback: noop });
 
+  const { mutate: selectImageMutation } = useSelectGalleryImage();
   const [showModal, hideModal] = useModal(
     () => (
       <CustomMediaLibraryModal
         cancel={hideModal}
         selectItem={(data) => {
-          imageSelectedCallbackWrapper.callback(data);
+          const fileName = data.name as string;
+          selectImageMutation(fileName, {
+            onSuccess: (response) => {
+              imageSelectedCallbackWrapper.callback({
+                ...data,
+                url: response.value.url,
+              });
+            },
+            onError: (error) => {
+              imageSelectedCallbackWrapper.callback(data);
+              throw error;
+            },
+          });
           hideModal();
         }}
       />

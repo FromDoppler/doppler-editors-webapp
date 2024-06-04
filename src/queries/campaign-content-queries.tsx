@@ -44,6 +44,20 @@ export const useUpdateCampaignThumbnail = () => {
   return useMutation(updateCampaignThumbnail);
 };
 
+export const useSelectGalleryImage = () => {
+  const { dopplerLegacyClient } = useAppServices();
+
+  return useMutation({
+    mutationFn: async (fileName: string) => {
+      const result = await dopplerLegacyClient.selectGalleryImage(fileName);
+      if (!result.success) {
+        throw result.error;
+      }
+      return result;
+    },
+  });
+};
+
 export const useUpdateTemplateThumbnail = () => {
   const { dopplerLegacyClient } = useAppServices();
   const updateTemplateThumbnail = ({ idTemplate }: { idTemplate: string }) =>

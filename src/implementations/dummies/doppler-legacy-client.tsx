@@ -3,6 +3,7 @@ import {
   DopplerLegacyClient,
   SortingImagesCriteria,
   SortingImagesDirection,
+  SetImageCampaign,
   UploadImageResult,
 } from "../../abstractions/doppler-legacy-client";
 import { Result } from "../../abstractions/common/result-types";
@@ -182,6 +183,21 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
       success: false,
       error: { reason: "unexpected", details: { unexpected: "error" } },
     };
+  };
+
+  selectGalleryImage: (fileName: string) => Promise<SetImageCampaign> = async (
+    fileName,
+  ) => {
+    console.log("Begin select image for campaign ...");
+    console.log(fileName);
+    await timeout(1000);
+    console.log("End saving");
+    return {
+      success: true,
+      value: {
+        url: "https://dummyimage.com/300x150/000/fff.jpg&text=image%20shared",
+      },
+    } as const;
   };
 
   deleteImages: (items: readonly { name: string }[]) => Promise<Result> =
