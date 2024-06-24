@@ -10,6 +10,7 @@ import { useMemo } from "react";
 import { useCustomMediaLibrarySetup } from "./useCustomMediaLibrarySetup";
 import { useEditorExtensionListeners } from "./useEditorExtensionListeners";
 import { useGenerateThumbnail } from "./useGenerateThumbnail";
+import { useImageUploadSetup } from "./useImageUploadSetup";
 
 export type UndoToolsObject = Readonly<{
   canUndo: boolean;
@@ -32,6 +33,12 @@ export const useSingletonEditor = ({
   });
   // Ugly patch to allow enable/disable custom media library
   (window as any).setCustomMediaLibraryEnabled = setCustomMediaLibraryEnabled;
+
+  const { setImageUploadEnabled } = useImageUploadSetup({
+    unlayerEditorObject,
+  });
+  // Ugly patch to allow enable/disable image upload library
+  (window as any).setImageUploadEnabled = setImageUploadEnabled;
 
   useEditorExtensionListeners();
 

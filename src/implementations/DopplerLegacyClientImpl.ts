@@ -7,6 +7,7 @@ import {
   SortingImagesDirection,
   UploadImageResult,
   SetImageCampaign,
+  UploadCampaignImageResult,
 } from "../abstractions/doppler-legacy-client";
 import { ImageItem } from "../abstractions/domain/image-gallery";
 import {
@@ -202,6 +203,43 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
           },
         };
       }
+      return {
+        success: false,
+        error: { reason: "unexpected", details: result.data },
+      };
+    } catch (e) {
+      return { success: false, error: { reason: "unexpected", details: e } };
+    }
+  }
+
+  async uploadImageCampaign(file: File): Promise<UploadCampaignImageResult> {
+    try {
+      const result = await this.axios.postForm(
+        "/Campaigns/Editor/UploadImageCampaign",
+        {
+          file,
+        },
+      );
+      if (result.data?.succes) {
+        return {
+          success: true,
+          value: {
+            url: result.data?.imageUrl || "",
+          },
+        };
+      }
+
+      if (result.data && "maxSize" in result.data) {
+        return {
+          success: false,
+          error: {
+            reason: "maxSizeExceeded",
+            currentSize: file.size,
+            maxSize: result.data.maxSize,
+          },
+        };
+      }
+
       return {
         success: false,
         error: { reason: "unexpected", details: result.data },
