@@ -9077,10 +9077,10 @@ react-dom@18.3.1:
     loose-envify "^1.1.0"
     scheduler "^0.23.2"
 
-react-email-editor@1.7.10:
-  version "1.7.10"
-  resolved "https://registry.yarnpkg.com/react-email-editor/-/react-email-editor-1.7.10.tgz#e20eb51c3bddf1ade613fc45ab551d71ff3b9148"
-  integrity sha512-nIBohccq/oIG50/Xdgf3Q9Cml1/URywtQpl9i4HYofEPKYoDqC3gabbYwOeUSC78VkIAGBMzKkyPdyDHUvgsRg==
+react-email-editor@1.7.11:
+  version "1.7.11"
+  resolved "https://registry.yarnpkg.com/react-email-editor/-/react-email-editor-1.7.11.tgz#dc6c908130dd97985d23f5a640b02bc4cb687094"
+  integrity sha512-AyoKKtMEPhKdqUxFX1hyJMvEO+E5fzk88uNVGHhK1ymhLpcghYLkz1+pXKLcByjR6LHkfEbrCmoYFG8zyripug==
   dependencies:
     unlayer-types latest
 
