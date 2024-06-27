@@ -79,6 +79,20 @@ export const useUpdateCampaignContent = () => {
   return useMutation(updateCampaignContent);
 };
 
+export const useUploadImageCampaign = () => {
+  const { dopplerLegacyClient } = useAppServices();
+
+  return useMutation({
+    mutationFn: async (file: File) => {
+      const result = await dopplerLegacyClient.uploadImageCampaign(file);
+      if (!result.success) {
+        throw result.error;
+      }
+      return result;
+    },
+  });
+};
+
 export const useUpdateCampaignContentFromTemplate = () => {
   const { htmlEditorApiClient } = useAppServices();
 
