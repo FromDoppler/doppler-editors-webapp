@@ -297,6 +297,40 @@ describe(DopplerLegacyClientImpl.name, () => {
     });
   });
 
+  describe("uploadImageCampaign", () => {
+    it("Should request backend", async () => {
+      // Arrange
+      const dopplerLegacyBaseUrl = "dopplerLegacyBaseUrl";
+      const { sut, axiosCreate, axiosPostForm } = createTestContext({
+        dopplerLegacyBaseUrl,
+      });
+      const file = new File(["file content"], "test.png", {
+        type: "image/png",
+      }) as File;
+
+      // Act
+      const result = await sut.uploadImageCampaign(file);
+
+      // Assert
+      expect(axiosCreate).toBeCalledWith({
+        baseURL: dopplerLegacyBaseUrl,
+        withCredentials: true,
+      });
+      expect(axiosPostForm).toBeCalledWith(
+        "/Campaigns/Editor/UploadImageCampaign",
+        {
+          file,
+        },
+      );
+      expect(result).toEqual({
+        success: true,
+        value: {
+          url: "",
+        },
+      });
+    });
+  });
+
   describe("deleteImages", () => {
     it("should request backend", async () => {
       // Arrange

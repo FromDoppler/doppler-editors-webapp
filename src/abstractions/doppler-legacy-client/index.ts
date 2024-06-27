@@ -22,6 +22,10 @@ export type SetImageCampaign = Result<UploadImageSuccess, UnexpectedError>;
 export type UploadImageSuccess = {
   url: string;
 };
+export type UploadCampaignImageResult = Result<
+  UploadImageSuccess,
+  UploadImageError
+>;
 
 export type PromoCodeItem = {
   code: string;
@@ -50,6 +54,7 @@ export interface DopplerLegacyClient {
     Result<{ items: ImageItem[]; continuation: string | undefined }>
   >;
   uploadImage: (file: File) => Promise<UploadImageResult>;
+  uploadImageCampaign: (file: File) => Promise<UploadCampaignImageResult>;
   selectGalleryImage: (fileName: string) => Promise<SetImageCampaign>;
   deleteImages: (items: readonly { name: string }[]) => Promise<Result>;
   updateCampaignThumbnail: (idCampaign: string) => Promise<Result<void, any>>;
