@@ -23,6 +23,16 @@ export function useEditorExtensionListeners() {
           return result.value;
         },
       ),
+      editorExtensionsBridge.registerPromiseListener(
+        "getImageUrlFile",
+        async ({ file }: { file: File }) => {
+          const result = await dopplerLegacyClient.uploadImageCampaign(file);
+          if (!result.success) {
+            throw result.error;
+          }
+          return result.value.url || "";
+        },
+      ),
     ].reverse();
 
     return () => {
