@@ -5,6 +5,7 @@ import {
   SortingImagesDirection,
   SetImageCampaign,
   UploadImageResult,
+  UploadCampaignImageResult,
 } from "../../abstractions/doppler-legacy-client";
 import { Result } from "../../abstractions/common/result-types";
 import { ImageItem } from "../../abstractions/domain/image-gallery";
@@ -199,6 +200,24 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
       },
     } as const;
   };
+
+  uploadImageCampaign: (file: File) => Promise<UploadCampaignImageResult> =
+    async (file) => {
+      console.log("Begin uploadImage...");
+      console.log(file);
+      await timeout(1000);
+      console.log("End uploadImage");
+      // return {
+      //   success: true,
+      //   value: {
+      //     url: "https://cdn.fromdoppler.com/empty-300x240.jpg",
+      //   },
+      // } as const;
+      return {
+        success: false,
+        error: { reason: "unexpected", details: { unexpected: "error" } },
+      };
+    };
 
   deleteImages: (items: readonly { name: string }[]) => Promise<Result> =
     async (items) => {
