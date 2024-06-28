@@ -96,7 +96,7 @@ describe(useEditorExtensionListeners.name, () => {
     // Act
     unmount();
 
-    expect(destructors).toBeCalledTimes(2);
+    expect(destructors).toBeCalledTimes(3);
   });
 
   it("should show the gallery modal when searchProduct event occurs", () => {
