@@ -25,8 +25,10 @@ export function useEditorExtensionListeners() {
       ),
       editorExtensionsBridge.registerPromiseListener(
         "getImageUrlFile",
-        async ({ file }: { file: File }) => {
-          const result = await dopplerLegacyClient.uploadImageCampaign(file);
+        async (file: any) => {
+          console.log("file", file);
+          const img: File = file?.qrImageFile;
+          const result = await dopplerLegacyClient.uploadImageCampaign(img);
           if (!result.success) {
             throw result.error;
           }
