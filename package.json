@@ -40,7 +40,7 @@
     "react-router-dom": "6.25.1",
     "react-scripts": "5.0.1",
     "typescript": "5.5.4",
-    "web-vitals": "4.2.2"
+    "web-vitals": "4.2.3"
   },
   "scripts": {
     "verify-format": "yarn prettier-check && yarn eclint-check",
