@@ -27,16 +27,15 @@ export type UploadCampaignImageResult = Result<
   UploadImageError
 >;
 
+export type PromoCodeType = "percent" | "money" | "shipping";
+
 export type PromoCodeItem = {
   code: string;
-  type: "percent" | "money";
-  value: number;
-  startDate: Date | undefined;
-  endDate: Date | undefined;
-  useLimit: number | undefined;
-  minPaymentAmount: number;
-  promotionName: string;
+  formattedValue: string;
   isActive: boolean;
+  currency: string;
+  type: PromoCodeType;
+  value: number;
 };
 
 export interface DopplerLegacyClient {
