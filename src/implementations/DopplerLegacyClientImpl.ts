@@ -274,7 +274,7 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     }
 
     const response = await this.axios.get(
-      "/MSEditor/Editor/GetMercadoShopsPromotions",
+      `/MSEditor/Editor/GetPromoCodesByStore?store=${store}`,
     );
 
     const value = arrayOrEmptyArray(response.data).map(parsePromoCodeItem);
