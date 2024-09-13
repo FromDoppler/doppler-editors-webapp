@@ -20,8 +20,6 @@ import {
 } from "../components/product-gallery/HeaderSortProductsDropdown";
 import { ProductGalleryValue } from "../abstractions/domain/product-gallery";
 
-const MERCADO_SHOPS_STORE_NAME = "MercadoShops";
-
 export class DopplerLegacyClientImpl implements DopplerLegacyClient {
   private axios;
   private window;
@@ -269,10 +267,6 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
   }: {
     store: string;
   }): Promise<Result<PromoCodeItem[]>> {
-    if (store !== MERCADO_SHOPS_STORE_NAME) {
-      return { success: true, value: [] } as const;
-    }
-
     const response = await this.axios.get(
       `/MSEditor/Editor/GetPromoCodesByStore?store=${store}`,
     );
@@ -333,8 +327,6 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
   }
 }
 
-const INTEGRATIONS_WITH_PROMOTIONS = [MERCADO_SHOPS_STORE_NAME];
-
 function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
   // See:
   // Doppler.Application.ControlPanelModule.DTO/DtoEditorSetting.cs
@@ -343,7 +335,6 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
   // Doppler.Application.ActionsModule/Services/CampaignService.cs #GetEditorSettings
   // https://github.com/MakingSense/Doppler/pull/10148
   const d = objectOrEmptyObject(data);
-  const promotionCodeEnabled = !!d.promotionCodeEnabled;
   const abandonedCartCampaign = !!d.abandonedCartCampaign;
   const visitedProductsCampaign = !!d.visitedProductsCampaign;
   const confirmationOrderCampaign = !!d.confirmationOrderCampaign;
@@ -359,8 +350,7 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
       .filter(hasName)
       .map((x) => ({
         name: x.name,
-        promotionCodeEnabled:
-          promotionCodeEnabled && INTEGRATIONS_WITH_PROMOTIONS.includes(x.name),
+        promotionCodeEnabled: x.promotionCodeEnabled || false,
         productsEnabled: x.productsEnabled,
         sortingProductsCriteria: x.sortingProductsCriteria,
       })) ?? [];
