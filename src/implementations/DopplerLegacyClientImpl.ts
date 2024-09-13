@@ -8,6 +8,7 @@ import {
   UploadImageResult,
   SetImageCampaign,
   UploadCampaignImageResult,
+  PromoCodeType,
 } from "../abstractions/doppler-legacy-client";
 import { ImageItem } from "../abstractions/domain/image-gallery";
 import {
@@ -378,34 +379,30 @@ function arrayOrEmptyArray(
   return Array.isArray(value) ? value : [];
 }
 
-function hasName(
-  x: unknown,
-): x is { name: any; productsEnabled: boolean; sortingProductsCriteria: [] } {
+function hasName(x: unknown): x is {
+  name: any;
+  productsEnabled: boolean;
+  promotionCodeEnabled: boolean;
+  sortingProductsCriteria: [];
+} {
   return !!(x && (x as any).name);
 }
 
 function parsePromoCodeItem({
-  Code,
-  DiscountType,
-  Value,
-  StartDate,
-  EndDate,
-  use_limit,
-  MinPaymentAmount,
-  Name,
-  Status,
+  code,
+  formattedValue,
+  status,
+  type,
+  currency,
+  value,
 }: any = {}): PromoCodeItem {
   return {
-    code: `${Code}`,
-    type:
-      `${DiscountType}`.toLocaleLowerCase() === "percent" ? "percent" : "money",
-    value: parseFloat(`${Value}`),
-    startDate: StartDate ? new Date(`${StartDate}`) : undefined,
-    endDate: EndDate ? new Date(`${EndDate}`) : undefined,
-    useLimit: parseInt(`${use_limit}`) || undefined,
-    minPaymentAmount: parseFloat(`${MinPaymentAmount}`) || 0,
-    promotionName: `${Name}`,
-    isActive: `${Status}`.toUpperCase() === "ACTIVE",
+    code: `${code}`,
+    formattedValue: `${formattedValue}`,
+    isActive: `${status}`.toUpperCase() === "ACTIVE",
+    type: `${type}` as PromoCodeType,
+    currency: `${currency}`,
+    value: parseFloat(`${value}`),
   };
 }
 
