@@ -272,7 +272,9 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
       `/MSEditor/Editor/GetPromoCodesByStore?store=${store}`,
     );
 
-    const value = arrayOrEmptyArray(response.data).map(parsePromoCodeItem);
+    const value = arrayOrEmptyArray(response.data.promoCodes).map(
+      parsePromoCodeItem,
+    );
     return { success: true, value } as const;
   }
 
@@ -391,7 +393,6 @@ function hasName(x: unknown): x is {
 function parsePromoCodeItem({
   code,
   formattedValue,
-  status,
   type,
   currency,
   value,
@@ -399,7 +400,6 @@ function parsePromoCodeItem({
   return {
     code: `${code}`,
     formattedValue: `${formattedValue}`,
-    isActive: `${status}`.toUpperCase() === "ACTIVE",
     type: `${type}` as PromoCodeType,
     currency: `${currency}`,
     value: parseFloat(`${value}`),
