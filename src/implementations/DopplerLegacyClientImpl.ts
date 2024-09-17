@@ -8,6 +8,7 @@ import {
   UploadImageResult,
   SetImageCampaign,
   UploadCampaignImageResult,
+  PromoCodeType,
 } from "../abstractions/doppler-legacy-client";
 import { ImageItem } from "../abstractions/domain/image-gallery";
 import {
@@ -19,8 +20,6 @@ import {
   SortingProductsDirection,
 } from "../components/product-gallery/HeaderSortProductsDropdown";
 import { ProductGalleryValue } from "../abstractions/domain/product-gallery";
-
-const MERCADO_SHOPS_STORE_NAME = "MercadoShops";
 
 export class DopplerLegacyClientImpl implements DopplerLegacyClient {
   private axios;
@@ -269,15 +268,13 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
   }: {
     store: string;
   }): Promise<Result<PromoCodeItem[]>> {
-    if (store !== MERCADO_SHOPS_STORE_NAME) {
-      return { success: true, value: [] } as const;
-    }
-
     const response = await this.axios.get(
-      "/MSEditor/Editor/GetMercadoShopsPromotions",
+      `/MSEditor/Editor/GetPromoCodesByStore?store=${store}`,
     );
 
-    const value = arrayOrEmptyArray(response.data).map(parsePromoCodeItem);
+    const value = arrayOrEmptyArray(response.data.promoCodes).map(
+      parsePromoCodeItem,
+    );
     return { success: true, value } as const;
   }
 
@@ -333,8 +330,6 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
   }
 }
 
-const INTEGRATIONS_WITH_PROMOTIONS = [MERCADO_SHOPS_STORE_NAME];
-
 function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
   // See:
   // Doppler.Application.ControlPanelModule.DTO/DtoEditorSetting.cs
@@ -343,7 +338,6 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
   // Doppler.Application.ActionsModule/Services/CampaignService.cs #GetEditorSettings
   // https://github.com/MakingSense/Doppler/pull/10148
   const d = objectOrEmptyObject(data);
-  const promotionCodeEnabled = !!d.promotionCodeEnabled;
   const abandonedCartCampaign = !!d.abandonedCartCampaign;
   const visitedProductsCampaign = !!d.visitedProductsCampaign;
   const confirmationOrderCampaign = !!d.confirmationOrderCampaign;
@@ -359,8 +353,7 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
       .filter(hasName)
       .map((x) => ({
         name: x.name,
-        promotionCodeEnabled:
-          promotionCodeEnabled && INTEGRATIONS_WITH_PROMOTIONS.includes(x.name),
+        promotionCodeEnabled: x.promotionCodeEnabled || false,
         productsEnabled: x.productsEnabled,
         sortingProductsCriteria: x.sortingProductsCriteria,
       })) ?? [];
@@ -388,34 +381,28 @@ function arrayOrEmptyArray(
   return Array.isArray(value) ? value : [];
 }
 
-function hasName(
-  x: unknown,
-): x is { name: any; productsEnabled: boolean; sortingProductsCriteria: [] } {
+function hasName(x: unknown): x is {
+  name: any;
+  productsEnabled: boolean;
+  promotionCodeEnabled: boolean;
+  sortingProductsCriteria: [];
+} {
   return !!(x && (x as any).name);
 }
 
 function parsePromoCodeItem({
-  Code,
-  DiscountType,
-  Value,
-  StartDate,
-  EndDate,
-  use_limit,
-  MinPaymentAmount,
-  Name,
-  Status,
+  code,
+  formattedValue,
+  type,
+  currency,
+  value,
 }: any = {}): PromoCodeItem {
   return {
-    code: `${Code}`,
-    type:
-      `${DiscountType}`.toLocaleLowerCase() === "percent" ? "percent" : "money",
-    value: parseFloat(`${Value}`),
-    startDate: StartDate ? new Date(`${StartDate}`) : undefined,
-    endDate: EndDate ? new Date(`${EndDate}`) : undefined,
-    useLimit: parseInt(`${use_limit}`) || undefined,
-    minPaymentAmount: parseFloat(`${MinPaymentAmount}`) || 0,
-    promotionName: `${Name}`,
-    isActive: `${Status}`.toUpperCase() === "ACTIVE",
+    code: `${code}`,
+    formattedValue: `${formattedValue}`,
+    type: `${type}` as PromoCodeType,
+    currency: `${currency}`,
+    value: parseFloat(`${value}`),
   };
 }
 

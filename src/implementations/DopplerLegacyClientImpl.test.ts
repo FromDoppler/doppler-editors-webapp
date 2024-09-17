@@ -728,7 +728,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           stores: [
             {
               name: "MercadoShops",
-              promotionCodeEnabled: true,
+              promotionCodeEnabled: false,
               productsEnabled: true,
               sortingProductsCriteria: [],
             },
@@ -783,7 +783,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           stores: [
             {
               name: "MercadoShops",
-              promotionCodeEnabled: true,
+              promotionCodeEnabled: false,
               productsEnabled: true,
               sortingProductsCriteria: [],
             },
@@ -810,6 +810,7 @@ describe(DopplerLegacyClientImpl.name, () => {
               name: "Tiendanube",
               accessToken: "789",
               storeId: "101112",
+              promotionCodeEnabled: true,
               productsEnabled: false,
               sortingProductsCriteria: [],
             },
@@ -838,13 +839,13 @@ describe(DopplerLegacyClientImpl.name, () => {
           stores: [
             {
               name: "MercadoShops",
-              promotionCodeEnabled: true,
+              promotionCodeEnabled: false,
               productsEnabled: true,
               sortingProductsCriteria: [],
             },
             {
               name: "Tiendanube",
-              promotionCodeEnabled: false,
+              promotionCodeEnabled: true,
               productsEnabled: false,
               sortingProductsCriteria: [],
             },
@@ -870,19 +871,6 @@ describe(DopplerLegacyClientImpl.name, () => {
   });
 
   describe("getPromoCodes", () => {
-    it("should return empty result without calling backend when store is not MercadoShops", async () => {
-      // Arrange
-      const { sut, axiosGet } = createTestContext();
-      const store = "Tiendanube";
-
-      // Act
-      const result = await sut.getPromoCodes({ store });
-
-      // Assert
-      expect(result).toEqual({ success: true, value: [] });
-      expect(axiosGet).not.toBeCalled();
-    });
-
     it("should call backend when store is MercadoShops", async () => {
       // Arrange
       const { sut, axiosGet } = createTestContext();
@@ -893,7 +881,7 @@ describe(DopplerLegacyClientImpl.name, () => {
 
       // Assert
       expect(axiosGet).toBeCalledWith(
-        "/MSEditor/Editor/GetMercadoShopsPromotions",
+        `/MSEditor/Editor/GetPromoCodesByStore?store=${store}`,
       );
     });
 
@@ -901,50 +889,50 @@ describe(DopplerLegacyClientImpl.name, () => {
       // Arrange
       const { sut, axiosGet } = createTestContext();
       const store = "MercadoShops";
-      const serverResponse = [
-        {
-          Id: "10591761",
-          Name: "NombrePromoción",
-          Status: "ACTIVE",
-          Type: "coupon",
-          StartDate: "2023-08-01T17:56:36.000+00:00",
-          EndDate: "2023-09-02T02:59:59.000+00:00",
-          Target: "ALL_PRODUCTS",
-          DiscountType: "percent",
-          Value: "30",
-          shop_id: "196181385",
-          Code: "CODE",
-          use_limit: "1",
-          MinPaymentAmount: "10000",
+      const serverResponse = {
+        paging: {
+          total: 2,
+          continuationToken: null,
         },
-        {
-          Name: "Mínimo",
-          Type: "coupon",
-          Value: "10",
-          Code: "min-data",
-        },
-      ] as const;
+        promoCodes: [
+          {
+            id: "10591761",
+            name: "NombrePromoción",
+            formattedValue: "$ 1000.00",
+            type: "money",
+            startDate: "2023-08-01T17:56:36.000+00:00",
+            endDate: "2023-09-02T02:59:59.000+00:00",
+            target: "ALL_PRODUCTS",
+            value: "1000",
+            shop_id: "196181385",
+            code: "CODE",
+            currency: "$",
+            use_limit: "1",
+            minPaymentAmount: "10000",
+          },
+          {
+            name: "Mínimo",
+            type: "percent",
+            value: "10",
+            currency: "$",
+            formattedValue: "15 %",
+            code: "min-data",
+          },
+        ],
+      } as const;
       const expectedResult = [
         {
           code: "CODE",
-          endDate: new Date("2023-09-02T02:59:59.000Z"),
-          isActive: true,
-          minPaymentAmount: 10000,
-          promotionName: "NombrePromoción",
-          startDate: new Date("2023-08-01T17:56:36.000Z"),
-          type: "percent",
-          useLimit: 1,
-          value: 30,
+          formattedValue: "$ 1000.00",
+          value: 1000,
+          currency: "$",
+          type: "money",
         },
         {
           code: "min-data",
-          endDate: undefined,
-          isActive: false,
-          minPaymentAmount: 0,
-          promotionName: "Mínimo",
-          startDate: undefined,
-          type: "money",
-          useLimit: undefined,
+          formattedValue: "15 %",
+          currency: "$",
+          type: "percent",
           value: 10,
         },
       ] as const;

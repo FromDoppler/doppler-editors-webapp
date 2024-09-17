@@ -300,46 +300,38 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
   };
 
   getPromoCodes = async ({ store }: { store: string }) => {
-    if (store !== "MercadoShops") {
-      return { success: true, value: [] } as const;
-    }
     return {
       success: true,
       value: [
         {
+          id: "17082137",
           code: `${store}-CODE-1`,
+          formattedValue: "$ 1000.00",
           type: "money",
+          currency: "$",
           value: 1000,
-          useLimit: 1,
-          minPaymentAmount: 1,
-          startDate: new Date(2023, 0, 1),
-          endDate: new Date(2025, 0, 1),
-          promotionName: "Promotion 1",
-          isActive: true,
         },
         {
+          id: "17082138",
           code: `${store}-CODE-2`,
           type: "percent",
+          currency: "$",
           value: 15,
-          useLimit: 2,
-          minPaymentAmount: 2,
-          startDate: new Date(2023, 0, 1),
-          endDate: new Date(2025, 0, 1),
-          promotionName: "Promotion 2",
-          isActive: true,
+          formattedValue: "15.00 %",
         },
         {
+          id: "17082139",
           code: `${store}-CODE-3`,
-          type: "money",
-          value: 500,
-          useLimit: 3,
-          minPaymentAmount: 3,
-          startDate: new Date(2023, 0, 1),
-          endDate: new Date(2025, 0, 1),
-          promotionName: "Another promotion",
-          isActive: true,
+          type: "shipping",
+          currency: "$",
+          value: 0,
+          formattedValue: "-",
         },
       ],
+      paging: {
+        total: 3,
+        continuationToken: null,
+      },
     } as const;
   };
 
