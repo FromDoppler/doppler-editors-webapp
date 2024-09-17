@@ -32,7 +32,6 @@ export type PromoCodeType = "percent" | "money" | "shipping";
 export type PromoCodeItem = {
   code: string;
   formattedValue: string;
-  isActive: boolean;
   currency: string;
   type: PromoCodeType;
   value: number;

@@ -310,7 +310,6 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
           type: "money",
           currency: "$",
           value: 1000,
-          isActive: true,
         },
         {
           id: "17082138",
@@ -319,7 +318,6 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
           currency: "$",
           value: 15,
           formattedValue: "15.00 %",
-          isActive: true,
         },
         {
           id: "17082139",
@@ -328,7 +326,6 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
           currency: "$",
           value: 0,
           formattedValue: "-",
-          isActive: true,
         },
       ],
       paging: {

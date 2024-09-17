@@ -894,7 +894,6 @@ describe(DopplerLegacyClientImpl.name, () => {
           id: "10591761",
           name: "NombrePromoción",
           formattedValue: "$ 1000.00",
-          status: "ACTIVE",
           type: "money",
           startDate: "2023-08-01T17:56:36.000+00:00",
           endDate: "2023-09-02T02:59:59.000+00:00",
@@ -922,7 +921,6 @@ describe(DopplerLegacyClientImpl.name, () => {
           value: 1000,
           currency: "$",
           type: "money",
-          isActive: true,
         },
         {
           code: "min-data",
@@ -930,7 +928,6 @@ describe(DopplerLegacyClientImpl.name, () => {
           currency: "$",
           type: "percent",
           value: 10,
-          isActive: false,
         },
       ] as const;
       axiosGet.mockResolvedValue({ data: serverResponse });
