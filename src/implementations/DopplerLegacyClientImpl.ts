@@ -272,7 +272,9 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
       `/MSEditor/Editor/GetPromoCodesByStore?store=${store}`,
     );
 
-    const value = arrayOrEmptyArray(response.data).map(parsePromoCodeItem);
+    const value = arrayOrEmptyArray(response.data.promoCodes).map(
+      parsePromoCodeItem,
+    );
     return { success: true, value } as const;
   }
 

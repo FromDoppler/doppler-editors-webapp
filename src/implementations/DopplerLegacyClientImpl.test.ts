@@ -889,31 +889,37 @@ describe(DopplerLegacyClientImpl.name, () => {
       // Arrange
       const { sut, axiosGet } = createTestContext();
       const store = "MercadoShops";
-      const serverResponse = [
-        {
-          id: "10591761",
-          name: "NombrePromoción",
-          formattedValue: "$ 1000.00",
-          type: "money",
-          startDate: "2023-08-01T17:56:36.000+00:00",
-          endDate: "2023-09-02T02:59:59.000+00:00",
-          target: "ALL_PRODUCTS",
-          value: "1000",
-          shop_id: "196181385",
-          code: "CODE",
-          currency: "$",
-          use_limit: "1",
-          minPaymentAmount: "10000",
+      const serverResponse = {
+        paging: {
+          total: 2,
+          continuationToken: null,
         },
-        {
-          name: "Mínimo",
-          type: "percent",
-          value: "10",
-          currency: "$",
-          formattedValue: "15 %",
-          code: "min-data",
-        },
-      ] as const;
+        promoCodes: [
+          {
+            id: "10591761",
+            name: "NombrePromoción",
+            formattedValue: "$ 1000.00",
+            type: "money",
+            startDate: "2023-08-01T17:56:36.000+00:00",
+            endDate: "2023-09-02T02:59:59.000+00:00",
+            target: "ALL_PRODUCTS",
+            value: "1000",
+            shop_id: "196181385",
+            code: "CODE",
+            currency: "$",
+            use_limit: "1",
+            minPaymentAmount: "10000",
+          },
+          {
+            name: "Mínimo",
+            type: "percent",
+            value: "10",
+            currency: "$",
+            formattedValue: "15 %",
+            code: "min-data",
+          },
+        ],
+      } as const;
       const expectedResult = [
         {
           code: "CODE",
