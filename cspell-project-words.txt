@@ -38,6 +38,7 @@ dp-btnsearch
 dp-rowflex
 dpicon
 iconapp
+prefixe
 
 # Technical terms
 automerge
