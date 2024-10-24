@@ -1,5 +1,6 @@
 import { Result } from "../common/result-types";
 import { CampaignContent, Content, TemplateContent } from "../domain/content";
+import { DynamicPromoCodeParams } from "../domain/dynamic-promo-code";
 
 export interface HtmlEditorApiClient {
   getCampaignContent: (campaignId: string) => Promise<Result<CampaignContent>>;
@@ -28,4 +29,14 @@ export interface HtmlEditorApiClient {
   createPrivateTemplate: (
     template: TemplateContent,
   ) => Promise<Result<{ newTemplateId: string }>>;
+
+  createDynamicPromoCode: (
+    campaignId: string,
+    dynamicParams: DynamicPromoCodeParams,
+  ) => Promise<Result<{ promoCodeId: string }>>;
+
+  updateDynamicPromoCode: (
+    campaignId: string,
+    dynamicParams: DynamicPromoCodeParams,
+  ) => Promise<Result<{ promoCodeId: string }>>;
 }

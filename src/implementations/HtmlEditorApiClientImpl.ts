@@ -8,6 +8,7 @@ import {
   Content,
   TemplateContent,
 } from "../abstractions/domain/content";
+import { DynamicPromoCodeParams } from "../abstractions/domain/dynamic-promo-code";
 
 export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
   private axios;
@@ -193,6 +194,58 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
     return {
       success: true,
       value: { newTemplateId: result.data.createdResourceId },
+    };
+  }
+
+  async createDynamicPromoCode(
+    campaignId: string,
+    dynamicParams: DynamicPromoCodeParams,
+  ): Promise<Result<{ promoCodeId: string }>> {
+    const body = {
+      type: dynamicParams.type,
+      amount: dynamicParams.expire_days,
+      expire_days: dynamicParams.expire_days,
+      min_price: dynamicParams.min_price,
+      prefixe_code: dynamicParams.prefixe_code,
+      includes_shipping: dynamicParams.includes_shipping,
+      first_consumer_purchase: dynamicParams.first_consumer_purchase,
+      combines_with_other_discounts:
+        dynamicParams.combines_with_other_discounts,
+    };
+
+    const result = await this.POST(
+      `/campaigns/${campaignId}/content/promoCode`,
+      body,
+    );
+    return {
+      success: true,
+      value: { promoCodeId: result.data.promoCodeId },
+    };
+  }
+
+  async updateDynamicPromoCode(
+    campaignId: string,
+    dynamicParams: DynamicPromoCodeParams,
+  ): Promise<Result<{ promoCodeId: string }>> {
+    const body = {
+      type: dynamicParams.type,
+      amount: dynamicParams.expire_days,
+      expire_days: dynamicParams.expire_days,
+      min_price: dynamicParams.min_price,
+      prefixe_code: dynamicParams.prefixe_code,
+      includes_shipping: dynamicParams.includes_shipping,
+      first_consumer_purchase: dynamicParams.first_consumer_purchase,
+      combines_with_other_discounts:
+        dynamicParams.combines_with_other_discounts,
+    };
+
+    const result = await this.PUT(
+      `/campaigns/${campaignId}/content/promoCode/${dynamicParams.dynamic_id}`,
+      body,
+    );
+    return {
+      success: true,
+      value: { promoCodeId: result.data.promoCodeId },
     };
   }
 }
