@@ -1,7 +1,7 @@
 type PromoCodeTypes = "percent" | "money" | "shipping";
 
 export type DynamicPromoCodeParams = {
-  dynamic_id: string;
+  dynamicId: string;
   type: PromoCodeTypes;
   amount: string;
   expire_days: string;

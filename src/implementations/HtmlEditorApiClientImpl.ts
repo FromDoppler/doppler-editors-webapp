@@ -214,12 +214,13 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
     };
 
     const result = await this.POST(
-      `/campaigns/${campaignId}/content/promoCode`,
+      `/campaigns/${campaignId}/content/promo-code`,
       body,
     );
+    console.log("post result", result);
     return {
       success: true,
-      value: { promoCodeId: result.data.promoCodeId },
+      value: { promoCodeId: result.data.createdResourceId },
     };
   }
 
@@ -240,12 +241,13 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
     };
 
     const result = await this.PUT(
-      `/campaigns/${campaignId}/content/promoCode/${dynamicParams.dynamic_id}`,
+      `/campaigns/${campaignId}/content/promo-code/${dynamicParams.dynamicId}`,
       body,
     );
+    console.log("put result", result);
     return {
       success: true,
-      value: { promoCodeId: result.data.promoCodeId },
+      value: { promoCodeId: dynamicParams.dynamicId },
     };
   }
 }

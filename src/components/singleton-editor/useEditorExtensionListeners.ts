@@ -32,17 +32,19 @@ export function useEditorExtensionListeners() {
       ),
       editorExtensionsBridge.registerPromiseListener(
         "getPromoCodeDynamicId",
-        async (dynamicParams: DynamicPromoCodeParams) => {
-          const result = dynamicParams.dynamic_id
+        async (dynamicParams: any) => {
+          console.log("dynamicParams", dynamicParams);
+          const result = dynamicParams.dynamicProperties.dynamicId
             ? await htmlEditorApiClient.updateDynamicPromoCode(
                 idCampaign,
-                dynamicParams,
+                dynamicParams.dynamicProperties as DynamicPromoCodeParams,
               )
             : await htmlEditorApiClient.createDynamicPromoCode(
                 idCampaign,
-                dynamicParams,
+                dynamicParams.dynamicProperties as DynamicPromoCodeParams,
               );
-          return result.value;
+          console.log("result", result);
+          return result.value.promoCodeId.toString();
         },
       ),
       editorExtensionsBridge.registerPromiseListener(
