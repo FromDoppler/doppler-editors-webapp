@@ -63,5 +63,11 @@ export function useEditorExtensionListeners() {
         registration.destructor();
       }
     };
-  }, [editorExtensionsBridge, showProductGalleryModal, dopplerLegacyClient]);
+  }, [
+    editorExtensionsBridge,
+    showProductGalleryModal,
+    dopplerLegacyClient,
+    htmlEditorApiClient,
+    idCampaign,
+  ]);
 }
