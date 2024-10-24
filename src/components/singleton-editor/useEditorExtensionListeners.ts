@@ -2,10 +2,17 @@ import { useEffect } from "react";
 import { useProductGalleryModal } from "../product-gallery";
 import { useAppServices } from "../AppServicesContext";
 import { ProductGalleryValue } from "../../abstractions/domain/product-gallery";
+import { DynamicPromoCodeParams } from "../../abstractions/domain/dynamic-promo-code";
+import { useParams } from "react-router-dom";
 
 export function useEditorExtensionListeners() {
-  const { editorExtensionsBridge, dopplerLegacyClient } = useAppServices();
+  const { editorExtensionsBridge, dopplerLegacyClient, htmlEditorApiClient } =
+    useAppServices();
   const { showProductGalleryModal } = useProductGalleryModal();
+
+  const { idCampaign } = useParams() as Readonly<{
+    idCampaign: string;
+  }>;
 
   useEffect(() => {
     const registrations = [
@@ -20,6 +27,21 @@ export function useEditorExtensionListeners() {
         "getPromoCodes",
         async ({ store }: { store: string }) => {
           const result = await dopplerLegacyClient.getPromoCodes({ store });
+          return result.value;
+        },
+      ),
+      editorExtensionsBridge.registerPromiseListener(
+        "getPromoCodeDynamicId",
+        async (dynamicParams: DynamicPromoCodeParams) => {
+          const result = dynamicParams.dynamic_id
+            ? await htmlEditorApiClient.updateDynamicPromoCode(
+                idCampaign,
+                dynamicParams,
+              )
+            : await htmlEditorApiClient.createDynamicPromoCode(
+                idCampaign,
+                dynamicParams,
+              );
           return result.value;
         },
       ),
