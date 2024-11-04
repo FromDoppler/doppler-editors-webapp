@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { UnlayerEditorObject } from "../../abstractions/domain/editor";
 import { useUploadImageCampaign } from "../../queries/campaign-content-queries";
@@ -19,16 +20,13 @@ export function useImageUploadSetup({
   unlayerEditorObject: UnlayerEditorObject | undefined;
   enabled?: boolean;
 }) {
+  const { idCampaign } = useParams() as Readonly<{
+    idCampaign: string;
+  }>;
+
   const [imageUploadEnabled, setImageUploadEnabled] = useState(enabled);
   const { mutate: uploadImageMutation } = useUploadImageCampaign();
   const { showNotificationModal } = useNotificationModal();
-
-  const normalizeName = (file: File): string => {
-    const etx = file.type.substring(6).replace("jpeg", "jpg");
-    const fileName =
-      file.name.indexOf(etx) > 0 ? file.name : `${file.name}.${etx}`;
-    return fileName;
-  };
 
   useEffect(() => {
     if (!unlayerEditorObject || !imageUploadEnabled) {
@@ -37,6 +35,15 @@ export function useImageUploadSetup({
     unlayerEditorObject.registerCallback(
       "image",
       function (file: any, done: any) {
+        const normalizeName = (file: File): string => {
+          const etx = file.type.substring(6).replace("jpeg", "jpg");
+          const fileName =
+            file.name.toUpperCase().indexOf(etx.toUpperCase()) > 0
+              ? file.name
+              : `${file.name}.${etx}`;
+          return idCampaign.concat("_" + fileName);
+        };
+
         const uploadFile = file.attachments[0];
         if (uploadFile === undefined) {
           const err = new Error("file not found");
@@ -81,6 +88,7 @@ export function useImageUploadSetup({
     imageUploadEnabled,
     uploadImageMutation,
     showNotificationModal,
+    idCampaign,
   ]);
 
   return {
