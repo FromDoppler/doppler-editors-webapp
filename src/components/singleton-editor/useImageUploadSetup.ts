@@ -24,7 +24,7 @@ export function useImageUploadSetup({
   const { showNotificationModal } = useNotificationModal();
 
   const normalizeName = (file: File): string => {
-    const etx = file.type.substring(6);
+    const etx = file.type.substring(6).replace("jpeg", "jpg");
     const fileName =
       file.name.indexOf(etx) > 0 ? file.name : `${file.name}.${etx}`;
     return fileName;
