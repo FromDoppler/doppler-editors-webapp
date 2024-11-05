@@ -8,6 +8,19 @@ import {
   Content,
   TemplateContent,
 } from "../abstractions/domain/content";
+import {
+  DynamicPromoCodeParams,
+  PromoCodeId,
+} from "../abstractions/domain/dynamic-promo-code";
+
+type ErrorRequest = {
+  code: string;
+  status: number;
+  message: string;
+  response: {
+    data: string;
+  };
+};
 
 export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
   private axios;
@@ -194,5 +207,76 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
       success: true,
       value: { newTemplateId: result.data.createdResourceId },
     };
+  }
+
+  async createDynamicPromoCode(
+    campaignId: string,
+    dynamicParams: DynamicPromoCodeParams,
+  ): Promise<Result<{ promoCodeId: PromoCodeId }>> {
+    const body = {
+      type: dynamicParams.type,
+      value: parseFloat(dynamicParams.value).toFixed(2),
+      expireDays: parseInt(dynamicParams.expire_days),
+      minPrice: parseFloat(dynamicParams.min_price).toFixed(2),
+      prefix: dynamicParams.prefixe_code,
+      includeShipping: dynamicParams.includes_shipping,
+      firstPurchase: dynamicParams.first_consumer_purchase,
+      combineDiscounts: dynamicParams.combines_with_other_discounts,
+      maxUses: 1,
+    };
+
+    const result = await this.POST(
+      `/campaigns/${campaignId}/content/promo-code`,
+      body,
+    );
+    return {
+      success: true,
+      value: { promoCodeId: result.data.createdResourceId },
+    };
+  }
+
+  async updateDynamicPromoCode(
+    campaignId: string,
+    dynamicParams: DynamicPromoCodeParams,
+  ): Promise<Result<{ promoCodeId: PromoCodeId }>> {
+    const body = {
+      type: dynamicParams.type,
+      value: parseFloat(dynamicParams.value).toFixed(2),
+      expireDays: parseInt(dynamicParams.expire_days),
+      minPrice: parseFloat(dynamicParams.min_price).toFixed(2),
+      prefix: dynamicParams.prefixe_code,
+      includeShipping: dynamicParams.includes_shipping,
+      firstPurchase: dynamicParams.first_consumer_purchase,
+      combineDiscounts: dynamicParams.combines_with_other_discounts,
+      maxUses: 1,
+    };
+    try {
+      await this.PUT(
+        `/campaigns/${campaignId}/content/promo-code/${dynamicParams.dynamic_id}`,
+        body,
+      );
+
+      return {
+        success: true,
+        value: { promoCodeId: dynamicParams.dynamic_id },
+      };
+    } catch (e) {
+      const error = e as ErrorRequest;
+      if (error.status === 404) {
+        const result = await this.POST(
+          `/campaigns/${campaignId}/content/promo-code`,
+          body,
+        );
+        return {
+          success: true,
+          value: { promoCodeId: result.data.createdResourceId },
+        };
+      } else {
+        return {
+          success: true,
+          value: { promoCodeId: undefined },
+        };
+      }
+    }
   }
 }
