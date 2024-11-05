@@ -18,6 +18,11 @@ const createTestContext = () => {
     getPromoCodes: jest.fn(),
   };
 
+  const htmlEditorApiClient = {
+    createDynamicPromoCode: jest.fn(),
+    updateDynamicPromoCode: jest.fn(),
+  };
+
   const appServices = {
     editorExtensionsBridge: {
       registerCallbackListener,
@@ -96,7 +101,7 @@ describe(useEditorExtensionListeners.name, () => {
     // Act
     unmount();
 
-    expect(destructors).toBeCalledTimes(3);
+    expect(destructors).toBeCalledTimes(4);
   });
 
   it("should show the gallery modal when searchProduct event occurs", () => {
@@ -164,5 +169,24 @@ describe(useEditorExtensionListeners.name, () => {
     // Assert
     expect(result).toBe(dopplerLegacyClientResult.value);
     expect(dopplerLegacyClient.getPromoCodes).toBeCalledWith({ store });
+  });
+
+  it("should register getPromoCodeDynamicId listener on mount", () => {
+    // Arrange
+    const {
+      mount,
+      mocks: { registerPromiseListener },
+    } = createTestContext();
+
+    expect(registerPromiseListener).not.toBeCalled();
+
+    // Act
+    mount();
+
+    // Assert
+    expect(registerPromiseListener).toBeCalledWith(
+      "getPromoCodeDynamicId",
+      expect.any(Function),
+    );
   });
 });

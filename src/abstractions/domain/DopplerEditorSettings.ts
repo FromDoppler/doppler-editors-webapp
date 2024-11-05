@@ -16,6 +16,7 @@ export type DopplerEditorSettings = Readonly<{
 export type DopplerEditorStore = Readonly<{
   name: string;
   promotionCodeEnabled: boolean;
+  promotionCodeDynamicEnabled: boolean;
   productsEnabled: boolean;
   sortingProductsCriteria: Readonly<SortingProductsCriteria[]>;
 }>;

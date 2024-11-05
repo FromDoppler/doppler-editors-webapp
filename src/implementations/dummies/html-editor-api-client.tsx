@@ -7,6 +7,7 @@ import {
   Content,
   TemplateContent,
 } from "../../abstractions/domain/content";
+import { DynamicPromoCodeParams } from "../../abstractions/domain/dynamic-promo-code";
 
 export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
   public getCampaignContent: (
@@ -109,6 +110,28 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
     await timeout(1000);
     console.log("End createPrivateTemplate");
     return { success: true, value: { newTemplateId: "987" } };
+  }
+
+  async createDynamicPromoCode(
+    campaignId: string,
+    dynamicParams: DynamicPromoCodeParams,
+  ): Promise<Result<{ promoCodeId: string }>> {
+    console.log("Begin createDynamicPromoCode...", campaignId);
+    console.log("Params", dynamicParams);
+    await timeout(1000);
+    console.log("End createDynamicPromoCode");
+    return { success: true, value: { promoCodeId: "1000" } };
+  }
+
+  async updateDynamicPromoCode(
+    campaignId: string,
+    dynamicParams: DynamicPromoCodeParams,
+  ): Promise<Result<{ promoCodeId: string }>> {
+    console.log("Begin updateDynamicPromoCode...", campaignId);
+    console.log("Params", dynamicParams);
+    await timeout(1000);
+    console.log("End updateDynamicPromoCode");
+    return { success: true, value: { promoCodeId: "987" } };
   }
 }
 
