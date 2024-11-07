@@ -199,7 +199,7 @@ describe(useImageUploadSetup.name, () => {
     });
   });
 
-  it("should normalize jpeg file name", async () => {
+  it("should not receive file with forbbiden extension", async () => {
     // Arrange
     const dopplerLegacyClient = {
       uploadImageCampaign: jest.fn((file) =>
@@ -234,19 +234,13 @@ describe(useImageUploadSetup.name, () => {
     // Arrange
     const onUploadImage = registerCallback.mock.calls[0][1];
     const mockFile = new File(["file content"], "normalize", {
-      type: "image/jpeg",
+      type: "image/webp",
     });
-
-    // Act
-    onUploadImage({ attachments: [mockFile] }, callback);
 
     // Assert
-    await waitFor(() => {
-      expect(callback).toHaveBeenCalledWith({
-        url: "https://cdn.fromdoppler.com/idCampaign_normalize.jpg",
-        progress: 100,
-      });
-    });
+    expect(() => onUploadImage({ attachments: [mockFile] }, callback)).toThrow(
+      new Error("File extension not accepted"),
+    );
   });
 
   it("should normalize png file name", async () => {
@@ -294,6 +288,56 @@ describe(useImageUploadSetup.name, () => {
     await waitFor(() => {
       expect(callback).toHaveBeenCalledWith({
         url: "https://cdn.fromdoppler.com/idCampaign_normalize.png",
+        progress: 100,
+      });
+    });
+  });
+
+  it("should not normalize png file name", async () => {
+    // Arrange
+    const dopplerLegacyClient = {
+      uploadImageCampaign: jest.fn((file) =>
+        Promise.resolve({
+          success: true,
+          value: {
+            url: `https://cdn.fromdoppler.com/${file.name}`,
+          },
+        }),
+      ),
+    };
+
+    const callback = jest.fn();
+    const { TestComponent, setUnlayerEditorObject } = createTestContext();
+    render(
+      <QueryClientProvider client={queryClient}>
+        <AppServicesProvider appServices={{ dopplerLegacyClient } as any}>
+          <ModalProvider>
+            <TestComponent />
+          </ModalProvider>
+        </AppServicesProvider>
+      </QueryClientProvider>,
+    );
+    const {
+      unlayerEditorObject,
+      mocks: { registerCallback },
+    } = createUnlayerObjectDouble();
+
+    // Act
+    setUnlayerEditorObject(unlayerEditorObject);
+
+    // Arrange
+    const onUploadImage = registerCallback.mock.calls[0][1];
+    const mockFile = new File(["file content"], "normalize.jpeg", {
+      type: "image/png",
+    });
+
+    // Act
+    onUploadImage({ attachments: [mockFile] }, callback);
+
+    // Assert
+    await waitFor(() => {
+      expect(callback).toHaveBeenCalledWith({
+        url: "https://cdn.fromdoppler.com/idCampaign_normalize.jpeg",
         progress: 100,
       });
     });

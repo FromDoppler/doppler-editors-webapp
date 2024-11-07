@@ -13,6 +13,8 @@ export type NotificationProps = {
   values?: Record<string, any>;
 };
 
+const IMAGE_FILE_ACCEPT = ["jpg", "jpeg", "png", "gif"];
+
 export function useImageUploadSetup({
   unlayerEditorObject,
   enabled = true,
@@ -36,11 +38,12 @@ export function useImageUploadSetup({
       "image",
       function (file: any, done: any) {
         const normalizeName = (file: File): string => {
-          const etx = file.type.substring(6).replace("jpeg", "jpg");
-          const fileName =
-            file.name.toUpperCase().indexOf(etx.toUpperCase()) > 0
-              ? file.name
-              : `${file.name}.${etx}`;
+          const fileNameExt = file.name.split(".").pop()?.toLowerCase() || "";
+          const ext = file.type.substring(6);
+          const hasAcceptedExtension = IMAGE_FILE_ACCEPT.includes(fileNameExt);
+          const fileName = hasAcceptedExtension
+            ? file.name
+            : `${file.name}.${ext}`;
           return idCampaign.concat("_" + fileName);
         };
 
@@ -48,6 +51,11 @@ export function useImageUploadSetup({
         if (uploadFile === undefined) {
           const err = new Error("file not found");
           throw err;
+        }
+
+        const ext = uploadFile.type.substring(6);
+        if (!IMAGE_FILE_ACCEPT.includes(ext)) {
+          throw new Error("File extension not accepted");
         }
 
         const blob = uploadFile.slice(0, file.size);
