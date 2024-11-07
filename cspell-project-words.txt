@@ -49,6 +49,7 @@ nofile
 webfonts
 entrypoints
 gdpr
+forbbiden
 
 # our services and providers
 aspnet
