@@ -22,8 +22,9 @@ export function useImageUploadSetup({
   unlayerEditorObject: UnlayerEditorObject | undefined;
   enabled?: boolean;
 }) {
-  const { idCampaign } = useParams() as Readonly<{
+  const { idCampaign, idTemplate } = useParams() as Readonly<{
     idCampaign: string;
+    idTemplate: string;
   }>;
 
   const [imageUploadEnabled, setImageUploadEnabled] = useState(enabled);
@@ -44,7 +45,10 @@ export function useImageUploadSetup({
           const fileName = hasAcceptedExtension
             ? file.name
             : `${file.name}.${ext}`;
-          return idCampaign.concat("_" + fileName);
+          const id =
+            (idCampaign ? idCampaign : "template_".concat(idTemplate)) ||
+            "file";
+          return id.concat("_" + fileName);
         };
 
         const uploadFile = file.attachments[0];
@@ -97,6 +101,7 @@ export function useImageUploadSetup({
     uploadImageMutation,
     showNotificationModal,
     idCampaign,
+    idTemplate,
   ]);
 
   return {
