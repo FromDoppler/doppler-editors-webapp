@@ -22,7 +22,7 @@
     "@types/react-query": "1.2.9",
     "cspell": "8.7.0",
     "eclint": "2.8.1",
-    "prettier": "3.5.1"
+    "prettier": "3.5.2"
   },
   "dependencies": {
     "@tanstack/react-query": "4.36.1",
