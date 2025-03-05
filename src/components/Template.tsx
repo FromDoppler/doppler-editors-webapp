@@ -10,7 +10,8 @@ import { EditorBottomBar } from "./EditorBottomBar";
 import { useTemplatesContinuationUrls } from "./continuation-urls";
 import { FormattedMessage } from "react-intl";
 import { useNavigateSmart } from "./smart-urls";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import { useGetEditorSettings } from "../queries/editor-settings-queries";
 
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
@@ -19,6 +20,10 @@ export const Template = () => {
   const { idTemplate } = useParams() as Readonly<{
     idTemplate: string;
   }>;
+  const editorSettings = useGetEditorSettings(undefined, idTemplate);
+  const isUnlayerExportHTMLEnabled =
+    editorSettings.data?.isUnlayerExportHTMLEnabled || false;
+  const [isExportingAsTemplate, setIsExportingAsTemplate] = useState(false);
   const continuationUrls = useTemplatesContinuationUrls();
   const navigateSmart = useNavigateSmart();
 
@@ -44,11 +49,39 @@ export const Template = () => {
     [templateQuery.data, updateTemplateMutateAsync, idTemplate],
   );
 
-  const { smartSave, doWhenNoPendingUpdates, saveStatus, undoTools } =
-    useSingletonEditor({
-      initialContent: templateQuery.data,
-      onSave,
-    });
+  const {
+    smartSave,
+    exportContent,
+    doWhenNoPendingUpdates,
+    saveStatus,
+    undoTools,
+  } = useSingletonEditor({
+    initialContent: templateQuery.data,
+    onSave,
+  });
+
+  const exportHTML = async () => {
+    setIsExportingAsTemplate(true);
+    try {
+      const content = await exportContent();
+      if (content?.type !== "unlayer") {
+        console.error("Only Unlayer contents can be saved as templates");
+        return;
+      }
+      const filename = templateQuery.data?.templateName.concat(
+        "html",
+      ) as string;
+      const blobContent = new Blob([content?.htmlContent || ""], {
+        type: "text/html",
+      });
+      const linkElement = document.createElement("a");
+      linkElement.href = URL.createObjectURL(blobContent);
+      linkElement.setAttribute("download", filename);
+      linkElement.click();
+    } finally {
+      setIsExportingAsTemplate(false);
+    }
+  };
 
   const saveAndNavigateClick = async (to: string) => {
     smartSave();
@@ -79,7 +112,29 @@ export const Template = () => {
               }
               saveStatus={saveStatus}
               undoTools={undoTools}
-            ></EditorTopBar>
+            >
+              <ul className="ed-header-list">
+                {templateQuery.data?.type === "unlayer" ? (
+                  <li>
+                    {isUnlayerExportHTMLEnabled && (
+                      <button
+                        data-testid="export-content-btn"
+                        type="button"
+                        onClick={exportHTML}
+                        disabled={isExportingAsTemplate}
+                        className={`dp-button button-medium ctaTertiary m-l-12 ${
+                          isExportingAsTemplate ? "button--loading" : ""
+                        } p-cta-paragraph`}
+                      >
+                        <span className="dpicon iconapp-floppy-disc1"></span>
+                      </button>
+                    )}
+                  </li>
+                ) : (
+                  false
+                )}
+              </ul>
+            </EditorTopBar>
           </Header>
           <Footer>
             <EditorBottomBar>

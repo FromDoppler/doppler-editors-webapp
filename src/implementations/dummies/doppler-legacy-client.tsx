@@ -262,36 +262,42 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
       crossSellingEnabled: false,
       rssCampaign: false,
       rssShowPreview: false,
+      isUnlayerExportHTMLEnabled: true,
       stores: [
         {
           name: "MercadoShops",
           promotionCodeEnabled: true,
           productsEnabled: true,
           sortingProductsCriteria: ["PRICE"],
+          promotionCodeDynamicEnabled: false,
         },
         {
           name: "Tienda Nube",
           promotionCodeEnabled: false,
           productsEnabled: true,
           sortingProductsCriteria: ["PRICE", "NAME", "UPDATE_DATE"],
+          promotionCodeDynamicEnabled: false,
         },
         {
           name: "Jumpseller",
           promotionCodeEnabled: false,
           productsEnabled: true,
           sortingProductsCriteria: [],
+          promotionCodeDynamicEnabled: false,
         },
         {
           name: "VTEX",
           promotionCodeEnabled: false,
           productsEnabled: false,
           sortingProductsCriteria: [],
+          promotionCodeDynamicEnabled: false,
         },
         {
           name: "Woocomerce",
           promotionCodeEnabled: false,
           productsEnabled: true,
           sortingProductsCriteria: ["NAME"],
+          promotionCodeDynamicEnabled: false,
         },
       ],
     } as const;

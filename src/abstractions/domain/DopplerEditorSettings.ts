@@ -10,6 +10,7 @@ export type DopplerEditorSettings = Readonly<{
   crossSellingEnabled: boolean;
   rssCampaign: boolean;
   rssShowPreview: boolean;
+  isUnlayerExportHTMLEnabled: boolean;
   stores: Readonly<DopplerEditorStore[]>;
 }>;
 
