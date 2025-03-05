@@ -46,6 +46,15 @@ const baseAppServices = {
   dopplerRestApiClient: {
     getFields: () => Promise.resolve({ success: true, value: [] as Field[] }),
   },
+  dopplerLegacyClient: {
+    getEditorSettings: () =>
+      Promise.resolve({
+        success: true,
+        value: {
+          isUnlayerExportHTMLEnabled: true,
+        },
+      }),
+  },
   editorExtensionsBridge: {
     registerCallbackListener: () => ({ destructor: noop }),
     registerPromiseListener: () => ({ destructor: noop }),
@@ -465,5 +474,21 @@ describe(Campaign.name, () => {
     // Assert
     await screen.findByRole("dialog");
     expect(exportToTemplate).toBeEnabled();
+  });
+
+  it("button export content button must be showed when the flag isUnlayerExportHTMLEnabled is true", async () => {
+    // Arrange
+    const { resolveGetCampaignContentPromise, TestComponent } =
+      createTestContext();
+
+    renderEditor(<TestComponent routerInitialEntry="/1234" />);
+    resolveGetCampaignContentPromise({
+      success: true,
+      value: { type: "unlayer" } as any,
+    });
+
+    // Assert
+    const exportContent = await screen.findByTestId("export-content-btn");
+    expect(exportContent).toBeDefined();
   });
 });
