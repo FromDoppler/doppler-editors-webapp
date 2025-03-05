@@ -262,6 +262,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
       crossSellingEnabled: false,
       rssCampaign: false,
       rssShowPreview: false,
+      isUnlayerExportHTMLEnabled: true,
       stores: [
         {
           name: "MercadoShops",
