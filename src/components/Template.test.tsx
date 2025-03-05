@@ -239,7 +239,7 @@ describe(Template.name, () => {
     expect(() => screen.getByRole("export_to_template")).toThrow();
   });
 
-  it("button export content button must be showed when the flag isUnlayerExportHTMLEnabled is true", async () => {
+  it("button download content must be showed when the flag isUnlayerExportHTMLEnabled is true", async () => {
     // Arrange
     const idTemplate = "1234";
     const { resolveGetTemplatePromise, TestComponent } = createTestContext();

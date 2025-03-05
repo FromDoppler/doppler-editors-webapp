@@ -476,7 +476,7 @@ describe(Campaign.name, () => {
     expect(exportToTemplate).toBeEnabled();
   });
 
-  it("button export content button must be showed when the flag isUnlayerExportHTMLEnabled is true", async () => {
+  it("button download content must be showed when the flag isUnlayerExportHTMLEnabled is true", async () => {
     // Arrange
     const { resolveGetCampaignContentPromise, TestComponent } =
       createTestContext();
