@@ -34,6 +34,15 @@ const baseAppServices = {
       integrations: "https://dopplerexternalurls.integrations/",
     },
   },
+  dopplerLegacyClient: {
+    getEditorSettings: () =>
+      Promise.resolve({
+        success: true,
+        value: {
+          isUnlayerExportHTMLEnabled: true,
+        },
+      }),
+  },
   editorExtensionsBridge: {
     registerCallbackListener: () => ({ destructor: noop }),
     registerPromiseListener: () => ({ destructor: noop }),
@@ -228,5 +237,22 @@ describe(Template.name, () => {
 
     // Assert
     expect(() => screen.getByRole("export_to_template")).toThrow();
+  });
+
+  it("button export content button must be showed when the flag isUnlayerExportHTMLEnabled is true", async () => {
+    // Arrange
+    const idTemplate = "1234";
+    const { resolveGetTemplatePromise, TestComponent } = createTestContext();
+
+    // Act
+    renderEditor(<TestComponent routerInitialEntry={`/${idTemplate}`} />);
+    resolveGetTemplatePromise({
+      success: true,
+      value: { type: "unlayer" } as any,
+    });
+
+    // Assert
+    const exportContent = await screen.findByTestId("export-content-btn");
+    expect(exportContent).toBeDefined();
   });
 });
