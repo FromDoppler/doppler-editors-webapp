@@ -91,8 +91,9 @@ export const Campaign = () => {
         console.error("Only Unlayer contents can be saved as templates");
         return;
       }
-      const filename = campaignContentQuery.data?.campaignName.concat(
-        "html",
+      const campaignName = campaignContentQuery.data?.campaignName.trim();
+      const filename = (
+        campaignName && campaignName !== "" ? campaignName : "campaign"
       ) as string;
       const blobContent = new Blob([content?.htmlContent || ""], {
         type: "text/html",
