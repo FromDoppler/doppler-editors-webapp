@@ -68,8 +68,9 @@ export const Template = () => {
         console.error("Only Unlayer contents can be saved as templates");
         return;
       }
-      const filename = templateQuery.data?.templateName.concat(
-        "html",
+      const templateName = templateQuery.data?.templateName.trim();
+      const filename = (
+        templateName && templateName !== "" ? templateName : "template"
       ) as string;
       const blobContent = new Blob([content?.htmlContent || ""], {
         type: "text/html",
