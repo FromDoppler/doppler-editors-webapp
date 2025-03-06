@@ -351,6 +351,7 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
   const crossSellingEnabled = !!d.crossSellingEnabled;
   const rssCampaign = !!d.rssCampaign;
   const rssShowPreview = !!d.rssShowPreview;
+  const isUnlayerExportHTMLEnabled = !!d.isUnlayerExportHTMLEnabled;
   // TODO: analyze to use a store parse
   const stores =
     arrayOrEmptyArray(d.stores)
@@ -377,6 +378,7 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
     crossSellingEnabled,
     rssCampaign,
     rssShowPreview,
+    isUnlayerExportHTMLEnabled,
   };
 }
 

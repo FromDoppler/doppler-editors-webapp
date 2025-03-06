@@ -15,6 +15,7 @@ import { FormattedMessage } from "react-intl";
 import { useSaveAsTemplateModal } from "./SaveAsTemplateModal";
 import { useCallback, useState } from "react";
 import { useNavigateSmart } from "./smart-urls";
+import { useGetEditorSettings } from "../queries/editor-settings-queries";
 
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
@@ -26,6 +27,9 @@ export const Campaign = () => {
     idCampaign: string;
   }>;
 
+  const editorSettings = useGetEditorSettings(idCampaign, undefined);
+  const isUnlayerExportHTMLEnabled =
+    editorSettings.data?.isUnlayerExportHTMLEnabled || false;
   const campaignContentQuery = useGetCampaignContent(idCampaign);
 
   const { showSaveAsTemplateModal } = useSaveAsTemplateModal();
@@ -79,6 +83,29 @@ export const Campaign = () => {
     }
   };
 
+  const exportHTML = async () => {
+    setIsExportingAsTemplate(true);
+    try {
+      const content = await exportContent();
+      if (content?.type !== "unlayer") {
+        console.error("Only Unlayer contents can be saved as templates");
+        return;
+      }
+      const filename = campaignContentQuery.data?.campaignName.concat(
+        "html",
+      ) as string;
+      const blobContent = new Blob([content?.htmlContent || ""], {
+        type: "text/html",
+      });
+      const linkElement = document.createElement("a");
+      linkElement.href = URL.createObjectURL(blobContent);
+      linkElement.setAttribute("download", filename);
+      linkElement.click();
+    } finally {
+      setIsExportingAsTemplate(false);
+    }
+  };
+
   const saveAndNavigateClick = async (to: string) => {
     smartSave();
     doWhenNoPendingUpdates(() => navigateSmart(to));
@@ -114,6 +141,19 @@ export const Campaign = () => {
                     >
                       <FormattedMessage id="save_template" />
                     </button>
+                    {isUnlayerExportHTMLEnabled && (
+                      <button
+                        data-testid="export-content-btn"
+                        type="button"
+                        onClick={exportHTML}
+                        disabled={isExportingAsTemplate}
+                        className={`dp-button button-medium ctaTertiary m-l-12 ${
+                          isExportingAsTemplate ? "button--loading" : ""
+                        } p-cta-paragraph`}
+                      >
+                        <span className="dpicon iconapp-floppy-disc1"></span>
+                      </button>
+                    )}
                   </li>
                 ) : (
                   false

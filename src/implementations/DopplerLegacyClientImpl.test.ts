@@ -458,6 +458,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           bestSellingEnabled: false,
           newProductsEnabled: false,
           crossSellingEnabled: false,
+          isUnlayerExportHTMLEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
         },
@@ -476,6 +477,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           bestSellingEnabled: false,
           newProductsEnabled: false,
           crossSellingEnabled: false,
+          isUnlayerExportHTMLEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
         },
@@ -488,6 +490,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           bestSellingEnabled: false,
           newProductsEnabled: false,
           crossSellingEnabled: false,
+          isUnlayerExportHTMLEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
         },
@@ -503,6 +506,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
+          isUnlayerExportHTMLEnabled: false,
           stores: [
             {
               name: "MercadoShops",
@@ -531,6 +535,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
+          isUnlayerExportHTMLEnabled: false,
           stores: [
             {
               name: "MercadoShops",
@@ -560,6 +565,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
+          isUnlayerExportHTMLEnabled: false,
           stores: [
             {
               name: "MercadoShops",
@@ -588,6 +594,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
+          isUnlayerExportHTMLEnabled: false,
           stores: [
             {
               name: "MercadoShops",
@@ -617,6 +624,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
+          isUnlayerExportHTMLEnabled: false,
           stores: [
             {
               name: "Tiendanube",
@@ -638,6 +646,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
+          isUnlayerExportHTMLEnabled: false,
           stores: [
             {
               name: "Tiendanube",
@@ -660,6 +669,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
+          isUnlayerExportHTMLEnabled: false,
           stores: [
             {
               name: "Tiendanube",
@@ -681,6 +691,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
+          isUnlayerExportHTMLEnabled: false,
           stores: [
             {
               name: "Tiendanube",
@@ -720,6 +731,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
+          isUnlayerExportHTMLEnabled: false,
         },
         expectedResult: {
           abandonedCartCampaign: false,
@@ -731,6 +743,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
+          isUnlayerExportHTMLEnabled: false,
           stores: [
             {
               name: "MercadoShops",
@@ -777,6 +790,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: true,
           rssShowPreview: false,
+          isUnlayerExportHTMLEnabled: false,
         },
         expectedResult: {
           abandonedCartCampaign: false,
@@ -788,6 +802,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: true,
           rssShowPreview: false,
+          isUnlayerExportHTMLEnabled: false,
           stores: [
             {
               name: "MercadoShops",
@@ -835,6 +850,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: true,
           rssShowPreview: true,
+          isUnlayerExportHTMLEnabled: false,
         },
         expectedResult: {
           abandonedCartCampaign: false,
@@ -846,6 +862,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: true,
           rssShowPreview: true,
+          isUnlayerExportHTMLEnabled: false,
           stores: [
             {
               name: "MercadoShops",
@@ -895,6 +912,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: true,
           rssShowPreview: true,
+          isUnlayerExportHTMLEnabled: true,
         },
         expectedResult: {
           abandonedCartCampaign: false,
@@ -904,6 +922,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           bestSellingEnabled: false,
           newProductsEnabled: false,
           crossSellingEnabled: false,
+          isUnlayerExportHTMLEnabled: true,
           rssCampaign: true,
           rssShowPreview: true,
           stores: [
