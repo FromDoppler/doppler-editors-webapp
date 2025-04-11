@@ -461,6 +461,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           isUnlayerExportHTMLEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
+          productDynamic: false,
         },
       });
     });
@@ -493,6 +494,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           isUnlayerExportHTMLEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
+          productDynamic: false,
         },
       },
       {
@@ -535,11 +537,13 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
+          productDynamic: false,
           isUnlayerExportHTMLEnabled: false,
           stores: [
             {
               name: "MercadoShops",
               productsEnabled: true,
+              dynamicProductsEnabled: false,
               promotionCodeEnabled: false,
               promotionCodeDynamicEnabled: false,
               sortingProductsCriteria: [],
@@ -547,6 +551,7 @@ describe(DopplerLegacyClientImpl.name, () => {
             {
               name: "Tiendanube",
               productsEnabled: false,
+              dynamicProductsEnabled: false,
               promotionCodeEnabled: false,
               promotionCodeDynamicEnabled: false,
               sortingProductsCriteria: [],
@@ -594,11 +599,13 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
+          productDynamic: false,
           isUnlayerExportHTMLEnabled: false,
           stores: [
             {
               name: "MercadoShops",
               productsEnabled: true,
+              dynamicProductsEnabled: false,
               promotionCodeEnabled: false,
               promotionCodeDynamicEnabled: false,
               sortingProductsCriteria: [],
@@ -606,6 +613,7 @@ describe(DopplerLegacyClientImpl.name, () => {
             {
               name: "Tiendanube",
               productsEnabled: false,
+              dynamicProductsEnabled: false,
               promotionCodeEnabled: false,
               promotionCodeDynamicEnabled: false,
               sortingProductsCriteria: [],
@@ -646,11 +654,13 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
+          productDynamic: false,
           isUnlayerExportHTMLEnabled: false,
           stores: [
             {
               name: "Tiendanube",
               productsEnabled: false,
+              dynamicProductsEnabled: false,
               promotionCodeEnabled: false,
               promotionCodeDynamicEnabled: false,
               sortingProductsCriteria: [],
@@ -691,11 +701,13 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
+          productDynamic: false,
           isUnlayerExportHTMLEnabled: false,
           stores: [
             {
               name: "Tiendanube",
               productsEnabled: false,
+              dynamicProductsEnabled: false,
               promotionCodeEnabled: false,
               promotionCodeDynamicEnabled: false,
               sortingProductsCriteria: [],
@@ -743,6 +755,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: false,
           rssShowPreview: false,
+          productDynamic: false,
           isUnlayerExportHTMLEnabled: false,
           stores: [
             {
@@ -750,6 +763,7 @@ describe(DopplerLegacyClientImpl.name, () => {
               promotionCodeEnabled: false,
               promotionCodeDynamicEnabled: false,
               productsEnabled: true,
+              dynamicProductsEnabled: false,
               sortingProductsCriteria: [],
             },
             {
@@ -757,6 +771,7 @@ describe(DopplerLegacyClientImpl.name, () => {
               promotionCodeEnabled: false,
               promotionCodeDynamicEnabled: false,
               productsEnabled: false,
+              dynamicProductsEnabled: false,
               sortingProductsCriteria: [],
             },
           ],
@@ -802,6 +817,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: true,
           rssShowPreview: false,
+          productDynamic: false,
           isUnlayerExportHTMLEnabled: false,
           stores: [
             {
@@ -809,6 +825,7 @@ describe(DopplerLegacyClientImpl.name, () => {
               promotionCodeEnabled: false,
               promotionCodeDynamicEnabled: false,
               productsEnabled: true,
+              dynamicProductsEnabled: false,
               sortingProductsCriteria: [],
             },
             {
@@ -816,6 +833,7 @@ describe(DopplerLegacyClientImpl.name, () => {
               promotionCodeEnabled: false,
               promotionCodeDynamicEnabled: false,
               productsEnabled: false,
+              dynamicProductsEnabled: false,
               sortingProductsCriteria: [],
             },
           ],
@@ -862,6 +880,7 @@ describe(DopplerLegacyClientImpl.name, () => {
           crossSellingEnabled: false,
           rssCampaign: true,
           rssShowPreview: true,
+          productDynamic: false,
           isUnlayerExportHTMLEnabled: false,
           stores: [
             {
@@ -869,6 +888,7 @@ describe(DopplerLegacyClientImpl.name, () => {
               promotionCodeEnabled: false,
               promotionCodeDynamicEnabled: false,
               productsEnabled: true,
+              dynamicProductsEnabled: false,
               sortingProductsCriteria: [],
             },
             {
@@ -876,6 +896,7 @@ describe(DopplerLegacyClientImpl.name, () => {
               promotionCodeEnabled: true,
               promotionCodeDynamicEnabled: true,
               productsEnabled: false,
+              dynamicProductsEnabled: false,
               sortingProductsCriteria: [],
             },
           ],
@@ -889,6 +910,7 @@ describe(DopplerLegacyClientImpl.name, () => {
               accessToken: "123",
               storeId: "456",
               productsEnabled: true,
+              dynamicProductsEnabled: false,
               promotionCodeDynamicEnabled: false,
               sortingProductsCriteria: [],
             },
@@ -899,6 +921,17 @@ describe(DopplerLegacyClientImpl.name, () => {
               promotionCodeEnabled: false,
               promotionCodeDynamicEnabled: true,
               productsEnabled: false,
+              dynamicProductsEnabled: false,
+              sortingProductsCriteria: [],
+            },
+            {
+              name: "BigBox",
+              accessToken: "789",
+              storeId: "101113",
+              promotionCodeEnabled: false,
+              promotionCodeDynamicEnabled: true,
+              productsEnabled: true,
+              dynamicProductsEnabled: true,
               sortingProductsCriteria: [],
             },
           ],
@@ -925,12 +958,14 @@ describe(DopplerLegacyClientImpl.name, () => {
           isUnlayerExportHTMLEnabled: true,
           rssCampaign: true,
           rssShowPreview: true,
+          productDynamic: true,
           stores: [
             {
               name: "MercadoShops",
               promotionCodeEnabled: false,
               promotionCodeDynamicEnabled: false,
               productsEnabled: true,
+              dynamicProductsEnabled: false,
               sortingProductsCriteria: [],
             },
             {
@@ -938,6 +973,15 @@ describe(DopplerLegacyClientImpl.name, () => {
               promotionCodeEnabled: false,
               promotionCodeDynamicEnabled: true,
               productsEnabled: false,
+              dynamicProductsEnabled: false,
+              sortingProductsCriteria: [],
+            },
+            {
+              name: "BigBox",
+              promotionCodeEnabled: false,
+              promotionCodeDynamicEnabled: true,
+              productsEnabled: true,
+              dynamicProductsEnabled: true,
               sortingProductsCriteria: [],
             },
           ],

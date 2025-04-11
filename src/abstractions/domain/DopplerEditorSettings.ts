@@ -11,6 +11,7 @@ export type DopplerEditorSettings = Readonly<{
   rssCampaign: boolean;
   rssShowPreview: boolean;
   isUnlayerExportHTMLEnabled: boolean;
+  productDynamic: boolean;
   stores: Readonly<DopplerEditorStore[]>;
 }>;
 
@@ -19,5 +20,6 @@ export type DopplerEditorStore = Readonly<{
   promotionCodeEnabled: boolean;
   promotionCodeDynamicEnabled: boolean;
   productsEnabled: boolean;
+  dynamicProductsEnabled?: boolean;
   sortingProductsCriteria: Readonly<SortingProductsCriteria[]>;
 }>;
