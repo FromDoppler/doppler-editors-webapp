@@ -368,7 +368,9 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
         dynamicProductsEnabled: x.dynamicProductsEnabled || false,
         sortingProductsCriteria: x.sortingProductsCriteria,
       })) ?? [];
-    const productDynamic = stores.some(({dynamicProductsEnabled}) => dynamicProductsEnabled)
+  const productDynamic = stores.some(
+    ({ dynamicProductsEnabled }) => dynamicProductsEnabled,
+  );
   return {
     stores,
     abandonedCartCampaign,
