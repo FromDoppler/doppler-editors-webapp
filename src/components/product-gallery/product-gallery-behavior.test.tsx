@@ -214,6 +214,8 @@ describe(useProductGalleryBehavior.name, () => {
       name: `MercadoShops`,
       promotionCodeEnabled: false,
       productsEnabled: true,
+      promotionCodeDynamicEnabled: false,
+      dynamicProductsEnabled: false,
       sortingProductsCriteria: [],
     };
     // Act
@@ -243,7 +245,9 @@ describe(useProductGalleryBehavior.name, () => {
     const mockStore2: DopplerEditorStore = {
       name: `TiendaNube`,
       promotionCodeEnabled: false,
+      promotionCodeDynamicEnabled: false,
       productsEnabled: true,
+      dynamicProductsEnabled: false,
       sortingProductsCriteria: ["NAME"],
     };
     setStore(mockStore2);

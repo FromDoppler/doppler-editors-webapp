@@ -299,6 +299,14 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
           sortingProductsCriteria: ["NAME"],
           promotionCodeDynamicEnabled: false,
         },
+        {
+          name: "BigBox",
+          promotionCodeEnabled: false,
+          productsEnabled: true,
+          dynamicProductsEnabled: true,
+          sortingProductsCriteria: ["NAME"],
+          promotionCodeDynamicEnabled: false,
+        },
       ],
     } as const;
     console.log("End getEditorSettings", value);
