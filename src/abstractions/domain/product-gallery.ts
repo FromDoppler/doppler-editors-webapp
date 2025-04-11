@@ -7,4 +7,6 @@ export type ProductGalleryValue = {
   discountPriceText: string | undefined;
   discountText: string | undefined;
   descriptionHtml: string | undefined;
+  reference?: string | undefined;
+  info?: string | undefined;
 };

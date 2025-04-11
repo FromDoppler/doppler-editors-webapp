@@ -462,4 +462,6 @@ const createItem = ({ name }: { name: string }) => ({
   discountPriceText: "$ 900",
   discountText: "10% Off",
   descriptionHtml: `<p>Descripción del producto <b>${name}</b></p>`,
+  reference: `COD-${name}`,
+  info:  `<p>Short description about <b>${name}</b></p>`,
 });
