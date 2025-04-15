@@ -69,6 +69,8 @@ export const demoProducts: ProductGalleryValue[] = [
     discountPriceText: "$ 900",
     discountText: "10% Off",
     descriptionHtml: "<p>Descripción del producto <b>product1</b></p>",
+    reference: "reference",
+    info: "<p>Descripción del producto <b>product1</b></p>",
   },
   {
     productUrl: "https://fromdoppler.net/product/product2",
@@ -296,6 +298,14 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
           name: "Woocomerce",
           promotionCodeEnabled: false,
           productsEnabled: true,
+          sortingProductsCriteria: ["NAME"],
+          promotionCodeDynamicEnabled: false,
+        },
+        {
+          name: "BigBox",
+          promotionCodeEnabled: false,
+          productsEnabled: true,
+          dynamicProductsEnabled: true,
           sortingProductsCriteria: ["NAME"],
           promotionCodeDynamicEnabled: false,
         },

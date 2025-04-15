@@ -365,8 +365,12 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
             INTEGRATIONS_WITH_DYNAMIC_PROMOTIONS.includes(x.name)) ||
           false,
         productsEnabled: x.productsEnabled,
+        dynamicProductsEnabled: x.dynamicProductsEnabled || false,
         sortingProductsCriteria: x.sortingProductsCriteria,
       })) ?? [];
+  const productDynamic = stores.some(
+    ({ dynamicProductsEnabled }) => dynamicProductsEnabled,
+  );
   return {
     stores,
     abandonedCartCampaign,
@@ -379,6 +383,7 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
     rssCampaign,
     rssShowPreview,
     isUnlayerExportHTMLEnabled,
+    productDynamic,
   };
 }
 
@@ -395,6 +400,8 @@ function arrayOrEmptyArray(
 function hasName(x: unknown): x is {
   name: any;
   productsEnabled: boolean;
+  dynamicProductsEnabled: boolean;
+  DopplerEditorStore: boolean;
   promotionCodeEnabled: boolean;
   promotionCodeDynamicEnabled: boolean;
   sortingProductsCriteria: [];
@@ -478,6 +485,8 @@ function parseProductItem({
   DiscountPriceText,
   DiscountText,
   DescriptionHtml,
+  Reference,
+  Info,
 }: any) {
   return {
     productUrl: `${ProductUrl}`,
@@ -487,5 +496,7 @@ function parseProductItem({
     discountPriceText: `${DiscountPriceText}`,
     discountText: `${DiscountText}`,
     descriptionHtml: `${DescriptionHtml}`,
+    reference: `${Reference}`,
+    info: `${Info}`,
   };
 }

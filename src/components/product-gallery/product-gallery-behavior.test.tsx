@@ -214,6 +214,8 @@ describe(useProductGalleryBehavior.name, () => {
       name: `MercadoShops`,
       promotionCodeEnabled: false,
       productsEnabled: true,
+      promotionCodeDynamicEnabled: false,
+      dynamicProductsEnabled: false,
       sortingProductsCriteria: [],
     };
     // Act
@@ -243,7 +245,9 @@ describe(useProductGalleryBehavior.name, () => {
     const mockStore2: DopplerEditorStore = {
       name: `TiendaNube`,
       promotionCodeEnabled: false,
+      promotionCodeDynamicEnabled: false,
       productsEnabled: true,
+      dynamicProductsEnabled: false,
       sortingProductsCriteria: ["NAME"],
     };
     setStore(mockStore2);
@@ -458,4 +462,6 @@ const createItem = ({ name }: { name: string }) => ({
   discountPriceText: "$ 900",
   discountText: "10% Off",
   descriptionHtml: `<p>Descripción del producto <b>${name}</b></p>`,
+  reference: `COD-${name}`,
+  info: `<p>Short description about <b>${name}</b></p>`,
 });
