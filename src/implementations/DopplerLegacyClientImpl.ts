@@ -312,9 +312,10 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     const path = "/MSEditor/Editor/GetProducts";
     const response = await this.axios.get(`${path}?${queryString}`);
 
-    const items = arrayOrEmptyArray(response.data.products).map(
-      parseProductItem,
-    );
+    const items = arrayOrEmptyArray(response.data.products).map(product => ({
+      ...parseProductItem(product),
+      store: storeSelected.name,
+    }));
 
     const newContinuation = response.data.paging.continuationToken
       ? response.data.paging.continuationToken

@@ -9,4 +9,5 @@ export type ProductGalleryValue = {
   descriptionHtml: string | undefined;
   reference?: string | undefined;
   info?: string | undefined;
+  store?: string | undefined;
 };
