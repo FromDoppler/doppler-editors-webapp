@@ -370,7 +370,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
       // thumbnail URL.
       items: ProductGalleryValue[];
       continuation: string | undefined;
-      store: string | undefined;
+      source: string | undefined;
     }>
   > = async ({
     storeSelected,
@@ -395,7 +395,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     const filteredItems = itemList.filter((x: ProductGalleryValue) =>
       (x.title || "").includes(searchTerm),
     );
-    const items = filteredItems.slice(start, end).map((x) => ({ ...x, store: storeSelected.name }));
+    const items = filteredItems.slice(start, end).map((x) => ({ ...x, source: storeSelected.name }));
     const newContinuation = filteredItems.length > end ? `${end}` : undefined;
     const result = {
       success: true as const,

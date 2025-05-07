@@ -314,7 +314,7 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
 
     const items = arrayOrEmptyArray(response.data.products).map(product => ({
       ...parseProductItem(product),
-      store: storeSelected.name,
+      source: storeSelected.name,
     }));
 
     const newContinuation = response.data.paging.continuationToken
