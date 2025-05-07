@@ -395,7 +395,9 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     const filteredItems = itemList.filter((x: ProductGalleryValue) =>
       (x.title || "").includes(searchTerm),
     );
-    const items = filteredItems.slice(start, end).map((x) => ({ ...x, source: storeSelected.name }));
+    const items = filteredItems
+      .slice(start, end)
+      .map((x) => ({ ...x, source: storeSelected.name }));
     const newContinuation = filteredItems.length > end ? `${end}` : undefined;
     const result = {
       success: true as const,
