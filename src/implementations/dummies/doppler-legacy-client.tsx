@@ -305,7 +305,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
           name: "BigBox",
           promotionCodeEnabled: false,
           productsEnabled: true,
-          dynamicProductsEnabled: true,
+          dynamicProductEnabled: true,
           sortingProductsCriteria: ["NAME"],
           promotionCodeDynamicEnabled: false,
         },
