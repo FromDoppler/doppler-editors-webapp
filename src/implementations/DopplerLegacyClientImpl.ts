@@ -498,6 +498,6 @@ function parseProductItem({
     discountText: `${DiscountText}`,
     descriptionHtml: `${DescriptionHtml}`,
     reference: `${Reference}`,
-    info: `${Info}`,
+    infoHtml: `${Info}`,
   };
 }
