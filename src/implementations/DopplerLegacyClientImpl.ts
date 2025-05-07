@@ -312,9 +312,10 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     const path = "/MSEditor/Editor/GetProducts";
     const response = await this.axios.get(`${path}?${queryString}`);
 
-    const items = arrayOrEmptyArray(response.data.products).map(
-      parseProductItem,
-    );
+    const items = arrayOrEmptyArray(response.data.products).map((product) => ({
+      ...parseProductItem(product),
+      source: storeSelected.name,
+    }));
 
     const newContinuation = response.data.paging.continuationToken
       ? response.data.paging.continuationToken
@@ -365,11 +366,11 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
             INTEGRATIONS_WITH_DYNAMIC_PROMOTIONS.includes(x.name)) ||
           false,
         productsEnabled: x.productsEnabled,
-        dynamicProductsEnabled: x.dynamicProductsEnabled || false,
+        dynamicProductEnabled: x.dynamicProductEnabled || false,
         sortingProductsCriteria: x.sortingProductsCriteria,
       })) ?? [];
   const productDynamic = stores.some(
-    ({ dynamicProductsEnabled }) => dynamicProductsEnabled,
+    ({ dynamicProductEnabled }) => dynamicProductEnabled,
   );
   return {
     stores,
@@ -400,7 +401,7 @@ function arrayOrEmptyArray(
 function hasName(x: unknown): x is {
   name: any;
   productsEnabled: boolean;
-  dynamicProductsEnabled: boolean;
+  dynamicProductEnabled: boolean;
   DopplerEditorStore: boolean;
   promotionCodeEnabled: boolean;
   promotionCodeDynamicEnabled: boolean;

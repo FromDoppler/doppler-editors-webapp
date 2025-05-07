@@ -305,7 +305,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
           name: "BigBox",
           promotionCodeEnabled: false,
           productsEnabled: true,
-          dynamicProductsEnabled: true,
+          dynamicProductEnabled: true,
           sortingProductsCriteria: ["NAME"],
           promotionCodeDynamicEnabled: false,
         },
@@ -370,6 +370,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
       // thumbnail URL.
       items: ProductGalleryValue[];
       continuation: string | undefined;
+      source: string | undefined;
     }>
   > = async ({
     storeSelected,
@@ -394,7 +395,9 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
     const filteredItems = itemList.filter((x: ProductGalleryValue) =>
       (x.title || "").includes(searchTerm),
     );
-    const items = filteredItems.slice(start, end).map((x) => ({ ...x }));
+    const items = filteredItems
+      .slice(start, end)
+      .map((x) => ({ ...x, source: storeSelected.name }));
     const newContinuation = filteredItems.length > end ? `${end}` : undefined;
     const result = {
       success: true as const,

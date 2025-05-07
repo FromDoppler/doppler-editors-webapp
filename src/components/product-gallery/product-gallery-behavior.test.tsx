@@ -215,7 +215,7 @@ describe(useProductGalleryBehavior.name, () => {
       promotionCodeEnabled: false,
       productsEnabled: true,
       promotionCodeDynamicEnabled: false,
-      dynamicProductsEnabled: false,
+      dynamicProductEnabled: false,
       sortingProductsCriteria: [],
     };
     // Act
@@ -247,7 +247,7 @@ describe(useProductGalleryBehavior.name, () => {
       promotionCodeEnabled: false,
       promotionCodeDynamicEnabled: false,
       productsEnabled: true,
-      dynamicProductsEnabled: false,
+      dynamicProductEnabled: false,
       sortingProductsCriteria: ["NAME"],
     };
     setStore(mockStore2);
