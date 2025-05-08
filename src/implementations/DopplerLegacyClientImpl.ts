@@ -487,7 +487,7 @@ function parseProductItem({
   DiscountText,
   DescriptionHtml,
   Reference,
-  Info,
+  InfoHtml,
 }: any) {
   return {
     productUrl: `${ProductUrl}`,
@@ -498,6 +498,6 @@ function parseProductItem({
     discountText: `${DiscountText}`,
     descriptionHtml: `${DescriptionHtml}`,
     reference: `${Reference}`,
-    info: `${Info}`,
+    infoHtml: `${InfoHtml}`,
   };
 }
