@@ -70,7 +70,7 @@ export const demoProducts: ProductGalleryValue[] = [
     discountText: "10% Off",
     descriptionHtml: "<p>Descripción del producto <b>product1</b></p>",
     reference: "reference",
-    info: "<p>Descripción del producto <b>product1</b></p>",
+    infoHtml: "<p>Descripción del producto <b>product1</b></p>",
   },
   {
     productUrl: "https://fromdoppler.net/product/product2",
