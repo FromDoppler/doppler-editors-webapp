@@ -272,6 +272,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
           productsEnabled: true,
           sortingProductsCriteria: ["PRICE"],
           promotionCodeDynamicEnabled: false,
+          dynamicProductEnabled: false,
         },
         {
           name: "Tienda Nube",
@@ -279,6 +280,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
           productsEnabled: true,
           sortingProductsCriteria: ["PRICE", "NAME", "UPDATE_DATE"],
           promotionCodeDynamicEnabled: false,
+          dynamicProductEnabled: true,
         },
         {
           name: "Jumpseller",
@@ -286,6 +288,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
           productsEnabled: true,
           sortingProductsCriteria: [],
           promotionCodeDynamicEnabled: false,
+          dynamicProductEnabled: false,
         },
         {
           name: "VTEX",
@@ -293,6 +296,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
           productsEnabled: false,
           sortingProductsCriteria: [],
           promotionCodeDynamicEnabled: false,
+          dynamicProductEnabled: false,
         },
         {
           name: "Woocomerce",
@@ -300,19 +304,34 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
           productsEnabled: true,
           sortingProductsCriteria: ["NAME"],
           promotionCodeDynamicEnabled: false,
+          dynamicProductEnabled: false,
         },
         {
           name: "BigBox",
           promotionCodeEnabled: false,
           productsEnabled: true,
-          dynamicProductEnabled: true,
           sortingProductsCriteria: ["NAME"],
           promotionCodeDynamicEnabled: false,
+          dynamicProductEnabled: true,
         },
       ],
     } as const;
+
+    const productDynamic = value.stores.some(
+      ({ dynamicProductEnabled }) => dynamicProductEnabled,
+    );
+
+    const filteredStores = productDynamic
+      ? value.stores.filter((s) => s.dynamicProductEnabled)
+      : value.stores;
+
+    const valueReturn = {
+      ...value,
+      stores: filteredStores,
+    };
+
     console.log("End getEditorSettings", value);
-    return { success: true, value } as const;
+    return { success: true, value: valueReturn } as const;
   };
 
   getPromoCodes = async ({ store }: { store: string }) => {
