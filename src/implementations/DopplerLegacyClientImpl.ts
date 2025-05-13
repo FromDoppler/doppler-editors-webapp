@@ -354,7 +354,7 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
   const rssShowPreview = !!d.rssShowPreview;
   const isUnlayerExportHTMLEnabled = !!d.isUnlayerExportHTMLEnabled;
   // TODO: analyze to use a store parse
-  const stores =
+  let stores =
     arrayOrEmptyArray(d.stores)
       .filter(hasName)
       .map((x) => ({
@@ -372,6 +372,11 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
   const productDynamic = stores.some(
     ({ dynamicProductEnabled }) => dynamicProductEnabled,
   );
+
+  if (productDynamic) {
+    stores = stores.filter((s) => s.dynamicProductEnabled);
+  }
+
   return {
     stores,
     abandonedCartCampaign,

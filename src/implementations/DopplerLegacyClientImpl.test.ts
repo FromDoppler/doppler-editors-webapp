@@ -961,22 +961,6 @@ describe(DopplerLegacyClientImpl.name, () => {
           productDynamic: true,
           stores: [
             {
-              name: "MercadoShops",
-              promotionCodeEnabled: false,
-              promotionCodeDynamicEnabled: false,
-              productsEnabled: true,
-              dynamicProductEnabled: false,
-              sortingProductsCriteria: [],
-            },
-            {
-              name: "Tiendanube",
-              promotionCodeEnabled: false,
-              promotionCodeDynamicEnabled: true,
-              productsEnabled: false,
-              dynamicProductEnabled: false,
-              sortingProductsCriteria: [],
-            },
-            {
               name: "BigBox",
               promotionCodeEnabled: false,
               promotionCodeDynamicEnabled: true,
