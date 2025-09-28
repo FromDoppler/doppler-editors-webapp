@@ -336,10 +336,6 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
   }
 }
 
-// Hard flag, TODO: remove when is ready the flag by store
-const TIENDA_NUBE_SHOPS_STORE_NAME = "Tiendanube";
-const INTEGRATIONS_WITH_DYNAMIC_PROMOTIONS = [TIENDA_NUBE_SHOPS_STORE_NAME];
-
 function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
   // See:
   // Doppler.Application.ControlPanelModule.DTO/DtoEditorSetting.cs
@@ -365,11 +361,7 @@ function parseDopplerEditorSettings(data: unknown): DopplerEditorSettings {
       .map((x) => ({
         name: x.name,
         promotionCodeEnabled: x.promotionCodeEnabled || false,
-        promotionCodeDynamicEnabled:
-          x.promotionCodeDynamicEnabled ||
-          (x.promotionCodeEnabled &&
-            INTEGRATIONS_WITH_DYNAMIC_PROMOTIONS.includes(x.name)) ||
-          false,
+        promotionCodeDynamicEnabled: x.dynamicPromotionCodeEnabled || false,
         productsEnabled: x.productsEnabled,
         dynamicProductEnabled: x.dynamicProductEnabled || false,
         sortingProductsCriteria: x.sortingProductsCriteria,
@@ -414,7 +406,7 @@ function hasName(x: unknown): x is {
   dynamicProductEnabled: boolean;
   DopplerEditorStore: boolean;
   promotionCodeEnabled: boolean;
-  promotionCodeDynamicEnabled: boolean;
+  dynamicPromotionCodeEnabled: boolean;
   sortingProductsCriteria: [];
 } {
   return !!(x && (x as any).name);
