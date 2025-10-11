@@ -1,4 +1,4 @@
-FROM koalaman/shellcheck-alpine:v0.10.0 as verify-sh
+FROM koalaman/shellcheck-alpine:v0.11.0 as verify-sh
 WORKDIR /src
 COPY ./*.sh ./
 RUN shellcheck -e SC1091,SC1090 ./*.sh
