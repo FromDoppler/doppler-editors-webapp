@@ -254,6 +254,7 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     idThirdpartyApp?: string,
   ) {
     // fix to resolve call GetSettings with both parameter
+    console.log("getEditorSettings", idThirdpartyApp);
     const _idTemplate = idCampaign && idCampaign !== "0" ? "0" : idTemplate;
     const queryString = new URLSearchParams({
       idCampaign: idCampaign || "0",

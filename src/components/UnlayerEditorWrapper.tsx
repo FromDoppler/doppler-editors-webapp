@@ -49,6 +49,7 @@ export const UnlayerEditorWrapper = ({
     idTemplate: string;
     idThirdPartyApp: string;
   }>;
+  console.log("idThirdPartyApp", idThirdPartyApp);
   const editorSettings = useGetEditorSettings(
     idCampaign,
     idTemplate,
