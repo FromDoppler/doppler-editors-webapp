@@ -16,7 +16,7 @@ import { promisifyProps } from "../utils";
 import { useCustomFields } from "./useCustomFields";
 import { useGetEditorSettings } from "../queries/editor-settings-queries";
 import { keyBy } from "lodash";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 const prepareUnlayerEditorObject = (
   editorObject: Editor,
@@ -44,11 +44,14 @@ export const UnlayerEditorWrapper = ({
   } = useAppServices();
 
   const appSessionState = useAppSessionState();
-  const { idCampaign, idTemplate, idThirdPartyApp } = useParams() as Readonly<{
+  const { idCampaign, idTemplate } = useParams() as Readonly<{
     idCampaign: string;
     idTemplate: string;
-    idThirdPartyApp: string;
   }>;
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const idThirdPartyApp = searchParams.get("idThirdPartyApp") ?? "";
   console.log("idThirdPartyApp", idThirdPartyApp);
   const editorSettings = useGetEditorSettings(
     idCampaign,
