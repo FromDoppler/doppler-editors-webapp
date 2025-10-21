@@ -422,7 +422,7 @@ describe(DopplerLegacyClientImpl.name, () => {
         withCredentials: true,
       });
       expect(axiosGet).toBeCalledWith(
-        "/MSEditor/Editor/GetSettings?idCampaign=0&idTemplate=0",
+        "/MSEditor/Editor/GetSettings?idCampaign=0&idTemplate=0&idThirdpartyApp=0",
       );
     });
 

@@ -5,6 +5,7 @@ import { DopplerEditorSettings } from "../abstractions/domain/DopplerEditorSetti
 export const useGetEditorSettings = (
   idCampaign?: string,
   idTemplate?: string,
+  idThirdPartyApp?: string,
 ) => {
   const { dopplerLegacyClient } = useAppServices();
 
@@ -18,6 +19,7 @@ export const useGetEditorSettings = (
     const result = await dopplerLegacyClient.getEditorSettings(
       idCampaign,
       idTemplate,
+      idThirdPartyApp,
     );
     return result.value;
   };

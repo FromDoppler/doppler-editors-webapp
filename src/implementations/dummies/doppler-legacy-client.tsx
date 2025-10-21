@@ -424,7 +424,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
       value: {
         items,
         continuation: newContinuation,
-        source: ""
+        source: "",
       },
     };
 

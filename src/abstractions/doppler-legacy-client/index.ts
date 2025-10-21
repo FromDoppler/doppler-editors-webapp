@@ -60,6 +60,7 @@ export interface DopplerLegacyClient {
   getEditorSettings: (
     idCampaign?: string,
     idTemplate?: string,
+    idThirdpartyApp?: string,
   ) => Promise<Result<DopplerEditorSettings>>;
   getPromoCodes: ({
     store,

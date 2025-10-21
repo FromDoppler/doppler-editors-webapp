@@ -248,12 +248,17 @@ export class DopplerLegacyClientImpl implements DopplerLegacyClient {
     }
   }
 
-  async getEditorSettings(idCampaign?: string, idTemplate?: string) {
+  async getEditorSettings(
+    idCampaign?: string,
+    idTemplate?: string,
+    idThirdpartyApp?: string,
+  ) {
     // fix to resolve call GetSettings with both parameter
     const _idTemplate = idCampaign && idCampaign !== "0" ? "0" : idTemplate;
     const queryString = new URLSearchParams({
       idCampaign: idCampaign || "0",
       idTemplate: _idTemplate || "0",
+      idThirdpartyApp: idThirdpartyApp || "0",
     });
 
     const response = await this.axios.get(
