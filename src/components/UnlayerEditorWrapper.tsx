@@ -48,7 +48,11 @@ export const UnlayerEditorWrapper = ({
     idCampaign: string;
     idTemplate: string;
   }>;
-  const editorSettings = useGetEditorSettings(idCampaign, idTemplate);
+  const editorSettings = useGetEditorSettings(
+    idCampaign,
+    idTemplate,
+    idThirdPartyApp,
+  );
   const userFieldsQuery = useGetUserFields();
   const mergeTags = keyBy(
     useCustomFields(userFieldsQuery.data) || [],
