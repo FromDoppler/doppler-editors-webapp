@@ -9,6 +9,7 @@ import { UnlayerEditorWrapper } from "./UnlayerEditorWrapper";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import { AssetManifestClient } from "../abstractions/asset-manifest-client";
 import { MfeLoaderAssetManifestClientImpl } from "../implementations/MfeLoaderAssetManifestClientImpl";
+import { MemoryRouter } from "react-router-dom";
 
 const emailEditorPropsTestId = "EmailEditor_props";
 
@@ -92,18 +93,22 @@ describe(UnlayerEditorWrapper.name, () => {
 
     // Act
     render(
-      <QueryClientProvider client={queryClient}>
-        <AppServicesProvider appServices={appServices}>
-          <TestDopplerIntlProvider>
-            <AppSessionStateContext.Provider value={authenticatedSession}>
-              <UnlayerEditorWrapper
-                setUnlayerEditorObject={jest.fn()}
-                hidden={true}
-              />
-            </AppSessionStateContext.Provider>
-          </TestDopplerIntlProvider>
-        </AppServicesProvider>
-      </QueryClientProvider>,
+      <MemoryRouter
+        initialEntries={["/editors/campaigns/36371440?idThirdPartyApp=1"]}
+      >
+        <QueryClientProvider client={queryClient}>
+          <AppServicesProvider appServices={appServices}>
+            <TestDopplerIntlProvider>
+              <AppSessionStateContext.Provider value={authenticatedSession}>
+                <UnlayerEditorWrapper
+                  setUnlayerEditorObject={jest.fn()}
+                  hidden={true}
+                />
+              </AppSessionStateContext.Provider>
+            </TestDopplerIntlProvider>
+          </AppServicesProvider>
+        </QueryClientProvider>
+      </MemoryRouter>,
     );
 
     // Assert
@@ -161,16 +166,22 @@ describe(UnlayerEditorWrapper.name, () => {
 
       // Act
       render(
-        <QueryClientProvider client={queryClient}>
-          <AppServicesProvider appServices={appServices}>
-            <TestDopplerIntlProvider>
-              <UnlayerEditorWrapper
-                setUnlayerEditorObject={jest.fn()}
-                hidden={true}
-              />
-            </TestDopplerIntlProvider>
-          </AppServicesProvider>
-        </QueryClientProvider>,
+        <MemoryRouter
+          initialEntries={["/editors/campaigns/36371440?idThirdPartyApp=1"]}
+        >
+          <QueryClientProvider client={queryClient}>
+            <AppServicesProvider appServices={appServices}>
+              <TestDopplerIntlProvider>
+                <AppSessionStateContext.Provider value={authenticatedSession}>
+                  <UnlayerEditorWrapper
+                    setUnlayerEditorObject={jest.fn()}
+                    hidden={true}
+                  />
+                </AppSessionStateContext.Provider>
+              </TestDopplerIntlProvider>
+            </AppServicesProvider>
+          </QueryClientProvider>
+        </MemoryRouter>,
       );
 
       // Assert

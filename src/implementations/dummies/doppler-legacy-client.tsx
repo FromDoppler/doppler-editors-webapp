@@ -264,6 +264,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
       crossSellingEnabled: false,
       rssCampaign: false,
       rssShowPreview: false,
+      productDynamic: false,
       isUnlayerExportHTMLEnabled: true,
       stores: [
         {
@@ -423,6 +424,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
       value: {
         items,
         continuation: newContinuation,
+        source: "",
       },
     };
 
