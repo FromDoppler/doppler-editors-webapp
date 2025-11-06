@@ -11,4 +11,5 @@ export type DynamicPromoCodeParams = {
   includes_shipping: boolean;
   first_consumer_purchase: boolean;
   combines_with_other_discounts: boolean;
+  store: string;
 };
