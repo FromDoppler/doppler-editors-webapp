@@ -223,6 +223,7 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
       firstPurchase: dynamicParams.first_consumer_purchase,
       combineDiscounts: dynamicParams.combines_with_other_discounts,
       maxUses: 1,
+      store: dynamicParams.store,
     };
 
     const result = await this.POST(
@@ -249,6 +250,7 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
       firstPurchase: dynamicParams.first_consumer_purchase,
       combineDiscounts: dynamicParams.combines_with_other_discounts,
       maxUses: 1,
+      store: dynamicParams.store,
     };
     try {
       await this.PUT(
