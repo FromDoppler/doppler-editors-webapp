@@ -277,11 +277,11 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
         },
         {
           name: "Tienda Nube",
-          promotionCodeEnabled: false,
+          promotionCodeEnabled: true,
           productsEnabled: true,
           sortingProductsCriteria: ["PRICE", "NAME", "UPDATE_DATE"],
-          promotionCodeDynamicEnabled: false,
-          dynamicProductEnabled: true,
+          promotionCodeDynamicEnabled: true,
+          dynamicProductEnabled: false,
         },
         {
           name: "Jumpseller",
@@ -301,10 +301,10 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
         },
         {
           name: "Woocomerce",
-          promotionCodeEnabled: false,
+          promotionCodeEnabled: true,
           productsEnabled: true,
           sortingProductsCriteria: ["NAME"],
-          promotionCodeDynamicEnabled: false,
+          promotionCodeDynamicEnabled: true,
           dynamicProductEnabled: false,
         },
         {
@@ -313,7 +313,7 @@ export class DummyDopplerLegacyClient implements DopplerLegacyClient {
           productsEnabled: true,
           sortingProductsCriteria: ["NAME"],
           promotionCodeDynamicEnabled: false,
-          dynamicProductEnabled: true,
+          dynamicProductEnabled: false,
         },
       ],
     } as const;
