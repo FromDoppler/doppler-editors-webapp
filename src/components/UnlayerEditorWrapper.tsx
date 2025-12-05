@@ -153,7 +153,7 @@ export const UnlayerEditorWrapper = ({
       sort: false,
     },
     displayMode: "email",
-    version: "1.157.0",
+    version: "1.309.4",
     features: {
       sendTestEmail: false,
       preheaderText: false,
