@@ -2225,10 +2225,10 @@
   resolved "https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
 
-"@types/lodash@4.17.22":
-  version "4.17.22"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.17.22.tgz#5fc090fbd92c59312cecff582ac0492217c6bcc0"
-  integrity sha512-46Wh9Pr5XQloXkIDyfIJ3garzam+jG4m2Vb2bG84chuLsPbX1BG9W25JEkplrz5hN7I3F5NU/keGlL+MrkTkDA==
+"@types/lodash@4.17.23":
+  version "4.17.23"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.17.23.tgz#c1bb06db218acc8fc232da0447473fc2fb9d9841"
+  integrity sha512-RDvF6wTulMPjrNdCoYRC8gNR880JNGT8uB+REUpC2Ns4pRqQJhGz90wh7rgdXDPpCczF3VGktDuFGVnz8zP7HA==
 
 "@types/node@*":
   version "18.0.0"
