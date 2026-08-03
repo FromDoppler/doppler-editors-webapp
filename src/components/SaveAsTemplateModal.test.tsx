@@ -4,6 +4,31 @@ import { act, render, screen, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 import userEvent from "@testing-library/user-event";
+import { AppServicesProvider } from "./AppServicesContext";
+
+const createAppServices = () => {
+  const createPrivateTemplate = jest.fn().mockResolvedValue({
+    success: true,
+    value: { newTemplateId: "new-template-id" },
+  });
+
+  const updateTemplateThumbnail = jest.fn().mockResolvedValue({
+    success: true,
+  });
+
+  return {
+    appServices: {
+      htmlEditorApiClient: {
+        createPrivateTemplate,
+      },
+      dopplerLegacyClient: {
+        updateTemplateThumbnail,
+      },
+    } as any,
+    createPrivateTemplate,
+    updateTemplateThumbnail,
+  };
+};
 
 const createQueryClient = () =>
   new QueryClient({
@@ -28,14 +53,16 @@ describe(SaveAsTemplateModal.name, () => {
     // Act
     render(
       <QueryClientProvider client={createQueryClient()}>
-        <TestDopplerIntlProvider>
-          <SaveAsTemplateModal
-            close={() => {}}
-            isOpen={true}
-            content={unlayerContent}
-            defaultName={defaultName}
-          />
-        </TestDopplerIntlProvider>
+        <AppServicesProvider appServices={createAppServices().appServices}>
+          <TestDopplerIntlProvider>
+            <SaveAsTemplateModal
+              close={() => {}}
+              isOpen={true}
+              content={unlayerContent}
+              defaultName={defaultName}
+            />
+          </TestDopplerIntlProvider>
+        </AppServicesProvider>
       </QueryClientProvider>,
     );
 
@@ -46,10 +73,7 @@ describe(SaveAsTemplateModal.name, () => {
     expect(inputName).toHaveValue(`${defaultName}-with-changes`);
   });
 
-  // TODO: fix this test
-  // I think that it is broken because htmlEditorApiClient is not defined when the mutation in
-  // the hook useCreatePrivateTemplate is executed.
-  it.skip("should be show the success message when click on accept button", async () => {
+  it("should create the template and generate its thumbnail", async () => {
     // Arrange
     const unlayerContent: UnlayerContent = {
       design: { test: "Demo data" } as any,
@@ -58,23 +82,43 @@ describe(SaveAsTemplateModal.name, () => {
       type: "unlayer",
     };
     const defaultName = "default-name";
+    const { appServices, createPrivateTemplate, updateTemplateThumbnail } =
+      createAppServices();
     // Act
     render(
       <QueryClientProvider client={createQueryClient()}>
-        <TestDopplerIntlProvider>
-          <SaveAsTemplateModal
-            close={() => {}}
-            isOpen={true}
-            content={unlayerContent}
-            defaultName={defaultName}
-          />
-        </TestDopplerIntlProvider>
+        <AppServicesProvider appServices={appServices}>
+          <TestDopplerIntlProvider>
+            <SaveAsTemplateModal
+              close={() => {}}
+              isOpen={true}
+              content={unlayerContent}
+              defaultName={defaultName}
+            />
+          </TestDopplerIntlProvider>
+        </AppServicesProvider>
       </QueryClientProvider>,
     );
 
     screen.getByRole("dialog");
     const submitButton = screen.getByText("save");
-    await act(() => userEvent.click(submitButton));
+    await act(async () => {
+      await userEvent.click(submitButton);
+    });
+
+    await waitFor(() =>
+      expect(createPrivateTemplate).toHaveBeenCalledWith({
+        design: unlayerContent.design,
+        htmlContent: unlayerContent.htmlContent,
+        previewImage: unlayerContent.previewImage,
+        type: "unlayer",
+        templateName: defaultName,
+        isPublic: false,
+      }),
+    );
+    await waitFor(() =>
+      expect(updateTemplateThumbnail).toHaveBeenCalledWith("new-template-id"),
+    );
     await waitFor(() => screen.getByText("new_template_has_been_saved"));
   });
 });

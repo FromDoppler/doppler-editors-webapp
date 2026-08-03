@@ -4,6 +4,7 @@ import { useCreatePrivateTemplate } from "../queries/template-queries";
 import { UnlayerContent } from "../abstractions/domain/content";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useModal } from "react-modal-hook";
+import { useAppServices } from "./AppServicesContext";
 
 interface SaveAsTemplateModalProps {
   close: () => void;
@@ -19,10 +20,11 @@ export const SaveAsTemplateModal = ({
   defaultName,
 }: SaveAsTemplateModalProps) => {
   const {
-    mutate: createPrivateTemplate,
+    mutateAsync: createPrivateTemplate,
     isLoading,
     isSuccess,
   } = useCreatePrivateTemplate();
+  const { dopplerLegacyClient } = useAppServices();
   const [templateName, setTemplateName] = useState(defaultName || "");
 
   const successContent = (
@@ -45,13 +47,26 @@ export const SaveAsTemplateModal = ({
     </>
   );
 
-  const saveTemplate = (e: FormEvent<HTMLFormElement>) => {
+  const saveTemplate = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createPrivateTemplate({
-      ...content,
-      templateName: templateName,
-      isPublic: false,
-    });
+
+    try {
+      const result = await createPrivateTemplate({
+        ...content,
+        templateName: templateName,
+        isPublic: false,
+      });
+
+      if (result.success && result.value?.newTemplateId) {
+        void dopplerLegacyClient
+          .updateTemplateThumbnail(result.value.newTemplateId)
+          .catch((error) => {
+            console.error("Error generating template thumbnail", error);
+          });
+      }
+    } catch (error) {
+      console.error("Error creating private template", error);
+    }
   };
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
