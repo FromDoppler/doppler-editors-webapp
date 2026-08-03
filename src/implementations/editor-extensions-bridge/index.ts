@@ -3,9 +3,7 @@ import { EditorExtensionsBridge } from "../../abstractions/editor-extensions-bri
 
 const UNLAYER_ORIGIN = "https://editor.unlayer.com";
 
-export class EditorExtensionsBridgeImplementation
-  implements EditorExtensionsBridge
-{
+export class EditorExtensionsBridgeImplementation implements EditorExtensionsBridge {
   window: Window & typeof globalThis;
 
   constructor({ window }: AppServices) {
