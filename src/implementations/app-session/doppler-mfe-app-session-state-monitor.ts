@@ -46,9 +46,7 @@ const mapDopplerSessionState: (
           },
         };
 
-export class DopplerSessionMfeAppSessionStateAccessor
-  implements AppSessionStateAccessor
-{
+export class DopplerSessionMfeAppSessionStateAccessor implements AppSessionStateAccessor {
   private readonly _window;
 
   constructor({ window }: { window: Window }) {
@@ -60,9 +58,7 @@ export class DopplerSessionMfeAppSessionStateAccessor
   }
 }
 
-export class DopplerSessionMfeAppSessionStateMonitor
-  implements AppSessionStateMonitor
-{
+export class DopplerSessionMfeAppSessionStateMonitor implements AppSessionStateMonitor {
   private readonly _window;
 
   public onSessionUpdate: () => void = () => {};

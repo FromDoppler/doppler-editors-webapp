@@ -49,9 +49,7 @@ export type SavingProcessDataPostingContent = Readonly<{
 }>;
 
 export type SavingProcessData =
-  | null
-  | SavingProcessDataPreparingContent
-  | SavingProcessDataPostingContent;
+  null | SavingProcessDataPreparingContent | SavingProcessDataPostingContent;
 
 type ErrorData = null | {
   type: "onSaving";
