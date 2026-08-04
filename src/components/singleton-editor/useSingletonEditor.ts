@@ -65,7 +65,8 @@ export const useSingletonEditor = ({
     dispatch,
   });
 
-  useGenerateThumbnail({});
+  const { generateThumbnail, skipNextBeforeUnloadThumbnail } =
+    useGenerateThumbnail({});
 
   useContentUpdatesDetection({
     dispatch,
@@ -100,6 +101,8 @@ export const useSingletonEditor = ({
     smartSave,
     exportContent,
     doWhenNoPendingUpdates,
+    generateThumbnail,
+    skipNextBeforeUnloadThumbnail,
     undoTools,
   };
 };

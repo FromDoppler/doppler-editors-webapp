@@ -53,6 +53,8 @@ export const Template = () => {
     smartSave,
     exportContent,
     doWhenNoPendingUpdates,
+    generateThumbnail,
+    skipNextBeforeUnloadThumbnail,
     saveStatus,
     undoTools,
   } = useSingletonEditor({
@@ -86,7 +88,16 @@ export const Template = () => {
 
   const saveAndNavigateClick = async (to: string) => {
     smartSave();
-    doWhenNoPendingUpdates(() => navigateSmart(to));
+    doWhenNoPendingUpdates(async () => {
+      try {
+        await generateThumbnail();
+        skipNextBeforeUnloadThumbnail();
+      } catch (error) {
+        window.console.error("Error generating template thumbnail", error);
+      } finally {
+        navigateSmart(to);
+      }
+    });
   };
 
   if (templateQuery.error) {
