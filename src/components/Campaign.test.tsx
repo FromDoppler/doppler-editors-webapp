@@ -20,6 +20,9 @@ jest.mock("./LoadingScreen", () => ({
 }));
 
 const dopplerLegacyBaseUrl = "http://dopplerlegacybaseurl";
+const updateCampaignThumbnail = jest.fn(() =>
+  Promise.resolve({ success: true }),
+);
 const baseAppServices = {
   appSessionStateAccessor: {
     getCurrentSessionState: () => ({
@@ -54,6 +57,8 @@ const baseAppServices = {
           isUnlayerExportHTMLEnabled: true,
         },
       }),
+    updateCampaignThumbnail,
+    updateTemplateThumbnail: jest.fn(() => Promise.resolve({ success: true })),
   },
   editorExtensionsBridge: {
     registerCallbackListener: () => ({ destructor: noop }),
@@ -84,6 +89,11 @@ const windowDouble: any = {
 
 Object.defineProperty(windowDouble.location, "href", {
   set: setHref,
+});
+
+beforeEach(() => {
+  setHref.mockClear();
+  updateCampaignThumbnail.mockClear();
 });
 
 const createTestContext = () => {
@@ -313,6 +323,9 @@ describe(Campaign.name, () => {
 
       // Assert
       expect(updateCampaignContent).not.toHaveBeenCalled();
+      await waitFor(() =>
+        expect(updateCampaignThumbnail).toHaveBeenCalledWith(idCampaign),
+      );
     },
   );
 
@@ -350,6 +363,9 @@ describe(Campaign.name, () => {
       await userEvent.click(buttonByText);
 
       // Assert
+      await waitFor(() =>
+        expect(updateCampaignThumbnail).toHaveBeenCalledWith(idCampaign),
+      );
       expect(setHref).toHaveBeenCalledWith(urlExpected);
     },
   );
@@ -391,6 +407,9 @@ describe(Campaign.name, () => {
       await userEvent.click(buttonByText);
 
       // Assert
+      await waitFor(() =>
+        expect(updateCampaignThumbnail).toHaveBeenCalledWith(idCampaign),
+      );
       expect(setHref).toHaveBeenCalledWith(urlExpected);
     },
   );
@@ -429,6 +448,9 @@ describe(Campaign.name, () => {
       await userEvent.click(buttonByText);
 
       // Assert
+      await waitFor(() =>
+        expect(updateCampaignThumbnail).toHaveBeenCalledWith("idCampaign"),
+      );
       expect(setHref).toHaveBeenCalledWith(
         baseAppServices.appConfiguration.dopplerExternalUrls.campaigns,
       );
