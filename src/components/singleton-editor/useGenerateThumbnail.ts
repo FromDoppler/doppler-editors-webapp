@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import {
   useUpdateCampaignThumbnail,
@@ -16,15 +16,46 @@ export function useGenerateThumbnail({
 }: {
   global?: Window & typeof globalThis;
 }) {
-  const { mutate: updateTemplateThumbnail } = useUpdateTemplateThumbnail();
-  const { mutate: updateCampaignThumbnail } = useUpdateCampaignThumbnail();
+  const {
+    mutate: updateTemplateThumbnail,
+    mutateAsync: updateTemplateThumbnailAsync,
+  } = useUpdateTemplateThumbnail();
+  const {
+    mutate: updateCampaignThumbnail,
+    mutateAsync: updateCampaignThumbnailAsync,
+  } = useUpdateCampaignThumbnail();
   const { idCampaign, idTemplate } = useParams() as Readonly<{
     idCampaign: string;
     idTemplate: string;
   }>;
+  const skipNextBeforeUnloadThumbnailRef = useRef(false);
+
+  const generateThumbnail = useCallback(async () => {
+    if (idCampaign !== undefined && idCampaign !== "0") {
+      await updateCampaignThumbnailAsync({ idCampaign: idCampaign });
+      return;
+    }
+
+    await updateTemplateThumbnailAsync({ idTemplate: idTemplate });
+  }, [
+    idCampaign,
+    idTemplate,
+    updateCampaignThumbnailAsync,
+    updateTemplateThumbnailAsync,
+  ]);
+
+  const skipNextBeforeUnloadThumbnail = useCallback(() => {
+    skipNextBeforeUnloadThumbnailRef.current = true;
+  }, []);
+
   // When the user exit the editor generate thumbnail
   useEffect(() => {
     const beforeUnloadListener = (e: BeforeUnloadEvent) => {
+      if (skipNextBeforeUnloadThumbnailRef.current) {
+        skipNextBeforeUnloadThumbnailRef.current = false;
+        return;
+      }
+
       if (idCampaign !== undefined && idCampaign !== "0") {
         updateCampaignThumbnail({ idCampaign: idCampaign });
       } else {
@@ -43,7 +74,13 @@ export function useGenerateThumbnail({
     global,
     idCampaign,
     idTemplate,
+    skipNextBeforeUnloadThumbnailRef,
     updateTemplateThumbnail,
     updateCampaignThumbnail,
   ]);
+
+  return {
+    generateThumbnail,
+    skipNextBeforeUnloadThumbnail,
+  };
 }

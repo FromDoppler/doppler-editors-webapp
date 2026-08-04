@@ -8,7 +8,7 @@ export function useActionWhenNoPendingUpdates({
 }: {
   dispatch: React.Dispatch<Action>;
   areUpdatesPending: boolean;
-  onNoPendingUpdates: null | (() => void);
+  onNoPendingUpdates: null | (() => void | Promise<void>);
 }) {
   // When all pending actions are done
   useEffect(() => {
@@ -18,7 +18,7 @@ export function useActionWhenNoPendingUpdates({
   }, [areUpdatesPending, onNoPendingUpdates]);
 
   const doWhenNoPendingUpdates = useCallback(
-    (action: () => void) => {
+    (action: () => void | Promise<void>) => {
       dispatch({ type: "when-all-saved-action-requested", action });
     },
     [dispatch],

@@ -5,7 +5,7 @@ import { AppServices } from "../abstractions";
 import { HtmlEditorApiClient } from "../abstractions/html-editor-api-client";
 import { AppServicesProvider } from "./AppServicesContext";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { editorTopBarTestId, errorMessageTestId, Template } from "./Template";
 import { SingletonDesignContextProvider } from "./singleton-editor/singletonDesignContext";
 import { Result } from "../abstractions/common/result-types";
@@ -13,12 +13,19 @@ import { TemplateContent } from "../abstractions/domain/content";
 import { ModalProvider } from "react-modal-hook";
 import { noop } from "../utils";
 import { EditorExtensionsBridge } from "../abstractions/editor-extensions-bridge";
+import userEvent from "@testing-library/user-event";
 
 jest.mock("./LoadingScreen", () => ({
   LoadingScreen: () => <div>Loading...</div>,
 }));
 
 const dopplerLegacyBaseUrl = "http://dopplerlegacybaseurl";
+const updateTemplateThumbnail = jest.fn(() =>
+  Promise.resolve({ success: true }),
+);
+const updateCampaignThumbnail = jest.fn(() =>
+  Promise.resolve({ success: true }),
+);
 const baseAppServices = {
   appConfiguration: {
     unlayerProjectId: 12345,
@@ -42,6 +49,8 @@ const baseAppServices = {
           isUnlayerExportHTMLEnabled: true,
         },
       }),
+    updateTemplateThumbnail,
+    updateCampaignThumbnail,
   },
   editorExtensionsBridge: {
     registerCallbackListener: () => ({ destructor: noop }),
@@ -72,6 +81,12 @@ const windowDouble: any = {
 
 Object.defineProperty(windowDouble.location, "href", {
   set: setHref,
+});
+
+beforeEach(() => {
+  setHref.mockClear();
+  updateTemplateThumbnail.mockClear();
+  updateCampaignThumbnail.mockClear();
 });
 
 const createTestContext = () => {
@@ -254,5 +269,30 @@ describe(Template.name, () => {
     // Assert
     const exportContent = await screen.findByTestId("export-content-btn");
     expect(exportContent).toBeDefined();
+  });
+
+  it("should generate the thumbnail before navigating away", async () => {
+    // Arrange
+    const idTemplate = "1234";
+    const { resolveGetTemplatePromise, TestComponent } = createTestContext();
+
+    renderEditor(<TestComponent routerInitialEntry={`/${idTemplate}`} />);
+    resolveGetTemplatePromise({
+      success: true,
+      value: { type: "unlayer" } as any,
+    });
+
+    const continueButton = await screen.findByText("continue");
+
+    // Act
+    await userEvent.click(continueButton);
+
+    // Assert
+    await waitFor(() =>
+      expect(updateTemplateThumbnail).toHaveBeenCalledWith(idTemplate),
+    );
+    expect(setHref).toHaveBeenCalledWith(
+      baseAppServices.appConfiguration.dopplerExternalUrls.templates,
+    );
   });
 });
