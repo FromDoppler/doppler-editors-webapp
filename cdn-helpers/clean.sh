@@ -102,6 +102,7 @@ cd "$(dirname "$0")"
 export MSYS_NO_PATHCONV=1
 export MSYS2_ARG_CONV_EXCL="*"
 
+# cSpell:disable
 remoteUserAndHost="${destination%:*}"
 remotePath="${destination#*:}"
 tmpDir="$(mktemp -d)"
@@ -143,6 +144,7 @@ then
 else
   printf 'mget -p asset-manifest-%s-*.json\n' "${environment}" >> "${downloadBatch}"
 fi
+# cSpell:enable
 
 sftp -P "${port}" -b "${downloadBatch}" "${remoteUserAndHost}" >/dev/null
 
