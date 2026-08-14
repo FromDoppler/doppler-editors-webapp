@@ -19,6 +19,22 @@ but based on manifest files in our CDN in place of Docker images.
 Since we are using the _Manifest Loader_, the packages are independent from the hosting service,
 you can see an example of how to use it in [index.html](./demo/index.html).
 
+## CDN cleanup during deployment
+
+The Jenkins publishing pipeline runs a CDN cleanup after uploading mutable packages such as `main`,
+`INT`, and pull request builds. If the pipeline needs to run faster or the cleanup has to be skipped
+temporarily, pass `--skip-clean` to `build-n-publish.sh`.
+
+Example:
+
+```sh
+sh build-n-publish.sh \
+  --package=${PKG_NAME} \
+  --commit=${GIT_COMMIT} \
+  --name=main
+  --skip-clean
+```
+
 ## Application Architecture
 
 As we successful learned with the ["original" Doppler WebApp](https://github.com/FromDoppler/doppler-webapp), having
