@@ -2475,6 +2475,11 @@
     "@typescript-eslint/types" "7.18.0"
     eslint-visitor-keys "^3.4.3"
 
+"@unlayer/types@^1.448.0":
+  version "1.480.0"
+  resolved "https://registry.yarnpkg.com/@unlayer/types/-/types-1.480.0.tgz#87f75e09f57c3ebd8eea1e19100bcffdea8342dd"
+  integrity sha512-xGu79M5EI6QInWeHItmruFUBVgEkS3g+hUa0k+f6loTMXL1/ncJCMEu7hHIq4XEApaog/DpLJYclNB0UHf1fXg==
+
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
   resolved "https://registry.npmjs.org/@webassemblyjs/ast/-/ast-1.11.1.tgz"
@@ -9241,12 +9246,12 @@ react-dom@18.3.1:
     loose-envify "^1.1.0"
     scheduler "^0.23.2"
 
-react-email-editor@1.7.11:
-  version "1.7.11"
-  resolved "https://registry.yarnpkg.com/react-email-editor/-/react-email-editor-1.7.11.tgz#dc6c908130dd97985d23f5a640b02bc4cb687094"
-  integrity sha512-AyoKKtMEPhKdqUxFX1hyJMvEO+E5fzk88uNVGHhK1ymhLpcghYLkz1+pXKLcByjR6LHkfEbrCmoYFG8zyripug==
+react-email-editor@2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/react-email-editor/-/react-email-editor-2.1.2.tgz#808536880df7b16654dfa22ef59f754c9746e056"
+  integrity sha512-zePLRUTzaVyHipRrtdWBAmjvDKaH+ShoOIjkOcK/HbGK93TYe24yIII3qwalRMd44vJVXD2Xm+3uKSQw+MV+gg==
   dependencies:
-    unlayer-types latest
+    "@unlayer/types" "^1.448.0"
 
 react-error-overlay@^6.0.11:
   version "6.0.11"
@@ -10791,11 +10796,6 @@ universalify@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/universalify/-/universalify-2.0.0.tgz"
   integrity sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==
-
-unlayer-types@latest:
-  version "1.5.23"
-  resolved "https://registry.yarnpkg.com/unlayer-types/-/unlayer-types-1.5.23.tgz#4b6fd5dafa00c19b80132d3e01be930abcc14a02"
-  integrity sha512-Gpj/kYGvm0HpGYvX4nAFtd/p5K9LYKfMFuNNeqhabHIfibJNYJnjsWY07MEgfQt6XcoEMMG1mnQXDsHJNwre3g==
 
 unload@2.2.0:
   version "2.2.0"
